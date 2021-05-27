@@ -15,7 +15,7 @@ struct ListNode {
 class Solution {
 public:
     ListNode *merge(ListNode *l1, ListNode *l2) {
-        ListNode *dummy = new ListNode(-1);
+        auto *dummy = new ListNode(-1);
         ListNode *current = dummy;
         while (l1 && l2) {
             if (l1->val < l2->val) {
