@@ -3,4 +3,4 @@ project(AcWingSolution)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(AcWingSolution main.cpp)
+add_executable(AcWingSolution main.cpp Problem0016.h)
