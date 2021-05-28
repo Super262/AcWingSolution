@@ -17,6 +17,7 @@ public:
         left = 0;
         right = array.size() - 1;
         while (left < right) {
+            // 选择一个靠"左"的中点；
             mid = left + (right - left) / 2;
             if (array[mid] == target) {
                 right = mid;
@@ -35,6 +36,7 @@ public:
         left = 0;
         right = array.size() - 1;
         while (left < right) {
+            // 选择一个靠"右"的中点；
             mid = left + (right - left + 1) / 2;
             if (array[mid] == target) {
                 left = mid;
