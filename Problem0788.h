@@ -11,10 +11,6 @@ using namespace std;
 
 class Problem0788 {
 public:
-#include <iostream>
-
-    using namespace std;
-
     unsigned long mergeSortToGetCount(int a[], int temp[], const unsigned long start, const unsigned long end) {
         // 返回值会超过int的表示范围
         if (start >= end) {
