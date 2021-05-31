@@ -19,15 +19,7 @@ public:
         if (a.size() < b.size()) {
             return -1;
         }
-        for (unsigned long i = 0; i < a.size() && i < b.size(); ++i) {
-            if (a[i] > b[i]) {
-                return 1;
-            }
-            if (a[i] < b[i]) {
-                return -1;
-            }
-        }
-        return 0;
+        return a.compare(b);
     }
 
     string subtractBigInt(string a, string b) {
