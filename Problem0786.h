@@ -16,25 +16,19 @@ public:
             return;
         }
         int pivot = arr[start + (end - start) / 2];
-        int i = start;
-        int j = end;
-        while (i <= j) {
-            while (i <= j && arr[i] < pivot) {
-                ++i;
-            }
-            while (i <= j && arr[j] > pivot) {
-                --j;
-            }
-            if (i <= j) {
+        int i = start - 1;
+        int j = end + 1;
+        while (i < j) {
+            while (arr[++i] < pivot);
+            while (arr[--j] > pivot);
+            if (i < j) {
                 swap(arr[i], arr[j]);
-                ++i;
-                --j;
             }
         }
         if (j - start + 1 >= k) {
             quick_partition(arr, start, j, k);
-        } else if (i - start + 1 <= k) {
-            quick_partition(arr, i, end, k - (i - start + 1));
+        } else {
+            quick_partition(arr, j + 1, end, k - (j - start + 1));
         }
     }
 
