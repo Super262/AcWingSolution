@@ -24,8 +24,8 @@ public:
         int n, m;
         cin >> n >> m;
         vector<int> arr(n, 0);
-        for (int &num:arr) {
-            cin >> num;
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &arr[i]);
         }
         vector<int> prefixSum = getPrefixSum(arr);
         int l, r;
