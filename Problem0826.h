@@ -40,7 +40,6 @@ public:
             int k, x;
             cin >> op;
             if (op == "D") {
-
                 cin >> k;
                 if (!k)head = ne[head];
                 remove(k - 1);
@@ -52,8 +51,9 @@ public:
                 add(k - 1, x);
             }
         }
-        for (int i = head; i != -1; i = ne[i])
+        for (int i = head; i != -1; i = ne[i]) {
             cout << n[i] << " ";
+        }
         return 0;
     }
 };
