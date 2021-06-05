@@ -5,7 +5,7 @@
 #ifndef ACWINGSOLUTION_PROBLEM0826_H
 #define ACWINGSOLUTION_PROBLEM0826_H
 
-#include<iostream>
+#include <iostream>
 
 using namespace std;
 
