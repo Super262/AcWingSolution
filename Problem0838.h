@@ -12,18 +12,21 @@ using namespace std;
 
 class Problem0838 {
 public:
-    void downNode(vector<int> &h, const unsigned long &rootIndex) {
+    void downNode(vector<int> &h, unsigned long rootIndex) {
         // 有效索引从1开始
         unsigned long minimalIndex = rootIndex;
-        if (rootIndex * 2 <= h.size() - 1 && h[2 * rootIndex] < h[minimalIndex]) {
-            minimalIndex = 2 * rootIndex;
-        }
-        if (2 * rootIndex + 1 <= h.size() - 1 && h[2 * rootIndex + 1] < h[minimalIndex]) {
-            minimalIndex = 2 * rootIndex + 1;
-        }
-        if (rootIndex != minimalIndex) {
+        while (true) {
+            if (rootIndex * 2 <= h.size() - 1 && h[2 * rootIndex] < h[minimalIndex]) {
+                minimalIndex = 2 * rootIndex;
+            }
+            if (2 * rootIndex + 1 <= h.size() - 1 && h[2 * rootIndex + 1] < h[minimalIndex]) {
+                minimalIndex = 2 * rootIndex + 1;
+            }
+            if (rootIndex == minimalIndex) {
+                break;
+            }
             swap(h[rootIndex], h[minimalIndex]);
-            downNode(h, minimalIndex);
+            rootIndex = minimalIndex;
         }
     }
 
