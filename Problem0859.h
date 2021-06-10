@@ -2,8 +2,8 @@
 // Created by Fengwei Zhang on 2021/6/10.
 //
 
-#ifndef ACWINGSOLUTION_PROBLEM0858_H
-#define ACWINGSOLUTION_PROBLEM0858_H
+#ifndef ACWINGSOLUTION_PROBLEM0859_H
+#define ACWINGSOLUTION_PROBLEM0859_H
 
 #include <algorithm>
 #include <iostream>
@@ -18,7 +18,7 @@ struct Edge {
     }
 };
 
-class Problem0858 {
+class Problem0859 {
 public:
     int findRoot(int *parent, const int target) {
         if (parent[target] != target) {
@@ -79,4 +79,4 @@ public:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0858_H
+#endif //ACWINGSOLUTION_PROBLEM0859_H
