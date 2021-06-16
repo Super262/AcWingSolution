@@ -2,8 +2,8 @@
 // Created by Fengwei Zhang on 2021/5/28.
 //
 
-#ifndef ACWINGSOLUTION_ACWING0067_H
-#define ACWINGSOLUTION_ACWING0067_H
+#ifndef ACWINGSOLUTION_PROBLEM0067_H
+#define ACWINGSOLUTION_PROBLEM0067_H
 
 #include <vector>
 
@@ -20,4 +20,4 @@ public:
     }
 };
 
-#endif //ACWINGSOLUTION_ACWING0067_H
+#endif //ACWINGSOLUTION_PROBLEM0067_H
