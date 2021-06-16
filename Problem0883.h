@@ -93,6 +93,7 @@ public:
         for (int i = 0; i < n; ++i) {
             delete[] matrix[i];
         }
+        delete[] matrix;
         return 0;
     }
 };
