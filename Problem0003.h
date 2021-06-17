@@ -17,7 +17,7 @@ public:
                                   const unsigned int count,
                                   const unsigned int volume) {
         auto dp = new unsigned int[volume + 1];
-        memset(dp, 0, sizeof(unsigned int));
+        memset(dp, 0, sizeof(unsigned int) * (volume + 1));
         for (unsigned int i = 0; i < count; ++i) {
             for (unsigned int v = size[i]; v <= volume; ++v) {
                 dp[v] = max(dp[v], dp[v - size[i]] + value[i]);
