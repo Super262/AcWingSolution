@@ -22,6 +22,9 @@ public:
         for (unsigned int i = 0; i <= l2; ++i) {
             dp[0][i] = i;
         }
+        for (unsigned int i = 0; i <= l1; ++i) {
+            dp[i][0] = i;
+        }
         for (unsigned int i = 1; i <= l1; ++i) {
             for (unsigned int j = 1; j <= l2; ++j) {
                 if (a[i - 1] == b[j - 1]) {
