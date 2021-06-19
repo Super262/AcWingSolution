@@ -80,6 +80,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0001.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0002.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
@@ -90,6 +93,9 @@
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0005.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0009.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0016.h">
@@ -153,6 +159,12 @@
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0240.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0282.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0291.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0785.h">
@@ -375,6 +387,27 @@
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0894.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0895.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0896.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0897.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0898.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0899.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0900.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0902.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem2816.h">
