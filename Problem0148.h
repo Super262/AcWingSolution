@@ -42,6 +42,7 @@ public:
             scanf("%d", &items[i]);
         }
         printf("%d\n", huffmanTreeHelper(items, n));
+        delete[] items;
         return 0;
     }
 };
