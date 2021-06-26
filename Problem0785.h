@@ -17,7 +17,7 @@ public:
         }
         int left = start - 1;
         int right = end + 1;
-        int pivot = a[start + (end - start) / 2];
+        int pivot = a[start + (end - start) / 2];  // 此处必须选择偏左的中点
         while (left < right) {
             while (a[++left] < pivot);
             while (a[--right] > pivot);
@@ -25,7 +25,7 @@ public:
                 swap(a[left], a[right]);
             }
         }
-        quick_sort(a, start, right);
+        quick_sort(a, start, right);  // 此处一定要选择右指针
         quick_sort(a, right + 1, end);
     }
 
