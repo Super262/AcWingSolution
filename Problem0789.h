@@ -6,16 +6,15 @@
 #define ACWINGSOLUTION_PROBLEM0789_H
 
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 class Problem0789 {
 public:
-    void print_range(const vector<int> &array, const int &target) {
-        unsigned long left, right, mid;
+    void print_range(const int *array, unsigned long n, const int &target) {
+        unsigned long long left, right, mid;
         left = 0;
-        right = array.size() - 1;
+        right = n - 1;
         while (left < right) {
             // 选择一个靠"左"的中点；
             mid = left + (right - left) / 2;
@@ -29,12 +28,12 @@ public:
         }
 
         if (array[left] != target) {
-            cout << "-1 -1" << endl;
+            printf("-1 -1\n");
             return;
         }
-        cout << left << " ";
+        printf("%llu ", left);
         left = 0;
-        right = array.size() - 1;
+        right = n - 1;
         while (left < right) {
             // 选择一个靠"右"的中点；
             mid = left + (right - left + 1) / 2;
@@ -47,24 +46,26 @@ public:
             }
         }
         if (array[left] != target) {
-            cout << "-1 -1" << endl;
+            printf("-1 -1\n");
             return;
         }
-        cout << right << endl;
+        printf("%llu\n", right);
     }
 
     int main() {
-        int n, targetsCount;
-        cin >> n >> targetsCount;
-        vector<int> array(n, 0);
-        for (int i = 0; i < n; ++i) {
-            cin >> array[i];
+        unsigned long long n;
+        unsigned long long targetsCount;
+        scanf("%lld%lld", &n, &targetsCount);
+        auto array = new int[n];
+        for (unsigned long long i = 0; i < n; ++i) {
+            scanf("%d", &array[i]);
         }
         int target;
-        for (int i = 0; i < targetsCount; ++i) {
-            cin >> target;
-            print_range(array, target);
+        for (unsigned long long i = 0; i < targetsCount; ++i) {
+            scanf("%d", &target);
+            print_range(array, n, target);
         }
+        delete[] array;
         return 0;
     }
 };
