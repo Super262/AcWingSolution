@@ -31,7 +31,7 @@ public:
 
     int main() {
         int n;
-        cin >> n;
+        scanf("%d", &n);
         int *a = new int[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &a[i]);

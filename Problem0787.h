@@ -45,17 +45,17 @@ public:
 
     int main() {
         int n;
-        cin >> n;
+        scanf("%d", &n);
         int *arr = new int[n];
         int *temp = new int[n];
         for (int i = 0; i < n; ++i) {
-            cin >> arr[i];
+            scanf("%d", &arr[i]);
         }
         merge_sort(arr, temp, 0, n - 1);
         for (int i = 0; i < n; ++i) {
-            cout << arr[i] << " ";
+            printf("%d ", arr[i]);
         }
-        cout << endl;
+        printf("\n");
         delete[] temp;
         delete[] arr;
         return 0;
