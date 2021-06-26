@@ -5,6 +5,11 @@
 #ifndef ACWINGSOLUTION_PROBLEM0791_H
 #define ACWINGSOLUTION_PROBLEM0791_H
 
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
 class Problem0791 {
 public:
     string addBigInt(string a, string b) {
