@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0789 {
 public:
-    void print_range(const int *array, unsigned long long n, const int &target) {
+    void print_range(const int *array, const unsigned long long n, const int &target) {
         unsigned long long left, right, mid;
         left = 0;
         right = n - 1;
