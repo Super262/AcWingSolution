@@ -16,8 +16,8 @@ public:
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
         string result;
-        int carry = 0;
-        int num;
+        unsigned int carry = 0;
+        unsigned int num;
         for (unsigned long i = 0; i < a.size() || i < b.size(); ++i) {
             num = carry;
             if (i < a.size()) {
