@@ -37,7 +37,7 @@ public:
         if (start >= end) {
             return;
         }
-        int mid = start + (end - start) / 2;
+        int mid = start + ((end - start) >> 1);
         merge_sort(arr, temp, start, mid);
         merge_sort(arr, temp, mid + 1, end);
         merge_two_sides(start, mid, end, arr, temp);

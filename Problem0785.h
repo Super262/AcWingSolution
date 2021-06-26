@@ -17,7 +17,7 @@ public:
         }
         int left = start - 1;
         int right = end + 1;
-        int pivot = a[start + (end - start) / 2];  // 此处必须选择偏左的中点
+        int pivot = a[start + ((end - start) >> 1)];  // 此处必须选择偏左的中点
         while (left < right) {
             while (a[++left] < pivot);
             while (a[--right] > pivot);
