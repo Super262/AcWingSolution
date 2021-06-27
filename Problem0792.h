@@ -27,7 +27,7 @@ public:
         reverse(b.begin(), b.end());
         string result;
         int num = 0;
-        for (unsigned long i = 0; i < a.size() || i < b.size(); ++i) {
+        for (unsigned long i = 0; i < a.size(); ++i) {
             num = (a[i] - '0') - num;
             if (i < b.size()) {
                 num -= b[i] - '0';
