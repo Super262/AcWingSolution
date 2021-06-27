@@ -37,10 +37,10 @@ public:
         cin >> n >> k;
         int *arr = new int[n];
         for (int i = 0; i < n; ++i) {
-            cin >> arr[i];
+            scanf("%d", &arr[i]);
         }
         quick_partition(arr, 0, n - 1, k);
-        cout << arr[k - 1] << endl;
+        printf("%d\n", arr[k - 1]);
         return 0;
     }
 };
