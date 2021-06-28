@@ -23,6 +23,7 @@ public:
         scanf("%d%d", &n, &m);
         vector<int> arr(n + 1, 0);
         int t;
+        // 初始化：区间起点和终点相同
         for (int i = 1; i <= n; ++i) {
             scanf("%d", &t);
             increase(arr, i, i, t);
