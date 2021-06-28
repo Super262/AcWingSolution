@@ -67,7 +67,6 @@ public:
         }
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0802_H
