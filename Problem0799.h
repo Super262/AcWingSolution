@@ -13,28 +13,31 @@ using namespace std;
 
 class Problem0799 {
 public:
-    unsigned long getMaxLen(const vector<int> &arr) {
-        unsigned long result = 0;
-        unordered_map<int, int> count;
-        for (unsigned long right = 0, left = 0; right < arr.size(); ++right) {
-            count[arr[right]] = (count.find(arr[right]) == count.end() ? 0 : count[arr[right]]) + 1;
-            while (count[arr[right]] > 1) {
-                count[arr[left]] = max(count[arr[left]] - 1, 0);
+    unsigned int longestUniqueSubsequence(const vector<int> &array) {
+        if (array.empty()) {
+            return 0;
+        }
+        unsigned int result = 0;
+        unordered_map<int, unsigned int> count;
+        for (unsigned int left = 0, right = 0; right < array.size(); ++right) {
+            count[array[right]] = count.find(array[right]) == count.end() ? 1 : count[array[right]] + 1;
+            while (left < right && count[array[right]] > 1) {
+                --count[array[left]];
                 ++left;
             }
-            result = max(result, right - left + 1);
+            result = max(right - left + 1, result);
         }
         return result;
     }
 
     int main() {
-        int n;
+        unsigned int n;
         scanf("%d", &n);
-        vector<int> arr(n, 0);
-        for (int i = 0; i < n; ++i) {
-            scanf("%d", &arr[i]);
+        vector<int> array(n, 0);
+        for (unsigned int i = 0; i < n; ++i) {
+            scanf("%d", &array[i]);
         }
-        printf("%ld\n", getMaxLen(arr));
+        printf("%d\n", longestUniqueSubsequence(array));
         return 0;
     }
 };
