@@ -20,10 +20,10 @@ public:
         while (i < a.size() || t != 0) {
             if (i < a.size()) {
                 t += (a[i] - '0') * b;
+                ++i;
             }
             result.push_back((char) ('0' + t % 10));
             t /= 10;
-            ++i;
         }
         while (result.size() > 1 && result.back() == '0') {
             result.pop_back();
