@@ -13,28 +13,30 @@ using namespace std;
 
 class Problem0830 {
 public:
-    int getClosestSmaller(int num, stack<int> &s) {
+    int closestSmaller(stack<int> &s, const int num) {
         while (!s.empty() && s.top() >= num) {
             s.pop();
         }
-        int result = -1;
-        if (!s.empty()) {
+        int result;
+        if (s.empty()) {
+            result = -1;
+        } else {
             result = s.top();
         }
         s.emplace(num);
         return result;
-
     }
 
     int main() {
-        stack<int> s;
-        unsigned long n;
-        cin >> n;
+        unsigned int n;
+        scanf("%d", &n);
         int num;
-        for (unsigned long i = 0; i < n; ++i) {
-            cin >> num;
-            cout << getClosestSmaller(num, s) << " ";
+        stack<int> s;
+        for (unsigned int i = 0; i < n; ++i) {
+            scanf("%d", &num);
+            printf("%d ", closestSmaller(s, num));
         }
+        printf("\n");
         return 0;
     }
 };
