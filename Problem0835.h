@@ -14,18 +14,18 @@ class Problem0835 {
     // 完整背诵这部分代码！
 public:
     void insert(const string &word,
-                vector<vector<unsigned int>> &children,
-                vector<unsigned int> &wordsCount,
-                unsigned int &nextIdx) {
-        unsigned long currentIdx = 0;
-        for (char ch : word) {
-            unsigned long chIndex = ch - 'a';
+                vector<vector<unsigned long long>> &children,
+                vector<unsigned long long> &wordsCount,
+                unsigned long long &nextIdx) {
+        unsigned long long currentIdx = 0;
+        for (const char ch : word) {
+            unsigned long long chIndex = ch - 'a';
             if (!children[currentIdx][chIndex]) {
                 children[currentIdx][chIndex] = ++nextIdx;
             }
             currentIdx = children[currentIdx][chIndex];
             while (currentIdx >= children.size()) {
-                children.emplace_back(vector<unsigned int>(26, 0));
+                children.emplace_back(vector<unsigned long long>(26, 0));
             }
             while (currentIdx >= wordsCount.size()) {
                 wordsCount.emplace_back(0);
@@ -34,16 +34,13 @@ public:
         ++wordsCount[currentIdx];
     }
 
-    unsigned int query(const string &word,
-                       const vector<vector<unsigned int>> &children,
-                       const vector<unsigned int> &wordsCount) {
-        unsigned long currentIdx = 0;
-        for (char ch : word) {
-            if (currentIdx >= children.size()) {
-                return 0;
-            }
-            unsigned long chIndex = ch - 'a';
-            if (!children[currentIdx][chIndex]) {
+    unsigned long long query(const string &word,
+                             const vector<vector<unsigned long long>> &children,
+                             const vector<unsigned long long> &wordsCount) {
+        unsigned long long currentIdx = 0;
+        for (const char ch : word) {
+            unsigned long long chIndex = ch - 'a';
+            if (currentIdx >= children.size() || currentIdx >= wordsCount.size() || !children[currentIdx][chIndex]) {
                 return 0;
             }
             currentIdx = children[currentIdx][chIndex];
@@ -52,22 +49,19 @@ public:
     }
 
     int main() {
-        unsigned int nextIdx = 0;  // 与链表中idx作用类似
-
-        // 初始化，创建一个空的根结点，这一步必须要有
-        vector<vector<unsigned int>> children(1, vector<unsigned int>(26, 0));
-        vector<unsigned int> wordsCount(1, 0);
-
-        int n;
+        unsigned long long n;
+        cin >> n;
         char op;
         string word;
-        cin >> n;
-        while (n--) {
+        vector<vector<unsigned long long>> children(1, vector<unsigned long long>(26, 0));
+        vector<unsigned long long> wordsCount(1, 0);
+        unsigned long long nextIdx = 0;
+        for (unsigned long long i = 0; i < n; ++i) {
             cin >> op >> word;
             if (op == 'I') {
                 insert(word, children, wordsCount, nextIdx);
             } else {
-                cout << query(word, children, wordsCount) << endl;
+                printf("%llu\n", query(word, children, wordsCount));
             }
         }
         return 0;
