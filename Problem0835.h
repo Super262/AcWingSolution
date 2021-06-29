@@ -53,7 +53,7 @@ public:
     int main() {
         unsigned int nextIdx = 0;  // 与链表中idx作用类似
 
-        // 初始化，创建一个空的根结点
+        // 初始化，创建一个空的根结点，这一步必须要有
         vector<vector<unsigned int>> children(1, vector<unsigned int>(26, 0));
         vector<unsigned int> wordsCount(1, 0);
 
