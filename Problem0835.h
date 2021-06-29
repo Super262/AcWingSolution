@@ -51,20 +51,20 @@ public:
     }
 
     int main() {
-        unsigned int idx = 0;  // 与链表中idx作用类似
+        unsigned int nextIdx = 0;  // 与链表中idx作用类似
 
         // 初始化，创建一个空的根结点
         vector<vector<unsigned int>> children(1, vector<unsigned int>(26, 0));
         vector<unsigned int> wordsCount(1, 0);
 
-        unsigned int n;
+        int n;
         char op;
         string word;
         cin >> n;
         while (n--) {
             cin >> op >> word;
             if (op == 'I') {
-                insert(word, children, wordsCount, idx);
+                insert(word, children, wordsCount, nextIdx);
             } else {
                 cout << query(word, children, wordsCount) << endl;
             }
