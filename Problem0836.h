@@ -14,7 +14,7 @@ class Problem0836 {
 public:
     unsigned long findRoot(vector<unsigned long> &root, const unsigned long &target) {
         // 通过递归完成路径压缩
-        if (target != root[target]) {
+        if (target != root[target]) {  // 判断当前节点是否是根结点
             root[target] = findRoot(root, root[target]);
         }
         return root[target];
