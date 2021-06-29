@@ -11,6 +11,7 @@
 using namespace std;
 
 class Problem0835 {
+    // 完整背诵这部分代码！
 public:
     void insert(const string &word,
                 vector<vector<unsigned int>> &children,
