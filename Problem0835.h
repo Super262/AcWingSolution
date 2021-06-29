@@ -15,39 +15,39 @@ public:
     void insert(const string &word,
                 vector<vector<unsigned int>> &children,
                 vector<unsigned int> &wordsCount,
-                unsigned int &idx) {
-        unsigned long currentLevel = 0;
+                unsigned int &nextIdx) {
+        unsigned long currentIdx = 0;
         for (char ch : word) {
             unsigned long childIndex = ch - 'a';
-            if (!children[currentLevel][childIndex]) {
-                children[currentLevel][childIndex] = ++idx;
+            if (!children[currentIdx][childIndex]) {
+                children[currentIdx][childIndex] = ++nextIdx;
             }
-            currentLevel = children[currentLevel][childIndex];
-            while (currentLevel >= children.size()) {
+            currentIdx = children[currentIdx][childIndex];
+            while (currentIdx >= children.size()) {
                 children.emplace_back(vector<unsigned int>(26, 0));
             }
-            while (currentLevel >= wordsCount.size()) {
+            while (currentIdx >= wordsCount.size()) {
                 wordsCount.emplace_back(0);
             }
         }
-        ++wordsCount[currentLevel];
+        ++wordsCount[currentIdx];
     }
 
     unsigned int query(const string &word,
                        const vector<vector<unsigned int>> &children,
                        const vector<unsigned int> &wordsCount) {
-        unsigned long currentLevel = 0;
+        unsigned long currentIdx = 0;
         for (char ch : word) {
-            if (currentLevel >= children.size()) {
+            if (currentIdx >= children.size()) {
                 return 0;
             }
             unsigned long childIndex = ch - 'a';
-            if (!children[currentLevel][childIndex]) {
+            if (!children[currentIdx][childIndex]) {
                 return 0;
             }
-            currentLevel = children[currentLevel][childIndex];
+            currentIdx = children[currentIdx][childIndex];
         }
-        return wordsCount[currentLevel];
+        return wordsCount[currentIdx];
     }
 
     int main() {
