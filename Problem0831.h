@@ -29,11 +29,11 @@ public:
         }
     }
 
-    void printMatchedStart(const char s[], const unsigned long s_l, const char p[], const unsigned long p_l,
+    void printMatchedStart(const char s[], const unsigned long sLen, const char p[], const unsigned long pLen,
                            const unsigned long next[]) {
         unsigned long p_now = 0;
         unsigned long s_now = 0;
-        while (s_now < s_l) {
+        while (s_now < sLen) {
             if (p[p_now] == s[s_now]) {
                 ++p_now;
                 ++s_now;
@@ -42,8 +42,8 @@ public:
             } else {
                 ++s_now;
             }
-            if (p_now == p_l) {
-                printf("%ld ", s_now - p_l);
+            if (p_now == pLen) {
+                printf("%ld ", s_now - pLen);
                 p_now = next[p_now - 1];
             }
         }
