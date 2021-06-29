@@ -18,11 +18,11 @@ public:
                 unsigned int &nextIdx) {
         unsigned long currentIdx = 0;
         for (char ch : word) {
-            unsigned long childIndex = ch - 'a';
-            if (!children[currentIdx][childIndex]) {
-                children[currentIdx][childIndex] = ++nextIdx;
+            unsigned long chIndex = ch - 'a';
+            if (!children[currentIdx][chIndex]) {
+                children[currentIdx][chIndex] = ++nextIdx;
             }
-            currentIdx = children[currentIdx][childIndex];
+            currentIdx = children[currentIdx][chIndex];
             while (currentIdx >= children.size()) {
                 children.emplace_back(vector<unsigned int>(26, 0));
             }
@@ -41,11 +41,11 @@ public:
             if (currentIdx >= children.size()) {
                 return 0;
             }
-            unsigned long childIndex = ch - 'a';
-            if (!children[currentIdx][childIndex]) {
+            unsigned long chIndex = ch - 'a';
+            if (!children[currentIdx][chIndex]) {
                 return 0;
             }
-            currentIdx = children[currentIdx][childIndex];
+            currentIdx = children[currentIdx][chIndex];
         }
         return wordsCount[currentIdx];
     }
