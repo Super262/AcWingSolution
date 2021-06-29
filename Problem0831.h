@@ -11,12 +11,12 @@ using namespace std;
 
 class Problem0831 {
 public:
-    void buildNext(const char s[], unsigned long next[], const unsigned long l) {
-        unsigned long i = 1;
-        unsigned long now = 0;
+    void buildNext(const char str[], unsigned long long next[], const unsigned long long len) {
+        unsigned long long i = 1;
+        unsigned long long now = 0;
         next[0] = 0;
-        while (i < l) {
-            if (s[i] == s[now]) {
+        while (i < len) {
+            if (str[i] == str[now]) {
                 ++now;
                 next[i] = now;
                 ++i;
@@ -29,44 +29,47 @@ public:
         }
     }
 
-    void printMatchedStart(const char s[], const unsigned long sLen, const char p[], const unsigned long pLen,
-                           const unsigned long next[]) {
-        unsigned long p_now = 0;
-        unsigned long s_now = 0;
-        while (s_now < sLen) {
-            if (p[p_now] == s[s_now]) {
-                ++p_now;
-                ++s_now;
-            } else if (p_now) {
-                p_now = next[p_now - 1];
+    void printMatchedStart(const char s[],
+                           const unsigned long long sLen,
+                           const char p[],
+                           const unsigned long long next[],
+                           const unsigned long long pLen) {
+        unsigned long long i = 0;
+        unsigned long long j = 0;
+        while (i < sLen) {
+            if (s[i] == p[j]) {
+                ++i;
+                ++j;
+            } else if (j) {
+                j = next[j - 1];
             } else {
-                ++s_now;
+                ++i;
             }
-            if (p_now == pLen) {
-                printf("%ld ", s_now - pLen);
-                p_now = next[p_now - 1];
+            if (j == pLen) {
+                printf("%llu ", i - pLen);
+                j = next[j - 1];
             }
         }
         printf("\n");
     }
 
     int main() {
-        unsigned long n, m;
-        scanf("%ld", &n);
-        auto *p = new char[n + 1];
+        unsigned long long m;
+        scanf("%lld", &m);
+        auto p = new char[m + 1];
         scanf("%s", p);
-        scanf("%ld", &m);
-        auto *s = new char[m + 1];
+        unsigned long long n;
+        scanf("%lld", &n);
+        auto s = new char[n + 1];
         scanf("%s", s);
-        auto *next = new unsigned long[n];
-        buildNext(p, next, n);
-        printMatchedStart(s, m, p, n, next);
+        auto next = new unsigned long long[m];
+        buildNext(p, next, m);
+        printMatchedStart(s, n, p, next, m);
         delete[] p;
         delete[] s;
         delete[] next;
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0831_H
