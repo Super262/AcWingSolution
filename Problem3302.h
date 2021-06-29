@@ -16,37 +16,31 @@ public:
     int doOperation(const int a, const int b, const char op) {
         if (op == '+') {
             return a + b;
-        }
-        if (op == '-') {
+        } else if (op == '-') {
             return a - b;
-        }
-        if (op == '*') {
+        } else if (op == '*') {
             return a * b;
-        }
-        if (op == '/') {
+        } else if (op == '/') {
             return a / b;
         }
         return 0;
     }
 
-    void dealWithOperators(const char op,
-                           const unordered_map<char, char> &preferenceIn,
-                           const unordered_map<char, char> &preferenceOut,
-                           stack<int> &nums,
-                           stack<char> &operators) {
-        if (operators.empty() || preferenceOut.find(operators.top())->second < preferenceIn.find(op)->second) {
+    void dealOperators(const char op, unordered_map<char,char> &preferenceIn, unordered_map<char,char> &preferenceOut, stack<int> &nums, stack<char> &operators) {
+        if (operators.empty() || preferenceOut[operators.top()] < preferenceIn[op]) {
             operators.emplace(op);
             return;
         }
-        while (!operators.empty() && preferenceOut.find(operators.top())->second > preferenceIn.find(op)->second) {
+        while (!operators.empty() && preferenceOut[operators.top()] > preferenceIn[op]) {
+            char temp = operators.top();
+            operators.pop();
             int b = nums.top();
             nums.pop();
             int a = nums.top();
             nums.pop();
-            nums.emplace(doOperation(a, b, operators.top()));
-            operators.pop();
+            nums.emplace(doOperation(a, b, temp));
         }
-        if (preferenceOut.find(operators.top())->second != preferenceIn.find(op)->second) {
+        if(operators.empty() || preferenceOut[operators.top()] != preferenceIn[op]) {
             operators.emplace(op);
         } else {
             operators.pop();
@@ -54,48 +48,48 @@ public:
     }
 
     int calculate(const string &s) {
-        unordered_map<char, char> preferenceIn;
-        unordered_map<char, char> preferenceOut;
+        unordered_map<char,char> preferenceIn;
+        unordered_map<char,char> preferenceOut;
+        stack<int> nums;
+        stack<char> operators;
         preferenceIn['+'] = 2;
         preferenceIn['-'] = 2;
-        preferenceIn['/'] = 4;
         preferenceIn['*'] = 4;
+        preferenceIn['/'] = 4;
         preferenceIn['('] = 6;
         preferenceIn[')'] = 1;
         preferenceOut['+'] = 3;
         preferenceOut['-'] = 3;
-        preferenceOut['/'] = 5;
         preferenceOut['*'] = 5;
+        preferenceOut['/'] = 5;
         preferenceOut['('] = 1;
         preferenceOut[')'] = 6;
-        stack<int> nums;
-        stack<char> operators;
-        bool waitingForNums = true;
-        for (char ch:s) {
+        bool waitingNum = true;
+        for (const char ch : s) {
             if (ch >= '0' && ch <= '9') {
-                if (waitingForNums) {
+                if (waitingNum) {
                     nums.emplace(ch - '0');
-                    waitingForNums = false;
+                    waitingNum = false;
                 } else {
-                    int t = nums.top();
+                    auto t = nums.top();
                     nums.pop();
-                    t = 10 * t + (ch - '0');
+                    t = t * 10 + (ch - '0');
                     nums.emplace(t);
                 }
             } else {
-                waitingForNums = true;
-                dealWithOperators(ch, preferenceIn, preferenceOut, nums, operators);
+                waitingNum = true;
+                dealOperators(ch, preferenceIn, preferenceOut, nums, operators);
             }
         }
-        if (nums.empty()) {
-            return 0;
+        if (!nums.empty()) {
+            return nums.top();
         }
-        return nums.top();
+        return 0;
     }
 
     int main() {
         string s;
-        getline(cin, s);
+        cin >> s;
         cout << calculate("(" + s + ")") << endl;
         return 0;
     }
