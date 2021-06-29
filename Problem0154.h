@@ -7,66 +7,47 @@
 
 #include <vector>
 #include <deque>
-#include <algorithm>
 #include <iostream>
 
 class Problem0154 {
 public:
-    void printMinInWindow(const vector<int> &arr, const long k) {
-        if (k >= arr.size()) {
-            printf("%d\n", *min_element(arr.begin(), arr.end()));
-            return;
-        }
+    void printMinInWindow(const vector<int> &arr, const int windowSize) {
         deque<int> q;
-        long = 0;
-        auto p = arr.begin();
-        while (p != arr.end()) {
-            while (currentWindowSize < k) {
-                while (!q.empty() && q.back() > *p) { // 注意：边界条件应是">"，不是">="
-                    q.pop_back();
-                }
-                q.emplace_back(*p);
-                ++;
-                ++p;
-            }
-            printf("%d ", q.front());
-            if (q.front() == *(p - k)) {
+        for (int i = 0; i < arr.size(); ++i) {
+            if (!q.empty() && q.front() < i - windowSize + 1) {
                 q.pop_front();
             }
-            --;
+            while (!q.empty() && arr[q.back()] >= arr[i]) {
+                q.pop_back();
+            }
+            q.emplace_back(i);
+            if (i >= windowSize - 1) {
+                printf("%d ", arr[q.front()]);
+            }
         }
         printf("\n");
     }
 
-    void printMaxInWindow(const vector<int> &arr, const long k) {
-        if (k >= arr.size()) {
-            printf("%d\n", *max_element(arr.begin(), arr.end()));
-            return;
-        }
+    void printMaxInWindow(const vector<int> &arr, const int windowSize) {
         deque<int> q;
-        long currentWindowSize = 0;
-        auto p = arr.begin();
-        while (p != arr.end()) {
-            while (currentWindowSize < k) {
-                while (!q.empty() && q.back() < *p) {  // 注意：边界条件应是"<"，不是"<="
-                    q.pop_back();
-                }
-                q.emplace_back(*p);
-                ++currentWindowSize;
-                ++p;
-            }
-            printf("%d ", q.front());
-            if (q.front() == *(p - k)) {
+        for (int i = 0; i < arr.size(); ++i) {
+            if (!q.empty() && q.front() < i - windowSize + 1) {
                 q.pop_front();
             }
-            --currentWindowSize;
+            while (!q.empty() && arr[q.back()] <= arr[i]) {
+                q.pop_back();
+            }
+            q.emplace_back(i);
+            if (i >= windowSize - 1) {
+                printf("%d ", arr[q.front()]);
+            }
         }
         printf("\n");
     }
 
     int main() {
-        long n, k;
-        scanf("%ld%ld", &n, &k);
+        int n, k;
+        scanf("%d%d", &n, &k);
         vector<int> arr(n, 0);
         for (int i = 0; i < n; ++i) {
             scanf("%d", &arr[i]);
