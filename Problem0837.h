@@ -21,7 +21,7 @@ public:
     }
 
     void mergeSets(vector<unsigned long> &root,
-                   vector<unsigned long> &count,
+                   vector<unsigned long> &clusterSize,
                    const unsigned long &a,
                    const unsigned long &b) {
         unsigned long rootOfA = findRoot(root, a);
@@ -29,10 +29,10 @@ public:
         if (rootOfA == rootOfB) {
             return;
         }
-        unsigned long sum = count[rootOfA] + count[rootOfB];
+        unsigned long sum = clusterSize[rootOfA] + clusterSize[rootOfB];
         root[rootOfA] = rootOfB;
         rootOfA = findRoot(root, a);
-        count[rootOfA] = sum;
+        clusterSize[rootOfA] = sum;
     }
 
     int main() {
