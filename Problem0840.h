@@ -12,37 +12,58 @@ using namespace std;
 
 class Problem0840 {
 public:
-    unsigned long queryValue(const unsigned long &base, const vector<vector<int>> &storage, const int &value) {
-        unsigned long index = value % base + 1;
-        for (const int &num : storage[index]) {
-            if (num == value) {
-                return index;
+    bool queryValue(const int target, const vector<unsigned int> &headIdx, const vector<unsigned int> &nextIdx,
+                    const vector<int> &storage) {
+        const int N = (int) headIdx.size();
+        const int r = (target % N + N) % N;  // 消除负数的影响
+        for (unsigned int idx = headIdx[r]; idx != 0; idx = nextIdx[idx]) {
+            if (storage[idx] == target) {
+                return true;
             }
         }
-        return 0;
+        return false;
     }
 
-    void insertValue(const unsigned long &base, vector<vector<int>> &storage, const int &value) {
-        if (queryValue(base, storage, value) > 0) {
+    void
+    insertValue(const int target, vector<unsigned int> &headIdx, vector<unsigned int> &nextIdx, vector<int> &storage,
+                unsigned int &idx) {
+        if (queryValue(target, headIdx, nextIdx, storage)) {
             return;
         }
-        storage[value % base + 1].emplace_back(value);
+        const int N = (int) headIdx.size();
+        const int r = (target % N + N) % N;  // 消除负数的影响
+        ++idx;
+        while (idx >= nextIdx.size()) {
+            nextIdx.emplace_back(0);
+        }
+        while (idx >= storage.size()) {
+            storage.emplace_back(0);
+        }
+        nextIdx[idx] = headIdx[r];
+        headIdx[r] = idx;
+        storage[idx] = target;
     }
 
-
     int main() {
-        const unsigned long base = 1000;
-        vector<vector<int>> storage(base + 1, vector<int>());
-        unsigned long n;
-        scanf("%ld", &n);
+        const int N = 10001;
+        vector<unsigned int> headIdx(N + 1, 0);
+        vector<unsigned int> nextIdx;
+        vector<int> storage;
+        unsigned int idx = 0;
+        unsigned int n;
+        scanf("%d", &n);
         char op[2];
         int value;
-        while (n--) {
+        for (unsigned int i = 0; i < n; ++i) {
             scanf("%s%d", op, &value);
             if (op[0] == 'I') {
-                insertValue(base, storage, value);
+                insertValue(value, headIdx, nextIdx, storage, idx);
             } else {
-                printf("%s\n", queryValue(base, storage, value) > 0 ? "Yes" : "No");
+                if (queryValue(value, headIdx, nextIdx, storage)) {
+                    printf("Yes\n");
+                } else {
+                    printf("No\n");
+                }
             }
         }
         return 0;
