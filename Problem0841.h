@@ -40,7 +40,7 @@ public:
         scanf("%s", str);
         auto p = new unsigned long long[n + 1];
         auto h = new unsigned long long[n + 1];
-        const unsigned long long BASE = 131;
+        const unsigned long long BASE = 131;  // BASE 取 131 或 13331
         buildHashTable(str, p, h, n, BASE);
         unsigned long long l1, r1, l2, r2;
         for (unsigned long long i = 0; i < m; ++i) {
