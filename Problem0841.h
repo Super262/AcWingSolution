@@ -10,6 +10,7 @@
 using namespace std;
 
 class Problem0841 {
+    // 我们不能把某个前缀映射成0。否则，不同的字符串（AA和AAAA）可能有相同的哈希值。
 public:
     unsigned long long *buildPrefixHashTable(const char s[],
                                              unsigned long long p[],
