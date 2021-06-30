@@ -13,7 +13,11 @@ class Problem0841 {
     // 我们不能把某个前缀映射成0。否则，不同的字符串（AA和AAAA）可能有相同的哈希值。
 public:
     // unsigned 类型变量溢出后会自动退回0，这里无需取模运算
-    void buildHashTable(const char *str, unsigned long long *p, unsigned long long *h, const unsigned long long N, const unsigned long long BASE) {
+    void buildHashTable(const char *str,
+                        unsigned long long *p,
+                        unsigned long long *h,
+                        const unsigned long long N,
+                        const unsigned long long BASE) {
         p[0] = 1;
         h[0] = 0;
         for (unsigned long long i = 1; i <= N; ++i) {
@@ -22,7 +26,10 @@ public:
         }
     }
 
-    unsigned long long hashValue(const unsigned long long start, const unsigned long long end, const unsigned long long *p, const unsigned long long *h) {
+    unsigned long long hashValue(const unsigned long long start,
+                                 const unsigned long long end,
+                                 const unsigned long long *p,
+                                 const unsigned long long *h) {
         return h[end] - h[start - 1] * p[end - start + 1];
     }
 
