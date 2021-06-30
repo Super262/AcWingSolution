@@ -12,50 +12,47 @@ using namespace std;
 
 class Problem0838 {
 public:
-    void downNode(vector<int> &h, unsigned long rootIndex) {
-        // 有效索引从1开始
-        unsigned long minimalIndex = rootIndex;
+    void downNode(vector<int>& heap, unsigned long long rootIndex) {
+        unsigned long long minimalIndex = rootIndex;
         while (true) {
-            if (rootIndex * 2 <= h.size() - 1 && h[2 * rootIndex] < h[minimalIndex]) {
+            if (rootIndex * 2 < heap.size() && heap[rootIndex * 2] < heap[minimalIndex]) {
                 minimalIndex = 2 * rootIndex;
             }
-            if (2 * rootIndex + 1 <= h.size() - 1 && h[2 * rootIndex + 1] < h[minimalIndex]) {
+            if (rootIndex * 2 + 1 < heap.size() && heap[rootIndex * 2 + 1] < heap[minimalIndex]) {
                 minimalIndex = 2 * rootIndex + 1;
             }
             if (rootIndex == minimalIndex) {
-                break;
+                return;
             }
-            swap(h[rootIndex], h[minimalIndex]);
+            swap(heap[rootIndex], heap[minimalIndex]);
             rootIndex = minimalIndex;
         }
     }
 
-    void buildHeap(vector<int> &h) {
-        // 建堆复杂度为O(n)
-        // 有效索引从1开始；
-        for (unsigned long i = (h.size() - 1) / 2; i > 0; --i) {
-            downNode(h, i);
+    void buildHeap(vector<int>& heap) {
+        for (unsigned long long i = (heap.size() - 1) / 2; i > 0; --i) {
+            downNode(heap, i);
         }
     }
 
-    int heapPop(vector<int> &h) {
-        int result = h[1];
-        h[1] = h[h.size() - 1];
-        h.pop_back();
-        downNode(h, 1);
+    int heapPop(vector<int>& heap) {
+        auto result = heap[1];
+        heap[1] = heap[heap.size() - 1];
+        heap.pop_back();
+        downNode(heap, 1);
         return result;
     }
 
     int main() {
-        unsigned long n, m;
-        scanf("%ld%ld", &n, &m);
-        vector<int> myHeap(n + 1, 0);
-        for (unsigned long i = 1; i <= n; ++i) {
-            scanf("%d", &myHeap[i]);
+        unsigned long long n, m;
+        scanf("%lld%lld", &n, &m);
+        vector<int> heap(n + 1, 0);
+        for (unsigned long long i = 1; i <= n; ++i) {
+            scanf("%d", &heap[i]);
         }
-        buildHeap(myHeap);
-        for (unsigned long i = 1; i <= m; ++i) {
-            printf("%d ", heapPop(myHeap));
+        buildHeap(heap);
+        for (unsigned long long i = 0; i < m; ++i) {
+            printf("%d ", heapPop(heap));
         }
         printf("\n");
         return 0;
