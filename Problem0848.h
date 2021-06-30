@@ -68,6 +68,7 @@ public:
             }
         }
 
+        // 不要忘记最后的特判！
         // 某些点未被输出，不存在拓扑序列
         if (result.size() < headIndex.size() - 1) {
             return vector<int>();
