@@ -12,17 +12,16 @@ using namespace std;
 
 class Problem0836 {
 public:
-    unsigned long findRoot(vector<unsigned long> &root, const unsigned long &target) {
-        // 通过递归完成路径压缩
-        if (target != root[target]) {  // 判断当前节点是否是根结点
+    unsigned long findRoot(vector<unsigned long> &root, const unsigned long target) {
+        if (target != root[target]) {
             root[target] = findRoot(root, root[target]);
         }
         return root[target];
     }
 
-    void mergeSets(vector<unsigned long> &root, const unsigned long &a, const unsigned long &b) {
-        root[findRoot(root, a)] = findRoot(root, b);   // 修改根结点
-        findRoot(root, a);   // 路径压缩
+    void mergeSets(vector<unsigned long> &root, const unsigned long a, const unsigned long b) {
+        root[findRoot(root, a)] = findRoot(root, b);
+        findRoot(root, a);
     }
 
     int main() {
@@ -32,11 +31,10 @@ public:
         for (unsigned long i = 1; i <= n; ++i) {
             root[i] = i;
         }
+        char op[2];
         unsigned long a, b;
-        while (m--) {
-            char op[2];  // 即使输入只有一个字符，也要当作字符串来处理
-            scanf("%s", op);
-            scanf("%ld%ld", &a, &b);
+        for (unsigned long i = 0; i < m; ++i) {
+            scanf("%s%ld%ld", op, &a, &b);
             if (op[0] == 'M') {
                 mergeSets(root, a, b);
             } else {
