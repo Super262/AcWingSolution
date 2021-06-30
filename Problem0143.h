@@ -12,32 +12,32 @@ using namespace std;
 
 class Problem0143 {
 public:
-    unsigned long idx = 0;
+    unsigned long nextIdx = 0;
     unsigned long storage[100010 * 31][2];
 
     void insertNum(const unsigned int &value) {
-        unsigned long currentLevel = 0;
-        bool childIndex;
+        unsigned long currentIdx = 0;
+        bool chIndex;
         for (int i = 30; i >= 0; --i) {
-            childIndex = (value >> i) & 1;
-            if (!storage[currentLevel][childIndex]) {
-                storage[currentLevel][childIndex] = ++idx;
+            chIndex = (value >> i) & 1;
+            if (!storage[currentIdx][chIndex]) {
+                storage[currentIdx][chIndex] = ++nextIdx;
             }
-            currentLevel = storage[currentLevel][childIndex];
+            currentIdx = storage[currentIdx][chIndex];
         }
     }
 
     unsigned int getResult(const unsigned int &value) {
         unsigned int result = 0;
-        unsigned long currentLevel = 0;
-        bool childIndex;
+        unsigned long currentIdx = 0;
+        bool chIndex;
         for (int i = 30; i >= 0; --i) {
-            childIndex = (value >> i) & 1;
-            if (storage[currentLevel][!childIndex]) {
-                currentLevel = storage[currentLevel][!childIndex];
+            chIndex = (value >> i) & 1;
+            if (storage[currentIdx][!chIndex]) {
+                currentIdx = storage[currentIdx][!chIndex];
                 result = result * 2 + 1;
             } else {
-                currentLevel = storage[currentLevel][childIndex];
+                currentIdx = storage[currentIdx][chIndex];
                 result = result * 2 + 0;
             }
         }
