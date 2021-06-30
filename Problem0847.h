@@ -13,52 +13,54 @@ using namespace std;
 
 class Problem0847 {
 public:
-    void addEdge(const int start,
-                 const int end,
+    void addEdge(const int a,
+                 const int b,
                  vector<int> &headIndex,
                  vector<int> &vertexValue,
                  vector<int> &nextIndex,
                  int &idx) {
-        if (idx >= vertexValue.size()) {
+        while (idx >= vertexValue.size()) {
             vertexValue.emplace_back(0);
         }
-        if (idx >= nextIndex.size()) {
+        while (idx >= nextIndex.size()) {
             nextIndex.emplace_back(-1);
         }
-        vertexValue[idx] = end;
-        nextIndex[idx] = headIndex[start];
-        headIndex[start] = idx;
+        vertexValue[idx] = b;
+        nextIndex[idx] = headIndex[a];
+        headIndex[a] = idx;
         ++idx;
     }
 
-    int bfs(const int start,
-            const int end,
-            vector<int> &headIndex,
-            vector<int> &vertexValue,
-            vector<int> &nextIndex,
+    int bfs(const int root,
+            const int target,
+            const vector<int> &headIndex,
+            const vector<int> &vertexValue,
+            const vector<int> &nextIndex,
             vector<int> &distance) {
-        // 注意：图中可能存在重边和自环
-        if (headIndex[start] == -1) {
+        if (headIndex[root] == -1) {
             return -1;
         }
+        if (target == root) {
+            return 0;
+        }
+        distance[root] = 0;
         queue<int> q;
-        q.emplace(start);
-        distance[start] = 0;
+        q.emplace(root);
         while (!q.empty()) {
             int levelSize = (int) q.size();
-            int v;
-            while (levelSize--) {
-                v = q.front();
+            for (int i = 0; i < levelSize; ++i) {
+                int v = q.front();
                 q.pop();
-                for (int neighbor = headIndex[v]; neighbor != -1; neighbor = nextIndex[neighbor]) {
-                    if (distance[vertexValue[neighbor]] != -1) {
+                for (int idx = headIndex[v]; idx != -1; idx = nextIndex[idx]) {
+                    int neighbor = vertexValue[idx];
+                    if (distance[neighbor] != -1) {
                         continue;
                     }
-                    distance[vertexValue[neighbor]] = distance[v] + 1;
-                    if (vertexValue[neighbor] == end) {
-                        return distance[end];
+                    distance[neighbor] = distance[v] + 1;
+                    if (neighbor == target) {
+                        return distance[neighbor];
                     }
-                    q.emplace(vertexValue[neighbor]);
+                    q.emplace(neighbor);
                 }
             }
         }
@@ -68,20 +70,19 @@ public:
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<int> headIndex(n + 1, -1);  // 链表头节点（顶点）对应的idx值
-        vector<int> vertexValue(2 * n, 0); // idx对应的顶点编号
-        vector<int> nextIndex(2 * n, -1); // 当前节点的下个节点的idx值
-        vector<int> distance(n + 1, -1); // 指示顶点距根的距离
-        int start, end;
+        vector<int> headIndex(n + 1, -1);
+        vector<int> distance(n + 1, -1);
         int idx = 0;
-        while (m--) {
-            scanf("%d%d", &start, &end);
-            addEdge(start, end, headIndex, vertexValue, nextIndex, idx);
+        vector<int> vertexValue;
+        vector<int> nextIndex;
+        int a, b;
+        for (int i = 0; i < m; ++i) {
+            scanf("%d%d", &a, &b);
+            addEdge(a, b, headIndex, vertexValue, nextIndex, idx);
         }
         printf("%d\n", bfs(1, n, headIndex, vertexValue, nextIndex, distance));
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0847_H
