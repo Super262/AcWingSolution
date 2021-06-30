@@ -45,7 +45,7 @@ public:
         q.emplace(start);
         distance[start] = 0;
         while (!q.empty()) {
-            int levelSize = q.size();
+            int levelSize = (int) q.size();
             int v;
             while (levelSize--) {
                 v = q.front();
