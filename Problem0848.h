@@ -53,7 +53,7 @@ public:
         int v;
         vector<int> result;
         while (!q.empty()) {
-            levelSize = q.size();
+            levelSize = (int) q.size();
             while (levelSize--) {
                 v = q.front();
                 q.pop();
@@ -91,7 +91,7 @@ public:
         }
         vector<bool> visited(n + 1, false);
         vector<int> topoList = bfsTopo(headIndex, vertexValue, nextIndex, inDegree, visited);
-        if (topoList.size() > 0) {
+        if (!topoList.empty()) {
             for (int &num:topoList) {
                 printf("%d ", num);
             }
