@@ -12,38 +12,36 @@ using namespace std;
 
 class Problem0843 {
 public:
-    void dfs(const int n,
-             const int y,
+    void dfs(const int column,
+             const int n,
              vector<vector<char>> &graph,
              vector<bool> &rowUsed,
-             vector<bool> &columnUsed,
-             vector<bool> &diagonal1,
-             vector<bool> &diagonal2) {
-        if (y > n) {
+             vector<bool> &diagonal1Used,
+             vector<bool> &diagonal2Used) {
+        if (column > n) {
             for (int i = 1; i <= n; ++i) {
                 for (int j = 1; j <= n; ++j) {
                     printf("%c", graph[i][j]);
                 }
-                puts("");
+                printf("\n");
             }
-            puts("");
+            printf("\n");
             return;
         }
-        for (int x = 1; x <= n; ++x) {
-            if (rowUsed[x] || columnUsed[y] || diagonal1[x - y + n] || diagonal2[y + x] || graph[x][y] == 'Q') {
+        for (int row = 1; row <= n; ++row) {
+            if (rowUsed[row] || diagonal1Used[column - row + n] || diagonal2Used[column + row] ||
+                graph[row][column] == 'Q') {
                 continue;
             }
-            graph[x][y] = 'Q';
-            rowUsed[x] = true;
-            columnUsed[y] = true;
-            diagonal1[x - y + n] = true;
-            diagonal2[y + x] = true;
-            dfs(n, y + 1, graph, rowUsed, columnUsed, diagonal1, diagonal2);
-            graph[x][y] = '.';
-            rowUsed[x] = false;
-            columnUsed[y] = false;
-            diagonal1[x - y + n] = false;
-            diagonal2[y + x] = false;
+            rowUsed[row] = true;
+            diagonal1Used[column - row + n] = true;
+            diagonal2Used[column + row] = true;
+            graph[row][column] = 'Q';
+            dfs(column + 1, n, graph, rowUsed, diagonal1Used, diagonal2Used);
+            rowUsed[row] = false;
+            diagonal1Used[column - row + n] = false;
+            diagonal2Used[column + row] = false;
+            graph[row][column] = '.';
         }
     }
 
@@ -52,13 +50,11 @@ public:
         scanf("%d", &n);
         vector<vector<char>> graph(n + 1, vector<char>(n + 1, '.'));
         vector<bool> rowUsed(n + 1, false);
-        vector<bool> columnUsed(n + 1, false);
-        vector<bool> diagonal1(2 * n + 1, false);
-        vector<bool> diagonal2(2 * n + 1, false);
-        dfs(n, 1, graph, rowUsed, columnUsed, diagonal1, diagonal2);
+        vector<bool> diagonal1Used(2 * n + 1, false);
+        vector<bool> diagonal2Used(2 * n + 1, false);
+        dfs(1, n, graph, rowUsed, diagonal1Used, diagonal2Used);
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0843_H
