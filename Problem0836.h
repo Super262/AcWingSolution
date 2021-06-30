@@ -34,7 +34,7 @@ public:
         }
         unsigned long a, b;
         while (m--) {
-            char op[2];
+            char op[2];  // 即使输入只有一个字符，也要当作字符串来处理
             scanf("%s", op);
             scanf("%ld%ld", &a, &b);
             if (op[0] == 'M') {
