@@ -11,52 +11,46 @@ using namespace std;
 
 class Problem0240 {
 public:
-    int findRoot(const int x, int *parent, int *distanceToParent) {
-        if (parent[x] != x) {
-            int root = findRoot(parent[x], parent, distanceToParent);
-            distanceToParent[x] += distanceToParent[parent[x]];
-            parent[x] = root;
+    int findRoot(const int target, vector<int> &parent, vector<int> &distanceToParent) {
+        if (target != parent[target]) {
+            int r = findRoot(parent[target], parent, distanceToParent);
+            distanceToParent[target] += distanceToParent[parent[target]];
+            parent[target] = r;
         }
-        return parent[x];
+        return parent[target];
     }
 
     int main() {
-        int n;
-        int k;
+        int n, k;
         scanf("%d%d", &n, &k);
-        auto *parent = new int[n + 1];
-        auto *distanceToParent = new int[n + 1];
-        for (int i = 0; i < n + 1; ++i) {
+        vector<int> parent(n + 1, 0);
+        vector<int> distanceToParent(n + 1, 0);
+        for (int i = 1; i <= n; ++i) {
             parent[i] = i;
-            distanceToParent[i] = 0;
         }
         int op, a, b;
         int result = 0;
-        while (k--) {
+        for (int i = 0; i < k; ++i) {
             scanf("%d%d%d", &op, &a, &b);
-            if (a > n || b > n) {
+            if(a > n || b > n) {
                 ++result;
                 continue;
             }
-            const int pa = findRoot(a, parent, distanceToParent);
-            const int pb = findRoot(b, parent, distanceToParent);
+            auto ra = findRoot(a, parent, distanceToParent);
+            auto rb = findRoot(b, parent, distanceToParent);
             if (op == 1) {
-                if (pa == pb && (distanceToParent[a] - distanceToParent[b]) % 3) {
-                    // a, b 在同一棵树上且到根结点的距离不同，为假话
+                if (ra == rb && (distanceToParent[a] - distanceToParent[b]) % 3) {
                     ++result;
-                } else if (pa != pb) {
-                    parent[pa] = pb;
-                    // 调整a的父节点到根的距离，使(d[a] - d[b]) % 3 == 0 成立
-                    distanceToParent[pa] = distanceToParent[b] - distanceToParent[a];
+                } else if (ra != rb) {
+                    parent[ra] = rb;
+                    distanceToParent[ra] = distanceToParent[b] - distanceToParent[a];
                 }
             } else {
-                if (pa == pb && (distanceToParent[a] - distanceToParent[b] - 1) % 3) {
-                    // a, b 在同一棵树上且到根结点的距离差不是1，为假话
+                if (ra == rb && (distanceToParent[a] - distanceToParent[b] - 1) % 3) {
                     ++result;
-                } else if (pa != pb) {
-                    parent[pa] = pb;
-                    // 调整a的父节点到根的距离，使(d[a] - d[b] - 1) % 3 == 0 成立
-                    distanceToParent[pa] = distanceToParent[b] + 1 - distanceToParent[a];
+                } else if (ra != rb) {
+                    parent[ra] = rb;
+                    distanceToParent[ra] = distanceToParent[b] - distanceToParent[a] + 1;
                 }
             }
         }
