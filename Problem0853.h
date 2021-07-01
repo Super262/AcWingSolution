@@ -21,7 +21,7 @@ public:
         vector<int> distance(n + 1, 0x3f3f3f3f);
         distance[1] = 0;
         while (pathLen--) {
-            const vector<int> prevDis(distance);
+            const vector<int> prevDis(distance);  // 不要忘记这个备份！
             for (int j = 0; j < edgesCount; ++j) {
                 distance[edgeEnd[j]] = min(distance[edgeEnd[j]], prevDis[edgeStart[j]] + edgeWeight[j]);
             }
