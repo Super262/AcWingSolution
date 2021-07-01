@@ -12,20 +12,17 @@ using namespace std;
 
 class Problem0858 {
 public:
-    int prim(const int n, int **graph) {
-        const int INVALID_VALUE = 0x7fffffff;
-        int *distance = new int[n + 1];
-        for (int i = 1; i <= n; ++i) {
-            distance[i] = INVALID_VALUE;
-        }
-        bool *isSelected = new bool[n + 1];
-        memset(isSelected, 0, (n + 1) * sizeof(bool));
+    int prim(int** graph, const int n) {
+        auto isSelected = new bool[n + 1];
+        auto distance = new int[n + 1];
+        memset(isSelected, 0, sizeof(bool) * (n + 1));
+        memset(distance, 0x7f, sizeof(int) * (n + 1));
+        const int INVALID_VALUE = 0x7f7f7f7f;
         int result = 0;
-        int closestVertex;
         for (int k = 0; k < n; ++k) {
-            closestVertex = 0;
+            int closestVertex = 0;
             for (int v = 1; v <= n; ++v) {
-                if (isSelected[v] || (closestVertex != 0 && distance[closestVertex] <= distance[v])) {
+                if (isSelected[v] || (closestVertex && distance[closestVertex] <= distance[v])) {
                     continue;
                 }
                 closestVertex = v;
@@ -38,7 +35,7 @@ public:
             }
             isSelected[closestVertex] = true;
             for (int v = 1; v <= n; ++v) {
-                distance[v] = min(distance[v], graph[closestVertex][v]);
+                distance[v] = min(graph[closestVertex][v], distance[v]);
             }
         }
         delete[] isSelected;
@@ -49,27 +46,25 @@ public:
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        const int INVALID_VALUE = 0x7fffffff;
-        int **graph = new int *[n + 1];
+        auto graph = new int*[n + 1];
         for (int i = 1; i <= n; ++i) {
             graph[i] = new int[n + 1];
-            for (int j = 1; j <= n; ++j) {
-                graph[i][j] = INVALID_VALUE;
-            }
+            memset(graph[i], 0x7f, sizeof(int) * (n + 1));
         }
-        int u, v, w;
-        while (m--) {
-            scanf("%d%d%d", &u, &v, &w);
-            graph[u][v] = min(graph[u][v], w);
-            graph[v][u] = graph[u][v];
+        int x, y, w;
+        for (int i = 0; i < m; ++i) {
+            scanf("%d%d%d", &x, &y, &w);
+            // 无向图，每次添加2条边
+            graph[x][y] = min(graph[x][y], w);
+            graph[y][x] = graph[x][y];
         }
-        int result = prim(n, graph);
-        if (result == INVALID_VALUE) {
+        int t = prim(graph, n);
+        if (t == 0x7f7f7f7f) {
             puts("impossible");
         } else {
-            printf("%d\n", result);
+            printf("%d\n", t);
         }
-        for (int i = 0; i <= n; ++i) {
+        for (int i = 1; i <= n; ++i) {
             delete[] graph[i];
         }
         delete[] graph;
