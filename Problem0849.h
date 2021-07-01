@@ -13,7 +13,7 @@ public:
     int dijkstra(const vector <vector<int>> &graph, const int n) {
         vector<int> distance(n + 1, 0x3f3f3f3f);
         vector<bool> visited(n + 1, false);
-        distance[1] = 0;
+        distance[1] = 0;  // 不要忘记这个初始化操作！
         for (int k = 0; k < n; ++k) {
             int closestNode = -1;
             for (int node = 1; node <= n; ++node) {
