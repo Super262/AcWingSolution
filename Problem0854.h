@@ -13,6 +13,8 @@ using namespace std;
 class Problem0854 {
 public:
     void floyd(int **distance, const int n) {
+        // 注意循环顺序：最外层循环的变量一定是中间节点
+        // i, j 可以交换层级，k 只在最外层
         for (int k = 1; k <= n; ++k) {
             for (int i = 1; i <= n; ++i) {
                 for (int j = 1; j <= n; ++j) {
