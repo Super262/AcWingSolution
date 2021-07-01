@@ -14,13 +14,13 @@ class Problem0853 {
 public:
     int bellman_ford(const int n,
                      const int edgesCount,
-                     int pathLen,
+                     int maxPathLen,
                      const vector<int> &edgeStart,
                      const vector<int> &edgeEnd,
                      const vector<int> &edgeWeight) {
         vector<int> distance(n + 1, 0x3f3f3f3f);
         distance[1] = 0;
-        while (pathLen--) {
+        while (maxPathLen--) {
             const vector<int> prevDis(distance);  // 不要忘记这个备份！
             for (int j = 0; j < edgesCount; ++j) {
                 distance[edgeEnd[j]] = min(distance[edgeEnd[j]], prevDis[edgeStart[j]] + edgeWeight[j]);
