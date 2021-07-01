@@ -33,7 +33,7 @@ public:
               const vector<int> &vertexValue,
               const vector<int> &nextIndex,
               const vector<int> &weight) {
-        const int n = headIndex.size() - 1;
+        const int n = (int) headIndex.size() - 1;
         vector<bool> isInQueue(n + 1, false);
         vector<int> distance(n + 1, 0);
         vector<int> edgesCount(n + 1, 0);
