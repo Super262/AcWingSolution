@@ -10,20 +10,25 @@
 
 class Problem0849 {
 public:
-    int dijkstra(const vector <vector<int>> &graph, const int n) {
+    int dijkstra(const vector <vector<int>> &graph) {
+        const int n = (int) graph.size() - 1;
         vector<int> distance(n + 1, 0x3f3f3f3f);
         vector<bool> visited(n + 1, false);
-        distance[1] = 0;  // 不要忘记这个初始化操作！
-        for (int k = 0; k < n; ++k) {
+        distance[1] = 0;  // 不要忘记将起点距离设置为0！
+        for (int i = 0; i < n; ++i) {
             int closestNode = -1;
-            for (int node = 1; node <= n; ++node) {
-                if (!visited[node] && (closestNode == -1 || distance[closestNode] > distance[node])) {
-                    closestNode = node;
+            for (int v = 1; v <= n; ++v) {
+                // 下面的判断条件：先判断是否重复访问，再判定距离！
+                if (!visited[v] && (closestNode == -1 || distance[v] < distance[closestNode])) {
+                    closestNode = v;
                 }
             }
+            if (closestNode == -1) {
+                break;
+            }
             visited[closestNode] = true;
-            for (int node = 1; node <= n; ++node) {
-                distance[node] = min(distance[node], distance[closestNode] + graph[closestNode][node]);
+            for (int v = 1; v <= n; ++v) {
+                distance[v] = min(distance[v], distance[closestNode] + graph[closestNode][v]);
             }
         }
         return distance[n] == 0x3f3f3f3f ? -1 : distance[n];
@@ -34,11 +39,11 @@ public:
         scanf("%d%d", &n, &m);
         vector <vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
         int x, y, z;
-        while (m--) {
+        for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &x, &y, &z);
             graph[x][y] = min(graph[x][y], z);
         }
-        printf("%d\n", dijkstra(graph, n));
+        printf("%d\n", dijkstra(graph));
         return 0;
     }
 };
