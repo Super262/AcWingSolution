@@ -66,6 +66,8 @@ public:
                 int neighborV = vertexValue[neighborIdx];
                 if (distance[neighborV] > d + weight[neighborIdx]) {
                     distance[neighborV] = d + weight[neighborIdx];
+                    // 只有距离发生变化的点需要被放入堆中
+                    // 堆中存放的是节点距起点的距离
                     heap.emplace(pair<int, int>(distance[neighborV], neighborV));
                 }
             }
