@@ -26,6 +26,7 @@ public:
                 distance[edgeEnd[j]] = min(distance[edgeEnd[j]], prevDis[edgeStart[j]] + edgeWeight[j]);
             }
         }
+        // "正无穷"可能被负权边更新而减小，所以这里使用"0x3f3f3f3f/2"
         return distance[n] >= 0x3f3f3f3f / 2 ? -1 : distance[n];
     }
 
