@@ -13,12 +13,12 @@ using namespace std;
 class Problem0853 {
 public:
     int bellman_ford(const int n,
-                     const int edgesCount,
                      int maxPathLen,
                      const vector<int> &edgeStart,
                      const vector<int> &edgeEnd,
                      const vector<int> &edgeWeight) {
         vector<int> distance(n + 1, 0x3f3f3f3f);
+        const int edgesCount = (int) edgeStart.size();
         distance[1] = 0;
         while (maxPathLen--) {
             const vector<int> prevDis(distance);  // 不要忘记这个备份！
@@ -39,7 +39,7 @@ public:
         for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &edgeStart[i], &edgeEnd[i], &edgeWeight[i]);
         }
-        int result = bellman_ford(n, m, k, edgeStart, edgeEnd, edgeWeight);
+        int result = bellman_ford(n, k, edgeStart, edgeEnd, edgeWeight);
         if (result == -1) {
             printf("impossible\n");
         } else {
