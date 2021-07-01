@@ -37,6 +37,8 @@ public:
         ++idx;
     }
 
+    // 每次做一遍SPFA一定是正确的，但时间复杂度较高，可能会超时。初始时将所有点插入队列中可以按如下方式理解：
+    // 在原图的基础上新建一个虚拟源点，从该点向其他所有点连一条权值为0的有向边。那么原图有负环等价于新图有负环。
     bool spfa(const int n,
               const vector<int> &headIndex,
               const vector<int> &vertexValue,
