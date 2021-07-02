@@ -5,7 +5,6 @@
 #ifndef ACWINGSOLUTION_PROBLEM0861_H
 #define ACWINGSOLUTION_PROBLEM0861_H
 
-#include <vector>
 #include <cstring>
 #include <iostream>
 
@@ -13,41 +12,24 @@ using namespace std;
 
 class Problem0861 {
 public:
-    void addEdge(const int v1,
-                 const int v2,
-                 int *headIndex,
-                 vector<int> &vertexValue,
-                 vector<int> &nextIndex,
-                 int &idx) {
-        if (idx >= (int) vertexValue.size()) {
-            vertexValue.emplace_back(0);
-        }
-        if (idx >= (int) nextIndex.size()) {
-            nextIndex.emplace_back(-1);
-        }
-        vertexValue[idx] = v2;
-        nextIndex[idx] = headIndex[v1];
-        headIndex[v1] = idx;
+    void addEdge(const int a, const int b, int* headIndex, int *vertexValue, int *nextIndex, int &idx) {
+        vertexValue[idx] = b;
+        nextIndex[idx] = headIndex[a];
+        headIndex[a] = idx;
         ++idx;
     }
 
-    bool getMatched(const int start,
-                    int *matchedVertex,
-                    bool *visited,
-                    const int *headIndex,
-                    const vector<int> &vertexValue,
-                    const vector<int> &nextIndex) {
-        for (int neighborIdx = headIndex[start]; neighborIdx != -1; neighborIdx = nextIndex[neighborIdx]) {
-            int v = vertexValue[neighborIdx];
-            if (visited[v]) {
+    bool hasMatched(const int start, bool *visited, int *matchedVertex, const int* headIndex, const int *vertexValue, const int *nextIndex) {
+        for (int idx = headIndex[start]; idx != -1; idx = nextIndex[idx]) {
+            int neighbor = vertexValue[idx];
+            if (visited[neighbor]) {
                 continue;
             }
-            visited[v] = true;
-            if (matchedVertex[v] &&
-                !getMatched(matchedVertex[v], matchedVertex, visited, headIndex, vertexValue, nextIndex)) {
+            visited[neighbor] = true;
+            if (matchedVertex[neighbor] && !hasMatched(matchedVertex[neighbor], visited, matchedVertex, headIndex, vertexValue, nextIndex)) {
                 continue;
             }
-            matchedVertex[v] = start;
+            matchedVertex[neighbor] = start;
             return true;
         }
         return false;
@@ -56,33 +38,34 @@ public:
     int main() {
         int n1, n2, m;
         scanf("%d%d%d", &n1, &n2, &m);
-        vector<int> vertexValue(m, 0);
-        vector<int> nextIndex(m, -1);
-        int *headIndex = new int[n1 + 1];
-        for (int i = 1; i <= n1; ++i) {
-            headIndex[i] = -1;
-        }
+        auto headIndex = new int[n1 + 1];
+        auto vertexValue = new int[m];
+        auto nextIndex = new int[m];
+        memset(headIndex, -1, sizeof(int) * (n1 + 1));
+        memset(vertexValue, 0, sizeof(int) * m);
+        memset(nextIndex, -1, sizeof(int) * m);
         int idx = 0;
-        int a, b;
-        while (m--) {
-            scanf("%d%d", &a, &b);
-            addEdge(a, b, headIndex, vertexValue, nextIndex, idx);
+        int x, y;
+        for (int i = 0; i < m; ++i) {
+            scanf("%d%d", &x, &y);
+            addEdge(x, y, headIndex, vertexValue, nextIndex, idx);
         }
-        int *matchedVertex = new int[n2 + 1];
-        memset(matchedVertex, 0, (n2 + 1) * sizeof(int));
-        bool *visited = new bool[n2 + 1];
+        auto visited = new bool[n2 + 1];
+        auto matchedVertex = new int[n2 + 1];
+        memset(matchedVertex, 0, sizeof(int) * (n2 + 1));
         int result = 0;
-        for (int v1 = 1; v1 <= n1; ++v1) {
-            memset(visited, 0, (n2 + 1) * sizeof(bool));
-            if (!getMatched(v1, matchedVertex, visited, headIndex, vertexValue, nextIndex)) {
-                continue;
+        for (int v = 1; v <= n1; ++v) {
+            memset(visited, 0, sizeof(bool) * (n2 + 1));
+            if (hasMatched(v, visited, matchedVertex, headIndex, vertexValue, nextIndex)) {
+                ++result;
             }
-            ++result;
         }
         printf("%d\n", result);
-        delete[] matchedVertex;
-        delete[] visited;
         delete[] headIndex;
+        delete[] vertexValue;
+        delete[] nextIndex;
+        delete[] visited;
+        delete[] matchedVertex;
         return 0;
     }
 };
