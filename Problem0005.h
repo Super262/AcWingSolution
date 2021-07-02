@@ -13,33 +13,31 @@ using namespace std;
 
 class Problem0005 {
 public:
-    unsigned int knapsackMaxValue(const vector<unsigned int> &itemSize,
-                                  const vector<unsigned int> &itemValue,
-                                  const unsigned int packVolume) {
-        auto *dp = new unsigned int[packVolume + 1];
-        memset(dp, 0, sizeof(unsigned int) * (packVolume + 1));
-        for (unsigned int i = 0; i < itemValue.size(); ++i) {
-            for (unsigned int j = packVolume; j >= itemSize[i]; --j) {
-                dp[j] = max(dp[j], dp[j - itemSize[i]] + itemValue[i]);
+    int knapsackMaxValue(const vector<int> &itemSize, const vector<int> &itemValue, const int packVolume) {
+        auto dp = new int[packVolume + 1];
+        memset(dp, 0, sizeof(int) * (packVolume + 1));
+        for (int i = 0; i < itemValue.size(); ++i) {
+            for (int v = packVolume; v >= itemSize[i]; --v) {
+                dp[v] = max(dp[v], dp[v - itemSize[i]] + itemValue[i]);
             }
         }
-        auto result = dp[packVolume];
+        int result = dp[packVolume];
         delete[] dp;
         return result;
     }
 
     int main() {
-        unsigned int n, packVolume;
+        int n, packVolume;
         scanf("%d%d", &n, &packVolume);
-        vector<unsigned int> itemSize, itemValue;
-        unsigned int factor;
-        unsigned int v, w, s;
-        for (unsigned int i = 0; i < n; ++i) {
+        vector<int> itemSize;
+        vector<int> itemValue;
+        int v, w, s;
+        for (int i = 0; i < n; ++i) {
             scanf("%d%d%d", &v, &w, &s);
-            factor = 1;
+            int factor = 1;
             while (factor <= s) {
-                itemSize.emplace_back(v * factor);
-                itemValue.emplace_back(w * factor);
+                itemSize.emplace_back(factor * v);
+                itemValue.emplace_back(factor * w);
                 s -= factor;
                 factor *= 2;
             }
