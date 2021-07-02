@@ -12,33 +12,30 @@ using namespace std;
 
 class Problem0002 {
 public:
-    unsigned int knapsackMaxValue(const unsigned int *size,
-                                  const unsigned int *value,
-                                  const unsigned int count,
-                                  const unsigned int volume) {
-        auto *dp = new unsigned int[volume + 1];
-        memset(dp, 0, sizeof(unsigned int) * (volume + 1));
-        for (unsigned int i = 0; i < count; ++i) {
-            for (unsigned int j = volume; j >= size[i]; --j) {
-                dp[j] = max(dp[j], dp[j - size[i]] + value[i]);
+    int knapsackMaxValue(const int *itemSize, const int *itemValue, const int itemsNum, const int packVolume) {
+        auto dp = new int[packVolume + 1];
+        memset(dp, 0, sizeof(int) * (packVolume + 1));
+        for (int i = 0; i < itemsNum; ++i) {
+            for (int j = packVolume; j >= itemSize[i]; --j) {
+                dp[j] = max(dp[j], dp[j - itemSize[i]] + itemValue[i]);
             }
         }
-        auto result = dp[volume];
+        int result = dp[packVolume];
         delete[] dp;
         return result;
     }
 
     int main() {
-        unsigned int count, volume;
-        scanf("%d%d", &count, &volume);
-        auto size = new unsigned int[count];
-        auto value = new unsigned int[count];
-        for (unsigned int i = 0; i < count; ++i) {
-            scanf("%d%d", &size[i], &value[i]);
+        int n, v;
+        scanf("%d%d", &n, &v);
+        auto itemSize = new int[n];
+        auto itemValue = new int[n];
+        for (int i = 0; i < n; ++i) {
+            scanf("%d%d", &itemSize[i], &itemValue[i]);
         }
-        printf("%d\n", knapsackMaxValue(size, value, count, volume));
-        delete[] size;
-        delete[] value;
+        printf("%d\n", knapsackMaxValue(itemSize, itemValue, n, v));
+        delete[] itemSize;
+        delete[] itemValue;
         return 0;
     }
 };
