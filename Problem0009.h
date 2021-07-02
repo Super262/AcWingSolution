@@ -12,16 +12,12 @@ using namespace std;
 
 class Problem0009 {
 public:
-    unsigned int knapsackMaxValue(const unsigned int *quantity,
-                                  unsigned int *const *itemValue,
-                                  unsigned int *const *itemSize,
-                                  const unsigned int kindsNum,
-                                  const unsigned int packVolume) {
-        auto dp = new unsigned int[packVolume + 1];
-        memset(dp, 0, sizeof(unsigned int) * (packVolume + 1));
-        for (unsigned int i = 0; i < kindsNum; ++i) {
-            for (unsigned int v = packVolume; v > 0; --v) {
-                for (unsigned int j = 0; j < quantity[i]; ++j) {
+    int knapsackMaxValue(int **itemSize, int **itemValue, const int *itemsQuantity, const int kindsNum, const int packVolume) {
+        auto dp = new int[packVolume + 1];
+        memset(dp, 0, sizeof(int) * (packVolume + 1));
+        for (int i = 0; i < kindsNum; ++i) {
+            for (int v = packVolume; v > 0; --v) {
+                for (int j = 0; j < itemsQuantity[i]; ++j) {
                     if (v < itemSize[i][j]) {
                         continue;
                     }
@@ -29,35 +25,33 @@ public:
                 }
             }
         }
-        auto result = dp[packVolume];
+        int result = dp[packVolume];
         delete[] dp;
         return result;
     }
 
     int main() {
-        unsigned int n, packVolume;
-        scanf("%d%d", &n, &packVolume);
-        auto quantity = new unsigned int[n];
-        auto itemValue = new unsigned int *[n];
-        auto itemSize = new unsigned int *[n];
-        unsigned int q, s, v;
-        for (unsigned int i = 0; i < n; ++i) {
-            scanf("%d", &q);
-            quantity[i] = q;
-            itemValue[i] = new unsigned int[q];
-            itemSize[i] = new unsigned int[q];
-            for (unsigned int j = 0; j < q; ++j) {
-                scanf("%d%d", &s, &v);
-                itemSize[i][j] = s;
-                itemValue[i][j] = v;
+        int kindsNum, packVolume;
+        scanf("%d%d", &kindsNum, &packVolume);
+        auto itemSize = new int*[kindsNum];
+        auto itemValue = new int*[kindsNum];
+        auto itemsQuantity = new int[kindsNum];
+        for (int i = 0; i < kindsNum; ++i) {
+            scanf("%d", &itemsQuantity[i]);
+            itemSize[i] = new int[itemsQuantity[i]];
+            itemValue[i] = new int[itemsQuantity[i]];
+            for (int j = 0; j < itemsQuantity[i]; ++j) {
+                scanf("%d%d", &itemSize[i][j], &itemValue[i][j]);
             }
         }
-        printf("%d\n", knapsackMaxValue(quantity, itemValue, itemSize, n, packVolume));
-        for (unsigned int i = 0; i < n; ++i) {
-            delete[] itemValue[i];
+        printf("%d\n", knapsackMaxValue(itemSize, itemValue, itemsQuantity, kindsNum, packVolume));
+        delete[] itemsQuantity;
+        for (int i = 0; i < kindsNum; ++i) {
             delete[] itemSize[i];
+            delete[] itemValue[i];
         }
-        delete[] quantity;
+        delete[] itemSize;
+        delete[] itemValue;
         return 0;
     }
 };
