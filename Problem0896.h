@@ -11,34 +11,33 @@ using namespace std;
 
 class Problem0896 {
 public:
-    unsigned int longestIS(const int *arr, const unsigned int n) {
-        unsigned int result = 0;
-        auto *lastItemInIS = new int[n + 1];
-        lastItemInIS[0] = -2e9;
-        for (unsigned int i = 0; i < n; ++i) {
-            unsigned int left = 0;
-            unsigned int right = result;
-            // 二分搜索小于arr[i]的最大值
+    int longestIS(const int *arr, const int n) {
+        auto lastItemInLS = new int[n + 1];
+        int result = 0;
+        lastItemInLS[0] = -2e9;
+        for (int i = 0; i < n; ++i) {
+            int left = 0;
+            int right = result;
             while (left < right) {
-                unsigned int mid = (left + right + 1) >> 1;
-                if (lastItemInIS[mid] >= arr[i]) {
+                int mid = left + (right - left + 1) / 2;
+                if (lastItemInLS[mid] >= arr[i]) {
                     right = mid - 1;
                 } else {
                     left = mid;
                 }
             }
-            lastItemInIS[right + 1] = arr[i];
             result = max(result, right + 1);
+            lastItemInLS[right + 1] = arr[i];
         }
-        delete[] lastItemInIS;
+        delete[] lastItemInLS;
         return result;
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
         auto arr = new int[n];
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             scanf("%d", &arr[i]);
         }
         printf("%d\n", longestIS(arr, n));
