@@ -51,7 +51,7 @@ public:
         int b;
         int idx = 0;
         auto headIndex = new int[n + 2];
-        auto nextIndex = new int[n + 2];
+        auto nextIndex = new int[n + 2];  // 需要尾部的多余位保存"-1"，指示链表终点
         auto vertexValue = new int[n + 2];
         auto hasFather = new bool[n + 2];
 
