@@ -34,10 +34,10 @@ public:
                 }
             }
         }
+        unsigned int result = dp[lastState][n - 1];
         for (unsigned int s = 0; s <= lastState; ++s) {
             delete[] dp[s];
         }
-        unsigned int result = dp[lastState][n - 1];
         delete[] dp;
         return result;
     }
