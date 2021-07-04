@@ -11,37 +11,35 @@ using namespace std;
 
 class Problem0282 {
 public:
-    unsigned int moveStones(const unsigned int *stones, const unsigned int n) {
-        auto prefixSum = new unsigned int[n];
+    int moveStones(const int *stones, const int N) {
+        auto prefixSum = new int[N];
         prefixSum[0] = stones[0];
-        for (unsigned int i = 1; i < n; ++i) {
+        for (int i = 1; i < N; ++i) {
             prefixSum[i] = prefixSum[i - 1] + stones[i];
         }
-        auto dp = new unsigned int *[n];
-        for (unsigned int i = 0; i < n; ++i) {
-            dp[i] = new unsigned int[n];
-            for (unsigned int j = 0; j < n; ++j) {
-                dp[i][j] = 0x3f3f3f3f;
-            }
+        auto dp = new int*[N];
+        for (int i = 0; i < N; ++i) {
+            dp[i] = new int[N];
+            memset(dp[i], 0x7f, sizeof(int) * N);
             dp[i][i] = 0;
         }
-        for (unsigned int len = 2; len <= n; ++len) {
-            for (unsigned int start = 0; start + len - 1 < n; ++start) {
-                for (unsigned int mid = start; mid < start + len - 1; ++mid) {
-                    unsigned temp;
+        for (int len = 2; len <= N; ++len) {
+            for (int start = 0; start + len - 1 < N; ++start) {
+                int end = start + len - 1;
+                for (int mid = start; mid < end; ++mid) {
+                    int temp;
                     if (start == 0) {
-                        temp = prefixSum[start + len - 1];
+                        temp = prefixSum[end];
                     } else {
-                        temp = prefixSum[start + len - 1] - prefixSum[start - 1];
+                        temp = prefixSum[end] - prefixSum[start - 1];
                     }
-                    dp[start][start + len - 1] = min(dp[start][start + len - 1],
-                                                     dp[start][mid] + dp[mid + 1][start + len - 1] + temp);
+                    dp[start][end] = min(dp[start][end], dp[start][mid] + dp[mid + 1][end] + temp);
                 }
             }
         }
+        int result = dp[0][N - 1];
         delete[] prefixSum;
-        unsigned int result = dp[0][n - 1];
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0; i < N; ++i) {
             delete[] dp[i];
         }
         delete[] dp;
@@ -49,10 +47,10 @@ public:
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
-        auto stones = new unsigned int[n];
-        for (unsigned int i = 0; i < n; ++i) {
+        auto stones = new int[n];
+        for (int i = 0; i < n; ++i) {
             scanf("%d", &stones[i]);
         }
         printf("%d\n", moveStones(stones, n));
