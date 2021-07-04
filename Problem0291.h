@@ -12,40 +12,39 @@ using namespace std;
 
 class Problem0291 {
 public:
-
-    unsigned long long mondrianDream(const unsigned int N,
-                                     const unsigned int M,
-                                     unsigned long long **dp,
-                                     bool *hasContinuousZeros) {
-        const unsigned long long lastState = (1 << N) - 1;
-        memset(hasContinuousZeros, 0, sizeof(bool) * (lastState + 1));
-        // 预计算
-        unsigned int zerosSeqLen;
-        for (unsigned long long s = 0; s <= lastState; ++s) {
-            zerosSeqLen = 0;
-            for (unsigned int offset = 0; offset < N; ++offset) {
-                if ((s >> offset) & 1) {
-                    if (zerosSeqLen & 1) {
+    void initialize(bool *hasOddZeroes, const int N) {
+        const long long LAST_STATE = (1 << N) - 1;
+        memset(hasOddZeroes, 0, sizeof(bool) * (LAST_STATE + 1));
+        for (long long s = 0; s <= LAST_STATE; ++s) {
+            int zeroesLen = 0;
+            for (int i = 0; i < N; ++i) {
+                if ((s >> i) & 1) {
+                    if (zeroesLen & 1) {
                         break;
                     }
-                    zerosSeqLen = 0;
+                    zeroesLen = 0;
                 } else {
-                    ++zerosSeqLen;
+                    ++zeroesLen;
                 }
             }
-            if (zerosSeqLen & 1) {
-                hasContinuousZeros[s] = true;
+            if (zeroesLen & 1) {
+                hasOddZeroes[s] = true;
             }
         }
+    }
+
+    long long mondrianDream(long long **dp, const int N, const int M, bool *hasOddZeroes) {
+        initialize(hasOddZeroes, N);  // 每次要根据输入的不同的N重新初始化hasOddZeroes，因为N的变化会改变初始化操作中的移位次数
+        const long long LAST_STATE = (1 << N) - 1;
         dp[0][0] = 1;
-        for (unsigned int i = 1; i <= M; ++i) {
-            for (unsigned long long k = 0; k <= lastState; ++k) {
-                dp[i][k] = 0;
-                for (unsigned long long j = 0; j <= lastState; ++j) {
-                    if ((k & j) || hasContinuousZeros[k | j]) {
+        for (int i = 1; i <= M; ++i) {
+            for (long long s1 = 0; s1 <= LAST_STATE; ++s1) {
+                dp[i][s1] = 0;
+                for (long long s0 = 0; s0 <= LAST_STATE; ++s0) {
+                    if ((s0 & s1) || hasOddZeroes[s0 | s1]) {
                         continue;
                     }
-                    dp[i][k] += dp[i - 1][j];
+                    dp[i][s1] += dp[i - 1][s0];
                 }
             }
         }
@@ -53,24 +52,24 @@ public:
     }
 
     int main() {
-        const unsigned int maxN = 11;
-        const unsigned int maxM = 11;
-        const unsigned long long lastState = (1 << maxN) - 1;
-        auto *hasContinuousZeros = new bool[lastState + 1];
-        auto dp = new unsigned long long *[maxM + 1];
+        int maxN = 11;
+        int maxM = 11;
+        const long long lastState = (1 << maxN) - 1;
+        auto *hasOddZeroes = new bool[lastState + 1];
+        auto dp = new long long *[maxM + 1];
         for (unsigned int i = 0; i <= maxM; ++i) {
-            dp[i] = new unsigned long long[lastState + 1];
+            dp[i] = new long long[lastState + 1];
         }
-        unsigned int n;
-        unsigned int m;
+        int n;
+        int m;
         while (true) {
             scanf("%d%d", &n, &m);
             if (!n && !m) {
                 break;
             }
-            printf("%lld\n", mondrianDream(n, m, dp, hasContinuousZeros));
+            printf("%lld\n", mondrianDream(dp, n, m, hasOddZeroes));
         }
-        delete[] hasContinuousZeros;
+        delete[] hasOddZeroes;
         for (unsigned int i = 0; i <= maxM; ++i) {
             delete[] dp[i];
         }
