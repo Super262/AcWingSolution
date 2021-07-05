@@ -21,27 +21,27 @@ struct Range {
 
 class Problem0905 {
 public:
-    unsigned int minConnection(const Range *ranges, const unsigned int n) {
-        unsigned int result = 0;
-        int rightEnd = -1e9 - 1;
-        for (unsigned int i = 0; i < n; ++i) {
-            if (ranges[i].l <= rightEnd) {
+    int minConnection(Range *ranges, const int N) {
+        sort(ranges, ranges + N);
+        int result = 0;
+        int rightEnd = -0x7f7f7f7f;
+        for (int i = 0; i < N; ++i) {
+            if (ranges[i].left <= rightEnd) {
                 continue;
             }
-            rightEnd = ranges[i].r;
             ++result;
+            rightEnd = ranges[i].right;
         }
         return result;
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
         auto ranges = new Range[n];
-        for (unsigned int i = 0; i < n; ++i) {
-            scanf("%d%d", &ranges[i].l, &ranges[i].r);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
-        sort(ranges, ranges + n);
         printf("%d\n", minConnection(ranges, n));
         delete[] ranges;
         return 0;
