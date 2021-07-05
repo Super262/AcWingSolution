@@ -22,27 +22,26 @@ struct Range {
 
 class Problem0906 {
 public:
-    unsigned int minPartition(Range *ranges, const unsigned int n) {
+    int minPartition(Range *ranges, int N) {
+        sort(ranges, ranges + N);
         priority_queue<int, vector<int>, greater<int>> pq;
-        sort(ranges, ranges + n);
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0; i < N; ++i) {
             if (!pq.empty() && pq.top() < ranges[i].left) {
                 pq.pop();
             }
             pq.emplace(ranges[i].right);
         }
-        return pq.size();
+        return (int) pq.size();
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
         auto ranges = new Range[n];
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
         printf("%d\n", minPartition(ranges, n));
-        delete[] ranges;
         return 0;
     }
 };
