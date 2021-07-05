@@ -21,18 +21,18 @@ struct Range {
 
 class Problem0907 {
 public:
-    int getMinCover(Range *ranges, const unsigned int n, int start, const int end) {
-        if (n == 0) {
+    int minCover(int start, const int end, Range *ranges, const int N) {
+        if (!ranges) {
             return -1;
         }
-        sort(ranges, ranges + n);
+        sort(ranges, ranges + N);
         int result = 0;
-        for (unsigned int i = 0; i < n; ++i) {
-            unsigned int currentIdx = i;
-            int maxRight = -2e9;
-            while (currentIdx < n && ranges[currentIdx].left <= start) {
-                maxRight = max(maxRight, ranges[currentIdx].right);
-                ++currentIdx;
+        for (int i = 0; i < N; ++i) {
+            int maxRight = -0x7f7f7f7f;
+            int j = i;
+            while (j < N && ranges[j].left <= start) {
+                maxRight = max(maxRight, ranges[j].right);
+                ++j;
             }
             if (maxRight < start) {
                 return -1;
@@ -42,22 +42,19 @@ public:
                 return result;
             }
             start = maxRight;
-            i = currentIdx - 1;
+            i = j - 1;
         }
         return -1;
     }
 
     int main() {
-        int start;
-        int end;
-        scanf("%d%d", &start, &end);
-        unsigned int n;
-        scanf("%d", &n);
+        int start, end, n;
+        scanf("%d%d%d", &start, &end, &n);
         auto ranges = new Range[n];
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
-        printf("%d\n", getMinCover(ranges, n, start, end));
+        printf("%d\n", minCover(start, end, ranges, n));
         delete[] ranges;
         return 0;
     }
