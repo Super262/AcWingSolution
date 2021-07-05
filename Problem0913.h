@@ -2,15 +2,15 @@
 // Created by Fengwei Zhang on 2021/6/26.
 //
 
-#ifndef ACWINGSOLUTION_PROBLEM0918_H
-#define ACWINGSOLUTION_PROBLEM0918_H
+#ifndef ACWINGSOLUTION_PROBLEM0913_H
+#define ACWINGSOLUTION_PROBLEM0913_H
 
 #include <iostream>
 #include <algorithm>
 
 using namespace std;
 
-class Problem0918 {
+class Problem0913 {
 public:
     unsigned long long minWaitingTime(unsigned int *costs, const int n) {
         sort(costs, costs + n);
@@ -34,4 +34,4 @@ public:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0918_H
+#endif //ACWINGSOLUTION_PROBLEM0913_H
