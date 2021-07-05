@@ -6,53 +6,56 @@
 #define ACWINGSOLUTION_PROBLEM0901_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Problem0901 {
 public:
-    int dfsLongestSlide(int **graph,
-                        int **dp,
-                        const int n,
-                        const int m,
-                        const int x,
-                        const int y,
-                        const int dx[4],
-                        const int dy[4]) {
-        if (dp[x][y]) {
-            return dp[x][y];
+    int dfs(int **graph,
+            int **dp,
+            const int N,
+            const int M,
+            const int X,
+            const int Y,
+            const int dx[4],
+            const int dy[4]) {
+        if (dp[X][Y]) {
+            return dp[X][Y];
         }
-        dp[x][y] = 1;
+        dp[X][Y] = 1;
         for (int i = 0; i < 4; ++i) {
-            int nextX = x + dx[i];
-            int nextY = y + dy[i];
-            if (nextX < 0 || nextX >= n || nextY < 0 || nextY >= m || graph[nextX][nextY] >= graph[x][y]) {
+            auto nextX = dx[i] + X;
+            auto nextY = dy[i] + Y;
+            if (nextX < 0 || nextX >= N || nextY < 0 || nextY >= M || graph[nextX][nextY] >= graph[X][Y]) {
                 continue;
             }
-            dp[x][y] = max(dp[x][y], 1 + dfsLongestSlide(graph, dp, n, m, nextX, nextY, dx, dy));
+            dp[X][Y] = max(dp[X][Y], dfs(graph, dp, N, M, nextX, nextY, dx, dy) + 1);
         }
-        return dp[x][y];
+        return dp[X][Y];
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        auto dp = new int *[n];
         auto graph = new int *[n];
         for (int i = 0; i < n; ++i) {
-            dp[i] = new int[m];
             graph[i] = new int[m];
             for (int j = 0; j < m; ++j) {
                 scanf("%d", &graph[i][j]);
-                dp[i][j] = 0;
             }
         }
-        int result = 0;
-        int dx[] = {0, 1, 0, -1};
-        int dy[] = {1, 0, -1, 0};
+        auto dp = new int *[n];
         for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < m; ++j) {
-                result = max(result, dfsLongestSlide(graph, dp, n, m, i, j, dx, dy));
+            dp[i] = new int[m];
+            memset(dp[i], 0, sizeof(int) * m);
+        }
+        int result = 0;
+        const int dx[] = {0, 1, 0, -1};
+        const int dy[] = {1, 0, -1, 0};
+        for (int x = 0; x < n; ++x) {
+            for (int y = 0; y < m; ++y) {
+                result = max(result, dfs(graph, dp, n, m, x, y, dx, dy));
             }
         }
         for (int i = 0; i < n; ++i) {
