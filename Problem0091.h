@@ -11,31 +11,32 @@ using namespace std;
 
 class Problem0091 {
 public:
-    unsigned int shortestHamilton(unsigned int **graph, const unsigned int n) {
-        const unsigned int lastState = (1 << n) - 1;
-        auto dp = new unsigned int *[lastState + 1];
-        for (unsigned int s = 0; s <= lastState; ++s) {
-            dp[s] = new unsigned int[n];
-            for (unsigned int v = 0; v < n; ++v) {
-                dp[s][v] = 0x3f3f3f3f;
-            }
+    int shortestHamilton(int **graph, const int N) {
+        const int LAST_STATE = (1 << N) - 1;
+        auto dp = new int*[LAST_STATE + 1];
+        for (int s = 0; s <= LAST_STATE; ++s) {
+            dp[s] = new int[N];
+            memset(dp[s], 0x7f, sizeof(int) * (N));
         }
         dp[1][0] = 0;
-        for (unsigned int s = 0; s <= lastState; ++s) {
-            for (unsigned int v = 0; v < n; ++v) {
+        for (int s = 0; s <= LAST_STATE; ++s) {
+            for (int v = 0; v < N; ++v) {
                 if (!((s >> v) & 1)) {
                     continue;
                 }
-                for (unsigned int u = 0; u < n; ++u) {
+                for (int u = 0; u < N; ++u) {
                     if (!(((s - (1 << v)) >> u) & 1)) {
                         continue;
                     }
-                    dp[s][v] = min(dp[s][v], dp[s - (1 << v)][u] + graph[u][v]);
+                    if (dp[s - (1 << v)][u] == 0x7f7f7f7f) {
+                        continue;
+                    }
+                    dp[s][v] = min(dp[s][v], dp[s- (1 << v)][u] + graph[u][v]);
                 }
             }
         }
-        unsigned int result = dp[lastState][n - 1];
-        for (unsigned int s = 0; s <= lastState; ++s) {
+        int result = dp[LAST_STATE][N - 1];
+        for (int s = 0; s <= LAST_STATE; ++s) {
             delete[] dp[s];
         }
         delete[] dp;
@@ -43,20 +44,18 @@ public:
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
-        unsigned int w;
-        auto **graph = new unsigned int *[n];
-        for (unsigned int u = 0; u < n; ++u) {
-            graph[u] = new unsigned int[n];
-            for (unsigned int v = 0; v < n; ++v) {
-                scanf("%d", &w);
-                graph[u][v] = w;
+        auto graph = new int*[n];
+        for (int i = 0; i < n; ++i) {
+            graph[i] = new int [n];
+            for (int j = 0; j < n; ++j) {
+                scanf("%d", &graph[i][j]);
             }
         }
         printf("%d\n", shortestHamilton(graph, n));
-        for (unsigned int u = 0; u < n; ++u) {
-            delete[] graph[u];
+        for (int i = 0; i < n; ++i) {
+            delete[] graph[i];
         }
         delete[] graph;
         return 0;
