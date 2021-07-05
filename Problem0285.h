@@ -5,36 +5,37 @@
 #ifndef ACWINGSOLUTION_PROBLEM0285_H
 #define ACWINGSOLUTION_PROBLEM0285_H
 
+#include <cstring>
 #include <iostream>
 
 using namespace std;
 
 class Problem0285 {
 public:
-    void addEdge(const int start,
-                 const int end,
+    void addEdge(const int a,
+                 const int b,
                  int *headIndex,
-                 int *nextIndex,
                  int *vertexValue,
+                 int *nextIndex,
                  bool *hasFather,
                  int &idx) {
-        hasFather[end] = true;
-        vertexValue[idx] = end;
-        nextIndex[idx] = headIndex[start];
-        headIndex[start] = idx;
+        hasFather[b] = true;
+        vertexValue[idx] = b;
+        nextIndex[idx] = headIndex[a];
+        headIndex[a] = idx;
         ++idx;
     }
 
     void dfs(const int root,
+             int **dp,
              const int *headIndex,
-             const int *nextIndex,
              const int *vertexValue,
-             const int *happiness,
-             int **dp) {
+             const int *nextIndex,
+             const int *happiness) {
         dp[root][1] = happiness[root];
-        for (int childIdx = headIndex[root]; childIdx != -1; childIdx = nextIndex[childIdx]) {
-            const int childV = vertexValue[childIdx];
-            dfs(childV, headIndex, nextIndex, vertexValue, happiness, dp);
+        for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
+            int childV = vertexValue[idx];
+            dfs(childV, dp, headIndex, vertexValue, nextIndex, happiness);
             dp[root][0] += max(dp[childV][0], dp[childV][1]);
             dp[root][1] += dp[childV][0];
         }
@@ -47,45 +48,36 @@ public:
         for (int i = 1; i <= n; ++i) {
             scanf("%d", &happiness[i]);
         }
-        int a;
-        int b;
+        auto headIndex = new int[n + 1];
+        auto vertexValue = new int[n];
+        auto nextIndex = new int[n];
+        auto hasFather = new bool[n + 1];
         int idx = 0;
-        auto headIndex = new int[n + 2];
-        auto nextIndex = new int[n + 2];  // 需要尾部的多余位保存"-1"，指示链表终点
-        auto vertexValue = new int[n + 2];
-        auto hasFather = new bool[n + 2];
-
-        // Initialization.
-        for (int i = 0; i <= n + 1; ++i) {
-            headIndex[i] = -1;
-            nextIndex[i] = -1;
-            vertexValue[i] = 0;
-            hasFather[i] = false;
-        }
-
+        memset(headIndex, -1, sizeof(int) * (n + 1));
+        memset(vertexValue, 0, sizeof(int) * n);
+        memset(nextIndex, -1, sizeof(int) * n);
+        memset(hasFather, 0, sizeof(bool) * (n + 1));
+        int a, b;
         for (int i = 0; i < n - 1; ++i) {
-            scanf("%d%d", &a, &b);
-            addEdge(b, a, headIndex, nextIndex, vertexValue, hasFather, idx);
+            scanf("%d%d", &b, &a);
+            addEdge(a, b, headIndex, vertexValue, nextIndex, hasFather, idx);
         }
-
-        // Find the root.
+        auto dp = new int *[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            dp[i] = new int[2]{0, 0};
+        }
         int root = 1;
         while (hasFather[root]) {
             ++root;
         }
-        auto dp = new int *[n + 1];
-        for (int i = 0; i <= n; ++i) {
-            dp[i] = new int[2]{0, 0};
-        }
-
-        dfs(root, headIndex, nextIndex, vertexValue, happiness, dp);
+        dfs(root, dp, headIndex, vertexValue, nextIndex, happiness);
         printf("%d\n", max(dp[root][0], dp[root][1]));
-
-        delete[] happiness;
         delete[] headIndex;
-        delete[] nextIndex;
         delete[] vertexValue;
-        for (int i = 0; i <= n; ++i) {
+        delete[] nextIndex;
+        delete[] hasFather;
+        delete[] happiness;
+        for (int i = 1; i <= n; ++i) {
             delete[] dp[i];
         }
         delete[] dp;
