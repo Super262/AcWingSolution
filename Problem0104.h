@@ -12,27 +12,25 @@ using namespace std;
 
 class Problem0104 {
 public:
-    unsigned int minDistance(int *coordinates, const unsigned int n) {
-        if (n < 2) {
-            return 0;
-        }
-        sort(coordinates, coordinates + n);
-        const unsigned int m = (n >> 1);  // 若n为偶数，中位数偏左或偏右均可
-        unsigned int result = 0;
-        for (unsigned int i = 0; i < n; ++i) {
-            result += abs(coordinates[i] - coordinates[m]);
+    long minDistance(int *coordinates, const int N) {
+        long result = 0;
+        sort(coordinates, coordinates + N);
+        const int mid = N >> 1;
+        for (int i = 0; i < N; ++i) {
+            result += abs(coordinates[i] - coordinates[mid]);
         }
         return result;
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
-        auto coordinates = new int[n];
-        for (unsigned int i = 0; i < n; ++i) {
+        int *coordinates = new int[n];
+        for (int i = 0; i < n; ++i) {
             scanf("%d", &coordinates[i]);
         }
-        printf("%d\n", minDistance(coordinates, n));
+        printf("%ld\n", minDistance(coordinates, n));
+        delete[] coordinates;
         return 0;
     }
 };
