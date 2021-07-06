@@ -18,7 +18,7 @@ public:
         int left = start - 1;
         int right = end + 1;
 
-//        选择偏右的中点
+//        选择偏左的中点
         int pivot = a[start + ((end - start) >> 1)];
 
 //        选择偏右的中点
