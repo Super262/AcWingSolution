@@ -5,6 +5,10 @@
 #ifndef ACWINGSOLUTION_PROBLEM1016_H
 #define ACWINGSOLUTION_PROBLEM1016_H
 
+#include <iostream>
+
+using namespace std;
+
 class Problem1016 {
 public:
     int maxSumLIS(const int *a, const int N) {
