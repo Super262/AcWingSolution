@@ -95,6 +95,9 @@
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0005.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0006.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0009.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
