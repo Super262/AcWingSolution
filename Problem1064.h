@@ -23,7 +23,8 @@ public:
     }
 
     bool noAdjacentOnes(const int state, const int n) {
-        for (int offset = 0; offset < n - 1; ++offset) {
+        // N < 2，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 1) 可以大于 (N - 1)
+        for (int offset = 0; offset < n; ++offset) {
             if (((state >> offset) & 1) && ((state >> (offset + 1)) & 1)) {
                 return false;
             }
