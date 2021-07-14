@@ -54,6 +54,8 @@ public:
             }
         }
         vector<vector<int>> prevStates = getPossiblePrev(states, N);
+
+        // dp[i][k][s] 表示前i行共摆放了k个国王、第i行摆放方案为s（1表示摆放，0表示空白）的方案数量
         vector<vector<vector<long long>>> dp(N + 2, vector<vector<long long>>(M + 1, vector<long long>(1 << N, 0)));
         dp[0][0][0] = 1;
         for (int i = 1; i <= N + 1; ++i) {
