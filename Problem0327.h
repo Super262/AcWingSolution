@@ -22,16 +22,6 @@ public:
         return true;
     }
 
-    int countOnes(const int s, const int N) {
-        int result = 0;
-        for (int offset = 0; offset < N; ++offset) {
-            if ((s >> offset) & 1) {
-                ++result;
-            }
-        }
-        return result;
-    }
-
     vector<vector<int>> getPossiblePrev(const vector<int> &states) {
         vector<vector<int>> prevStates(states.size(), vector<int>());
         for (int i = 0; i < states.size(); ++i) {
@@ -48,11 +38,9 @@ public:
     int solutionsNum(const int M, const int N, const vector<int> &graph) {
         const int MOD = 100000000;
         vector<int> states;
-        vector<int> onesCount;
         for (int s = 0; s < (1 << N); ++s) {
             if (noAdjacentOnes(s, N)) {
                 states.emplace_back(s);
-                onesCount.emplace_back(countOnes(s, N));
             }
         }
         vector<vector<int>> prevStates = getPossiblePrev(states);
