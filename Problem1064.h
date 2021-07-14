@@ -60,9 +60,10 @@ public:
             for (int kingsNum = 0; kingsNum <= M; ++kingsNum) {
                 for (int k = 0; k < states.size(); ++k) {
                     for (int preStateIdx : prevStates[k]) {
-                        if (onesCount[k] <= kingsNum) {
-                            dp[i][kingsNum][states[k]] += dp[i - 1][kingsNum - onesCount[k]][states[preStateIdx]];
+                        if (onesCount[k] > kingsNum) {
+                            continue;
                         }
+                        dp[i][kingsNum][states[k]] += dp[i - 1][kingsNum - onesCount[k]][states[preStateIdx]];
                     }
                 }
             }
