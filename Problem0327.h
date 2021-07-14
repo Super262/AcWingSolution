@@ -14,7 +14,8 @@ class Problem0327 {
     // https://www.acwing.com/solution/content/17569/
 public:
     bool noAdjacentOnes(const int s, const int N) {
-        for (int offset = 0; offset < N - 1; ++offset) {
+        // N < 2，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 1) 可以大于 (N - 1)
+        for (int offset = 0; offset < N; ++offset) {
             if (((s >> offset) & 1) && ((s >> (offset + 1)) & 1)) {
                 return false;
             }
