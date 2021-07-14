@@ -13,7 +13,6 @@ using namespace std;
 class Problem0292 {
     // https://www.acwing.com/solution/content/12392/
 public:
-    // https://www.acwing.com/solution/content/12392/
     int countOnes(const unsigned int s, const unsigned int N) {
         int result = 0;
         for (unsigned int offset = 0; offset < N; ++offset) {
