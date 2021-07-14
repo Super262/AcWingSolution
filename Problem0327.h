@@ -65,7 +65,7 @@ public:
     int main() {
         int M, N;
         scanf("%d%d", &M, &N);
-        vector<int> graph(M + 1, 0);
+        vector<int> graph(M + 2, 0);
         for (int i = 1; i <= M; ++i) {
             int t;
             for (int j = 0; j < N; ++j) {
