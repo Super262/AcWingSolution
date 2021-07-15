@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0792 {
 public:
-    int cmpBigInts(string &a, string &b) {
+    int cmpBigInts(const string &a, const string &b) {
         if (a.size() > b.size()) {
             return 1;
         }
