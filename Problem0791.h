@@ -16,24 +16,21 @@ public:
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
         string result;
-        unsigned int carry = 0;
-        unsigned int num;
+        unsigned int num = 0;
         for (unsigned long i = 0; i < a.size() || i < b.size(); ++i) {
-            num = carry;
             if (i < a.size()) {
                 num += a[i] - '0';
             }
             if (i < b.size()) {
                 num += b[i] - '0';
             }
-            carry = num / 10;
-            num %= 10;
-            result.push_back((char) ('0' + num));
+            result.push_back((char) ('0' + num % 10));
+            num /= 10;
         }
 
         // 千万别忘记最后的进位！
-        if (carry) {
-            result.push_back((char) ('0' + carry));
+        if (num) {
+            result.push_back((char) ('0' + num));
         }
         reverse(result.begin(), result.end());
         return result;
