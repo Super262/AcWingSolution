@@ -581,6 +581,9 @@
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem1073.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem1075.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem2816.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
