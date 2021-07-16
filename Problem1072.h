@@ -58,7 +58,7 @@ public:
             addEdge(b, a, w, idx);
         }
         int answer = 0;
-        dfs(1, -1, answer);
+        dfs(1, -1, answer);  // 任选1个点即可
         printf("%d\n", answer);
         return 0;
     }
