@@ -62,7 +62,7 @@ public:
         int x, y, k, b;
         scanf("%d%d%d%d", &x, &y, &k, &b);
         vector<vector<int>> C = initCombinations(32);
-        printf("%d\n", helper(y, k, b, C) - helper(x, k, b, C));
+        printf("%d\n", helper(y, k, b, C) - helper(x - 1, k, b, C));
         return 0;
     }
 };
