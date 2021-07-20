@@ -15,7 +15,7 @@ public:
     int maxSeq(const int *prefixSum, const int N, const int M) {
         int *q = new int[2 * N];
         int hh = 0;
-        int tt = 0;
+        int tt = 0;  // tt初始值为0，相当于队列包含初识元素0，简化了后续步骤
         int result = -0x7f7f7f7f;
         for (int i = 1; i <= N; ++i) {
             if (hh <= tt && i - q[hh] > M) {
