@@ -440,6 +440,9 @@
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0878.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem088.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0883.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
