@@ -440,9 +440,6 @@
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0878.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
-		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem088.h">
-			<Option target="AcWingSolution"/>
-		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem0883.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
@@ -615,6 +612,12 @@
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem1086.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem1088.h">
+			<Option target="AcWingSolution"/>
+		</Unit>
+		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem1089.h">
 			<Option target="AcWingSolution"/>
 		</Unit>
 		<Unit filename="/Users/fengwei/CppProjects/AcWingSolution/Problem2816.h">
