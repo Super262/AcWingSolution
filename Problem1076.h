@@ -17,7 +17,6 @@ public:
     int graph[N][N];
     pair<int, int> preNode[N][N];
     pair<int, int> q[N * N + 1];
-    pair<int, int> path[N * N];
 
     void bfs(const int startX, const int startY, const int endX, const int endY, const int n) {
         int dx[] = {1, 0, -1, 0};
