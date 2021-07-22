@@ -20,6 +20,9 @@ public:
     pair<int, int> q[N * N + 1];
 
     int bfs(const int startX, const int startY, const int endX, const int endY, const int R, const int C) {
+        if (startX == endX && startY == endY) {
+            return 0;
+        }
         int dx[] = {1, -1, 1, -1, 2, -2, 2, -2};
         int dy[] = {-2, -2, 2, 2, -1, -1, 1, 1};
         int hh = 0, tt = -1;
