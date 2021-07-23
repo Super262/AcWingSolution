@@ -21,9 +21,6 @@ public:
     bool isSelected[MAX_N + 1][MAX_N + 1];
 
     int bfs(const int startX, const int startY, const int endX, const int endY, const int N, const int M) {
-        if (startX == endX && startY == endY) {
-            return 0;
-        }
         deque<pair<int, int>> q;
         int nextPointX[] = {-1, -1, 1, 1};
         int nextPointY[] = {-1, 1, 1, -1};
@@ -37,6 +34,9 @@ public:
         while (!q.empty()) {
             auto root = q.front();
             q.pop_front();
+            if (root.first == endX && root.second == endY) {
+                return dist[endX][endY];
+            }
             if (isSelected[root.first][root.second]) {
                 continue;
             }
@@ -61,10 +61,7 @@ public:
                 }
             }
         }
-        if (dist[endX][endY] >= 0x7f7f7f7f) {
-            return -1;
-        }
-        return dist[endX][endY];
+        return -1;
     }
 
     int main() {
