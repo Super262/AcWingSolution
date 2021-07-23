@@ -14,7 +14,7 @@ using namespace std;
 
 class Problem0179 {
     // https://www.acwing.com/solution/content/15289/
-    // 算法正确性：保证估计距离f小于或等于真实距离g
+    // 算法正确性：保证估计距离f + 距源点的距离d <= 真实距离g
 public:
     int funcF(const string &state) { // 求估值函数,这里是曼哈顿距离
         int res = 0;
