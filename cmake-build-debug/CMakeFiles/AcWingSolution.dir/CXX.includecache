@@ -7,10 +7,8 @@
 #IncludeRegexTransform: 
 
 /Users/fengwei/CppProjects/AcWingSolution/main.cpp
-cstring
--
 iostream
 -
-algorithm
+cstring
 -
 
