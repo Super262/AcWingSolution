@@ -32,6 +32,7 @@ public:
             }
             isSelected[closestNode] = true;
             for (int v = 1; v <= n; ++v) {
+                // 不要将dist和graph中的无效值全部设置为-1，会导致这里的乘法结果为很大的正数，导致计算错误
                 dist[v] = max(dist[v], dist[closestNode] * graph[closestNode][v]);
             }
         }
