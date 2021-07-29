@@ -14,8 +14,14 @@
 using namespace std;
 
 class Problem0342 {
-    // https://www.acwing.com/solution/content/3950/
-    // 依照拓扑序依次处理每个团：在团内部通过Dijkstra计算最短路
+// https://www.acwing.com/solution/content/3950/
+// 依照拓扑序依次处理每个团：在团内部通过Dijkstra计算最短路
+// 1. 先输入所有双向道路，然后DFS出所有连通块，计算两个数组的值：vertexBlock（顶点对应的连通块），blockVertexes（每个连通块包含哪些点）。
+// 2. 输入所有航线，同时统计出每个连通块的入度。
+// 3. 按照拓扑序依次处理每个连通块：先将入度为0的连通块加入队列blockQueue中。
+// 4. 每次从队头取出一个连通块的编号bIdx。
+// 5. 将blockVertexes[bIdx]中所有的点加入小根堆中，执行Dijkstra算法。
+// 6. 在上一步的过程中，若某个连通块的入度减小为0，则将其加入到队列blockQueue中。
 public:
     const int N = 25010, M = 150010;
     const int INF = 0x7f7f7f7f;
