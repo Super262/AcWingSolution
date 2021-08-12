@@ -19,7 +19,7 @@ public:
         int right = end + 1;
 
 //        选择偏左的中点
-        int pivot = a[start + ((end - start) >> 1)];
+        int pivot = a[start + ((end - start) >> 1)];  // 注意：一定要将移位运算的部分用括号括起来
 
 //        选择偏右的中点
 //        int pivot = a[start + ((end - start) >> 1) + 1];
