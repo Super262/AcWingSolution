@@ -6,18 +6,20 @@
 #define ACWINGSOLUTION_PROBLEM0790_H
 
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
 class Problem0790 {
 public:
-    long double getCubicRoot(long double x) {
-        long double left = min(-1.0l, x);
-        long double right = max(1.0l, x);
-        long double mid;
-        while (right - left > 1e-8) {  // 判零的有效位数比题目要求的多2
-            mid = left + (right - left) / 2;
-            if (mid * mid * mid >= x) {
+    long double getCubicRoot(const long double x) {
+        auto left = min(-1.0l, x);
+        auto right = max(1.0l, x);
+        while (fabs(right - left) > 1e-8) {
+            auto mid = left + (right - left) / 2;
+            if (fabs(mid * mid * mid - x) < 1e-8) {
+                return mid;
+            } else if (mid * mid * mid > x) {
                 right = mid;
             } else {
                 left = mid;
@@ -28,8 +30,8 @@ public:
 
     int main() {
         long double x;
-        cin >> x;
-        printf("%.6Lf\n", getCubicRoot(x));
+        scanf("%Lf", &x);
+        printf("%.6Lf", getCubicRoot(x));
         return 0;
     }
 };
