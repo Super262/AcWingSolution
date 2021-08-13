@@ -15,7 +15,7 @@ public:
         long double left = min(-1.0l, x);
         long double right = max(1.0l, x);
         long double mid;
-        while (right - left > 1e-8) {
+        while (right - left > 1e-8) {  // 判零的有效位数比题目要求的多2
             mid = left + (right - left) / 2;
             if (mid * mid * mid >= x) {
                 right = mid;
