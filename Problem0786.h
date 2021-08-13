@@ -11,35 +11,37 @@ using namespace std;
 
 class Problem0786 {
 public:
-    void quick_partition(int *arr, const int start, const int end, const int k) {
+    int arr[100000];
+    int n;
+
+    void quickPartition(const int start, const int end, const int k) {
         if (start >= end) {
             return;
         }
-        int pivot = arr[start + (end - start) / 2];
-        int i = start - 1;
-        int j = end + 1;
-        while (i < j) {
-            while (arr[++i] < pivot);
-            while (arr[--j] > pivot);
-            if (i < j) {
-                swap(arr[i], arr[j]);
+        auto pivot = arr[start + (end - start) / 2];
+        auto left = start - 1;
+        auto right = end + 1;
+        while (left < right) {
+            while (arr[++left] < pivot);
+            while (arr[--right] > pivot);
+            if (left < right) {
+                swap(arr[left], arr[right]);
             }
         }
-        if (j - start + 1 >= k) {
-            quick_partition(arr, start, j, k);
+        if (right - start + 1 >= k) {
+            quickPartition(start, right, k);
         } else {
-            quick_partition(arr, j + 1, end, k - (j - start + 1));
+            quickPartition(right + 1, end, k - (right - start + 1));
         }
     }
 
     int main() {
-        int n, k;
-        cin >> n >> k;
-        int *arr = new int[n];
+        int k;
+        scanf("%d%d", &n, &k);
         for (int i = 0; i < n; ++i) {
             scanf("%d", &arr[i]);
         }
-        quick_partition(arr, 0, n - 1, k);
+        quickPartition(0, n - 1, k);
         printf("%d\n", arr[k - 1]);
         return 0;
     }
