@@ -11,24 +11,27 @@ using namespace std;
 
 class Problem0801 {
 public:
-    unsigned int countOnes(unsigned int num) {
-        unsigned int count = 0;
-        while (num) {
-            count += num & 1;
-            num >>= 1;
+    int lowBit(const int x) {
+        return x & (-x);
+    }
+
+    int countOnes(int x) {
+        int result = 0;
+        while (x > 0) {
+            x -= lowBit(x);
+            ++result;
         }
-        return count;
+        return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        unsigned int num;
-        for (int i = 0; i < n; ++i) {
-            scanf("%d", &num);
-            printf("%d ", countOnes(num));
+        for (int i = 1; i <= n; ++i) {
+            int x;
+            scanf("%d", &x);
+            printf("%d ", countOnes(x));
         }
-        printf("\n");
         return 0;
     }
 };
