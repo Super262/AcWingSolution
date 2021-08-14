@@ -5,24 +5,26 @@
 #ifndef ACWINGSOLUTION_PROBLEM0799_H
 #define ACWINGSOLUTION_PROBLEM0799_H
 
-#include <vector>
-#include <unordered_map>
 #include <iostream>
 
 using namespace std;
 
 class Problem0799 {
 public:
-    unsigned int longestUniqueSubsequence(const vector<int> &array) {
-        if (array.empty()) {
-            return 0;
+    const int N = 100010;
+    int n;
+    int arr[N];
+    int count[N];
+
+    int longestUniqueSeq() {
+        if (n < 2) {
+            return n;
         }
-        unsigned int result = 0;
-        unordered_map<int, unsigned int> count;
-        for (unsigned int left = 0, right = 0; right < array.size(); ++right) {
-            count[array[right]] = count.find(array[right]) == count.end() ? 1 : count[array[right]] + 1;
-            while (left < right && count[array[right]] > 1) {
-                --count[array[left]];
+        int result = 0;
+        for (int left = 0, right = 0; right < n; ++right) {
+            ++count[arr[right]];
+            while (left < right && count[arr[right]] > 1) {
+                --count[arr[left]];
                 ++left;
             }
             result = max(right - left + 1, result);
@@ -31,13 +33,11 @@ public:
     }
 
     int main() {
-        unsigned int n;
         scanf("%d", &n);
-        vector<int> array(n, 0);
-        for (unsigned int i = 0; i < n; ++i) {
-            scanf("%d", &array[i]);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &arr[i]);
         }
-        printf("%d\n", longestUniqueSubsequence(array));
+        printf("%d\n", longestUniqueSeq());
         return 0;
     }
 };
