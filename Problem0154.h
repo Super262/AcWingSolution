@@ -5,41 +5,43 @@
 #ifndef ACWINGSOLUTION_PROBLEM0154_H
 #define ACWINGSOLUTION_PROBLEM0154_H
 
-#include <vector>
-#include <deque>
 #include <iostream>
 
 class Problem0154 {
 public:
-    void printMinInWindow(const vector<int> &arr, const int windowSize) {
-        deque<int> q;
-        for (int i = 0; i < arr.size(); ++i) {
-            if (!q.empty() && q.front() < i - windowSize + 1) {
-                q.pop_front();
+    const int N = 1000010;
+    int arr[N];
+    int q[N];
+
+    void printMaximalsInWindows(const int n, const int k) {
+        int hh = 0, tt = -1;
+        for (int i = 0; i < n; ++i) {
+            while (hh <= tt && i - k + 1 > q[hh]) {
+                ++hh;
             }
-            while (!q.empty() && arr[q.back()] >= arr[i]) {
-                q.pop_back();
+            while (hh <= tt && arr[q[tt]] <= arr[i]) {
+                --tt;
             }
-            q.emplace_back(i);
-            if (i >= windowSize - 1) {
-                printf("%d ", arr[q.front()]);
+            q[++tt] = i;
+            if (i >= k - 1) {  // 当前遍历的数不足k时，无需输出
+                printf("%d ", arr[q[hh]]);
             }
         }
         printf("\n");
     }
 
-    void printMaxInWindow(const vector<int> &arr, const int windowSize) {
-        deque<int> q;
-        for (int i = 0; i < arr.size(); ++i) {
-            if (!q.empty() && q.front() < i - windowSize + 1) {
-                q.pop_front();
+    void printMinimalsInWindows(const int n, const int k) {
+        int hh = 0, tt = -1;
+        for (int i = 0; i < n; ++i) {
+            while (hh <= tt && i - k + 1 > q[hh]) {
+                ++hh;
             }
-            while (!q.empty() && arr[q.back()] <= arr[i]) {
-                q.pop_back();
+            while (hh <= tt && arr[q[tt]] >= arr[i]) {
+                --tt;
             }
-            q.emplace_back(i);
-            if (i >= windowSize - 1) {
-                printf("%d ", arr[q.front()]);
+            q[++tt] = i;
+            if (i >= k - 1) {  // 当前遍历的数不足k时，无需输出
+                printf("%d ", arr[q[hh]]);
             }
         }
         printf("\n");
@@ -48,12 +50,11 @@ public:
     int main() {
         int n, k;
         scanf("%d%d", &n, &k);
-        vector<int> arr(n, 0);
         for (int i = 0; i < n; ++i) {
             scanf("%d", &arr[i]);
         }
-        printMinInWindow(arr, k);
-        printMaxInWindow(arr, k);
+        printMinimalsInWindows(n, k);
+        printMaximalsInWindows(n, k);
         return 0;
     }
 };
