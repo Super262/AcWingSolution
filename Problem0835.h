@@ -5,67 +5,56 @@
 #ifndef ACWINGSOLUTION_PROBLEM0835_H
 #define ACWINGSOLUTION_PROBLEM0835_H
 
-#include <vector>
 #include <iostream>
-
-using namespace std;
 
 class Problem0835 {
     // 完整背诵这部分代码！
-public:
-    void insert(const string &word,
-                vector<vector<unsigned long long>> &children,
-                vector<unsigned long long> &wordsCount,
-                unsigned long long &nextIdx) {
-        unsigned long long currentIdx = 0;
-        for (const char ch : word) {
-            unsigned long long chIndex = ch - 'a';
-            if (!children[currentIdx][chIndex]) {
-                children[currentIdx][chIndex] = ++nextIdx;
+private:
+    void insertStr(const char str[], int &nextIdx, int children[][26], int wordCount[]) {
+        int currentNodeIdx = 0;
+        for (int i = 0; str[i]; ++i) {
+            auto childIdx = str[i] - 'a';
+            if (!children[currentNodeIdx][childIdx]) {
+                children[currentNodeIdx][childIdx] = nextIdx;
+                ++nextIdx;
             }
-            currentIdx = children[currentIdx][chIndex];
-            while (currentIdx >= children.size()) {
-                children.emplace_back(vector<unsigned long long>(26, 0));
-            }
-            while (currentIdx >= wordsCount.size()) {
-                wordsCount.emplace_back(0);
-            }
+            currentNodeIdx = children[currentNodeIdx][childIdx];
         }
-        ++wordsCount[currentIdx];
+        ++wordCount[currentNodeIdx];
     }
 
-    unsigned long long query(const string &word,
-                             const vector<vector<unsigned long long>> &children,
-                             const vector<unsigned long long> &wordsCount) {
-        unsigned long long currentIdx = 0;
-        for (const char ch : word) {
-            unsigned long long chIndex = ch - 'a';
-            if (currentIdx >= children.size() || currentIdx >= wordsCount.size() || !children[currentIdx][chIndex]) {
+    int queryStr(const char str[], int children[][26], int wordCount[]) {
+        int currentNodeIdx = 0;
+        for (int i = 0; str[i]; ++i) {
+            auto childIdx = str[i] - 'a';
+            if (!children[currentNodeIdx][childIdx]) {
                 return 0;
             }
-            currentIdx = children[currentIdx][chIndex];
+            currentNodeIdx = children[currentNodeIdx][childIdx];
         }
-        return wordsCount[currentIdx];
+        return wordCount[currentNodeIdx];
     }
 
     int main() {
-        unsigned long long n;
-        cin >> n;
-        char op;
-        string word;
-        vector<vector<unsigned long long>> children(1, vector<unsigned long long>(26, 0));
-        vector<unsigned long long> wordsCount(1, 0);
-        unsigned long long nextIdx = 0;
-        for (unsigned long long i = 0; i < n; ++i) {
-            cin >> op >> word;
-            if (op == 'I') {
-                insert(word, children, wordsCount, nextIdx);
+        const int N = 100010;
+        int children[N][26];
+        char str[N];
+        int wordsCount[N];
+        char op[2];
+        int n;
+        scanf("%d", &n);
+        int nextIdx = 1;
+        for (int i = 0; i < n; ++i) {
+            scanf("%s%s", op, str);
+            if (op[0] == 'I') {
+                insertStr(str, nextIdx, children, wordsCount);
             } else {
-                printf("%llu\n", query(word, children, wordsCount));
+                printf("%d\n", queryStr(str, children, wordsCount));
             }
         }
         return 0;
     }
+
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0835_H
