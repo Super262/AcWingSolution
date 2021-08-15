@@ -10,61 +10,57 @@
 using namespace std;
 
 class Problem0831 {
-public:
-    void buildNext(const char str[], unsigned long long nextStart[], const unsigned long long len) {
-        unsigned long long i = 1;
-        unsigned long long now = 0;
+private:
+    void buildNextStart(const char p[], int nextStart[], const int pLen) {
         nextStart[0] = 0;
-        while (i < len) {
-            if (str[i] == str[now]) {
-                ++now;
-                nextStart[i] = now;
-                ++i;
-            } else if (now) {
-                now = nextStart[now - 1];
+        int right = 1;
+        int left = 0;
+        while (right < pLen) {
+            if (p[left] == p[right]) {
+                ++left;
+                nextStart[right] = left;
+                ++right;
+            } else if (left) {
+                left = nextStart[left - 1];
             } else {
-                nextStart[i] = 0;
-                ++i;
+                nextStart[right] = 0;
+                ++right;
             }
         }
     }
 
-    void printMatchedStart(const char s[],
-                           const unsigned long long sLen,
-                           const char p[],
-                           const unsigned long long nextStart[],
-                           const unsigned long long pLen) {
-        unsigned long long i = 0;
-        unsigned long long j = 0;
-        while (i < sLen) {
-            if (s[i] == p[j]) {
-                ++i;
-                ++j;
-            } else if (j) {
-                j = nextStart[j - 1];
+    void printMatchedStart(const char s[], const int sLen, const char p[], const int nextStart[], const int pLen) {
+        int si = 0;
+        int pi = 0;
+        while (si < sLen) {
+            if (s[si] == p[pi]) {
+                ++si;
+                ++pi;
+            } else if (pi) {
+                pi = nextStart[pi - 1];
             } else {
-                ++i;
+                ++si;
             }
-            if (j == pLen) {
-                printf("%llu ", i - pLen);
-                j = nextStart[j - 1];
+            if (pi == pLen) {
+                printf("%d ", si - pLen);
+                pi = nextStart[pi - 1];
             }
         }
         printf("\n");
     }
 
     int main() {
-        unsigned long long m;
-        scanf("%lld", &m);
-        auto p = new char[m + 1];
+        int pLen;
+        scanf("%d", &pLen);
+        auto p = new char[pLen + 1];
         scanf("%s", p);
-        unsigned long long n;
-        scanf("%lld", &n);
-        auto s = new char[n + 1];
+        int sLen;
+        scanf("%d", &sLen);
+        auto s = new char[sLen + 1];
         scanf("%s", s);
-        auto nextStart = new unsigned long long[m];
-        buildNext(p, nextStart, m);
-        printMatchedStart(s, n, p, nextStart, m);
+        auto nextStart = new int[pLen];
+        buildNextStart(p, nextStart, pLen);
+        printMatchedStart(s, sLen, p, nextStart, pLen);
         delete[] p;
         delete[] s;
         delete[] nextStart;
