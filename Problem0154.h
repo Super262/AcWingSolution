@@ -8,23 +8,23 @@
 #include <iostream>
 
 class Problem0154 {
-public:
+private:
     const int N = 1000010;
     int arr[N];
-    int q[N];
+    int dq[N];  // 双端队列保存元素的索引
 
     void printMaximalsInWindows(const int n, const int k) {
         int hh = 0, tt = -1;
         for (int i = 0; i < n; ++i) {
-            while (hh <= tt && i - k + 1 > q[hh]) {
+            while (hh <= tt && i - k + 1 > dq[hh]) {
                 ++hh;
             }
-            while (hh <= tt && arr[q[tt]] <= arr[i]) {
+            while (hh <= tt && arr[dq[tt]] <= arr[i]) {
                 --tt;
             }
-            q[++tt] = i;
+            dq[++tt] = i;
             if (i >= k - 1) {  // 当前遍历的数不足k时，无需输出
-                printf("%d ", arr[q[hh]]);
+                printf("%d ", arr[dq[hh]]);
             }
         }
         printf("\n");
@@ -33,15 +33,15 @@ public:
     void printMinimalsInWindows(const int n, const int k) {
         int hh = 0, tt = -1;
         for (int i = 0; i < n; ++i) {
-            while (hh <= tt && i - k + 1 > q[hh]) {
+            while (hh <= tt && i - k + 1 > dq[hh]) {
                 ++hh;
             }
-            while (hh <= tt && arr[q[tt]] >= arr[i]) {
+            while (hh <= tt && arr[dq[tt]] >= arr[i]) {
                 --tt;
             }
-            q[++tt] = i;
+            dq[++tt] = i;
             if (i >= k - 1) {  // 当前遍历的数不足k时，无需输出
-                printf("%d ", arr[q[hh]]);
+                printf("%d ", arr[dq[hh]]);
             }
         }
         printf("\n");
