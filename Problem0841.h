@@ -12,7 +12,7 @@ using namespace std;
 class Problem0841 {
     // 我们不能把某个前缀映射成0。否则，不同的字符串（AA和AAAA）可能有相同的哈希值。
 public:
-    // unsigned 类型变量溢出后会自动退回0，这里无需取模运算
+    // unsigned long long 类型变量溢出后会自动退回0，这里无需显式取模运算（MOD = 2^64）
     void buildHashTable(const char *str,
                         unsigned long long *p,
                         unsigned long long *h,
