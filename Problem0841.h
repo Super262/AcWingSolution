@@ -11,49 +11,40 @@ using namespace std;
 
 class Problem0841 {
     // 我们不能把某个前缀映射成0。否则，不同的字符串（AA和AAAA）可能有相同的哈希值。
-public:
-    // unsigned long long 类型变量溢出后会自动退回0，这里无需显式取模运算（MOD = 2^64）
-    void buildHashTable(const char *str,
-                        unsigned long long *p,
-                        unsigned long long *h,
-                        const unsigned long long N,
-                        const unsigned long long BASE) {
-        p[0] = 1;
-        h[0] = 0;
-        for (unsigned long long i = 1; i <= N; ++i) {
-            p[i] = p[i - 1] * BASE;
-            h[i] = h[i - 1] * BASE + str[i - 1];  // 注意，i从1开始，表示字符序号
+private:
+    const int N = 100010;
+    const int BASE = 13331;  // BASE 取 131 或 13331
+    unsigned long long power[N];
+    unsigned long long prefixHashValue[N];
+    char str[N];
+
+    void buildHashTable() {
+        power[0] = 1;
+        prefixHashValue[0] = 0;
+        for (int i = 1; str[i - 1]; ++i) {
+            power[i] = power[i - 1] * BASE;
+            prefixHashValue[i] = prefixHashValue[i - 1] * BASE + str[i - 1];  // 注意，i从1开始，表示字符序号
         }
     }
 
-    unsigned long long hashValue(const unsigned long long start,
-                                 const unsigned long long end,
-                                 const unsigned long long *p,
-                                 const unsigned long long *h) {
-        return h[end] - h[start - 1] * p[end - start + 1];
+    unsigned long long hashValue(const int start, const int end) {
+        return prefixHashValue[end] - prefixHashValue[start - 1] * power[end - start + 1];
     }
 
     int main() {
-        unsigned long long n, m;
-        scanf("%lld%lld", &n, &m);
-        auto str = new char[n + 1];
+        int n, m;
+        scanf("%d%d", &n, &m);
         scanf("%s", str);
-        auto p = new unsigned long long[n + 1];
-        auto h = new unsigned long long[n + 1];
-        const unsigned long long BASE = 131;  // BASE 取 131 或 13331
-        buildHashTable(str, p, h, n, BASE);
-        unsigned long long l1, r1, l2, r2;
-        for (unsigned long long i = 0; i < m; ++i) {
-            scanf("%lld%lld%lld%lld", &l1, &r1, &l2, &r2);
-            if (hashValue(l1, r1, p, h) == hashValue(l2, r2, p, h)) {
+        buildHashTable();
+        for (int i = 0; i < m; ++i) {
+            int x1, y1, x2, y2;
+            scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+            if (hashValue(x1, y1) == hashValue(x2, y2)) {
                 printf("Yes\n");
             } else {
                 printf("No\n");
             }
         }
-        delete[] str;
-        delete[] p;
-        delete[] h;
         return 0;
     }
 };
