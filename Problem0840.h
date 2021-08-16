@@ -12,7 +12,9 @@ using namespace std;
 
 class Problem0840 {
 public:
-    bool queryValue(const int target, const vector<unsigned int> &headIdx, const vector<unsigned int> &nextIdx,
+    bool queryValue(const int target,
+                    const vector<unsigned int> &headIdx,
+                    const vector<unsigned int> &nextIdx,
                     const vector<int> &storage) {
         const int N = (int) headIdx.size();
         const int r = (target % N + N) % N;  // 消除负数的影响
@@ -24,9 +26,11 @@ public:
         return false;
     }
 
-    void
-    insertValue(const int target, vector<unsigned int> &headIdx, vector<unsigned int> &nextIdx, vector<int> &storage,
-                unsigned int &idx) {
+    void insertValue(const int target,
+                     vector<unsigned int> &headIdx,
+                     vector<unsigned int> &nextIdx,
+                     vector<int> &storage,
+                     unsigned int &idx) {
         if (queryValue(target, headIdx, nextIdx, storage)) {
             return;
         }
