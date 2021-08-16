@@ -5,61 +5,58 @@
 #ifndef ACWINGSOLUTION_PROBLEM0837_H
 #define ACWINGSOLUTION_PROBLEM0837_H
 
-#include <vector>
 #include <iostream>
 
 using namespace std;
 
 
 class Problem0837 {
-public:
-    unsigned long findRoot(vector<unsigned long> &root, const unsigned long &target) {
-        if (root[target] != target) {
-            root[target] = findRoot(root, root[target]);
+private:
+    int rootIdx[100010];
+    int clusterSize[100010];
+
+    int findRoot(const int x) {
+        if (x != rootIdx[x]) {
+            rootIdx[x] = findRoot(rootIdx[x]);
         }
-        return root[target];
+        return rootIdx[x];
     }
 
-    void mergeSets(vector<unsigned long> &root,
-                   vector<unsigned long> &clusterSize,
-                   const unsigned long &a,
-                   const unsigned long &b) {
-        unsigned long rootOfA = findRoot(root, a);
-        unsigned long rootOfB = findRoot(root, b);
-        if (rootOfA == rootOfB) {
+    void mergeSets(const int a, const int b) {
+        auto rootA = findRoot(a);
+        auto rootB = findRoot(b);
+        if (rootA == rootB) {
             return;
         }
-        unsigned long sum = clusterSize[rootOfA] + clusterSize[rootOfB];
-        root[rootOfA] = rootOfB;
-        rootOfA = findRoot(root, a);
-        clusterSize[rootOfA] = sum;
+        auto nextSize = clusterSize[rootA] + clusterSize[rootB];
+        rootIdx[rootA] = rootB;
+        clusterSize[rootB] = nextSize;
     }
 
     int main() {
-        unsigned long n, m;
-        scanf("%ld%ld", &n, &m);
-        vector<unsigned long> root(n + 1, 0);
-        vector<unsigned long> clusterSize(n + 1, 1);  // 规定：只有根结点的count有意义
-        for (unsigned long i = 1; i <= n; ++i) {
-            root[i] = i;
+        int n, m;
+        scanf("%d%d", &n, &m);
+        for (int i = 1; i <= n; ++i) {
+            rootIdx[i] = i;
+            clusterSize[i] = 1;
         }
         char op[3];
-        unsigned long a, b;
-        while (m--) {
+        int a, b;
+        for (int i = 0; i < m; ++i) {
             scanf("%s", op);
             if (op[0] == 'C') {
-                scanf("%ld%ld", &a, &b);
-                mergeSets(root, clusterSize, a, b);
+                scanf("%d%d", &a, &b);
+                mergeSets(a, b);
             } else if (op[1] == '1') {
-                scanf("%ld%ld", &a, &b);
-                if (findRoot(root, a) == findRoot(root, b)) {
+                scanf("%d%d", &a, &b);
+                if (findRoot(a) == findRoot(b)) {
                     printf("Yes\n");
                 } else {
                     printf("No\n");
                 }
             } else {
-                scanf("%ld", &a);
-                printf("%ld\n", clusterSize[findRoot(root, a)]);
+                scanf("%d", &a);
+                printf("%d\n", clusterSize[findRoot(a)]);
             }
         }
         return 0;
