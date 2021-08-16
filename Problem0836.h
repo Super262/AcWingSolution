@@ -23,7 +23,6 @@ private:
 
     void mergeSets(const int a, const int b) {
         rootIdx[findRoot(a)] = rootIdx[findRoot(b)];
-        findRoot(a);
     }
 
     int main() {
