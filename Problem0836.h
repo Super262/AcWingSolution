@@ -11,34 +11,35 @@
 using namespace std;
 
 class Problem0836 {
-public:
-    unsigned long findRoot(vector<unsigned long> &root, const unsigned long target) {
-        if (target != root[target]) {
-            root[target] = findRoot(root, root[target]);
+private:
+    int rootIdx[100010];
+
+    int findRoot(const int x) {
+        if (rootIdx[x] != x) {
+            rootIdx[x] = findRoot(rootIdx[x]);
         }
-        return root[target];
+        return rootIdx[x];
     }
 
-    void mergeSets(vector<unsigned long> &root, const unsigned long a, const unsigned long b) {
-        root[findRoot(root, a)] = findRoot(root, b);
-        findRoot(root, a);
+    void mergeSets(const int a, const int b) {
+        rootIdx[findRoot(a)] = rootIdx[findRoot(b)];
+        findRoot(a);
     }
 
     int main() {
-        unsigned long n, m;
-        scanf("%ld%ld", &n, &m);
-        vector<unsigned long> root(n + 1, 0);
-        for (unsigned long i = 1; i <= n; ++i) {
-            root[i] = i;
+        int n, m;
+        scanf("%d%d", &n, &m);
+        for (int i = 1; i <= n; ++i) {
+            rootIdx[i] = i;
         }
         char op[2];
-        unsigned long a, b;
-        for (unsigned long i = 0; i < m; ++i) {
-            scanf("%s%ld%ld", op, &a, &b);
+        int a, b;
+        for (int i = 0; i < m; ++i) {
+            scanf("%s%d%d", op, &a, &b);
             if (op[0] == 'M') {
-                mergeSets(root, a, b);
+                mergeSets(a, b);
             } else {
-                if (findRoot(root, a) == findRoot(root, b)) {
+                if (findRoot(a) == findRoot(b)) {
                     printf("Yes\n");
                 } else {
                     printf("No\n");
