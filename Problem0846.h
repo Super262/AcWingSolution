@@ -5,68 +5,58 @@
 #ifndef ACWINGSOLUTION_PROBLEM0846_H
 #define ACWINGSOLUTION_PROBLEM0846_H
 
-#include <vector>
 #include <iostream>
+#include <cstring>
+
+using namespace std;
 
 class Problem0846 {
-public:
-    void addEdge(const int a,
-                 const int b,
-                 vector<int> &headIndex,
-                 vector<int> &nextIndex,
-                 vector<int> &vertexValue,
-                 int &idx) {
-        while (idx >= nextIndex.size()) {
-            nextIndex.emplace_back(-1);
-        }
-        while (idx >= vertexValue.size()) {
-            vertexValue.emplace_back(0);
-        }
+private:
+    const int N = 100010;
+    bool visited[N];
+    int headIndex[N];
+    int vertexValue[2 * N];
+    int nextIndex[2 * N];
+
+    void addEdge(const int a, const int b, int &idx) {
         vertexValue[idx] = b;
         nextIndex[idx] = headIndex[a];
         headIndex[a] = idx;
         ++idx;
     }
 
-    int dfs(const int root,
-            const int n,
-            const vector<int> &headIndex,
-            const vector<int> &nextIndex,
-            const vector<int> &vertexValue,
-            vector<bool> &visited, int &answer) {
-        int nodesCount = 1;
-        int maxComponentSize = 1;
+    int dfs(const int root, const int n, int &answer) {
         visited[root] = true;
+        int maxComponentSize = 1;
+        int nodesCount = 1;
         for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            int v = vertexValue[idx];
-            if (visited[v]) {
+            auto childV = vertexValue[idx];
+            if (visited[childV]) {
                 continue;
             }
-            int childSize = dfs(v, n, headIndex, nextIndex, vertexValue, visited, answer);
+            auto childSize = dfs(childV, n, answer);
             maxComponentSize = max(maxComponentSize, childSize);
             nodesCount += childSize;
         }
         maxComponentSize = max(maxComponentSize, n - nodesCount);
-        answer = min(maxComponentSize, answer);
+        answer = min(answer, maxComponentSize);
         return nodesCount;
     }
 
     int main() {
+        memset(headIndex, -1, sizeof headIndex);
+        memset(nextIndex, -1, sizeof nextIndex);
         int n;
         scanf("%d", &n);
-        int a, b;
-        vector<int> headIndex(n + 1, -1);
-        vector<int> nextIndex(n, -1);
-        vector<int> vertexValue(n, 0);
         int idx = 0;
         for (int i = 0; i < n; ++i) {
+            int a, b;
             scanf("%d%d", &a, &b);
-            addEdge(a, b, headIndex, nextIndex, vertexValue, idx);
-            addEdge(b, a, headIndex, nextIndex, vertexValue, idx);
+            addEdge(a, b, idx);
+            addEdge(b, a, idx);
         }
-        vector<bool> visited(n + 1, false);
         int answer = n;
-        dfs(1, n, headIndex, nextIndex, vertexValue, visited, answer);
+        dfs(1, n, answer);
         printf("%d\n", answer);
         return 0;
     }
