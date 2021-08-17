@@ -5,82 +5,64 @@
 #ifndef ACWINGSOLUTION_PROBLEM0847_H
 #define ACWINGSOLUTION_PROBLEM0847_H
 
-#include <vector>
-#include <queue>
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Problem0847 {
-public:
-    void addEdge(const int a,
-                 const int b,
-                 vector<int> &headIndex,
-                 vector<int> &vertexValue,
-                 vector<int> &nextIndex,
-                 int &idx) {
-        while (idx >= vertexValue.size()) {
-            vertexValue.emplace_back(0);
-        }
-        while (idx >= nextIndex.size()) {
-            nextIndex.emplace_back(-1);
-        }
+private:
+    const int N = 100010;
+    int headIndex[N];
+    int nextIndex[2 * N];
+    int vertexValue[2 * N];
+    int dist[N];
+    int q[2 * N];
+
+    void addEdge(const int a, const int b, int &idx) {
         vertexValue[idx] = b;
         nextIndex[idx] = headIndex[a];
         headIndex[a] = idx;
         ++idx;
     }
 
-    int bfs(const int root,
-            const int target,
-            const vector<int> &headIndex,
-            const vector<int> &vertexValue,
-            const vector<int> &nextIndex,
-            vector<int> &distance) {
-        if (headIndex[root] == -1) {
-            return -1;
-        }
-        if (target == root) {
-            return 0;
-        }
-        distance[root] = 0;
-        queue<int> q;
-        q.emplace(root);
-        while (!q.empty()) {
-            int levelSize = (int) q.size();
-            for (int i = 0; i < levelSize; ++i) {
-                int v = q.front();
-                q.pop();
-                for (int idx = headIndex[v]; idx != -1; idx = nextIndex[idx]) {
-                    int neighbor = vertexValue[idx];
-                    if (distance[neighbor] != -1) {
+    int bfs(const int root, const int target) {
+        memset(dist, -1, sizeof dist);
+        int hh = 0, tt = -1;
+        dist[root] = 0;
+        q[++tt] = root;
+        while (hh <= tt) {
+            auto currentLevelSize = tt - hh + 1;
+            while (currentLevelSize--) {
+                auto node = q[hh++];
+                if (node == target) {
+                    return dist[node];
+                }
+                for (auto idx = headIndex[node]; idx != -1; idx = nextIndex[idx]) {
+                    auto nextV = vertexValue[idx];
+                    if (dist[nextV] != -1) {
                         continue;
                     }
-                    distance[neighbor] = distance[v] + 1;
-                    if (neighbor == target) {
-                        return distance[neighbor];
-                    }
-                    q.emplace(neighbor);
+                    q[++tt] = nextV;
+                    dist[nextV] = dist[node] + 1;
                 }
             }
         }
-        return -1;
+        return dist[target];
     }
 
     int main() {
+        memset(headIndex, -1, sizeof headIndex);
+        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<int> headIndex(n + 1, -1);
-        vector<int> distance(n + 1, -1);
         int idx = 0;
-        vector<int> vertexValue;
-        vector<int> nextIndex;
-        int a, b;
         for (int i = 0; i < m; ++i) {
+            int a, b;
             scanf("%d%d", &a, &b);
-            addEdge(a, b, headIndex, vertexValue, nextIndex, idx);
+            addEdge(a, b, idx);
         }
-        printf("%d\n", bfs(1, n, headIndex, vertexValue, nextIndex, distance));
+        printf("%d\n", bfs(1, n));
         return 0;
     }
 };
