@@ -10,29 +10,29 @@
 using namespace std;
 
 class Problem0826 {
-public:
+private:
     const int N = 100010;
-    int idx = 0, head = 0, n[N], ne[N];
+    int idx = 0, headIdx = 0, nodeValue[N], nextIdx[N];
 
     void add_head(int x) {
-        n[idx] = x;
-        ne[idx] = head;
-        head = idx++;
+        nodeValue[idx] = x;
+        nextIdx[idx] = headIdx;
+        headIdx = idx++;
     }
 
     void add(int k, int x) {
-        n[idx] = x;
-        ne[idx] = ne[k];
-        ne[k] = idx++;
+        nodeValue[idx] = x;
+        nextIdx[idx] = nextIdx[k];
+        nextIdx[k] = idx++;
     }
 
     void remove(int k) {
-        ne[k] = ne[ne[k]];
+        nextIdx[k] = nextIdx[nextIdx[k]];
     }
 
     int main() {
         int a;
-        head = -1;
+        headIdx = -1;
         idx = 0;
         cin >> a;
         while (a--) {
@@ -41,7 +41,9 @@ public:
             cin >> op;
             if (op == "D") {
                 cin >> k;
-                if (!k)head = ne[head];
+                if (!k) {
+                    headIdx = nextIdx[headIdx];
+                }
                 remove(k - 1);
             } else if (op == "H") {
                 cin >> x;
@@ -51,8 +53,8 @@ public:
                 add(k - 1, x);
             }
         }
-        for (int i = head; i != -1; i = ne[i]) {
-            cout << n[i] << " ";
+        for (int i = headIdx; i != -1; i = nextIdx[i]) {
+            cout << nodeValue[i] << " ";
         }
         return 0;
     }
