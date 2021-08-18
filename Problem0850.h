@@ -5,93 +5,74 @@
 #ifndef ACWINGSOLUTION_PROBLEM0850_H
 #define ACWINGSOLUTION_PROBLEM0850_H
 
-#include <vector>
+#include <iostream>
+#include <cstring>
 #include <queue>
 #include <algorithm>
-#include <iostream>
 
 using namespace std;
 
 class Problem0850 {
-public:
-    void addEdge(const int start,
-                 const int end,
-                 const int w,
-                 vector<int> &headIndex,
-                 vector<int> &vertexValue,
-                 vector<int> &nextIndex,
-                 vector<int> &weight,
-                 int &idx) {
+private:
+    const int N = 150010;
+    int headIndex[N];
+    int nextIndex[N];
+    int vertexValue[N];
+    int weight[N];
 
-        // 及时扩容，避免内存错误！
-        if (idx >= vertexValue.size()) {
-            vertexValue.emplace_back(0);
-        }
-        if (idx >= nextIndex.size()) {
-            nextIndex.emplace_back(-1);
-        }
-        if (idx >= weight.size()) {
-            weight.emplace_back(0);
-        }
+    void addEdge(const int a, const int b, const int w, int &idx) {
+        vertexValue[idx] = b;
         weight[idx] = w;
-        vertexValue[idx] = end;
-        nextIndex[idx] = headIndex[start];
-        headIndex[start] = idx;
+        nextIndex[idx] = headIndex[a];
+        headIndex[a] = idx;
         ++idx;
     }
 
-    int dijkstra(const vector<int> &headIndex,
-                 const vector<int> &vertexValue,
-                 const vector<int> &nextIndex,
-                 const vector<int> &weight,
-                 const int n) {
-        vector<int> distance(n + 1, 0x3f3f3f3f);
-        vector<bool> visited(n + 1, false);
+    int dijkstra(const int start, const int n) {
+        auto dist = new int[n + 1];
+        auto selected = new bool[n + 1];
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        heap.emplace(pair<int, int>(0, 1));
-        distance[1] = 0;
+        memset(dist, 0x7f, sizeof(int) * (n + 1));
+        memset(selected, 0, sizeof(bool) * (n + 1));
+        dist[start] = 0;
+        heap.emplace(pair<int, int>(dist[start], start));
         while (!heap.empty()) {
-            auto node = heap.top();
+            auto t = heap.top();
             heap.pop();
-            int v = node.second;
-
-            // 设置访问标记的时机：顶点出队时！
-            if (visited[v]) {
+            auto closestVertex = t.second;
+            if (selected[closestVertex]) {
                 continue;
             }
-            visited[v] = true;
-
-            int d = node.first;
-            for (int neighborIdx = headIndex[v]; neighborIdx != -1; neighborIdx = nextIndex[neighborIdx]) {
-                int neighborV = vertexValue[neighborIdx];
-                if (distance[neighborV] > d + weight[neighborIdx]) {
-                    distance[neighborV] = d + weight[neighborIdx];
-                    // 只有距离发生变化的点需要被放入堆中
-                    // 堆中存放的是节点距起点的距离
-                    heap.emplace(pair<int, int>(distance[neighborV], neighborV));
+            selected[closestVertex] = true;
+            for (int idx = headIndex[closestVertex]; idx != -1; idx = nextIndex[idx]) {
+                int nextV = vertexValue[idx];
+                if (weight[idx] == 0x7f7f7f7f || dist[nextV] < dist[closestVertex] + weight[idx]) {
+                    continue;
                 }
+                dist[nextV] = dist[closestVertex] + weight[idx];
+                heap.emplace(pair<int, int>(dist[nextV], nextV));
             }
         }
-        return distance[n] == 0x3f3f3f3f ? -1 : distance[n];
+        int result = dist[n];
+        delete[] dist;
+        delete[] selected;
+        return result == 0x7f7f7f7f ? -1 : result;
     }
 
     int main() {
+        memset(headIndex, -1, sizeof headIndex);
+        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<int> headIndex(n + 1, -1);
-        vector<int> weight(n + 1, 0);
-        vector<int> vertexValue(2 * n + 1, 0);
-        vector<int> nextIndex(2 * n + 1, -1);
         int idx = 0;
-        int x, y, z;
-        while (m--) {
-            scanf("%d%d%d", &x, &y, &z);
-            addEdge(x, y, z, headIndex, vertexValue, nextIndex, weight, idx);
+        for (int i = 0; i < m; ++i) {
+            int x, y, w;
+            scanf("%d%d%d", &x, &y, &w);
+            addEdge(x, y, w, idx);
         }
-        printf("%d\n", dijkstra(headIndex, vertexValue, nextIndex, weight, n));
+        printf("%d\n", dijkstra(1, n));
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0850_H
