@@ -5,47 +5,59 @@
 #ifndef ACWINGSOLUTION_PROBLEM0849_H
 #define ACWINGSOLUTION_PROBLEM0849_H
 
-#include <vector>
 #include <iostream>
+#include <cstring>
+
+using namespace std;
 
 class Problem0849 {
-public:
-    int dijkstra(const vector <vector<int>> &graph) {
-        const int n = (int) graph.size() - 1;
-        vector<int> distance(n + 1, 0x3f3f3f3f);
-        vector<bool> visited(n + 1, false);
-        distance[1] = 0;  // 不要忘记将起点距离设置为0！
-        for (int i = 0; i < n; ++i) {
-            int closestNode = -1;
+private:
+    const int N = 510;
+    int graph[N][N];
+
+    int dijkstra(const int start, const int n) {
+        auto dist = new int[n + 1];
+        auto selected = new bool[n + 1];
+        memset(dist, 0x7f, sizeof(int) * (n + 1));
+        memset(selected, 0, sizeof(bool) * (n + 1));
+        dist[start] = 0;
+        for (int k = 1; k <= n; ++k) {
+            int closestVertex = -1;
             for (int v = 1; v <= n; ++v) {
-                // 下面的判断条件：先判断是否重复访问，再判定距离！
-                if (!visited[v] && (closestNode == -1 || distance[v] < distance[closestNode])) {
-                    closestNode = v;
+                if (!selected[v] && (closestVertex == -1 || dist[closestVertex] > dist[v])) {
+                    closestVertex = v;
                 }
             }
-            if (closestNode == -1) {
-                break;
+            if (closestVertex == -1) {
+                return -1;
             }
-            visited[closestNode] = true;
+            selected[closestVertex] = true;
             for (int v = 1; v <= n; ++v) {
-                distance[v] = min(distance[v], distance[closestNode] + graph[closestNode][v]);
+                if (graph[closestVertex][v] == 0x7f7f7f7f) {
+                    continue;
+                }
+                dist[v] = min(dist[v], dist[closestVertex] + graph[closestVertex][v]);
             }
         }
-        return distance[n] == 0x3f3f3f3f ? -1 : distance[n];
+        int result = dist[n];
+        delete[] dist;
+        delete[] selected;
+        return result == 0x7f7f7f7f ? -1 : result;
     }
 
     int main() {
+        memset(graph, 0x7f, sizeof graph);
         int n, m;
         scanf("%d%d", &n, &m);
-        vector <vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
-        int x, y, z;
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &x, &y, &z);
-            graph[x][y] = min(graph[x][y], z);
+            int x, y, w;
+            scanf("%d%d%d", &x, &y, &w);
+            graph[x][y] = min(graph[x][y], w);
         }
-        printf("%d\n", dijkstra(graph));
+        printf("%d\n", dijkstra(1, n));
         return 0;
     }
+
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0849_H
