@@ -5,42 +5,48 @@
 #ifndef ACWINGSOLUTION_PROBLEM0853_H
 #define ACWINGSOLUTION_PROBLEM0853_H
 
-#include <vector>
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Problem0853 {
-public:
-    int bellman_ford(const int n,
-                     int pathMaxLen,
-                     const vector<int> &edgeStart,
-                     const vector<int> &edgeEnd,
-                     const vector<int> &edgeWeight) {
-        vector<int> distance(n + 1, 0x3f3f3f3f);
-        const int edgesCount = (int) edgeStart.size();
-        distance[1] = 0;
-        while (pathMaxLen--) {
-            const vector<int> prevDis(distance);  // 不要忘记这个备份！
-            for (int j = 0; j < edgesCount; ++j) {
-                distance[edgeEnd[j]] = min(distance[edgeEnd[j]], prevDis[edgeStart[j]] + edgeWeight[j]);
+private:
+    struct Edge {
+        int start;
+        int end;
+        int weight;
+    };
+
+    Edge edges[10010];
+
+    int bellmanFord(const int start, const int n, const int edgesSize, int pathLen) {
+        auto dist = new int[n + 1];
+        auto temp = new int[n + 1];
+        memset(dist, 0x7f, sizeof(int) * (n + 1));
+        dist[start] = 0;
+        while (pathLen--) {
+            // 不要忘记这个备份！
+            memcpy(temp, dist, sizeof(int) * (n + 1));
+            for (int i = 0; i < edgesSize; ++i) {
+                dist[edges[i].end] = min(dist[edges[i].end], temp[edges[i].start] + edges[i].weight);
             }
         }
+        int result = dist[n];
+        delete[] temp;
+        delete[] dist;
         // "正无穷"可能被负权边更新而减小，所以这里使用"0x3f3f3f3f/2"
-        return distance[n] >= 0x3f3f3f3f / 2 ? -1 : distance[n];
+        return result >= 0x7f7f7f7f / 2 ? 0x7f7f7f7f : result;
     }
 
     int main() {
         int n, m, k;
         scanf("%d%d%d", &n, &m, &k);
-        vector<int> edgeStart(m, 0);
-        vector<int> edgeEnd(m, 0);
-        vector<int> edgeWeight(m, 0);
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &edgeStart[i], &edgeEnd[i], &edgeWeight[i]);
+            scanf("%d%d%d", &edges[i].start, &edges[i].end, &edges[i].weight);
         }
-        int result = bellman_ford(n, k, edgeStart, edgeEnd, edgeWeight);
-        if (result == -1) {
+        int result = bellmanFord(1, n, m, k);
+        if (result == 0x7f7f7f7f) {
             printf("impossible\n");
         } else {
             printf("%d\n", result);
