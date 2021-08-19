@@ -5,81 +5,77 @@
 #ifndef ACWINGSOLUTION_PROBLEM0851_H
 #define ACWINGSOLUTION_PROBLEM0851_H
 
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
 class Problem0851 {
-public:
-    void addEdge(const int start,
-                 const int end,
-                 const int w,
-                 vector<int> &headIndex,
-                 vector<int> &vertexValue,
-                 vector<int> &nextIndex,
-                 vector<int> &weight,
-                 int &idx) {
-        if (idx >= vertexValue.size()) {
-            vertexValue.emplace_back(0);
-        }
-        if (idx >= nextIndex.size()) {
-            nextIndex.emplace_back(-1);
-        }
-        if (idx >= weight.size()) {
-            weight.emplace_back(0);
-        }
-        vertexValue[idx] = end;
-        nextIndex[idx] = headIndex[start];
+private:
+    const int N = 100010;
+    int headIndex[N];
+    int nextIndex[2 * N];
+    int weight[2 * N];
+    int vertexValue[2 * N];
+
+    void addEdge(const int a, const int b, const int w, int &idx) {
+        vertexValue[idx] = b;
         weight[idx] = w;
-        headIndex[start] = idx;
+        nextIndex[idx] = headIndex[a];
+        headIndex[a] = idx;
         ++idx;
     }
 
-    int spfa(const vector<int> &headIndex,
-             const vector<int> &vertexValue,
-             const vector<int> &nextIndex,
-             const vector<int> &weight,
-             const int n) {
-        queue<int> q; // q存放距离变小的顶点
-        vector<int> distance(n + 1, 0x3f3f3f3f);
-        vector<bool> isInQueue(n + 1, false);
-        distance[1] = 0;
-        q.emplace(1);
-        isInQueue[1] = true;
-        while (!q.empty()) {
-            auto vertex = q.front();
-            q.pop();
-            isInQueue[vertex] = false;
-            for (int neighborIdx = headIndex[vertex]; neighborIdx != -1; neighborIdx = nextIndex[neighborIdx]) {
-                int neighborV = vertexValue[neighborIdx];
-                if (distance[neighborV] <= distance[vertex] + weight[neighborIdx]) {
+    int spfa(const int root, const int target, const int n) {
+        auto q = new int[2 * N];  // 队列的空间应该和边的数量一致
+        auto dist = new int[n + 1];
+        auto isInQueue = new bool[n + 1];
+        memset(dist, 0x7f, sizeof(int) * (n + 1));
+        memset(isInQueue, 0, sizeof(bool) * (n + 1));
+        int hh = 0, tt = -1;
+        q[++tt] = root;
+        isInQueue[root] = true;
+        dist[root] = 0;
+        while (hh <= tt) {
+            auto node = q[hh++];
+            isInQueue[node] = false;
+            for (int idx = headIndex[node]; idx != -1; idx = nextIndex[idx]) {
+                auto nextV = vertexValue[idx];
+                if (dist[nextV] <= dist[node] + weight[idx]) {
                     continue;
                 }
-                distance[neighborV] = distance[vertex] + weight[neighborIdx];
-                if (!isInQueue[neighborV]) {
-                    q.emplace(neighborV);
-                    isInQueue[neighborV] = true;
+                dist[nextV] = dist[node] + weight[idx];
+                if (isInQueue[nextV]) {
+                    continue;
                 }
+                q[++tt] = nextV;
+                isInQueue[nextV] = true;
             }
         }
-        if (distance[n] == 0x3f3f3f3f) {
-            return -1;
+        delete[] isInQueue;
+        delete[] q;
+        auto result = dist[target];
+        delete[] dist;
+        if (result == 0x7f7f7f7f) {
+            result = -1;
         }
-        return distance[n];
+        return result;
     }
 
     int main() {
+        memset(headIndex, -1, sizeof headIndex);
+        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        int x, y, z;
-        vector<int> headIndex(n + 1, -1);
-        vector<int> vertexValue(2 * n + 1, 0);
-        vector<int> nextIndex(2 * n + 1, -1);
-        vector<int> weight(2 * n + 1, 0);
         int idx = 0;
-        while (m--) {
-            scanf("%d%d%d", &x, &y, &z);
-            addEdge(x, y, z, headIndex, vertexValue, nextIndex, weight, idx);
+        int a, b, w;
+        for (int i = 0; i < m; ++i) {
+            scanf("%d%d%d", &a, &b, &w);
+            addEdge(a, b, w, idx);
         }
-        int result = spfa(headIndex, vertexValue, nextIndex, weight, n);
+        int result = spfa(1, n, n);
         if (result == -1) {
-            puts("impossible");
+            printf("impossible\n");
         } else {
             printf("%d\n", result);
         }
