@@ -11,66 +11,73 @@
 using namespace std;
 
 struct Edge {
-    int start, end, weight;
+    int start;
+    int end;
+    int weight;
 
-    bool operator<(const Edge &e) const {
+    bool operator<(const Edge &e) const {  // 牢记这个函数重载的模版
         return weight < e.weight;
     }
 };
 
 class Problem0859 {
-public:
-    int findRoot(const int target, int *parent) {
-        if (parent[target] != target) {
-            parent[target] = findRoot(parent[target], parent);
+private:
+    const int N = 100010;
+    int parent[N];
+    Edge edges[2 * N];
+
+    int findRoot(const int x) {
+        if (x != parent[x]) {
+            parent[x] = findRoot(parent[x]);
         }
-        return parent[target];
+        return parent[x];
     }
 
-    void mergeSets(const int a, const int b, int *parent) {
-        parent[findRoot(a, parent)] = findRoot(b, parent);
-        findRoot(a, parent);
+    void mergeSets(const int a, const int b) {
+        parent[findRoot(a)] = findRoot(b);
     }
 
-    int kruskal(Edge *edges, int *parent, const int edgesNum, const int vertexsNum) {
-        sort(edges, edges + edgesNum);
-        int result = 0;
-        int treeSize = 0;
-        for (int i = 0; i < edgesNum; ++i) {
-            int ra = findRoot(edges[i].start, parent);
-            int rb = findRoot(edges[i].end, parent);
-            if (ra == rb) {
+    int kruskal(const int edgesSize, const int vertexesNum) {
+        sort(edges, edges + edgesSize);
+        int mstSize = 0;
+        int mstWeight = 0;
+        for (int i = 0; i < edgesSize; ++i) {
+            auto a = edges[i].start;
+            auto b = edges[i].end;
+            if (findRoot(a) == findRoot(b)) {
                 continue;
             }
-            mergeSets(ra, rb, parent);
-            ++treeSize;
-            result += edges[i].weight;
+            mergeSets(a, b);
+            mstWeight += edges[i].weight;
+            ++mstSize;
         }
-        if (treeSize < vertexsNum - 1) {
-            return -1;
+        if (mstSize != vertexesNum - 1) {
+            mstWeight = -1;
         }
-        return result;
+        return mstWeight;
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        auto parent = new int[n + 1];
-        auto edges = new Edge[m];
-        for (int i = 1; i <= n; ++i) {
-            parent[i] = i;
+        for (int v = 1; v <= n; ++v) {
+            parent[v] = v;
         }
+        int a, b, w;
+        int edgeIdx = 0;
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &edges[i].start, &edges[i].end, &edges[i].weight);
+            scanf("%d%d%d", &a, &b, &w);
+            edges[edgeIdx].start = a;
+            edges[edgeIdx].end = b;
+            edges[edgeIdx].weight = w;
+            ++edgeIdx;
         }
-        int t = kruskal(edges, parent, m, n);
-        if (t == -1) {
-            puts("impossible");
+        int result = kruskal(m, n);
+        if (result == -1) {
+            printf("impossible\n");
         } else {
-            printf("%d\n", t);
+            printf("%d\n", result);
         }
-        delete[] parent;
-        delete[] edges;
         return 0;
     }
 };
