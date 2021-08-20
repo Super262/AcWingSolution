@@ -36,6 +36,7 @@ private:
                 break;
             }
             isSelected[closestVertex] = true;
+            // 先更新result再更新dist
             if (k) {
                 result += dist[closestVertex];
             }
