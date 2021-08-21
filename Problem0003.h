@@ -6,36 +6,37 @@
 #define ACWINGSOLUTION_PROBLEM0003_H
 
 #include <iostream>
-#include <cstring>
 
 using namespace std;
 
 class Problem0003 {
-public:
-    int knapsackMaxValue(const int *itemsSize, const int *itemsValue, const int itemsNum, const int packVolume) {
-        auto dp = new int[packVolume + 1];
-        memset(dp, 0, sizeof(int) * (packVolume + 1));
+private:
+    struct Item {
+        int size;
+        int value;
+    };
+
+    const int N = 1010;
+    const int M = 1010;
+    Item items[N];
+    int dp[M];
+
+    int knapsack(const int packVolume, const int itemsNum) {
         for (int i = 0; i < itemsNum; ++i) {
-            for (int v = itemsSize[i]; v <= packVolume; ++v) {
-                dp[v] = max(dp[v], dp[v - itemsSize[i]] + itemsValue[i]);
+            for (int j = items[i].size; j <= packVolume; ++j) {
+                dp[j] = max(dp[j], dp[j - items[i].size] + items[i].value);
             }
         }
-        int result = dp[packVolume];
-        delete[] dp;
-        return result;
+        return dp[packVolume];
     }
 
     int main() {
         int n, v;
         scanf("%d%d", &n, &v);
-        auto *itemsSize = new int[n];
-        auto *itemsValue = new int[n];
         for (int i = 0; i < n; ++i) {
-            scanf("%d%d", &itemsSize[i], &itemsValue[i]);
+            scanf("%d%d", &items[i].size, &items[i].value);
         }
-        printf("%d\n", knapsackMaxValue(itemsSize, itemsValue, n, v));
-        delete[] itemsSize;
-        delete[] itemsValue;
+        printf("%d\n", knapsack(v, n));
         return 0;
     }
 };
