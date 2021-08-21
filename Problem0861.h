@@ -27,17 +27,17 @@ private:
         ++idx;
     }
 
-    bool hasMatched(const int a) {
-        for (auto idx = headIndex[a]; idx != -1; idx = nextIndex[idx]) {
-            auto nextV = vertexValue[idx];
-            if (visited[nextV]) {
+    bool hasMatched(const int v1) {
+        for (auto idx = headIndex[v1]; idx != -1; idx = nextIndex[idx]) {
+            auto v2 = vertexValue[idx];
+            if (visited[v2]) {
                 continue;
             }
-            visited[nextV] = true;
-            if (matchedVertex[nextV] && !hasMatched(matchedVertex[nextV])) {
+            visited[v2] = true;
+            if (matchedVertex[v2] && !hasMatched(matchedVertex[v2])) {
                 continue;
             }
-            matchedVertex[nextV] = a;
+            matchedVertex[v2] = v1;
             return true;
         }
         return false;
