@@ -6,47 +6,48 @@
 #define ACWINGSOLUTION_PROBLEM0005_H
 
 #include <iostream>
-#include <cstring>
 #include <vector>
 
 using namespace std;
 
 class Problem0005 {
-public:
-    int knapsackMaxValue(const vector<int> &itemSize, const vector<int> &itemValue, const int packVolume) {
-        auto dp = new int[packVolume + 1];
-        memset(dp, 0, sizeof(int) * (packVolume + 1));
-        for (int i = 0; i < itemValue.size(); ++i) {
-            for (int v = packVolume; v >= itemSize[i]; --v) {
-                dp[v] = max(dp[v], dp[v - itemSize[i]] + itemValue[i]);
+private:
+    struct Item {
+        int size;
+        int value;
+    };
+
+    int dp[2010];
+
+    int knapsack(const vector<Item> &items, const int packVolume) {
+        for (auto item : items) {
+            for (int j = packVolume; j >= item.size; --j) {
+                dp[j] = max(dp[j], dp[j - item.size] + item.value);
             }
         }
-        int result = dp[packVolume];
-        delete[] dp;
-        return result;
+        return dp[packVolume];
     }
 
     int main() {
-        int n, packVolume;
-        scanf("%d%d", &n, &packVolume);
-        vector<int> itemSize;
-        vector<int> itemValue;
-        int v, w, s;
+        int n, m;
+        scanf("%d%d", &n, &m);
+        vector<Item> items;
         for (int i = 0; i < n; ++i) {
-            scanf("%d%d%d", &v, &w, &s);
+            int s, v, num;
+            scanf("%d%d%d", &s, &v, &num);
             int factor = 1;
-            while (factor <= s) {
-                itemSize.emplace_back(factor * v);
-                itemValue.emplace_back(factor * w);
-                s -= factor;
-                factor *= 2;
+            while (num >= factor) {
+                Item item{factor * s, factor * v};
+                items.emplace_back(item);
+                num -= factor;
+                factor <<= 1;
             }
-            if (s > 0) {
-                itemSize.emplace_back(s * v);
-                itemValue.emplace_back(s * w);
+            if (num > 0) {
+                Item item{num * s, num * v};
+                items.emplace_back(item);
             }
         }
-        printf("%d\n", knapsackMaxValue(itemSize, itemValue, packVolume));
+        printf("%d\n", knapsack(items, m));
         return 0;
     }
 };
