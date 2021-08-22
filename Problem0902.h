@@ -10,50 +10,41 @@
 using namespace std;
 
 class Problem0902 {
-public:
-    unsigned int editDistance(const char *a, const unsigned int l1, const char *b, const unsigned int l2) {
-        auto dp = new unsigned int *[l1 + 1];
-        for (unsigned int i = 0; i <= l1; ++i) {
-            dp[i] = new unsigned int[l2 + 1];
-            for (unsigned int j = 0; j <= l2; ++j) {
-                dp[i][j] = l1 + l2 + 1;
-            }
-        }
-        for (unsigned int i = 0; i <= l2; ++i) {
+private:
+    const int N = 1010;
+    int dp[N][N];
+    char s1[N];
+    char s2[N];
+
+    int editDistance(const int l1, const int l2) {
+        for (int i = 0; i <= l2; ++i) {
             dp[0][i] = i;
         }
-        for (unsigned int i = 0; i <= l1; ++i) {
+        for (int i = 0; i <= l1; ++i) {
             dp[i][0] = i;
         }
-        for (unsigned int i = 1; i <= l1; ++i) {
-            for (unsigned int j = 1; j <= l2; ++j) {
-                if (a[i - 1] == b[j - 1]) {
-                    dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j] + 1, dp[i][j - 1] + 1));
+        for (int i = 1; i <= l1; ++i) {
+            for (int j = 1; j <= l2; ++j) {
+                dp[i][j] = l1 + l2 + 1;
+                if (s1[i] == s2[j]) {
+                    dp[i][j] = min(dp[i][j], dp[i - 1][j - 1]);
                 } else {
-                    dp[i][j] = min(dp[i - 1][j - 1] + 1, min(dp[i - 1][j] + 1, dp[i][j - 1] + 1));
+                    dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + 1);
                 }
+                dp[i][j] = min(dp[i][j], dp[i][j - 1] + 1);
+                dp[i][j] = min(dp[i][j], dp[i - 1][j] + 1);
             }
         }
-        unsigned int result = dp[l1][l2];
-        for (unsigned int i = 0; i <= l1; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
-        return result;
+        return dp[l1][l2];
     }
 
     int main() {
-        unsigned int l1;
+        int l1, l2;
         scanf("%d", &l1);
-        auto a = new char[l1 + 1];
-        scanf("%s", a);
-        unsigned int l2;
+        scanf("%s", s1 + 1);
         scanf("%d", &l2);
-        auto b = new char[l2 + 1];
-        scanf("%s", b);
-        printf("%d", editDistance(a, l1, b, l2));
-        delete[] a;
-        delete[] b;
+        scanf("%s", s2 + 1);
+        printf("%d\n", editDistance(l1, l2));
         return 0;
     }
 };
