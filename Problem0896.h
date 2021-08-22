@@ -6,30 +6,31 @@
 #define ACWINGSOLUTION_PROBLEM0896_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Problem0896 {
-public:
-    int longestIS(const int *arr, const int n) {
-        auto lastItemInLS = new int[n + 1];
+private:
+    int longestIS(const int arr[], const int n) {
+        auto lisTail = new int[n + 1];
         int result = 0;
-        lastItemInLS[0] = -2e9;
+        lisTail[result] = -0x7f7f7f7f;
         for (int i = 0; i < n; ++i) {
-            int left = 0;
-            int right = result;
-            while (left < right) {
-                int mid = left + (right - left + 1) / 2;
-                if (lastItemInLS[mid] >= arr[i]) {
-                    right = mid - 1;
+            int t = arr[i];
+            int minL = 0, maxL = result;
+            while (minL < maxL) {
+                int mid = minL + (maxL - minL + 1) / 2;  // 靠右端点，查找长度上界
+                if (lisTail[mid] >= t) {
+                    maxL = mid - 1;
                 } else {
-                    left = mid;
+                    minL = mid;
                 }
             }
-            result = max(result, right + 1);
-            lastItemInLS[right + 1] = arr[i];
+            lisTail[maxL + 1] = t;
+            result = max(result, maxL + 1);
         }
-        delete[] lastItemInLS;
+        delete[] lisTail;
         return result;
     }
 
