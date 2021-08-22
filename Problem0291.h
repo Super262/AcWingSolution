@@ -11,69 +11,62 @@
 using namespace std;
 
 class Problem0291 {
-public:
-    void initialize(bool *hasOddZeroes, const int N) {
-        const long long LAST_STATE = (1 << N) - 1;
-        memset(hasOddZeroes, 0, sizeof(bool) * (LAST_STATE + 1));
-        for (long long s = 0; s <= LAST_STATE; ++s) {
-            int zeroesLen = 0;
-            for (int i = 0; i < N; ++i) {
+private:
+    const int N = 11;
+    const int M = 11;
+
+    bool hasOddZeroes[1 << N];
+    long long dp[M + 1][1 << N]; // dp[c][s]表示当前第c列（c >= 1）"横条"的摆放情况是s并在空白处填充"纵条"后的方案数
+
+    void initialize(const int n) {
+        const int LAST_S = (1 << n) - 1;
+        for (int s = 0; s <= LAST_S; ++s) {
+            int zeroesCount = 0;
+            for (int i = 0; i < n; ++i) {
                 if ((s >> i) & 1) {
-                    if (zeroesLen & 1) {
+                    if (zeroesCount & 1) {
                         break;
                     }
-                    zeroesLen = 0;
+                    zeroesCount = 0;
                 } else {
-                    ++zeroesLen;
+                    ++zeroesCount;
                 }
             }
-            if (zeroesLen & 1) {
+            if (zeroesCount & 1) {
                 hasOddZeroes[s] = true;
             }
         }
     }
 
-    long long mondrianDream(long long **dp, const int N, const int M, bool *hasOddZeroes) {
-        initialize(hasOddZeroes, N);  // 每次要根据输入的不同的N重新初始化hasOddZeroes，因为N的变化会改变初始化操作中的移位次数
-        const long long LAST_STATE = (1 << N) - 1;
+    long long mondrianDream(const int n, const int m) {
+        const int LAST_S = (1 << n) - 1;
+        initialize(n);
         dp[0][0] = 1;
-        for (int i = 1; i <= M; ++i) {
-            for (long long s1 = 0; s1 <= LAST_STATE; ++s1) {
-                dp[i][s1] = 0;
-                for (long long s0 = 0; s0 <= LAST_STATE; ++s0) {
+        for (int c = 1; c <= m; ++c) {
+            for (int s1 = 0; s1 <= LAST_S; ++s1) {
+                for (int s0 = 0; s0 <= LAST_S; ++s0) {
                     if ((s0 & s1) || hasOddZeroes[s0 | s1]) {
                         continue;
                     }
-                    dp[i][s1] += dp[i - 1][s0];
+                    dp[c][s1] += dp[c - 1][s0];
                 }
             }
         }
-        return dp[M][0];
+        return dp[m][0];
     }
 
     int main() {
-        int maxN = 11;
-        int maxM = 11;
-        const long long lastState = (1 << maxN) - 1;
-        auto *hasOddZeroes = new bool[lastState + 1];
-        auto dp = new long long *[maxM + 1];
-        for (unsigned int i = 0; i <= maxM; ++i) {
-            dp[i] = new long long[lastState + 1];
-        }
-        int n;
-        int m;
+        int n, m;
         while (true) {
             scanf("%d%d", &n, &m);
-            if (!n && !m) {
+            if (n == 0 || m == 0) {
                 break;
             }
-            printf("%lld\n", mondrianDream(dp, n, m, hasOddZeroes));
+            // 每次都有不同的输入，每次都需要初始化操作
+            memset(hasOddZeroes, 0, sizeof hasOddZeroes);
+            memset(dp, 0, sizeof dp);
+            printf("%lld\n", mondrianDream(n, m));
         }
-        delete[] hasOddZeroes;
-        for (unsigned int i = 0; i <= maxM; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
         return 0;
     }
 };
