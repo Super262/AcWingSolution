@@ -12,66 +12,53 @@ using namespace std;
 
 
 class Problem0899 {
-public:
-    unsigned int editDistance(const char *a, const unsigned int l1, const char *b, const unsigned int l2) {
-        auto dp = new unsigned int *[l1 + 1];
-        for (unsigned int i = 0; i <= l1; ++i) {
-            dp[i] = new unsigned int[l2 + 1];
-            for (unsigned int j = 0; j <= l2; ++j) {
-                dp[i][j] = l1 + l2 + 1;
-            }
-        }
-        for (unsigned int i = 0; i <= l2; ++i) {
-            dp[0][i] = i;
-        }
-        for (unsigned int i = 0; i <= l1; ++i) {
+private:
+
+    const int N = 1010;
+    const int M = 20;
+    int dp[M][M];
+    char strs[N][M];
+    char temp[M];
+
+    int editDistance(const char s1[], const int l1, const char s2[], const int l2) {
+        for (int i = 0; i <= l1; ++i) {
             dp[i][0] = i;
         }
-        for (unsigned int i = 1; i <= l1; ++i) {
-            for (unsigned int j = 1; j <= l2; ++j) {
-                if (a[i - 1] == b[j - 1]) {
-                    dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j] + 1, dp[i][j - 1] + 1));
+        for (int i = 0; i <= l2; ++i) {
+            dp[0][i] = i;
+        }
+        for (int i = 1; i <= l1; ++i) {
+            for (int j = 1; j <= l2; ++j) {
+                dp[i][j] = l1 + l2 + 1;
+                if (s1[i] == s2[j]) {
+                    dp[i][j] = min(dp[i][j], dp[i - 1][j - 1]);
                 } else {
-                    dp[i][j] = min(dp[i - 1][j - 1] + 1, min(dp[i - 1][j] + 1, dp[i][j - 1] + 1));
+                    dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + 1);
                 }
+                dp[i][j] = min(dp[i][j], dp[i - 1][j] + 1);
+                dp[i][j] = min(dp[i][j], dp[i][j - 1] + 1);
             }
         }
-        unsigned int result = dp[l1][l2];
-        for (unsigned int i = 0; i <= l1; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
-        return result;
+        return dp[l1][l2];
     }
 
     int main() {
-        unsigned int n, q;
-        scanf("%d%d", &n, &q);
-        auto strs = new char *[n];
-        for (unsigned int i = 0; i < n; ++i) {
-            strs[i] = new char[11];
-            memset(strs[i], 0, sizeof(char) * 11);
-            scanf("%s", strs[i]);
+        int n, m;
+        scanf("%d%d", &n, &m);
+        for (int i = 0; i < n; ++i) {
+            scanf("%s", strs[i] + 1);
         }
-        auto target = new char[11];
-        unsigned int maxStep;
-        unsigned int count;
-        memset(target, 0, sizeof(char) * 11);
-        for (unsigned int i = 0; i < q; ++i) {
-            count = 0;
-            scanf("%s%d", target, &maxStep);
-            for (unsigned int j = 0; j < n; ++j) {
-                if (editDistance(strs[j], strlen(strs[j]), target, strlen(target)) <= maxStep) {
-                    ++count;
+        for (int i = 0; i < m; ++i) {
+            int result = 0;
+            int maxStep;
+            scanf("%s%d", temp + 1, &maxStep);
+            for (int j = 0; j < n; ++j) {
+                if (editDistance(strs[j], strlen(strs[j] + 1), temp, strlen(temp + 1)) <= maxStep) {
+                    ++result;
                 }
             }
-            printf("%d\n", count);
+            printf("%d\n", result);
         }
-        for (unsigned int i = 0; i < n; ++i) {
-            delete[] strs[i];
-        }
-        delete[] strs;
-        delete[] target;
         return 0;
     }
 };
