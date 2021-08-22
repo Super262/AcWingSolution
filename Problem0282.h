@@ -17,13 +17,10 @@ private:
     int dp[N][N];
 
     int moveStones(const int n) {
-        memset(dp, 0x7f, sizeof dp);
-        for (int i = 1; i <= n; ++i) {
-            dp[i][i] = 0;
-        }
         for (int length = 2; length <= n; ++length) {
             for (int start = 1; start <= n - length + 1; ++start) {
                 const int end = start + length - 1;
+                dp[start][end] = 0x7f7f7f7f;
                 for (int mid = start + 1; mid <= end; ++mid) {
                     dp[start][end] = min(dp[start][end],
                                          dp[start][mid - 1] + dp[mid][end] + prefixSum[end] - prefixSum[start - 1]);
