@@ -6,43 +6,35 @@
 #define ACWINGSOLUTION_PROBLEM0897_H
 
 #include <iostream>
-#include <cstring>
 
 using namespace std;
 
 class Problem0897 {
-public:
-    int longestCommonSequence(const char *a, const int l1, const char *b, const int l2) {
-        auto dp = new int*[l1 + 1];
-        for (int i = 0; i <= l1; ++i) {
-            dp[i] = new int[l2 + 1];
-            memset(dp[i], 0, sizeof(int) * (l2 + 1));
-        }
+private:
+    const int N = 1010;
+    char s1[N];
+    char s2[N];
+    int dp[N][N];
+
+    int longestCommonSequence(const int l1, const int l2) {
         for (int i = 1; i <= l1; ++i) {
             for (int j = 1; j <= l2; ++j) {
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-                if (a[i - 1] == b[j - 1]) {
-                    dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
+                if (s1[i] != s2[j]) {
+                    continue;
                 }
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
             }
         }
-        int result = dp[l1][l2];
-        for (int i = 0; i <= l1; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
-        return result;
+        return dp[l1][l2];
     }
 
     int main() {
         int l1, l2;
         scanf("%d%d", &l1, &l2);
-        auto a = new char[l1 + 1];
-        auto b = new char[l2 + 1];
-        scanf("%s%s", a, b);
-        printf("%d\n", longestCommonSequence(a, l1, b, l2));
-        delete[] a;
-        delete[] b;
+        scanf("%s", s1 + 1);
+        scanf("%s", s2 + 1);
+        printf("%d\n", longestCommonSequence(l1, l2));
         return 0;
     }
 };
