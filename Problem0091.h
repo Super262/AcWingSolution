@@ -6,58 +6,52 @@
 #define ACWINGSOLUTION_PROBLEM0091_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Problem0091 {
-public:
-    int shortestHamilton(int **graph, const int N) {
-        const int LAST_STATE = (1 << N) - 1;
-        auto dp = new int*[LAST_STATE + 1];
-        for (int s = 0; s <= LAST_STATE; ++s) {
-            dp[s] = new int[N];
-            memset(dp[s], 0x7f, sizeof(int) * (N));
-        }
+private:
+    const int N = 20;
+    int graph[N][N];
+
+    // dp[i][j]所有从0走到j，走过的点是i的所有路径中最短的路径的长度
+    // 状态计算时利用倒数第二个点来分类
+    int dp[1 << N][N];
+
+    int shortestHamilton(const int n) {
+        memset(dp, 0x7f, sizeof dp);
+        const int LAST_STATE = (1 << n) - 1;
         dp[1][0] = 0;
-        for (int s = 0; s <= LAST_STATE; ++s) {
-            for (int v = 0; v < N; ++v) {
-                if (!((s >> v) & 1)) {
+        for (int p = 0; p <= LAST_STATE; ++p) {
+            for (int s1 = 0; s1 < n; ++s1) {
+                if (!((p >> s1) & 1)) {
                     continue;
                 }
-                for (int u = 0; u < N; ++u) {
-                    if (!(((s - (1 << v)) >> u) & 1)) {
+                for (int s0 = 0; s0 < n; ++s0) {
+                    if (!(((p - (1 << s1)) >> s0) & 1)) {
                         continue;
                     }
-                    if (dp[s - (1 << v)][u] == 0x7f7f7f7f) {
+                    if (dp[p - (1 << s1)][s0] == 0x7f7f7f7f || graph[s0][s1] == 0x7f7f7f7f) {
                         continue;
                     }
-                    dp[s][v] = min(dp[s][v], dp[s- (1 << v)][u] + graph[u][v]);
+                    dp[p][s1] = min(dp[p][s1], dp[p - (1 << s1)][s0] + graph[s0][s1]);
                 }
             }
         }
-        int result = dp[LAST_STATE][N - 1];
-        for (int s = 0; s <= LAST_STATE; ++s) {
-            delete[] dp[s];
-        }
-        delete[] dp;
-        return result;
+        return dp[LAST_STATE][n - 1];
     }
 
     int main() {
+        memset(graph, 0x7f, sizeof graph);
         int n;
         scanf("%d", &n);
-        auto graph = new int*[n];
         for (int i = 0; i < n; ++i) {
-            graph[i] = new int [n];
             for (int j = 0; j < n; ++j) {
                 scanf("%d", &graph[i][j]);
             }
         }
-        printf("%d\n", shortestHamilton(graph, n));
-        for (int i = 0; i < n; ++i) {
-            delete[] graph[i];
-        }
-        delete[] graph;
+        printf("%d\n", shortestHamilton(n));
         return 0;
     }
 };
