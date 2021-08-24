@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem0148 {
-    // 不要误认为是"石子合并问题"（AcWing0282）
+    // 霍夫曼树，不要误认为是"石子合并问题"（AcWing0282）
 private:
     int huffmanTree(const int items[], const int n) {
         priority_queue<int, vector<int>, greater<int>> pq;
