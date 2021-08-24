@@ -11,37 +11,33 @@
 using namespace std;
 
 class Problem0148 {
-public:
-    int huffmanTreeHelper(const int *items, const unsigned int n) {
-        if (n <= 1) {
-            return 0;
-        }
-        priority_queue<int, vector<int>, greater<int>> heap;
-        for (unsigned int i = 0; i < n; ++i) {
-            heap.emplace(items[i]);
+    // 不要误认为是"石子合并问题"（AcWing0282）
+private:
+    int huffmanTree(const int items[], const int n) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for (int i = 0; i < n; ++i) {
+            pq.emplace(items[i]);
         }
         int result = 0;
-        int a;
-        int b;
-        while (heap.size() >= 2) {
-            a = heap.top();
-            heap.pop();
-            b = heap.top();
-            heap.pop();
+        while (pq.size() > 1) {
+            auto a = pq.top();
+            pq.pop();
+            auto b = pq.top();
+            pq.pop();
+            pq.emplace(a + b);
             result += a + b;
-            heap.emplace(a + b);
         }
         return result;
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
         auto items = new int[n];
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             scanf("%d", &items[i]);
         }
-        printf("%d\n", huffmanTreeHelper(items, n));
+        printf("%d\n", huffmanTree(items, n));
         delete[] items;
         return 0;
     }
