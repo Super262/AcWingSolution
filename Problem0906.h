@@ -11,25 +11,36 @@
 
 using namespace std;
 
-struct Range {
-    int left;
-    int right;
-
-    bool operator<(const Range &b) const {
-        return left < b.left;
-    }
-};
-
 class Problem0906 {
-public:
-    int minPartition(Range *ranges, int N) {
-        sort(ranges, ranges + N);
+    // 1. 将所有区间按照左端点从小到大排序
+    // 2. 从前向后处理每个区间：判断能否将其放到某个现有的组i中（left > maxRight[i] ）
+    // 3. 如果不存在这样的组，就开设一个新组；如果存在这样的组j，则将其放入并更新maxRight[j]
+private:
+    struct Range {
+        int left;
+        int right;
+
+        bool operator<(const Range &b) const {
+            return left < b.left;
+        }
+    };
+
+    int minPartition(Range ranges[], const int n) {
+        sort(ranges, ranges + n);
         priority_queue<int, vector<int>, greater<int>> pq;
-        for (int i = 0; i < N; ++i) {
-            if (!pq.empty() && pq.top() < ranges[i].left) {
-                pq.pop();
+        for (int i = 0; i < n; ++i) {
+            if (pq.empty()) {
+                pq.emplace(ranges[i].right);
+                continue;
             }
-            pq.emplace(ranges[i].right);
+            if (pq.top() >= ranges[i].left) {
+                // 不存在这样的组
+                pq.emplace(ranges[i].right);
+            } else {
+                // 存在这样的组，更新最小值
+                pq.pop();
+                pq.emplace(ranges[i].right);
+            }
         }
         return (int) pq.size();
     }
@@ -42,6 +53,7 @@ public:
             scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
         printf("%d\n", minPartition(ranges, n));
+        delete[] ranges;
         return 0;
     }
 };
