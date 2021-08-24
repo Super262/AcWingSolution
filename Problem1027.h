@@ -11,67 +11,43 @@
 using namespace std;
 
 class Problem1027 {
-public:
-    int maxPathsPair(int **graph, const int n) {
-        auto dp = new int **[2 * n + 1];
-        for (int k = 1; k <= 2 * n; ++k) {
-            dp[k] = new int *[n + 1];
-            for (int i = 0; i <= n; ++i) {
-                dp[k][i] = new int[n + 1];
-                memset(dp[k][i], 0, sizeof(int) * (n + 1));
-            }
-        }
-        for (int k = 2; k <= 2 * n; ++k) {
-            for (int i1 = 1; i1 <= n; ++i1) {
-                for (int i2 = 1; i2 <= n; ++i2) {
-                    int j1 = k - i1;
-                    int j2 = k - i2;
-                    if (j1 < 1 || j2 < 1 || j1 > n || j2 > n) {
-                        continue;
+    const int N = 10;
+    // dp[s][x1][x2] 表示从(1, 1)走到(n, n)的两条路径的长度和的最大值，s == x1 + y1 == x2 + y2
+    int dp[2 * N + 1][N + 1][N + 1];
+    int graph[N + 1][N + 1];
+
+    int maxPathsPair(const int n) {
+        for (int s = 2; s <= 2 * n; ++s) {
+            for (int x1 = 1; x1 <= s - 1; ++x1) {
+                for (int x2 = 1; x2 <= s - 1; ++x2) {
+                    auto y1 = s - x1;
+                    auto y2 = s - x2;
+                    int w = graph[x1][y1];
+                    if (x1 != x2 && y1 != y2) {
+                        w += graph[x2][y2];
                     }
-                    int w = graph[i1][j1];
-                    if (i1 != i2) {
-                        w += graph[i2][j2];
-                    }
-                    dp[k][i1][i2] = max(dp[k][i1][i2], dp[k - 1][i1 - 1][i2 - 1] + w);
-                    dp[k][i1][i2] = max(dp[k][i1][i2], dp[k - 1][i1 - 1][i2] + w);
-                    dp[k][i1][i2] = max(dp[k][i1][i2], dp[k - 1][i1][i2 - 1] + w);
-                    dp[k][i1][i2] = max(dp[k][i1][i2], dp[k - 1][i1][i2] + w);
+                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1 - 1][x2 - 1] + w);
+                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1][x2 - 1] + w);
+                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1 - 1][x2] + w);
+                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1][x2] + w);
                 }
             }
         }
-        int result = dp[2 * n][n][n];
-        for (int k = 1; k <= 2 * n; ++k) {
-            for (int i = 0; i <= n; ++i) {
-                delete[] dp[k][i];
-            }
-            delete[] dp[k];
-        }
-        delete[] dp;
-        return result;
+        return dp[2 * n][n][n];
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto graph = new int *[n + 1];
-        for (int i = 1; i <= n; ++i) {
-            graph[i] = new int[n + 1];
-            memset(graph[i], 0, sizeof(int) * (n + 1));
-        }
-        int x, y, value;
         while (true) {
-            scanf("%d%d%d", &x, &y, &value);
-            if (!x && !y && !value) {
+            int a, b, c;
+            scanf("%d%d%d", &a, &b, &c);
+            if (a == 0 && b == 0 && c == 0) {
                 break;
             }
-            graph[x][y] = value;
+            graph[a][b] = c;
         }
-        printf("%d\n", maxPathsPair(graph, n));
-        for (int i = 1; i <= n; ++i) {
-            delete[] graph[i];
-        }
-        delete[] graph;
+        printf("%d\n", maxPathsPair(n));
         return 0;
     }
 };
