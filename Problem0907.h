@@ -10,27 +10,27 @@
 
 using namespace std;
 
-struct Range {
-    int left;
-    int right;
-
-    bool operator<(const Range &b) const {
-        return left < b.left;
-    }
-};
-
 class Problem0907 {
-public:
-    int minCover(int start, const int end, Range *ranges, const int N) {
-        if (!ranges) {
-            return -1;
+    // 1. 将所有区间按左端点从小到大排序
+    // 2. 从前向后依次枚举每个区间，在所有能覆盖start的区间中，选择右端点最大的区间
+    // 3. 将start更新成右端点最大值
+private:
+    struct Range {
+        int left;
+        int right;
+
+        bool operator<(const Range &b) const {
+            return left < b.left;
         }
-        sort(ranges, ranges + N);
+    };
+
+    int minCoverage(int start, const int end, Range ranges[], const int n) {
+        sort(ranges, ranges + n);
         int result = 0;
-        for (int i = 0; i < N; ++i) {
-            int maxRight = -0x7f7f7f7f;
+        for (int i = 0; i < n; ++i) {
+            int maxRight = start - 1;
             int j = i;
-            while (j < N && ranges[j].left <= start) {
+            while (j < n && ranges[j].left <= start) {
                 maxRight = max(maxRight, ranges[j].right);
                 ++j;
             }
@@ -48,13 +48,15 @@ public:
     }
 
     int main() {
-        int start, end, n;
-        scanf("%d%d%d", &start, &end, &n);
+        int s, t;
+        scanf("%d%d", &s, &t);
+        int n;
+        scanf("%d", &n);
         auto ranges = new Range[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
-        printf("%d\n", minCover(start, end, ranges, n));
+        printf("%d\n", minCoverage(s, t, ranges, n));
         delete[] ranges;
         return 0;
     }
