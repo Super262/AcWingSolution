@@ -6,45 +6,32 @@
 #define ACWINGSOLUTION_PROBLEM1018_H
 
 class Problem1018 {
-public:
-    int minPath(int **graph, const int N) {
-        auto dp = new int *[N];
-        for (int i = 0; i < N; ++i) {
-            dp[i] = new int[N];
+private:
+    const int N = 101;
+    int graph[N][N];
+
+    int minCost(const int n) {
+        for (int i = 1; i <= n; ++i) {
+            graph[i][1] += graph[i - 1][1];
+            graph[1][i] += graph[1][i - 1];
         }
-        dp[0][0] = graph[0][0];
-        for (int i = 1; i < N; ++i) {
-            dp[0][i] = dp[0][i - 1] + graph[0][i];
-            dp[i][0] = dp[i - 1][0] + graph[i][0];
-        }
-        for (int i = 1; i < N; ++i) {
-            for (int j = 1; j < N; ++j) {
-                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + graph[i][j];
+        for (int i = 2; i <= n; ++i) {
+            for (int j = 2; j <= n; ++j) {
+                graph[i][j] += min(graph[i - 1][j], graph[i][j - 1]);
             }
         }
-        int result = dp[N - 1][N - 1];
-        for (int i = 0; i < N; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
-        return result;
+        return graph[n][n];
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto graph = new int *[n];
-        for (int i = 0; i < n; ++i) {
-            graph[i] = new int[n];
-            for (int j = 0; j < n; ++j) {
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= n; ++j) {
                 scanf("%d", &graph[i][j]);
             }
         }
-        printf("%d\n", minPath(graph, n));
-        for (int i = 0; i < n; ++i) {
-            delete[] graph[i];
-        }
-        delete[] graph;
+        printf("%d\n", minCost(n));
         return 0;
     }
 };
