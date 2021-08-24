@@ -11,27 +11,23 @@
 using namespace std;
 
 class Problem1015 {
-public:
-    int maxPath(int **graph, int **dp, const int N, const int M) {
-        for (int i = 1; i <= N; ++i) {
-            for (int j = 1; j <= M; ++j) {
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]) + graph[i][j];
+private:
+    const int N = 101;
+    int graph[N][N];
+
+    int maxValue(const int r, const int c) {
+        for (int i = 1; i <= r; ++i) {
+            for (int j = 1; j <= c; ++j) {
+                graph[i][j] += max(graph[i - 1][j], graph[i][j - 1]);
             }
         }
-        return dp[N][M];
+        return graph[r][c];
     }
 
     int main() {
-        auto graph = new int *[101];
-        auto dp = new int *[101];
-        for (int i = 0; i < 101; ++i) {
-            graph[i] = new int[101];
-            dp[i] = new int[101];
-            memset(dp[i], 0, sizeof(int) * 101);
-        }
-        int s;
-        scanf("%d", &s);
-        for (int k = 0; k < s; ++k) {
+        int t;
+        scanf("%d", &t);
+        while (t--) {
             int r, c;
             scanf("%d%d", &r, &c);
             for (int i = 1; i <= r; ++i) {
@@ -39,14 +35,8 @@ public:
                     scanf("%d", &graph[i][j]);
                 }
             }
-            printf("%d\n", maxPath(graph, dp, r, c));
+            printf("%d\n", maxValue(r, c));
         }
-        for (int i = 0; i < 101; ++i) {
-            delete[] graph[i];
-            delete[] dp[i];
-        }
-        delete[] graph;
-        delete[] dp;
         return 0;
     }
 };
