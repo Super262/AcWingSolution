@@ -20,6 +20,8 @@ struct Range {
 };
 
 class Problem0905 {
+    // 1. 将每个区间按右端点从小到大排序
+    // 2. 从前向后依次枚举每个区间：如果当前区间中已经包含点，跳过：否则，选择当前区间的右端点
 public:
     int minConnection(Range *ranges, const int N) {
         sort(ranges, ranges + N);
