@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem0913 {
-public:
+private:
     long minWaitingTime(int *arr, const int N) {
         sort(arr, arr + N);
         long result = 0;
