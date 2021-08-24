@@ -15,7 +15,7 @@ public:
     long minDistance(int *coordinates, const int N) {
         long result = 0;
         sort(coordinates, coordinates + N);
-        const int mid = N >> 1;
+        const int mid = N >> 1;  // 无论mid偏左或偏右（长度为偶数），结果都是正确的
         for (int i = 0; i < N; ++i) {
             result += abs(coordinates[i] - coordinates[mid]);
         }
