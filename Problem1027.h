@@ -18,8 +18,8 @@ class Problem1027 {
 
     int maxPathsPair(const int n) {
         for (int s = 2; s <= 2 * n; ++s) {
-            for (int x1 = 1; x1 <= s - 1; ++x1) {
-                for (int x2 = 1; x2 <= s - 1; ++x2) {
+            for (int x1 = 1; x1 <= s - 1 && x1 <= n; ++x1) {
+                for (int x2 = 1; x2 <= s - 1 && x2 <= n; ++x2) {
                     auto y1 = s - x1;
                     auto y2 = s - x2;
                     int w = graph[x1][y1];
