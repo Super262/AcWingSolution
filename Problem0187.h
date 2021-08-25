@@ -10,67 +10,79 @@
 using namespace std;
 
 class Problem0187 {
-public:
-    void
-    dfs(const int *arr, const int idx, const int N, int *lisTail, const int lisCount, int *ldsTail, const int ldsCount,
-        int &result) {
-        if (ldsCount + lisCount >= result) {
+private:
+    const int N = 50;
+    int lisHead[N];
+    int ldsHead[N];
+    int height[N];
+
+    void dfs(const int n, const int numIdx, const int lisCount, const int ldsCount, int &result) {
+        // 剪枝：当前结果比已有结果差，直接返回
+        if (lisCount + ldsCount >= result) {
             return;
         }
-        if (idx == N) {
-            result = ldsCount + lisCount;
+        if (numIdx == n) {
+            result = lisCount + ldsCount;
             return;
         }
-
-        // 1. 尝试将当前数加到上升子序列中（尾部）
-        int k = 0;
-        while (k < lisCount && lisTail[k] >= arr[idx]) {
-            ++k;
+        // 尝试在所有的LIS中寻找插入位置或建立新的LIS
+        int k = -1;
+        for (int i = 0; i < lisCount; ++i) {
+            if (lisHead[i] <= height[numIdx]) {
+                continue;
+            }
+            if (k == -1 || lisHead[i] < lisHead[k]) {
+                k = i;
+            }
         }
-        int t = lisTail[k];
-        lisTail[k] = arr[idx];
-        if (k >= lisCount) {
-            dfs(arr, idx + 1, N, lisTail, lisCount + 1, ldsTail, ldsCount, result);
+        if (k == -1) {
+            auto t = lisHead[lisCount];
+            lisHead[lisCount] = height[numIdx];
+            dfs(n, numIdx + 1, lisCount + 1, ldsCount, result);
+            lisHead[lisCount] = t;
         } else {
-            dfs(arr, idx + 1, N, lisTail, lisCount, ldsTail, ldsCount, result);
+            auto t = lisHead[k];
+            lisHead[k] = height[numIdx];
+            dfs(n, numIdx + 1, lisCount, ldsCount, result);
+            lisHead[k] = t;
         }
-        lisTail[k] = t;
-
-        // 2. 尝试将当前数加到下降子序列中（尾部）
-        k = 0;
-        while (k < ldsCount && ldsTail[k] <= arr[idx]) {
-            ++k;
+        // 尝试在所有的LDS中寻找插入位置或建立新的LDS
+        k = -1;
+        for (int i = 0; i < ldsCount; ++i) {
+            if (ldsHead[i] >= height[numIdx]) {
+                continue;
+            }
+            if (k == -1 || ldsHead[i] > ldsHead[k]) {
+                k = i;
+            }
         }
-        t = ldsTail[k];
-        ldsTail[k] = arr[idx];
-        if (k >= ldsCount) {
-            dfs(arr, idx + 1, N, lisTail, lisCount, ldsTail, ldsCount + 1, result);
+        if (k == -1) {
+            auto t = ldsHead[ldsCount];
+            ldsHead[ldsCount] = height[numIdx];
+            dfs(n, numIdx + 1, lisCount, ldsCount + 1, result);
+            ldsHead[ldsCount] = t;
         } else {
-            dfs(arr, idx + 1, N, lisTail, lisCount, ldsTail, ldsCount, result);
+            auto t = ldsHead[k];
+            ldsHead[k] = height[numIdx];
+            dfs(n, numIdx + 1, lisCount, ldsCount, result);
+            ldsHead[k] = t;
         }
-        ldsTail[k] = t;
     }
 
     int main() {
-        auto arr = new int[50];
-        auto lisTail = new int[50];
-        auto ldsTail = new int[50];
         int n;
         while (true) {
             scanf("%d", &n);
-            if (!n) {
+            if (n == 0) {
                 break;
             }
             for (int i = 0; i < n; ++i) {
-                scanf("%d", &arr[i]);
+                scanf("%d", &height[i]);
             }
             int result = n;
-            dfs(arr, 0, n, lisTail, 0, ldsTail, 0, result);
+            dfs(n, 0, 0, 0, result);
             printf("%d\n", result);
         }
-        delete[] arr;
-        delete[] lisTail;
-        delete[] ldsTail;
         return 0;
     }
 };
