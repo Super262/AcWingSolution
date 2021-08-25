@@ -10,7 +10,7 @@
 using namespace std;
 
 class Problem1016 {
-public:
+private:
     int maxSumLIS(const int *a, const int N) {
         int result = 0;
         auto dp = new int[N];
