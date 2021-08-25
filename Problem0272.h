@@ -11,21 +11,36 @@
 using namespace std;
 
 class Problem0272 {
-public:
+    // dp[i][j]表示所有由序列a的前i个字母和序列b的前j个字母构成的，且以b[j]结尾的公共上升子序列
+private:
     int maxCommonLIS(const int *a, const int *b, const int N) {
         auto dp = new int *[N + 1];
         for (int i = 0; i <= N; ++i) {
             dp[i] = new int[N + 1];
             memset(dp[i], 0, sizeof(int) * (N + 1));
         }
+// 优化前的代码：
+//        for (int i = 1; i <= N; ++i) {
+//            for (int j = 1; j <= N; ++j) {
+//                dp[i][j] = dp[i - 1][j];
+//                if (a[i] == b[j]) {
+//                    dp[i][j] = max(dp[i][j], 1);
+//                    for (int k = 1; k < j; ++k) {
+//                        if (b[k] < b[j]) {
+//                            dp[i][j] = max(dp[i][j], dp[i][k] + 1);
+//                        }
+//                    }
+//                }
+//            }
+//        }
         for (int i = 1; i <= N; ++i) {
-            int maxPre = 0;
+            int maxPreJ = 0;
             for (int j = 1; j <= N; ++j) {
                 dp[i][j] = dp[i - 1][j];
                 if (a[i] == b[j]) {
-                    dp[i][j] = max(dp[i][j], maxPre + 1);
+                    dp[i][j] = max(dp[i][j], maxPreJ + 1);
                 } else if (b[j] < a[i]) {
-                    maxPre = max(maxPre, dp[i][j]);
+                    maxPreJ = max(maxPreJ, dp[i][j]);
                 }
             }
         }
