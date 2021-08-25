@@ -45,6 +45,7 @@ private:
             }
         }
         int result = 0;
+        // 注意：不能通过遍历a的索引来获得结果，只能遍历b的索引（参见转移方程）
         for (int i = 0; i <= N; ++i) {
             result = max(result, dp[N][i]);
         }
