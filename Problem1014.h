@@ -11,46 +11,45 @@ using namespace std;
 
 
 class Problem1014 {
-public:
-    int maxLISSum(const int *a, const int N) {
+private:
+    const int N = 1000;
+    int height[N];
+    int lisLength[N];
+    int ldsLength[N];
+
+    int maxRange(const int n) {
         int result = 0;
-        auto f = new int[N];
-        for (int i = 0; i < N; ++i) {
-            f[i] = 1;
+        for (int i = 0; i < n; ++i) {
+            lisLength[i] = 1;
             for (int j = 0; j < i; ++j) {
-                if (a[j] >= a[i]) {
+                if (height[j] >= height[i]) {
                     continue;
                 }
-                f[i] = max(f[i], f[j] + 1);
+                lisLength[i] = max(lisLength[j] + 1, lisLength[i]);
             }
         }
-        auto g = new int[N];
-        for (int i = N - 1; i >= 0; --i) {
-            g[i] = 1;
-            for (int j = N - 1; j > i; --j) {
-                if (a[j] >= a[i]) {
+        for (int i = n - 1; i >= 0; --i) {
+            ldsLength[i] = 1;
+            for (int j = n - 1; j > i; --j) {
+                if (height[j] >= height[i]) {
                     continue;
                 }
-                g[i] = max(g[i], g[j] + 1);
+                ldsLength[i] = max(ldsLength[j] + 1, ldsLength[i]);
             }
         }
-        for (int i = 0; i < N; ++i) {
-            result = max(result, f[i] + g[i] - 1);
+        for (int i = 0; i < n; ++i) {
+            result = max(result, ldsLength[i] + lisLength[i] - 1);
         }
-        delete[] f;
-        delete[] g;
         return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        int *a = new int[n];
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &a[i]);
+            scanf("%d", &height[i]);
         }
-        printf("%d\n", maxLISSum(a, n));
-        delete[] a;
+        printf("%d\n", maxRange(n));
         return 0;
     }
 };
