@@ -17,6 +17,7 @@ private:
     char s2[N];
 
     int editDistance(const int l1, const int l2) {
+        // 不要忘记初始化操作
         for (int i = 0; i <= l2; ++i) {
             dp[0][i] = i;
         }
