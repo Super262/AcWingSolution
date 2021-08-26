@@ -18,6 +18,7 @@ private:
     int a[N], b[N];
 
     int longestCommonIS(const int l1, const int l2) {
+        // 不要忘记优化过程
         for (int i = 1; i <= l1; ++i) {
             int maxPreJ = 0;
             for (int j = 1; j <= l2; ++j) {
