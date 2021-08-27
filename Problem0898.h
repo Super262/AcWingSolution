@@ -9,14 +9,15 @@
 
 using namespace std;
 
-
 class Problem0898 {
-public:
-    int maxPath(int **matrix, const int n) {
-        auto dp = new int*[n + 1];
-        for (int i = 1; i <= n; ++i) {
-            dp[i] = new int[i + 2];
-            for (int j = 0; j < i + 2; ++j) {
+private:
+    const int N = 510;
+    int dp[N][N];
+    int matrix[N][N];
+
+    int maxPath(const int n) {
+        for (int i = 0; i <= n; ++i) {
+            for (int j = 0; j <= n; ++j) {
                 dp[i][j] = -0x7f7f7f7f;
             }
         }
@@ -27,31 +28,21 @@ public:
             }
         }
         int result = -0x7f7f7f7f;
-        for (int i = 0; i < n + 2; ++i) {
+        for (int i = 1; i <= n; ++i) {
             result = max(result, dp[n][i]);
         }
-        for (int i = 1; i <= n; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
         return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto matrix = new int*[n + 1];
         for (int i = 1; i <= n; ++i) {
-            matrix[i] = new int[i + 1];
             for (int j = 1; j <= i; ++j) {
                 scanf("%d", &matrix[i][j]);
             }
         }
-        printf("%d\n", maxPath(matrix, n));
-        for (int i = 1; i <= n; ++i) {
-            delete[] matrix[i];
-        }
-        delete[] matrix;
+        printf("%d\n", maxPath(n));
         return 0;
     }
 };
