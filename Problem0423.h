@@ -11,24 +11,32 @@
 using namespace std;
 
 class Problem0423 {
-public:
-    int main() {
-        int itemsNum;
-        int packVolume;
-        scanf("%d%d", &packVolume, &itemsNum);
-        auto dp = new int[packVolume + 1];
-        memset(dp, 0, sizeof(int) * (packVolume + 1));
-        for (int i = 0; i < itemsNum; ++i) {
-            int v, w;
-            scanf("%d%d", &v, &w);
-            for (int j = packVolume; j >= v; --j) {
-                dp[j] = max(dp[j], dp[j - v] + w);
+private:
+    struct Item {
+        int v, w;
+    };
+
+    int dp[1010];
+    Item items[110];
+
+    int knapsack(const int n, const int packVolume) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = packVolume; j >= items[i].v; --j) {
+                dp[j] = max(dp[j], dp[j - items[i].v] + items[i].w);
             }
         }
-        printf("%d\n", dp[packVolume]);
-        delete[] dp;
+        return dp[packVolume];
+    }
+
+    int main() {
+        int packVolume, n;
+        scanf("%d%d", &packVolume, &n);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d%d", &items[i].v, &items[i].w);
+        }
+        printf("%d\n", knapsack(n, packVolume));
         return 0;
     }
-};
+}
 
 #endif //ACWINGSOLUTION_PROBLEM0423_H
