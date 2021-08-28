@@ -11,22 +11,28 @@
 using namespace std;
 
 class Problem1024 {
-public:
-    int main() {
-        int packVolume;
-        int itemsNum;
-        scanf("%d%d", &packVolume, &itemsNum);
-        auto dp = new int[packVolume + 1];
-        memset(dp, 0, sizeof(int) * (packVolume + 1));
-        for (int i = 0; i < itemsNum; ++i) {
-            int v;
-            scanf("%d", &v);
-            for (int j = packVolume; j >= v; --j) {
-                dp[j] = max(dp[j], dp[j - v] + v);
+private:
+    const int V = 20001;
+    const int N = 30;
+    int items[N];
+    int dp[V];
+
+    int knapsack(const int n, const int packVolume) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = packVolume; j >= items[i]; --j) {
+                dp[j] = max(dp[j - items[i]] + items[i], dp[j]);
             }
         }
-        printf("%d\n", packVolume - dp[packVolume]);
-        delete[] dp;
+        return dp[packVolume];
+    }
+
+    int main() {
+        int packVolume, n;
+        scanf("%d%d", &packVolume, &n);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &items[i]);
+        }
+        printf("%d\n", packVolume - knapsack(n, packVolume));
         return 0;
     }
 };
