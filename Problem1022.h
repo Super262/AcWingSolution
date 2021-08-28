@@ -11,36 +11,39 @@
 using namespace std;
 
 class Problem1022 {
-public:
-    int main() {
-        int ballsNum, strength, kidsNum;
-        scanf("%d%d%d", &ballsNum, &strength, &kidsNum);
-        auto dp = new int *[ballsNum + 1];
-        for (int i = 0; i <= ballsNum; ++i) {
-            dp[i] = new int[strength];
-            memset(dp[i], 0, sizeof(int) * strength);
-        }
-        for (int i = 0; i < kidsNum; ++i) {
-            int b, s;
-            scanf("%d%d", &b, &s);
-            for (int ballsCost = ballsNum; ballsCost >= b; --ballsCost) {
-                // 皮卡丘体力值必须大于0，消耗最多为 (strength - 1)
-                for (int strengthCost = strength - 1; strengthCost >= s; --strengthCost) {
-                    dp[ballsCost][strengthCost] = max(dp[ballsCost][strengthCost],
-                                                      dp[ballsCost - b][strengthCost - s] + 1);
+    // 包含2个代价关系的"01背包"问题
+private:
+    struct Item {
+        int v1, v2;
+    };
+
+    const int N = 1001, M = 500, K = 100;
+    int dp[N][M];
+    Item items[K];
+
+    int knapsack(const int n, const int pack1, const int pack2) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = pack1; j >= items[i].v1; --j) {
+                for (int k = pack2 - 1; k >= items[i].v2; --k) {
+                    dp[j][k] = max(dp[j][k], dp[j - items[i].v1][k - items[i].v2] + 1);
                 }
             }
         }
-        printf("%d ", dp[ballsNum][strength - 1]);
-        int minStrengthCost = strength - 1;
-        while (minStrengthCost > 0 && dp[ballsNum][minStrengthCost - 1] == dp[ballsNum][strength - 1]) {
-            --minStrengthCost;
+        return dp[pack1][pack2 - 1];
+    }
+
+    int main() {
+        int n, m, k;
+        scanf("%d%d%d", &n, &m, &k);
+        for (int i = 0; i < k; ++i) {
+            scanf("%d%d", &items[i].v1, &items[i].v2);
         }
-        printf("%d\n", strength - minStrengthCost);
-        for (int i = 0; i <= ballsNum; ++i) {
-            delete[] dp[i];
+        int result = knapsack(k, n, m);
+        int minCost = m - 1;
+        while (minCost > 0 && dp[n][minCost - 1] == result) {
+            --minCost;
         }
-        delete[] dp;
+        printf("%d %d\n", result, m - minCost);
         return 0;
     }
 };
