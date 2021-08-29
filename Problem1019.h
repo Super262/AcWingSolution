@@ -11,57 +11,47 @@
 using namespace std;
 
 class Problem1019 {
-public:
-    int knapsackMaxValue(const int *itemSize,
-                         const int *itemValue,
-                         const int *itemQuantity,
-                         const int itemsNum,
-                         const int packVolume) {
-        int dq[10000];
-        auto dp = new int[packVolume + 1];
-        auto pre = new int[packVolume + 1];
-        memset(dp, 0, sizeof(int) * (packVolume + 1));
-        for (int i = 0; i < itemsNum; ++i) {
-            memcpy(pre, dp, sizeof(int) * (packVolume + 1));
-            const int v = itemSize[i];
-            const int w = itemValue[i];
-            const int s = itemQuantity[i];
-            for (int j = 0; j < v; ++j) {
-                int dqHead = 0;
-                int dqTail = -1;
-                for (int k = j; k <= packVolume; k += v) {
-                    while (dqHead <= dqTail && dq[dqHead] < k - s * v) {
-                        ++dqHead;
+private:
+    struct Item {
+        int v, w, s;
+    };
+
+    const int M = 500, N = 6001;
+    Item items[M];
+    int dp[N];
+    int pre[N];
+    int dq[N];
+
+    int knapsack(const int m, const int n) {
+        for (int i = 0; i < m; ++i) {
+            memcpy(pre, dp, sizeof dp);
+            auto v = items[i].v;
+            auto w = items[i].w;
+            auto s = items[i].s;
+            for (int r = 0; r < v; ++r) {
+                int hh = 0, tt = -1;
+                for (int j = r; j <= n; j += v) {
+                    while (hh <= tt && dq[hh] < j - s * v) {
+                        ++hh;
                     }
-                    while (dqHead <= dqTail && pre[dq[dqTail]] - (dq[dqTail] - j) / v * w <= pre[k] - (k - j) / v * w) {
-                        --dqTail;
+                    while (hh <= tt && pre[dq[tt]] - dq[tt] / v * w <= pre[j] - j / v * w) {
+                        --tt;
                     }
-                    if (dqHead <= dqTail) {
-                        dp[k] = pre[dq[dqHead]] + (k - dq[dqHead]) / v * w;
-                    }
-                    dq[++dqTail] = k;
+                    dq[++tt] = j;
+                    dp[j] = max(dp[j], pre[dq[hh]] + (j - dq[hh]) / v * w);
                 }
             }
         }
-        int result = dp[packVolume];
-        delete[] dp;
-        return result;
+        return dp[n];
     }
 
     int main() {
-        int itemsNum;
-        int packVolume;
-        scanf("%d%d", &itemsNum, &packVolume);
-        auto itemSize = new int[itemsNum];
-        auto itemValue = new int[itemsNum];
-        auto itemQuantity = new int[itemsNum];
-        for (int i = 0; i < itemsNum; ++i) {
-            scanf("%d%d%d", &itemSize[i], &itemValue[i], &itemQuantity[i]);
+        int m, n;
+        scanf("%d%d", &m, &n);
+        for (int i = 0; i < m; ++i) {
+            scanf("%d%d%d", &items[i].v, &items[i].w, &items[i].s);
         }
-        printf("%d\n", knapsackMaxValue(itemSize, itemValue, itemQuantity, itemsNum, packVolume));
-        delete[] itemSize;
-        delete[] itemQuantity;
-        delete[] itemValue;
+        printf("%d\n", knapsack(m, n));
         return 0;
     }
 };
