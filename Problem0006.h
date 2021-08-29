@@ -42,7 +42,7 @@ private:
                         --tt;
                     }
                     dq[++tt] = j;
-                    dp[j] = pre[dq[hh]] + (j - dq[hh]) / v * w;
+                    dp[j] = max(dp[j], pre[dq[hh]] + (j - dq[hh]) / v * w);
                 }
             }
         }
