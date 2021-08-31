@@ -11,62 +11,48 @@
 using namespace std;
 
 class Problem1013 {
-public:
-    int solutionForMaxValue(const int kindsNum, const int packVolume, int **itemsValue, int *solution) {
-        auto dp = new int *[kindsNum + 1];
-        for (int i = 0; i <= kindsNum; ++i) {
-            dp[i] = new int[packVolume + 1];
-            memset(dp[i], 0, sizeof(int) * (packVolume + 1));
-        }
-        for (int i = 1; i <= kindsNum; ++i) {
-            for (int v = 0; v <= packVolume; ++v) {
-                for (int j = 0; j <= v; ++j) {
-                    dp[i][v] = max(dp[i][v], dp[i - 1][v - j] + itemsValue[i][j]);
+private:
+    const int N = 11, M = 16;
+    int itemsValue[N][M];
+    int dp[N][M];
+    int solution[N];
+
+    int knapsack(const int n, const int m) {
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 0; j <= m; ++j) {
+                for (int k = 0; k <= j; ++k) {
+                    dp[i][j] = max(dp[i][j], dp[i - 1][j - k] + itemsValue[i][k]);
                 }
             }
         }
-        int result = dp[kindsNum][packVolume];
-        int currentPackVolume = packVolume;
-        for (int i = kindsNum; i >= 1; --i) {
-            for (int j = 0; j <= currentPackVolume; ++j) {
-                if (dp[i][currentPackVolume] == dp[i - 1][currentPackVolume - j] + itemsValue[i][j]) {
+        auto currentNum = m;
+        for (int i = n; i >= 1; --i) {
+            for (int j = currentNum; j >= 0; --j) {
+                if (dp[i][currentNum] == dp[i - 1][currentNum - j] + itemsValue[i][j]) {
+                    currentNum -= j;
                     solution[i] = j;
-                    currentPackVolume -= j;
                     break;
                 }
             }
+            if (currentNum == 0) {
+                break;
+            }
         }
-        for (int i = 0; i <= kindsNum; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
-        return result;
+        return dp[n][m];
     }
 
     int main() {
-        int kindsNum;
-        int packVolume;
-        scanf("%d%d", &kindsNum, &packVolume);
-        auto itemsValue = new int *[kindsNum + 1];
-        for (int i = 0; i <= kindsNum; ++i) {
-            itemsValue[i] = new int[packVolume + 1];
-            memset(itemsValue[i], 0, sizeof(int) * (packVolume + 1));
-        }
-        for (int i = 1; i <= kindsNum; ++i) {
-            for (int j = 1; j <= packVolume; ++j) {
+        int n, m;
+        scanf("%d%d", &n, &m);
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m; ++j) {
                 scanf("%d", &itemsValue[i][j]);
             }
         }
-        auto solution = new int[kindsNum + 1];
-        printf("%d\n", solutionForMaxValue(kindsNum, packVolume, itemsValue, solution));
-        for (int i = 1; i <= kindsNum; ++i) {
+        printf("%d\n", knapsack(n, m));
+        for (int i = 1; i <= n; ++i) {
             printf("%d %d\n", i, solution[i]);
         }
-        for (int i = 0; i <= kindsNum; ++i) {
-            delete[] itemsValue[i];
-        }
-        delete[] itemsValue;
-        delete[] solution;
         return 0;
     }
 };
