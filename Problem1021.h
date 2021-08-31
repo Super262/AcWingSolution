@@ -6,25 +6,31 @@
 #define ACWINGSOLUTION_PROBLEM1021_H
 
 #include <iostream>
-#include <cstring>
 
 class Problem1021 {
-public:
+private:
+    const int N = 15, M = 3010;
+    int items[N];
+    long long dp[M];
+
+    // 注意：函数返回值可能超过int的表示范围
+    long long knapsack(const int n, const int m) {
+        dp[0] = 1;
+        for (int i = 0; i < n; ++i) {
+            for (auto j = items[i]; j <= m; ++j) {
+                dp[j] += dp[j - items[i]];
+            }
+        }
+        return dp[m];
+    }
+
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        auto dp = new long long[m + 1];
-        memset(dp, 0, sizeof(int) * (m + 1));
-        dp[0] = 1;
         for (int i = 0; i < n; ++i) {
-            int v;
-            scanf("%d", &v);
-            for (int j = v; j <= m; ++j) {
-                dp[j] += dp[j - v];
-            }
+            scanf("%d", &items[i]);
         }
-        printf("%lld\n", dp[m]);
-        delete[] dp;
+        printf("%lld\n", knapsack(n, m));
         return 0;
     }
 };
