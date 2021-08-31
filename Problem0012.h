@@ -11,50 +11,44 @@
 using namespace std;
 
 class Problem0012 {
-public:
-    void printSolution(const int *itemSize, const int *itemValue, const int itemsNum, const int packVolume) {
-        auto dp = new int *[itemsNum + 2];
-        for (int i = 1; i <= itemsNum + 1; ++i) {
-            dp[i] = new int[packVolume + 1];
-            memset(dp[i], 0, sizeof(int) * (packVolume + 1));
-        }
-        for (int i = itemsNum; i >= 1; --i) {
+    // https://www.acwing.com/solution/content/2687/
+private:
+    struct Item {
+        int v, w;
+    };
+
+    const int N = 1002;
+    int dp[N][N];
+    Item items[N];
+
+    void knapsack(const int n, const int packVolume) {
+        for (auto i = n; i >= 1; --i) {
             for (int j = 0; j <= packVolume; ++j) {
                 dp[i][j] = dp[i + 1][j];
-                if (j < itemSize[i]) {
+                if (j < items[i].v) {
                     continue;
                 }
-                dp[i][j] = max(dp[i][j], dp[i + 1][j - itemSize[i]] + itemValue[i]);
+                dp[i][j] = max(dp[i][j], dp[i + 1][j - items[i].v] + items[i].w);
             }
         }
-        int currentV = packVolume;
-        for (int i = 1; i <= itemsNum; ++i) {
-            if (currentV < itemSize[i] || dp[i][currentV] != dp[i + 1][currentV - itemSize[i]] + itemValue[i]) {
+        auto currentV = packVolume;
+        for (int i = 1; i <= n; ++i) {
+            if (currentV < items[i].v || dp[i][currentV] != dp[i + 1][currentV - items[i].v] + items[i].w) {
                 continue;
             }
             printf("%d ", i);
-            currentV -= itemSize[i];
+            currentV -= items[i].v;
         }
         printf("\n");
-        for (int i = 0; i <= itemsNum + 1; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
     }
 
     int main() {
-        int itemsNum;
-        int packVolume;
-        scanf("%d%d", &itemsNum, &packVolume);
-        auto itemSize = new int[itemsNum + 1];
-        auto itemValue = new int[itemsNum + 1];
-        for (int i = 1; i <= itemsNum; ++i) {
-            scanf("%d", &itemSize[i]);
-            scanf("%d", &itemValue[i]);
+        int n, packVolume;
+        scanf("%d%d", &n, &packVolume);
+        for (int i = 1; i <= n; ++i) {
+            scanf("%d%d", &items[i].v, &items[i].w);
         }
-        printSolution(itemSize, itemValue, itemsNum, packVolume);
-        delete[] itemSize;
-        delete[] itemValue;
+        knapsack(n, packVolume);
         return 0;
     }
 };
