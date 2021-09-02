@@ -12,79 +12,64 @@ using namespace std;
 
 
 class Problem0010 {
-public:
-    void addEdge(const int a, const int b, int *headIndex, int *nextIndex, int *vertexValue, int &idx) {
+    // dp[r][v]：物品体积不超过v时，选择根结点为r的最大价值
+private:
+    struct Item {
+        int v, w;
+    };
+
+    const int N = 102;
+    int dp[N][N];
+    Item items[N];
+    int headIndex[N];
+    int nextIndex[N];
+    int vertexValue[N];
+
+    void addEdge(const int a, const int b, int &idx) {
         vertexValue[idx] = b;
         nextIndex[idx] = headIndex[a];
         headIndex[a] = idx;
         ++idx;
     }
 
-    void dfs(int **dp,
-             const int root,
-             const int packVolume,
-             const int *headIndex,
-             const int *nextIndex,
-             const int *vertexValue,
-             const int *itemValue,
-             const int *itemSize) {
-        for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            int son = vertexValue[idx];
-            dfs(dp, son, packVolume, headIndex, nextIndex, vertexValue, itemValue, itemSize);
-            for (int j = packVolume - itemSize[root]; j >= 0; --j) {
-                for (int k = 0; k <= j; ++k) {
-                    dp[root][j] = max(dp[root][j], dp[root][j - k] + dp[son][k]);
+    void knapsack(const int m, const int n, const int root) {
+        for (auto idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
+            auto son = vertexValue[idx];
+            knapsack(m, n, son);
+            for (int j = m - items[root].v; j >= 0; --j) {
+                // 遍历所有可能方案
+                for (int childV = 0; childV <= j; ++childV) {
+                    dp[root][j] = max(dp[root][j], dp[root][j - childV] + dp[son][childV]);
                 }
             }
         }
-        for (int j = packVolume; j >= itemSize[root]; --j) {
-            dp[root][j] = dp[root][j - itemSize[root]] + itemValue[root];
+        // 将根结点加入背包
+        for (int j = m; j >= items[root].v; --j) {
+            dp[root][j] = dp[root][j - items[root].v] + items[root].w;
         }
-        for (int j = 0; j < itemSize[root]; ++j) {
+        // 当背包容量小于根结点体积时，无法向背包中加入任何物品
+        for (int j = items[root].v - 1; j >= 0; --j) {
             dp[root][j] = 0;
         }
     }
 
     int main() {
-        int n;
-        int packVolume;
-        scanf("%d%d", &n, &packVolume);
-        auto headIndex = new int[n + 2];
-        auto nextIndex = new int[n + 2];
-        auto vertexValue = new int[n + 2];
-        auto itemValue = new int[n + 2];
-        auto itemSize = new int[n + 2];
-        auto dp = new int *[n + 1];
-        for (int i = 0; i <= n; ++i) {
-            dp[i] = new int[packVolume + 1];
-            memset(dp[i], 0, sizeof(int) * (packVolume + 1));
-        }
-        memset(headIndex, -1, sizeof(int) * (n + 2));
-        memset(nextIndex, -1, sizeof(int) * (n + 2));
-        memset(vertexValue, 0, sizeof(int) * (n + 2));
-        memset(itemValue, 0, sizeof(int) * (n + 2));
-        memset(itemSize, 0, sizeof(int) * (n + 2));
-        int root = -1;
+        memset(headIndex, -1, sizeof headIndex);
+        memset(nextIndex, -1, sizeof nextIndex);
+        int n, m;
+        scanf("%d%d", &n, &m);
         int idx = 0;
+        int root = 0;
         for (int i = 1; i <= n; ++i) {
-            int p;
-            scanf("%d%d%d", &itemSize[i], &itemValue[i], &p);
-            if (p == -1) {
+            int t;
+            scanf("%d%d%d", &items[i].v, &items[i].w, &t);
+            if (t == -1) {
                 root = i;
             }
-            addEdge(p, i, headIndex, nextIndex, vertexValue, idx);
+            addEdge(t, i, idx);
         }
-        dfs(dp, root, packVolume, headIndex, nextIndex, vertexValue, itemValue, itemSize);
-        printf("%d\n", dp[root][packVolume]);
-        delete[] headIndex;
-        delete[] nextIndex;
-        delete[] vertexValue;
-        delete[] itemValue;
-        delete[] itemSize;
-        for (int i = 0; i <= n; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
+        knapsack(m, n, root);
+        printf("%d\n", dp[root][m]);
         return 0;
     }
 };
