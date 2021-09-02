@@ -6,61 +6,55 @@
 #define ACWINGSOLUTION_PROBLEM0007_H
 
 #include <iostream>
-#include <cstring>
 
 using namespace std;
 
 class Problem0007 {
-public:
-    int mixedKnapsack(const int *itemSize,
-                      const int *itemValue,
-                      const int *itemQuantity,
-                      const int N,
-                      const int packVolume) {
-        auto dp = new int[packVolume + 1];
-        memset(dp, 0, sizeof(int) * (packVolume + 1));
-        for (int k = 0; k < N; ++k) {
-            if (!itemQuantity[k]) {
-                for (int j = itemSize[k]; j <= packVolume; ++j) {
-                    dp[j] = max(dp[j], dp[j - itemSize[k]] + itemValue[k]);
+private:
+    struct Item {
+        int v, w, s;
+    };
+
+    const int N = 1010;
+    int dp[N];
+    Item items[N];
+
+    int knapsack(const int m, const int n) {
+        for (int i = 0; i < n; ++i) {
+            auto v = items[i].v;
+            auto w = items[i].w;
+            auto s = items[i].s;
+            if (s == 0) {
+                for (int j = v; j <= m; ++j) {
+                    dp[j] = max(dp[j], dp[j - v] + w);
                 }
             } else {
-                int s = itemQuantity[k];
                 if (s == -1) {
                     s = 1;
                 }
                 for (int factor = 1; factor <= s; factor *= 2) {
-                    for (int j = packVolume; j >= factor * itemSize[k]; --j) {
-                        dp[j] = max(dp[j], dp[j - factor * itemSize[k]] + factor * itemValue[k]);
+                    for (int j = m; j >= factor * v; --j) {
+                        dp[j] = max(dp[j], dp[j - factor * v] + factor * w);
                     }
                     s -= factor;
                 }
-                if (s) {
-                    for (int j = packVolume; j >= s * itemSize[k]; --j) {
-                        dp[j] = max(dp[j], dp[j - s * itemSize[k]] + s * itemValue[k]);
+                if (s > 0) {
+                    for (int j = m; j >= s * v; --j) {
+                        dp[j] = max(dp[j], dp[j - s * v] + s * w);
                     }
                 }
             }
         }
-        int result = dp[packVolume];
-        delete[] dp;
-        return result;
+        return dp[m];
     }
 
     int main() {
-        int N;
-        int packVolume;
-        scanf("%d%d", &N, &packVolume);
-        auto itemSize = new int[N];
-        auto itemValue = new int[N];
-        auto itemQuantity = new int[N];
-        for (int i = 0; i < N; ++i) {
-            scanf("%d%d%d", &itemSize[i], &itemValue[i], &itemQuantity[i]);
+        int n, m;
+        scanf("%d%d", &n, &m);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d%d%d", &items[i].v, &items[i].w, &items[i].s);
         }
-        printf("%d\n", mixedKnapsack(itemSize, itemValue, itemQuantity, N, packVolume));
-        delete[] itemSize;
-        delete[] itemQuantity;
-        delete[] itemValue;
+        printf("%d\n", knapsack(m, n));
         return 0;
     }
 };
