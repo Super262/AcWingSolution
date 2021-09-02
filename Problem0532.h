@@ -12,22 +12,24 @@
 using namespace std;
 
 class Problem0532 {
-public:
-    int uniqueElements(int *arr, const int N) {
-        sort(arr, arr + N);
+private:
+    int dp[25010];
+    int items[110];
+
+    int knapsack(const int n) {
+        // 转化为完全背包问题
+        memset(dp, 0, sizeof dp);
+        sort(items, items + n);
         int result = 0;
-        auto dp = new int[arr[N - 1] + 1];
-        memset(dp, 0, sizeof(int) * (arr[N - 1] + 1));
         dp[0] = 1;
-        for (int i = 0; i < N; ++i) {
-            if (!dp[arr[i]]) {
+        for (int i = 0; i < n; ++i) {
+            if (dp[items[i]] == 0) {
                 ++result;
             }
-            for (int j = arr[i]; j <= arr[N - 1]; ++j) {
-                dp[j] += dp[j - arr[i]];
+            for (int j = items[i]; j <= items[n - 1]; ++j) {
+                dp[j] += dp[j - items[i]];
             }
         }
-        delete[] dp;
         return result;
     }
 
@@ -37,12 +39,10 @@ public:
         while (t--) {
             int n;
             scanf("%d", &n);
-            auto arr = new int[n];
             for (int i = 0; i < n; ++i) {
-                scanf("%d", &arr[i]);
+                scanf("%d", &items[i]);
             }
-            printf("%d\n", uniqueElements(arr, n));
-            delete[] arr;
+            printf("%d\n", knapsack(n));
         }
         return 0;
     }
