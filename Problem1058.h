@@ -10,38 +10,29 @@
 using namespace std;
 
 class Problem1058 {
-public:
-    int maxValue(const int *arr, const int N) {
-        auto dp = new int *[2];
-        for (int i = 0; i < 2; ++i) {
-            dp[i] = new int[3];
-            for (int j = 0; j < 3; ++j) {
-                dp[i][j] = -0x7f7f7f7f;
-            }
-        }
+    // 状态机（最大收益）：dp[i][0]（手中有货），dp[i][1]（手中无货的第1天），dp[i][2]（手中无货的第2天及以后）
+private:
+    int items[100010];
+    int dp[2][3];
+
+    int stateMachine(const int n) {
+        memset(dp, -0x3f, sizeof dp);
         dp[0][2] = 0;
-        for (int i = 1; i <= N; ++i) {
-            dp[i % 2][0] = max(dp[(i - 1) % 2][0], dp[(i - 1) % 2][2] - arr[i]);
-            dp[i % 2][1] = dp[(i - 1) % 2][0] + arr[i];
+        for (int i = 1; i <= n; ++i) {
+            dp[i % 2][0] = max(dp[(i - 1) % 2][0], dp[(i - 1) % 2][2] - items[i]);
+            dp[i % 2][1] = dp[(i - 1) % 2][0] + items[i];
             dp[i % 2][2] = max(dp[(i - 1) % 2][2], dp[(i - 1) % 2][1]);
         }
-        int result = max(dp[N % 2][1], dp[N % 2][2]);
-        for (int i = 0; i < 2; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
-        return result;
+        return max(dp[n % 2][1], dp[n % 2][2]);
     }
 
     int main() {
-        int N;
-        scanf("%d", &N);
-        auto arr = new int[N + 1];
-        for (int i = 1; i <= N; ++i) {
-            scanf("%d", &arr[i]);
+        int n;
+        scanf("%d", &n);
+        for (int i = 1; i <= n; ++i) {
+            scanf("%d", &items[i]);
         }
-        printf("%d\n", maxValue(arr, N));
-        delete[] arr;
+        printf("%d\n", stateMachine(n));
         return 0;
     }
 };
