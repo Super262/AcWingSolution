@@ -11,18 +11,17 @@ using namespace std;
 
 class Problem1049 {
 private:
-    const int N = 100010;
-    int dp[N][2];
-    int items[N];
+    int dp[2][2];  // 滚动数组优化
+    int items[100010];
 
     int stateMachine(const int n) {
         dp[0][0] = 0;
         dp[0][1] = -1;
         for (int i = 1; i <= n; ++i) {
-            dp[i][0] = max(dp[i - 1][1], dp[i - 1][0]);
-            dp[i][1] = dp[i - 1][0] + items[i];
+            dp[i % 2][0] = max(dp[(i - 1) % 2][1], dp[(i - 1) % 2][0]);
+            dp[i % 2][1] = dp[(i - 1) % 2][0] + items[i];
         }
-        return max(dp[n][0], dp[n][1]);
+        return max(dp[n % 2][0], dp[n % 2][1]);
     }
 
     int main() {
