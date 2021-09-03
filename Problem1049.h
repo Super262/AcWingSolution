@@ -10,42 +10,31 @@
 using namespace std;
 
 class Problem1049 {
-public:
-    int robMaxValue(const int *arr, const int N) {
-        auto dp = new int *[N + 1];
-        for (int i = 0; i <= N; ++i) {
-            dp[i] = new int[2];
-        }
+private:
+    const int N = 100010;
+    int dp[N][2];
+    int items[N];
+
+    int stateMachine(const int n) {
         dp[0][0] = 0;
         dp[0][1] = -1;
-        for (int i = 1; i <= N; ++i) {
-            if (dp[i - 1][1] == -1) {
-                dp[i][0] = dp[i - 1][0];
-            } else {
-                dp[i][0] = max(dp[i - 1][0], dp[i - 1][1]);
-            }
-            dp[i][1] = dp[i - 1][0] + arr[i];
+        for (int i = 1; i <= n; ++i) {
+            dp[i][0] = max(dp[i - 1][1], dp[i - 1][0]);
+            dp[i][1] = dp[i - 1][0] + items[i];
         }
-        int result = max(dp[N][0], dp[N][1]);
-        for (int i = 0; i <= N; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
-        return result;
+        return max(dp[n][0], dp[n][1]);
     }
 
     int main() {
-        int T;
-        scanf("%d", &T);
-        while (T--) {
-            int N;
-            scanf("%d", &N);
-            auto arr = new int[N + 1];
-            for (int i = 1; i <= N; ++i) {
-                scanf("%d", &arr[i]);
+        int t;
+        scanf("%d", &t);
+        while (t--) {
+            int n;
+            scanf("%d", &n);
+            for (int i = 1; i <= n; ++i) {
+                scanf("%d", &items[i]);
             }
-            printf("%d\n", robMaxValue(arr, N));
-            delete[] arr;
+            printf("%d\n", stateMachine(n));
         }
         return 0;
     }
