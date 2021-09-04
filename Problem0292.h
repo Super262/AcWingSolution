@@ -25,13 +25,9 @@ public:
 
     bool validState(const unsigned int s, const unsigned int N) {
         // N < 3，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 2) 可以大于 (N - 1)
-        for (unsigned int offset = 0; offset < N; ++offset) {
-            const unsigned int a = (s >> offset) & 1;
-            const unsigned int b = (s >> (offset + 1)) & 1;
-            const unsigned int c = (s >> (offset + 2)) & 1;
-            if (a + b + c > 1) {
+        for (unsigned int i = 0; i < N; ++i) {
+            if ((s >> i & 1) == 1 && ((s >> (i + 1) & 1) == 1 || (s >> (i + 2) & 1) == 1))
                 return false;
-            }
         }
         return true;
     }
@@ -47,6 +43,7 @@ public:
             onesNum.emplace_back(countOnes(s, M));
         }
         // dp[i][j][k]表示当前已经处理完前i行，第i行状态为k， 第(i - 1)行状态为j
+        // 第i行和第(i - 1)行受第(i - 2)行的影响，所以我们遍历第(i - 2)行的状态值
         vector<vector<vector<int>>> dp(2, vector<vector<int>>(1 << M, vector<int>(1 << M, 0)));
         for (int i = 1; i <= N + 2; ++i) {
             for (int a = 0; a < states.size(); ++a) {
