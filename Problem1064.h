@@ -11,73 +11,76 @@
 using namespace std;
 
 class Problem1064 {
-public:
-    int countOnes(const int state, const int n) {
+private:
+    int countOnes(const int s, const int n) {
         int result = 0;
         for (int offset = 0; offset < n; ++offset) {
-            if ((state >> offset) & 1) {
+            if ((s >> offset) & 1) {
                 ++result;
             }
         }
         return result;
     }
 
-    bool noAdjacentOnes(const int state, const int n) {
-        // N < 2，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 1) 可以大于 (N - 1)
+    bool hasContinousOnes(const int s, const int n) {
+        // N < 2，此函数应仍能正确计算出结果，而不是直接返回false：(offset + 1) 可以大于 (N - 1)
         for (int offset = 0; offset < n; ++offset) {
-            if (((state >> offset) & 1) && ((state >> (offset + 1)) & 1)) {
-                return false;
+            if (((s >> offset) & 1) && ((s >> (offset + 1)) & 1)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    vector<vector<int>> getPossiblePrev(const vector<int> &states, const int N) {
-        vector<vector<int>> prevStates(states.size(), vector<int>());
+    vector<vector<int>> getPossiblePrevIdxes(vector<int> states, const int n) {
+        vector<vector<int>> result(states.size(), vector<int>());
         for (int i = 0; i < states.size(); ++i) {
             for (int j = 0; j < states.size(); ++j) {
-                if ((states[i] & states[j]) || !noAdjacentOnes(states[i] | states[j], N)) {
+                if ((states[i] & states[j]) || hasContinousOnes(states[i] | states[j], n)) {
                     continue;
                 }
-                prevStates[i].emplace_back(j);
+                result[i].emplace_back(j);
             }
         }
-        return prevStates;
+        return result;
     }
 
-    long long solutionsNum(const int N, const int M) {
-        vector<int> states;
-        vector<int> onesCount;
-        for (int s = 0; s < (1 << N); ++s) {
-            if (noAdjacentOnes(s, N)) {
-                states.emplace_back(s);
-                onesCount.emplace_back(countOnes(s, N));
+    long long stateCompression(const int n, const int k) {
+        vector<int> currentS;
+        vector<int> numOfOnes;
+        // 预处理出第i行所有可能的合法状态
+        for (int s = 0; s < (1 << n); ++s) {
+            if (hasContinousOnes(s, n)) {
+                continue;
             }
+            currentS.emplace_back(s);
+            numOfOnes.emplace_back(countOnes(s, n));
         }
-        vector<vector<int>> prevStates = getPossiblePrev(states, N);
-
+        // 获取第(i-1)行的所有可能状态
+        auto prevSIdxes = getPossiblePrevIdxes(currentS, n);
         // dp[i][k][s] 表示前i行共摆放了k个国王、第i行摆放方案为s（1表示摆放，0表示空白）的方案数量
-        vector<vector<vector<long long>>> dp(N + 2, vector<vector<long long>>(M + 1, vector<long long>(1 << N, 0)));
+        vector<vector<vector<long long>>> dp(n + 2, vector<vector<long long>>(k + 1, vector<long long>(1 << n, 0)));
+        // 不要忘记初始化
         dp[0][0][0] = 1;
-        for (int i = 1; i <= N + 1; ++i) {
-            for (int kingsNum = 0; kingsNum <= M; ++kingsNum) {
-                for (int k = 0; k < states.size(); ++k) {
-                    for (int preStateIdx : prevStates[k]) {
-                        if (onesCount[k] > kingsNum) {
+        for (int i = 1; i <= n + 1; ++i) {
+            for (int j = 0; j <= k; ++j) {
+                for (int curSIdx = 0; curSIdx < currentS.size(); ++curSIdx) {
+                    for (int prevSIdx: prevSIdxes[curSIdx]) {
+                        if (numOfOnes[curSIdx] + numOfOnes[prevSIdx] > j) {
                             continue;
                         }
-                        dp[i][kingsNum][states[k]] += dp[i - 1][kingsNum - onesCount[k]][states[preStateIdx]];
+                        dp[i][j][currentS[curSIdx]] += dp[i - 1][j - numOfOnes[curSIdx]][currentS[prevSIdx]];
                     }
                 }
             }
         }
-        return dp[N + 1][M][0];
+        return dp[n + 1][k][0];
     }
 
     int main() {
-        int N, M;
-        scanf("%d%d", &N, &M);
-        printf("%lld\n", solutionsNum(N, M));
+        int N, K;
+        scanf("%d%d", &N, &K);
+        printf("%lld\n", stateCompression(N, K));
         return 0;
     }
 };
