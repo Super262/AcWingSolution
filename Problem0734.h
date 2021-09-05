@@ -26,16 +26,13 @@ private:
 
     const int N = 100;
     int dp[N * N + 10];
-    Stone stones[N];
+    Stone stones[N + 10];
 
     int knapsack(const int m, const int n) {
+        sort(stones + 1, stones + n + 1);
         memset(dp, -1, sizeof dp);
-        sort(stones, stones + n);
-        // 注意：由于这里的背包容量代表时间代价，
-        // 所以dp[i][j]表示耗费时间恰好为j时的最大价值
-        // dp[i][j] 初始值为无效值
         dp[0] = 0;
-        for (int i = 0; i < n; ++i) {
+        for (int i = 1; i <= n; ++i) {
             for (int j = m; j >= stones[i].s; --j) {
                 if (dp[j - stones[i].s] == -1) {
                     continue;
@@ -44,8 +41,8 @@ private:
             }
         }
         int result = 0;
-        for (int j = 0; j <= m; ++j) {
-            result = max(result, dp[j]);
+        for (int i = 0; i <= m; ++i) {
+            result = max(result, dp[i]);
         }
         return result;
     }
@@ -56,7 +53,7 @@ private:
         for (int k = 1; k <= t; ++k) {
             int m = 0, n;
             scanf("%d", &n);
-            for (int i = 0; i < n; ++i) {
+            for (int i = 1; i <= n; ++i) {
                 scanf("%d%d%d", &stones[i].s, &stones[i].e, &stones[i].l);
                 m += stones[i].s;
             }
