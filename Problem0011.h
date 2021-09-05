@@ -37,10 +37,7 @@ public:
             }
         }
         int result = 0;
-        int maxValue = 0;
-        for (int i = 0; i <= packVolume; ++i) {
-            maxValue = max(maxValue, dp[i]);
-        }
+        int maxValue = dp[packVolume];
         for (int i = 0; i <= packVolume; ++i) {
             if (maxValue != dp[i]) {
                 continue;
