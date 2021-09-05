@@ -34,6 +34,7 @@ private:
                     break;
                 }
             }
+            // 千万不要忘记这个判断（及时跳出循环）
             if (currentNum == 0) {
                 break;
             }
