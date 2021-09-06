@@ -22,6 +22,7 @@ private:
                 continue;
             }
             for (int j = m; j >= 0; --j) {
+                // 利用二进制进行压缩
                 for (int k = 0; k < (1 << accessories[i].size()); ++k) {
                     auto v = masters[i].first;
                     auto wv = masters[i].second;
