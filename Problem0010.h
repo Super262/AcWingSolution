@@ -32,10 +32,10 @@ private:
         ++idx;
     }
 
-    void knapsack(const int m, const int n, const int root) {
+    void knapsack(const int m, const int root) {
         for (auto idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
             auto son = vertexValue[idx];
-            knapsack(m, n, son);
+            knapsack(m, son);
             for (int j = m - items[root].v; j >= 0; --j) {
                 // 遍历所有可能方案
                 for (int childV = 0; childV <= j; ++childV) {
@@ -65,10 +65,11 @@ private:
             scanf("%d%d%d", &items[i].v, &items[i].w, &t);
             if (t == -1) {
                 root = i;
+            } else {
+                addEdge(t, i, idx);
             }
-            addEdge(t, i, idx);
         }
-        knapsack(m, n, root);
+        knapsack(m, root);
         printf("%d\n", dp[root][m]);
         return 0;
     }
