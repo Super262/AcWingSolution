@@ -11,41 +11,36 @@
 using namespace std;
 
 class Problem0320 {
-public:
-    int maxValue(const int *weight, const int N) {
-        auto dp = new int *[2 * N + 1];
-        for (int i = 1; i <= 2 * N; ++i) {
-            dp[i] = new int[2 * N + 1];
-            memset(dp[i], 0, sizeof(int) * (2 * N + 1));
-        }
-        for (int length = 2; length <= N + 1; ++length) {
-            for (int start = 1; start + length - 1 <= 2 * N; ++start) {
+private:
+    const int N = 100;
+    int items[2 * N + 1];
+    int dp[2 * N + 1][2 * N + 1];
+
+    int rangeModel(const int n) {
+        for (int length = 2; length <= n + 1; ++length) {
+            for (int start = 1; start + length - 1 <= 2 * n; ++start) {
                 int end = start + length - 1;
                 for (int mid = start + 1; mid < end; ++mid) {
                     dp[start][end] = max(dp[start][end],
-                                         dp[start][mid] + dp[mid][end] + weight[start] * weight[mid] * weight[end]);
+                                         dp[start][mid] + dp[mid][end] + items[start] * items[mid] * items[end]);
                 }
             }
         }
         int result = 0;
-        for (int i = 1; i <= N; ++i) {
-            result = max(result, dp[i][i + N]);
-            delete[] dp[i];
+        for (int i = 1; i <= n; ++i) {
+            result = max(result, dp[i][i + n]);
         }
-        delete[] dp;
         return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto weight = new int[2 * n + 1];
         for (int i = 1; i <= n; ++i) {
-            scanf("%d", &weight[i]);
-            weight[i + n] = weight[i];
+            scanf("%d", &items[i]);
+            items[i + n] = items[i];
         }
-        printf("%d\n", maxValue(weight, n));
-        delete[] weight;
+        printf("%d\n", rangeModel(n));
         return 0;
     }
 };
