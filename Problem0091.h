@@ -20,7 +20,7 @@ private:
     int dp[1 << N][N];
 
     int shortestHamilton(const int n) {
-        memset(dp, 0x7f, sizeof dp);
+        memset(dp, 0x3f, sizeof dp);
         const int LAST_STATE = (1 << n) - 1;
         dp[1][0] = 0;
         for (int p = 0; p <= LAST_STATE; ++p) {
@@ -29,9 +29,6 @@ private:
                     continue;
                 }
                 for (int s0 = 0; s0 < n; ++s0) {
-                    if (s0 == s1) {
-                        continue;
-                    }
                     if (dp[p - (1 << s1)][s0] == 0x7f7f7f7f || graph[s0][s1] == 0x7f7f7f7f) {
                         continue;
                     }
