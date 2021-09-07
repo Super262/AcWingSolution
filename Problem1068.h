@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem1068 {
     // https://www.acwing.com/solution/content/15641/
+    // 化环为链，大大降低复杂度
 public:
     void printMaxAndMin(const int *weight, const int N) {
         auto prefixSum = new int[2 * N + 1];
