@@ -17,7 +17,7 @@ private:
     int dp[2 * N + 1][2 * N + 1];
 
     int rangeModel(const int n) {
-        for (int length = 2; length <= n + 1; ++length) {
+        for (int length = 3; length <= n + 1; ++length) {
             for (int start = 1; start + length - 1 <= 2 * n; ++start) {
                 int end = start + length - 1;
                 for (int mid = start + 1; mid < end; ++mid) {
