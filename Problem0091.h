@@ -29,7 +29,7 @@ private:
                     continue;
                 }
                 for (int s0 = 0; s0 < n; ++s0) {
-                    if (dp[p - (1 << s1)][s0] == 0x7f7f7f7f || graph[s0][s1] == 0x7f7f7f7f) {
+                    if (s0 == s1) {
                         continue;
                     }
                     dp[p][s1] = min(dp[p][s1], dp[p - (1 << s1)][s0] + graph[s0][s1]);
