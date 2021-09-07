@@ -13,63 +13,48 @@ using namespace std;
 class Problem1068 {
     // https://www.acwing.com/solution/content/15641/
     // 化环为链，大大降低复杂度
-public:
-    void printMaxAndMin(const int *weight, const int N) {
-        auto prefixSum = new int[2 * N + 1];
-        prefixSum[0] = 0;
-        for (int i = 1; i <= 2 * N; ++i) {
-            prefixSum[i] = prefixSum[i - 1] + weight[i];
-        }
-        auto dpMax = new int *[2 * N + 1];
-        auto dpMin = new int *[2 * N + 1];
-        for (int i = 1; i <= 2 * N; ++i) {
-            dpMax[i] = new int[2 * N + 1];
-            dpMin[i] = new int[2 * N + 1];
-            memset(dpMax[i], -1, sizeof(int) * (2 * N + 1));
-            memset(dpMin[i], 0x7f, sizeof(int) * (2 * N + 1));
-            dpMax[i][i] = 0;
+private:
+    const int N = 200;
+    int items[2 * N + 1];
+    int dpMax[2 * N + 1][2 * N + 1];
+    int dpMin[2 * N + 1][2 * N + 1];
+
+    void rangeModel(const int n) {
+        memset(dpMax, -0x3f, sizeof dpMax);
+        memset(dpMin, 0x3f, sizeof dpMin);
+        for (int i = 1; i <= 2 * n; ++i) {
             dpMin[i][i] = 0;
+            dpMax[i][i] = 0;
+            items[i] += items[i - 1];
         }
-        for (int length = 1; length <= N; ++length) {
-            for (int start = 1; start + length - 1 <= 2 * N; ++start) {
+        for (int length = 1; length <= n; ++length) {
+            for (int start = 1; start + length - 1 <= 2 * n; ++start) {
                 int end = start + length - 1;
                 for (int mid = start; mid < end; ++mid) {
                     dpMax[start][end] = max(dpMax[start][end],
-                                            dpMax[start][mid] + dpMax[mid + 1][end] + prefixSum[end] -
-                                            prefixSum[start - 1]);
+                                            dpMax[start][mid] + dpMax[mid + 1][end] + items[end] - items[start - 1]);
                     dpMin[start][end] = min(dpMin[start][end],
-                                            dpMin[start][mid] + dpMin[mid + 1][end] + prefixSum[end] -
-                                            prefixSum[start - 1]);
+                                            dpMin[start][mid] + dpMin[mid + 1][end] + items[end] - items[start - 1]);
                 }
             }
         }
-        int resultMax = -1;
-        int resultMin = 0x7f7f7f7f;
-        for (int i = 1; i <= N; ++i) {
-            resultMax = max(resultMax, dpMax[i][i + N - 1]);
-            resultMin = min(resultMin, dpMin[i][i + N - 1]);
-            delete[] dpMax[i];
-            delete[] dpMin[i];
+        int resMin = 0x3f3f3f3f;
+        int resMax = -0x3f3f3f3f;
+        for (int i = 1; i <= n; ++i) {
+            resMin = min(resMin, dpMin[i][i + n - 1]);
+            resMax = max(resMax, dpMax[i][i + n - 1]);
         }
-        delete[] dpMin;
-        delete[] dpMax;
-        delete[] prefixSum;
-        printf("%d\n", resultMin);
-        printf("%d\n", resultMax);
+        printf("%d\n%d\n", resMin, resMax);
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto weight = new int[2 * n + 1];
         for (int i = 1; i <= n; ++i) {
-            int t;
-            scanf("%d", &t);
-            weight[i] = t;
-            weight[i + n] = t;
+            scanf("%d", &items[i]);
+            items[i + n] = items[i];
         }
-        printMaxAndMin(weight, n);
-        delete[] weight;
+        rangeModel(n);
         return 0;
     }
 };
