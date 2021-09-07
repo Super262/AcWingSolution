@@ -34,6 +34,7 @@ private:
     int minimalCoveringLines(const int n) {
         memset(dp, 0x3f, sizeof dp);
         memset(path, 0, sizeof path);
+        // 预处理出任意两点间的抛物线
         for (int i = 0; i < n; ++i) {
             path[i][i] = 1 << i;
             for (int j = 0; j < n; ++j) {
