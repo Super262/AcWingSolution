@@ -11,6 +11,8 @@
 using namespace std;
 
 class Problem1072 {
+    // 任取一点为起点，找到距离该点最远的点u
+    // 找到距离u最远的点v；u和v间的距离即为直径
 public:
     int headIndex[10010];
     int nextIndex[20010];
