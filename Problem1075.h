@@ -54,7 +54,7 @@ public:
         auto divisorsSum = new int[n + 1];
         memset(divisorsSum, 0, sizeof(int) * (n + 1));
         for (int a = 1; a <= n; ++a) {
-            // b从1开始，避免累加自身（n）到因子和中
+            // b不从1开始，避免累加自身（n）到因子和中
             for (int b = 2; b <= n / a; ++b) {  // 避免溢出，不使用“a * b <= n”
                 divisorsSum[a * b] += a;
             }
