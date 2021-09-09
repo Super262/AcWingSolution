@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem1077 {
     // https://www.acwing.com/solution/content/13979/
-public:
+private:
     const int N = 1502;
     int headIndex[N];
     int vertexValue[2 * N];
@@ -26,12 +26,12 @@ public:
         headIndex[a] = idx;
         ++idx;
     }
-// dp[i][0]表示第i个节点由父节点处放置的守卫看护下的最小代价
-// dp[i][1]表示第i个节点由子节点处放置的守卫看护下的最小代价
-// dp[i][2]表示第i个节点由在该节点放置的守卫看护下的最小代价
-// 1和3的意义很明显，2的意义代表，如果第i个节点由子节点守卫，那么所有子节点都不能由父节点守卫，
-// 并且每个子节点都得到了守卫，且至少有一个子节点处放置了守卫
 
+    // dp[i][0]表示第i个节点由父节点处放置的守卫看护下的最小代价
+    // dp[i][1]表示第i个节点由子节点处放置的守卫看护下的最小代价
+    // dp[i][2]表示第i个节点由在该节点放置的守卫看护下的最小代价
+    // 1和3的意义很明显，2的意义代表，如果第i个节点由子节点守卫，那么所有子节点都不能由父节点守卫，
+    // 并且每个子节点都得到了守卫，且至少有一个子节点处放置了守卫
     void dfs(const int root) {
         dp[root][2] = cost[root];
         dp[root][0] = 0;
