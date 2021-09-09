@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem1074 {
     // https://www.acwing.com/solution/content/10714/
-public:
+private:
     const int N = 101;
     int headIndex[N];
     int vertexValue[2 * N];
