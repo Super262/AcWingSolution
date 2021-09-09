@@ -11,59 +11,58 @@
 using namespace std;
 
 class Problem0323 {
-public:
+    // 保证所有边至少有1个顶点被选择
+private:
     const int N = 1501;
     int headIndex[N];
-    int nextIndex[10 * N];
     int vertexValue[10 * N];
+    int nextIndex[10 * N];
     int dp[N][2];
+    bool hasFather[N];
 
-    void addEdge(const int a, const int b, int &idx) {
+    void addEdge(int a, int b, int &idx) {
         vertexValue[idx] = b;
         nextIndex[idx] = headIndex[a];
         headIndex[a] = idx;
         ++idx;
     }
 
-    void dfs(const int root) {
+    void dfs(int root) {
         dp[root][0] = 0;
         dp[root][1] = 1;
         for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            int childV = vertexValue[idx];
+            auto childV = vertexValue[idx];
             dfs(childV);
             dp[root][0] += dp[childV][1];
-            dp[root][1] += min(dp[childV][0], dp[childV][1]);
+            dp[root][1] += min(dp[childV][1], dp[childV][0]);
         }
     }
 
     int main() {
         int n;
-        auto hasParent = new bool[N];
-        while (scanf("%d", &n) != -1) {
-            memset(hasParent, 0, sizeof(bool) * N);
+        while (cin >> n) {
             memset(headIndex, -1, sizeof headIndex);
             memset(nextIndex, -1, sizeof nextIndex);
-            memset(vertexValue, -1, sizeof vertexValue);
-            memset(dp, 0x7f, sizeof dp);
+            memset(hasFather, 0, sizeof hasFather);
+            memset(dp, 0x3f, sizeof dp);
             int idx = 0;
             for (int i = 0; i < n; ++i) {
-                int v, kidsNum;
-                scanf("%d:(%d)", &v, &kidsNum);
-                for (int j = 0; j < kidsNum; ++j) {
-                    int u;
-                    scanf("%d", &u);
-                    addEdge(v, u, idx);
-                    hasParent[u] = true;
+                int r, m;
+                scanf("%d:(%d) ", &r, &m);
+                for (int j = 0; j < m; ++j) {
+                    int b;
+                    scanf("%d", &b);
+                    addEdge(r, b, idx);  // 所有边是单向边
+                    hasFather[b] = true;
                 }
             }
             int root = 0;
-            while (hasParent[root]) {
+            while (hasFather[root]) {
                 ++root;
             }
             dfs(root);
             printf("%d\n", min(dp[root][0], dp[root][1]));
         }
-        delete[] hasParent;
         return 0;
     }
 };
