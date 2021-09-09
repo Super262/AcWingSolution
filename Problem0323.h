@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem0323 {
     // 保证所有边至少有1个顶点被选择
+    // https://www.acwing.com/solution/content/66365/
 private:
     const int N = 1501;
     int headIndex[N];
