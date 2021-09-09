@@ -71,7 +71,7 @@ public:
         auto visited = new bool[n + 1];
         memset(visited, 0, sizeof(bool) * (n + 1));
         int maxDistance = 0;
-        for (int i = 1; i < MAX_N; ++i) {
+        for (int i = 1; i < n; ++i) {
             // 遍历所有可能的根结点（数、因数和）
             if (headIndex[i] == -1 || visited[i]) {
                 continue;
