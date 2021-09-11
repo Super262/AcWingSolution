@@ -11,37 +11,38 @@
 using namespace std;
 
 class Problem0135 {
-public:
-    int maxSeq(const int *prefixSum, const int N, const int M) {
-        int *q = new int[2 * N];
-        int hh = 0;
-        int tt = 0;  // tt初始值为0，相当于队列包含初识元素0，简化了后续步骤
+private:
+    const int N = 300010;
+    int dq[N];
+    int a[N];
+
+    int maxSeq(int n, int m) {
         int result = -0x7f7f7f7f;
-        for (int i = 1; i <= N; ++i) {
-            if (hh <= tt && i - q[hh] > M) {
+        int hh = 0, tt = -1;
+        for (int i = 0; i <= n; ++i) {  // 从0开始遍历！！
+            // 根据题意：窗口长度为(m + 1)
+            while (hh <= tt && i - dq[hh] + 1 > m + 1) {
                 ++hh;
             }
-            result = max(result, prefixSum[i] - prefixSum[q[hh]]);
-            while (hh <= tt && prefixSum[q[tt]] >= prefixSum[i]) {
+            if (hh <= tt) {
+                result = max(result, a[i] - a[dq[hh]]);
+            }
+            while (hh <= tt && a[i] <= a[dq[tt]]) {
                 --tt;
             }
-            q[++tt] = i;
+            dq[++tt] = i;
         }
-        delete[] q;
         return result;
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        auto a = new int[n + 1];
-        memset(a, 0, sizeof(int) * (n + 1));
         for (int i = 1; i <= n; ++i) {
             scanf("%d", &a[i]);
             a[i] += a[i - 1];
         }
-        printf("%d\n", maxSeq(a, n, m));
-        delete[] a;
+        printf("%d\n", maxSeq(n, m));
         return 0;
     }
 };
