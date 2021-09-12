@@ -13,42 +13,40 @@ using namespace std;
 class Problem1089 {
     // https://www.acwing.com/solution/content/27813/
     // dp[i]表示1～i满足要求且第i个被点燃
-public:
-    int minCost(const int *cost, const int N, const int M) {
-        auto dp = new int[N + 1];
-        auto q = new int[2 * N];
-        memset(dp, 0, sizeof(int) * (N + 1));
-        memset(q, 0, sizeof(int) * 2 * N);
+private:
+    const int N = 200002;
+    int q[N];
+    int dp[N];
+    int cost[N];
+
+    int minCost(int n, int m) {
         dp[0] = 0;
-        int hh = 0, tt = 0;  // 队列包含初始元素0
-        for (int i = 1; i <= N; ++i) {
-            while (hh <= tt && q[hh] < i - M) {
+        int hh = 0, tt = -1;
+        q[++tt] = 0;
+        for (int i = 1; i <= n; ++i) {
+            while (hh <= tt && i - q[hh] + 1 > m + 1) {
                 ++hh;
             }
-            dp[i] = dp[q[hh]] + cost[i];
-            while (hh <= tt && dp[q[tt]] >= dp[i]) {
+            dp[i] = cost[i] + dp[q[hh]];
+            while (hh <= tt && dp[i] <= dp[q[tt]]) {
                 --tt;
             }
             q[++tt] = i;
         }
-        delete[] q;
         int result = 0x7f7f7f7f;
-        for (int i = N - M + 1; i <= N; ++i) {
-            result = min(result, dp[i]);
+        for (int i = n - m + 1; i <= n; ++i) {
+            result = min(dp[i], result);
         }
-        delete[] dp;
         return result;
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        auto cost = new int[n + 1];
         for (int i = 1; i <= n; ++i) {
             scanf("%d", &cost[i]);
         }
-        printf("%d\n", minCost(cost, n, m));
-        delete[] cost;
+        printf("%d\n", minCost(n, m));
         return 0;
     }
 };
