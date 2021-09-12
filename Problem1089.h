@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem1089 {
     // https://www.acwing.com/solution/content/27813/
+    // dp[i]表示1～i满足要求且第i个被点燃
 public:
     int minCost(const int *cost, const int N, const int M) {
         auto dp = new int[N + 1];
