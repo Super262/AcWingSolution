@@ -11,69 +11,77 @@ using namespace std;
 
 class Problem1091 {
     // https://www.acwing.com/solution/content/12800/
-public:
-    const int N = 1000;
-    int matrix[N + 1][N + 1];
-    int q[N + 1];
+private:
+    const int N = 1010;
+    int q[N];
+    int matrix[N][N];
 
-    void maxInRow(const int row[], int maximal[], const int n, const int k) {
+    void getMaxInRow(const int row[], int maxs[], const int n, const int k) {
+        // maxs[i]是以row[i]结尾的窗口中的最大值
         int hh = 0, tt = -1;
-        for (int i = 1; i <= n; i++) {
-            if (hh <= tt && q[hh] <= i - k) hh++;
-            while (hh <= tt && row[q[tt]] <= row[i]) tt--;
-
+        for (int i = 1; i <= n; ++i) {
+            while (hh <= tt && i - q[hh] + 1 > k) {
+                ++hh;
+            }
+            while (hh <= tt && row[i] >= row[q[tt]]) {
+                --tt;
+            }
             q[++tt] = i;
-            //因为第i个元素也可能包含，所以最后再处理
-            maximal[i] = row[q[hh]];
+            maxs[i] = row[q[hh]];
         }
     }
 
-    void minInRow(const int row[], int minimal[], const int n, const int k) {
+    void getMinInRow(const int row[], int mins[], const int n, const int k) {
+        // mins[i]是以row[i]结尾的窗口中的最大值
         int hh = 0, tt = -1;
-        for (int i = 1; i <= n; i++) {
-            if (hh <= tt && q[hh] < i - k + 1) hh++;
-            while (hh <= tt && row[q[tt]] >= row[i]) tt--;
+        for (int i = 1; i <= n; ++i) {
+            while (hh <= tt && i - q[hh] + 1 > k) {
+                ++hh;
+            }
+            while (hh <= tt && row[i] <= row[q[tt]]) {
+                --tt;
+            }
             q[++tt] = i;
-            minimal[i] = row[q[hh]];
+            mins[i] = row[q[hh]];
         }
     }
 
-    int minPart(const int a, const int b, const int k) {
-        int rowMinimal[a + 1][b + 1];
-        int rowMaximal[a + 1][b + 1];
+    int minSquare(const int a, const int b, const int k) {
+        int rowWinMaxs[a + 1][b + 1];
+        int rowWinMins[a + 1][b + 1];
         for (int i = 1; i <= a; ++i) {
-            maxInRow(matrix[i], rowMaximal[i], b, k);
-            minInRow(matrix[i], rowMinimal[i], b, k);
+            getMaxInRow(matrix[i], rowWinMaxs[i], b, k);
+            getMinInRow(matrix[i], rowWinMins[i], b, k);
         }
-        int result = 1e9;
-        int windowMaximal[a + 1];
-        int windowMinimal[a + 1];
-        int temp[N + 1];
+        int colWinMaxs[a + 1];
+        int colWinMins[a + 1];
+        int temp[a + 1];
+        int result = 0x7f7f7f7f;
         for (int j = k; j <= b; ++j) {
             for (int i = 1; i <= a; ++i) {
-                temp[i] = rowMaximal[i][j];
+                temp[i] = rowWinMaxs[i][j];
             }
-            maxInRow(temp, windowMaximal, a, k);
+            getMaxInRow(temp, colWinMaxs, a, k);
             for (int i = 1; i <= a; ++i) {
-                temp[i] = rowMinimal[i][j];
+                temp[i] = rowWinMins[i][j];
             }
-            minInRow(temp, windowMinimal, a, k);
+            getMinInRow(temp, colWinMins, a, k);
             for (int i = k; i <= a; ++i) {
-                result = min(result, windowMaximal[i] - windowMinimal[i]);
+                result = min(result, colWinMaxs[i] - colWinMins[i]);
             }
         }
         return result;
     }
 
     int main() {
-        int a, b, k;
-        scanf("%d%d%d", &a, &b, &k);
+        int a, b, n;
+        scanf("%d%d%d", &a, &b, &n);
         for (int i = 1; i <= a; ++i) {
             for (int j = 1; j <= b; ++j) {
                 scanf("%d", &matrix[i][j]);
             }
         }
-        printf("%d\n", minPart(a, b, k));
+        printf("%d\n", minSquare(a, b, n));
         return 0;
     }
 };
