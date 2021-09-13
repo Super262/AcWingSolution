@@ -23,8 +23,8 @@ public:
         auto dp = new long long[N + 1];
         dp[0] = 0;
         auto q = new long long[N + 1];
-        long long hh = 0, tt = 0;
-        q[0] = 0;
+        long long hh = 0, tt = -1;
+        q[++tt] = 0;
         for (long long i = 1; i <= N; ++i) {
             while (hh <= tt && q[hh] < i - K) {
                 ++hh;
