@@ -10,52 +10,56 @@
 
 using namespace std;
 
-int q[50001];
-int dp[50001];
-
 class Problem1090 {
-public:
-    bool isValid(const int *cost, const int N, const int maxBlank, const int remainingTime) {
-        memset(q, 0, sizeof q);
+private:
+    const int N = 50010;
+    int q[N];
+    int cost[N];
+    int dp[N];
+
+    bool canFinish(const int n, const int blank, const int timeLimit) {
+        int hh = 0, tt = -1;
         memset(dp, 0, sizeof dp);
-        int hh = 0, tt = 0;
-        for (int i = 1; i <= N; ++i) {
-            while (hh <= tt && q[hh] < i - maxBlank - 1) {
+        q[++tt] = 0;
+        for (int i = 1; i <= n; ++i) {
+            while (hh <= tt && i - q[hh] + 1 > blank + 2) {
                 ++hh;
             }
             dp[i] = dp[q[hh]] + cost[i];
-            while (hh <= tt && dp[q[tt]] >= dp[i]) {
+            while (hh <= tt && dp[i] <= dp[q[tt]]) {
                 --tt;
             }
             q[++tt] = i;
         }
-        for (int i = N - maxBlank; i <= N; ++i) {
-            if (dp[i] <= remainingTime) {
+        for (int i = n - blank; i <= n; ++i) {
+            if (dp[i] <= timeLimit) {
                 return true;
             }
         }
         return false;
     }
 
-    int main() {
-        int N, remainingTime;
-        scanf("%d%d", &N, &remainingTime);
-        auto cost = new int[N + 1];
-        for (int i = 1; i <= N; ++i) {
-            scanf("%d", &cost[i]);
-        }
+    int findMaxBlank(const int n, const int timeLimit) {
         int left = 0;
-        int right = N;
+        int right = n;
         while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (isValid(cost, N, mid, remainingTime)) {
+            auto mid = left + (right - left) / 2;
+            if (canFinish(n, mid, timeLimit)) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
         }
-        delete[] cost;
-        printf("%d\n", left);
+        return left;
+    }
+
+    int main() {
+        int n, timeLimit;
+        scanf("%d%d", &n, &timeLimit);
+        for (int i = 1; i <= n; ++i) {
+            scanf("%d", &cost[i]);
+        }
+        printf("%d\n", findMaxBlank(n, timeLimit));
         return 0;
     }
 };
