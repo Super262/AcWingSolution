@@ -11,7 +11,8 @@
 using namespace std;
 
 class Problem1100 {
-public:
+private:
+    // 数据范围不超过2e5，并且不需要考虑负数点
     const int N = 200001;
     int q[N];
     int dist[N];
