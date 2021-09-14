@@ -50,7 +50,7 @@ public:
                 scanf("%d", &graph[i][j]);
             }
         }
-        bfs(n - 1, n - 1, 0, 0, n);  // 反向bfs，避免逆向输出路径
+        bfs(n - 1, n - 1, 0, 0, n);  // 反向BFS（等价于正向），避免逆向输出路径
         int currentX = 0;
         int currentY = 0;
         while (true) {
