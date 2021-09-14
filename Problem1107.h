@@ -15,11 +15,9 @@ using namespace std;
 class Problem1107 {
     // https://www.acwing.com/solution/content/19847/
     // 保证字典序：按照字典序从A开始处理
-public:
+private:
     string moveA(string s) {
-        for (int i = 0; i < 4; i++) {
-            swap(s[i], s[7 - i]);
-        }
+        reverse(s.begin(), s.end());
         return s;
     }
 
