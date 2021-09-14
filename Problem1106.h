@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem1106 {
-public:
+private:
     const int N = 1000;
     bool visited[N][N];
     int graph[N][N];
@@ -32,13 +32,15 @@ public:
                     if (i == root.first && j == root.second) {
                         continue;
                     }
-                    if (graph[i][j] == rootH && !visited[i][j]) {
-                        q[++tt] = pair<int, int>(i, j);
-                        visited[i][j] = true;
-                    } else if (graph[i][j] > rootH) {
+                    if (graph[i][j] > rootH) {
                         hasHigher = true;
                     } else if (graph[i][j] < rootH) {
                         hasLower = true;
+                    } else {
+                        if (!visited[i][j]) {
+                            q[++tt] = pair<int, int>(i, j);
+                            visited[i][j] = true;
+                        }
                     }
                 }
             }
