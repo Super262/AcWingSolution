@@ -15,7 +15,7 @@ class Problem1076 {
 public:
     const int N = 1000;
     int graph[N][N];
-    pair<int, int> preNode[N][N];
+    pair<int, int> preNode[N][N];  // preNode代替visited，标记被访问的节点
     pair<int, int> q[N * N + 1];
 
     void bfs(const int startX, const int startY, const int endX, const int endY, const int n) {
