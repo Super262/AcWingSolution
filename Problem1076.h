@@ -12,7 +12,7 @@
 using namespace std;
 
 class Problem1076 {
-public:
+private:
     const int N = 1000;
     int graph[N][N];
     pair<int, int> preNode[N][N];  // preNode代替visited，标记被访问的节点
