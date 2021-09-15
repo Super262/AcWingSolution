@@ -19,7 +19,7 @@ public:
     const int M = 100000;
     int headIndex[N + 10], reversedHeadIndex[N + 10];
     int vertexValue[2 * M + 10], nextIndex[2 * M + 10], edgeWeight[2 * M + 10];
-    int distFromEnd[N + 10];
+    int distToEnd[N + 10];
 
     void addEdge(int heIdx[], const int start, const int end, const int w, int &idx) {
         vertexValue[idx] = end;
@@ -32,10 +32,10 @@ public:
     void dijkstra(const int start) {
         auto visited = new bool[N + 1];
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        memset(distFromEnd, 0x7f, sizeof distFromEnd);
+        memset(distToEnd, 0x7f, sizeof distToEnd);
         memset(visited, 0, sizeof(bool) * (N + 1));
         heap.emplace(pair<int, int>(0, start));
-        distFromEnd[start] = 0;
+        distToEnd[start] = 0;
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
@@ -46,11 +46,11 @@ public:
             visited[rootV] = true;
             for (int idx = reversedHeadIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
                 const int nextV = vertexValue[idx];
-                if (distFromEnd[nextV] <= distFromEnd[rootV] + edgeWeight[idx]) {
+                if (distToEnd[nextV] <= distToEnd[rootV] + edgeWeight[idx]) {
                     continue;
                 }
-                distFromEnd[nextV] = distFromEnd[rootV] + edgeWeight[idx];
-                heap.emplace(pair<int, int>(distFromEnd[nextV], nextV));
+                distToEnd[nextV] = distToEnd[rootV] + edgeWeight[idx];
+                heap.emplace(pair<int, int>(distToEnd[nextV], nextV));
             }
         }
         delete[] visited;
@@ -61,7 +61,7 @@ public:
         auto count = new int[N + 1];
         memset(count, 0, sizeof(int) * (N + 1));
         priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> heap;
-        heap.emplace(pair<int, pair<int, int>>(distFromEnd[start], pair<int, int>(0, start)));
+        heap.emplace(pair<int, pair<int, int>>(distToEnd[start], pair<int, int>(0, start)));
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
@@ -75,7 +75,7 @@ public:
             for (int idx = headIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
                 int nextV = vertexValue[idx];
                 if (count[nextV] < k) {
-                    heap.emplace(pair<int, pair<int, int>>(rootDistFromSrc + edgeWeight[idx] + distFromEnd[nextV],
+                    heap.emplace(pair<int, pair<int, int>>(rootDistFromSrc + edgeWeight[idx] + distToEnd[nextV],
                                                            pair<int, int>(rootDistFromSrc + edgeWeight[idx], nextV)));
                 }
             }
