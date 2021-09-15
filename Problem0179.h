@@ -17,7 +17,7 @@ class Problem0179 {
     // 引入一个估值函数，用来估计某个点到达终点的距离
     // 算法正确性：保证估计距离f + 距源点的距离d <= 真实距离g
 public:
-    int funcF(const string &state) { // 求估值函数,这里是曼哈顿距离
+    int expDisToEnd(const string &state) { // 求估值函数,这里是曼哈顿距离
         int res = 0;
         for (int i = 0; i < 9; i++) {
             if (state[i] != 'x') {
@@ -35,7 +35,7 @@ public:
         int dx[4] = {-1, 0, 1, 0};
         int dy[4] = {0, 1, 0, -1};
         char opCh[] = "urdl";
-        heap.push(pair<int, string>(funcF(start), start));
+        heap.push(pair<int, string>(expDisToEnd(start), start));
         distFromStart[start] = 0;
         while (!heap.empty()) {
             auto root = heap.top();
@@ -60,7 +60,7 @@ public:
                 }
                 distFromStart[nextS] = distFromStart[currentS] + 1;
                 preOp[nextS] = pair<string, char>(currentS, opCh[i]);
-                heap.push(pair<int, string>(distFromStart[nextS] + funcF(nextS), nextS));
+                heap.push(pair<int, string>(distFromStart[nextS] + expDisToEnd(nextS), nextS));
             }
         }
         string result;
