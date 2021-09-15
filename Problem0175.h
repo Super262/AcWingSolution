@@ -22,10 +22,10 @@ public:
 
     int bfs(const int startX, const int startY, const int endX, const int endY, const int N, const int M) {
         deque<pair<int, int>> q;
-        int nextPointX[] = {-1, -1, 1, 1};
-        int nextPointY[] = {-1, 1, 1, -1};
-        int nextGridX[] = {-1, -1, 0, 0};
-        int nextGridY[] = {-1, 0, 0, -1};
+        int nextPointDX[] = {-1, -1, 1, 1};
+        int nextPointDY[] = {-1, 1, 1, -1};
+        int nextGridDX[] = {-1, -1, 0, 0};
+        int nextGridDY[] = {-1, 0, 0, -1};
         char expectedPath[] = {'\\', '/', '\\', '/'};
         memset(dist, 0x7f, sizeof dist);
         memset(isSelected, 0, sizeof isSelected);
@@ -42,13 +42,13 @@ public:
             }
             isSelected[root.first][root.second] = true;
             for (int i = 0; i < 4; ++i) {
-                auto nextPX = nextPointX[i] + root.first;
-                auto nextPY = nextPointY[i] + root.second;
+                auto nextPX = nextPointDX[i] + root.first;
+                auto nextPY = nextPointDY[i] + root.second;
                 if (nextPX < 0 || nextPX >= N || nextPY < 0 || nextPY >= M) {
                     continue;
                 }
-                auto nextGX = nextGridX[i] + root.first;
-                auto nextGY = nextGridY[i] + root.second;
+                auto nextGX = nextGridDX[i] + root.first;
+                auto nextGY = nextGridDY[i] + root.second;
                 int w = graph[nextGX][nextGY] == expectedPath[i] ? 0 : 1;
                 if (dist[nextPX][nextPY] <= dist[root.first][root.second] + w) {
                     continue;
