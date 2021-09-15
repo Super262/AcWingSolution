@@ -68,12 +68,14 @@ public:
             auto rootV = t.second.second;
             auto rootDistFromSrc = t.second.first;
             ++count[rootV];
-            if (count[end] == k) {
+            if (rootV == end && count[end] == k) { //终点已经被访问过k次了，返回答案
                 result = rootDistFromSrc;
                 break;
             }
             for (int idx = headIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
                 int nextV = vertexValue[idx];
+                // 如果走到一个中间点都cnt[j]>=K，则说明j已经出队k次了，且astar()并没有return distance，
+                // 说明从j出发找不到第k短路(让终点出队k次)，即继续让j入队的话依然无解，那么就没必要让j继续入队了。
                 if (count[nextV] < k) {
                     heap.emplace(pair<int, pair<int, int>>(rootDistFromSrc + edgeWeight[idx] + distToEnd[nextV],
                                                            pair<int, int>(rootDistFromSrc + edgeWeight[idx], nextV)));
@@ -99,6 +101,7 @@ public:
         }
         int start, end, k;
         scanf("%d%d%d", &start, &end, &k);
+        // 题目规定每条最短路都要至少包含1条边，所以我们需要舍弃起点等于终点的情况
         if (start == end) {
             ++k;
         }
