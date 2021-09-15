@@ -14,6 +14,7 @@ using namespace std;
 
 class Problem0179 {
     // https://www.acwing.com/solution/content/15289/
+    // 引入一个估值函数，用来估计某个点到达终点的距离
     // 算法正确性：保证估计距离f + 距源点的距离d <= 真实距离g
 public:
     int funcF(const string &state) { // 求估值函数,这里是曼哈顿距离
