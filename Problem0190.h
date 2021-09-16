@@ -13,7 +13,7 @@ using namespace std;
 
 class Problem0190 {
     // https://www.acwing.com/solution/content/5434/
-public:
+private:
     int extendPath(queue<string> &qOfS,
                    unordered_map<string, int> &dis2S,
                    unordered_map<string, int> &dis2E,
@@ -45,6 +45,9 @@ public:
     }
 
     int bfs(const string &start, const string &end, const string patternIn[], const string patternOut[], const int n) {
+        if (start == end) {  // 必须要有这次判断，不然会超时
+            return 0;
+        }
         queue<string> qOfS;
         queue<string> qOfE;
         unordered_map<string, int> dis2S;
@@ -54,7 +57,7 @@ public:
         qOfE.emplace(end);
         dis2S[start] = 0;
         dis2E[end] = 0;
-        while (!qOfS.empty() && !qOfE.empty()) {
+        while (!qOfS.empty() && !qOfE.empty()) {  // 两个队列都不为空
             if (qOfS.size() > qOfE.size()) {
                 res = extendPath(qOfE, dis2E, dis2S, patternOut, patternIn, n);
             } else {
