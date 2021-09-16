@@ -14,51 +14,51 @@ using namespace std;
 class Problem0190 {
     // https://www.acwing.com/solution/content/5434/
 public:
-    int extendPath(queue<string> &qSrc,
-                   unordered_map<string, int> &distFromSrc,
-                   unordered_map<string, int> &distFromTarget,
-                   const string *srcNodes,
-                   const string *targetNodes,
-                   const int N) {
-        const int currentLevelSize = (int) qSrc.size();
+    int extendPath(queue<string> &qOfS,
+                   unordered_map<string, int> &dis2S,
+                   unordered_map<string, int> &dis2E,
+                   const string patternIn[],
+                   const string patternOut[],
+                   const int n) {
+        const int currentLevelSize = (int) qOfS.size();
         for (int k = 0; k < currentLevelSize; ++k) {
-            auto root = qSrc.front();
-            qSrc.pop();
+            auto root = qOfS.front();
+            qOfS.pop();
             for (int i = 0; i < (int) root.size(); ++i) {
-                for (int j = 0; j < N; ++j) {
-                    if (root.substr(i, srcNodes[j].size()) != srcNodes[j]) {
+                for (int j = 0; j < n; ++j) {
+                    if (root.substr(i, patternIn[j].size()) != patternIn[j]) {
                         continue;
                     }
-                    auto nextS = root.substr(0, i) + targetNodes[j] + root.substr(i + srcNodes[j].size());
-                    if (distFromSrc.count(nextS)) {
+                    auto nextS = root.substr(0, i) + patternOut[j] + root.substr(i + patternIn[j].size());
+                    if (dis2S.count(nextS)) {
                         continue;
                     }
-                    distFromSrc[nextS] = distFromSrc[root] + 1;
-                    if (distFromTarget.count(nextS)) {
-                        return distFromSrc[nextS] + distFromTarget[nextS];
+                    dis2S[nextS] = dis2S[root] + 1;
+                    if (dis2E.count(nextS)) {
+                        return dis2S[nextS] + dis2E[nextS];
                     }
-                    qSrc.emplace(nextS);
+                    qOfS.emplace(nextS);
                 }
             }
         }
         return 11;
     }
 
-    int bfs(const string &start, const string &end, const string srcNodes[], const string targetNodes[], const int N) {
-        queue<string> qSrc;
-        queue<string> qTarget;
-        unordered_map<string, int> distFromSrc;
-        unordered_map<string, int> distFromTarget;
+    int bfs(const string &start, const string &end, const string patternIn[], const string patternOut[], const int n) {
+        queue<string> qOfS;
+        queue<string> qOfE;
+        unordered_map<string, int> dis2S;
+        unordered_map<string, int> dis2E;
         int res = 11;
-        qSrc.emplace(start);
-        qTarget.emplace(end);
-        distFromSrc[start] = 0;
-        distFromTarget[end] = 0;
-        while (!qSrc.empty() && !qTarget.empty()) {
-            if (qSrc.size() > qTarget.size()) {
-                res = extendPath(qTarget, distFromTarget, distFromSrc, targetNodes, srcNodes, N);
+        qOfS.emplace(start);
+        qOfE.emplace(end);
+        dis2S[start] = 0;
+        dis2E[end] = 0;
+        while (!qOfS.empty() && !qOfE.empty()) {
+            if (qOfS.size() > qOfE.size()) {
+                res = extendPath(qOfE, dis2E, dis2S, patternOut, patternIn, n);
             } else {
-                res = extendPath(qSrc, distFromSrc, distFromTarget, srcNodes, targetNodes, N);
+                res = extendPath(qOfS, dis2S, dis2E, patternIn, patternOut, n);
             }
             if (res < 11) {
                 return res;
@@ -68,15 +68,15 @@ public:
     }
 
     int main() {
-        string srcNodes[6];
-        string targetNodes[6];
-        string src, target;
-        cin >> src >> target;
+        string patternIn[6];
+        string patternOut[6];
+        string start, end;
+        cin >> start >> end;
         int n = 0;
-        while (cin >> srcNodes[n] >> targetNodes[n]) {
+        while (cin >> patternIn[n] >> patternOut[n]) {
             ++n;
         }
-        int res = bfs(src, target, srcNodes, targetNodes, n);
+        int res = bfs(start, end, patternIn, patternOut, n);
         if (res < 11) {
             printf("%d\n", res);
         } else {
