@@ -14,28 +14,28 @@ using namespace std;
 
 class Problem0178 {
     // https://www.acwing.com/solution/content/21233/
-public:
+private:
     const int N = 1000;
     const int M = 100000;
-    int headIndex[N + 10], reversedHeadIndex[N + 10];
-    int vertexValue[2 * M + 10], nextIndex[2 * M + 10], edgeWeight[2 * M + 10];
-    int distToEnd[N + 10];
+    int headIdx[N + 10], rgHeadIdx[N + 10];
+    int verVal[2 * M + 10], nextIdx[2 * M + 10], edgeWeight[2 * M + 10];
+    int dis2E[N + 10];
 
     void addEdge(int heIdx[], const int start, const int end, const int w, int &idx) {
-        vertexValue[idx] = end;
+        verVal[idx] = end;
         edgeWeight[idx] = w;
-        nextIndex[idx] = heIdx[start];
+        nextIdx[idx] = heIdx[start];
         heIdx[start] = idx;
         ++idx;
     }
 
-    void dijkstra(const int start) {
-        auto visited = new bool[N + 1];
+    void dijkstra(const int start, const int n) {
+        bool visited[n + 1];
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        memset(distToEnd, 0x7f, sizeof distToEnd);
-        memset(visited, 0, sizeof(bool) * (N + 1));
+        memset(dis2E, 0x7f, sizeof dis2E);
+        memset(visited, 0, sizeof visited);
         heap.emplace(pair<int, int>(0, start));
-        distToEnd[start] = 0;
+        dis2E[start] = 0;
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
@@ -44,24 +44,23 @@ public:
                 continue;
             }
             visited[rootV] = true;
-            for (int idx = reversedHeadIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
-                const int nextV = vertexValue[idx];
-                if (distToEnd[nextV] <= distToEnd[rootV] + edgeWeight[idx]) {
+            for (int idx = rgHeadIdx[rootV]; idx != -1; idx = nextIdx[idx]) {
+                const int nextV = verVal[idx];
+                if (dis2E[nextV] <= dis2E[rootV] + edgeWeight[idx]) {
                     continue;
                 }
-                distToEnd[nextV] = distToEnd[rootV] + edgeWeight[idx];
-                heap.emplace(pair<int, int>(distToEnd[nextV], nextV));
+                dis2E[nextV] = dis2E[rootV] + edgeWeight[idx];
+                heap.emplace(pair<int, int>(dis2E[nextV], nextV));
             }
         }
-        delete[] visited;
     }
 
-    int aStar(const int start, const int end, const int k) {
-        int result = -1;
-        auto count = new int[N + 1];
-        memset(count, 0, sizeof(int) * (N + 1));
+    int aStar(const int start, const int end, const int k, const int n) {
+        dijkstra(end, n);
+        int count[n + 1];
+        memset(count, 0, sizeof count);
         priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> heap;
-        heap.emplace(pair<int, pair<int, int>>(distToEnd[start], pair<int, int>(0, start)));
+        heap.emplace(pair<int, pair<int, int>>(dis2E[start], pair<int, int>(0, start)));
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
@@ -69,35 +68,33 @@ public:
             auto rootDistFromSrc = t.second.first;
             ++count[rootV];
             if (rootV == end && count[end] == k) { //终点已经被访问过k次了，返回答案
-                result = rootDistFromSrc;
-                break;
+                return rootDistFromSrc;
             }
-            for (int idx = headIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
-                int nextV = vertexValue[idx];
+            for (int idx = headIdx[rootV]; idx != -1; idx = nextIdx[idx]) {
+                int nextV = verVal[idx];
                 // 如果走到一个中间点都cnt[j]>=K，则说明j已经出队k次了，且astar()并没有return distance，
                 // 说明从j出发找不到第k短路(让终点出队k次)，即继续让j入队的话依然无解，那么就没必要让j继续入队了。
                 if (count[nextV] < k) {
-                    heap.emplace(pair<int, pair<int, int>>(rootDistFromSrc + edgeWeight[idx] + distToEnd[nextV],
+                    heap.emplace(pair<int, pair<int, int>>(rootDistFromSrc + edgeWeight[idx] + dis2E[nextV],
                                                            pair<int, int>(rootDistFromSrc + edgeWeight[idx], nextV)));
                 }
             }
         }
-        delete[] count;
-        return result;
+        return -1;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(reversedHeadIndex, -1, sizeof reversedHeadIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
+        memset(headIdx, -1, sizeof headIdx);
+        memset(rgHeadIdx, -1, sizeof rgHeadIdx);
+        memset(nextIdx, -1, sizeof nextIdx);
         int m, n;
         scanf("%d%d", &n, &m);
         int idx = 0;
         for (int i = 0; i < m; ++i) {
             int u, v, w;
             scanf("%d%d%d", &u, &v, &w);
-            addEdge(headIndex, u, v, w, idx);
-            addEdge(reversedHeadIndex, v, u, w, idx);
+            addEdge(headIdx, u, v, w, idx);
+            addEdge(rgHeadIdx, v, u, w, idx);
         }
         int start, end, k;
         scanf("%d%d%d", &start, &end, &k);
@@ -105,8 +102,7 @@ public:
         if (start == end) {
             ++k;
         }
-        dijkstra(end);
-        printf("%d\n", aStar(start, end, k));
+        printf("%d\n", aStar(start, end, k, n));
         return 0;
     }
 };
