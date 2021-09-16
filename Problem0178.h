@@ -14,7 +14,7 @@ using namespace std;
 
 class Problem0178 {
     // https://www.acwing.com/solution/content/21233/
-public:
+private:
     const int N = 1000;
     const int M = 100000;
     int headIndex[N + 10], reversedHeadIndex[N + 10];
@@ -29,11 +29,11 @@ public:
         ++idx;
     }
 
-    void dijkstra(const int start) {
-        auto visited = new bool[N + 1];
+    void dijkstra(const int start, const int n) {
+        bool visited[n + 1];
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
         memset(distToEnd, 0x7f, sizeof distToEnd);
-        memset(visited, 0, sizeof(bool) * (N + 1));
+        memset(visited, 0, sizeof visited);
         heap.emplace(pair<int, int>(0, start));
         distToEnd[start] = 0;
         while (!heap.empty()) {
@@ -53,14 +53,14 @@ public:
                 heap.emplace(pair<int, int>(distToEnd[nextV], nextV));
             }
         }
-        delete[] visited;
     }
 
-    int aStar(const int start, const int end, const int k) {
+    int aStar(const int start, const int end, const int k, const int n) {
         int result = -1;
-        auto count = new int[N + 1];
-        memset(count, 0, sizeof(int) * (N + 1));
+        int count[n + 1];
         priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> heap;
+        dijkstra(end, n);
+        memset(count, 0, sizeof count);
         heap.emplace(pair<int, pair<int, int>>(distToEnd[start], pair<int, int>(0, start)));
         while (!heap.empty()) {
             auto t = heap.top();
@@ -69,8 +69,7 @@ public:
             auto rootDistFromSrc = t.second.first;
             ++count[rootV];
             if (rootV == end && count[end] == k) { //终点已经被访问过k次了，返回答案
-                result = rootDistFromSrc;
-                break;
+                return rootDistFromSrc;
             }
             for (int idx = headIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
                 int nextV = vertexValue[idx];
@@ -82,8 +81,7 @@ public:
                 }
             }
         }
-        delete[] count;
-        return result;
+        return -1;
     }
 
     int main() {
@@ -105,8 +103,7 @@ public:
         if (start == end) {
             ++k;
         }
-        dijkstra(end);
-        printf("%d\n", aStar(start, end, k));
+        printf("%d\n", aStar(start, end, k, n));
         return 0;
     }
 };
