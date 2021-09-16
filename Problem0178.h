@@ -56,7 +56,6 @@ private:
     }
 
     int aStar(const int start, const int end, const int k, const int n) {
-        int result = -1;
         int count[n + 1];
         priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> heap;
         dijkstra(end, n);
