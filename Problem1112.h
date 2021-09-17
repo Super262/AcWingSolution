@@ -11,52 +11,46 @@
 using namespace std;
 
 class Problem1112 {
-public:
-    char graph[110][110];
-    bool visited[110][110];
-    int dx[] = {0, 0, -1, 1}, dy[] = {-1, 1, 0, 0};
+private:
+    const int N = 110;
+    char graph[N][N];
+    bool visited[N][N];
+    int dx[] = {0, 0, 1, -1}, dy[] = {1, -1, 0, 0};
 
-    bool dfs(const int startX, const int startY, const int endX, const int endY, const int N) {
-        // 这里的DFS不需要恢复现场（visited[startX][startY] = false），相当于“剪枝”。
-        bool result = false;
-        visited[startX][startY] = true;
-        if (startX == endX && startY == endY) {
-            result = true;
-        } else {
-            for (int i = 0; i < 4; ++i) {
-                auto nextX = startX + dx[i];
-                auto nextY = startY + dy[i];
-                if (nextX < 0 || nextX >= N || nextY < 0 || nextY >= N) {
-                    continue;
-                }
-                if (graph[nextX][nextY] == '#' || visited[nextX][nextY]) {
-                    continue;
-                }
-                if (dfs(nextX, nextY, endX, endY, N)) {
-                    result = true;
-                    break;
-                }
+    bool dfs(const int sX, const int sY, const int eX, const int eY, const int n) {
+        visited[sX][sY] = true;
+        if (sX == eX && sY == eY) {
+            return true;
+        }
+        for (int i = 0; i < 4; ++i) {
+            auto nX = sX + dx[i];
+            auto nY = sY + dy[i];
+            if (nX < 0 || nX >= n || nY < 0 || nY >= n || visited[nX][nY] || graph[nX][nY] == '#') {
+                continue;
+            }
+            if (dfs(nX, nY, eX, eY, n)) {
+                return true;
             }
         }
-        return result;
+        return false;
     }
 
     int main() {
-        int k;
-        scanf("%d", &k);
-        while (k--) {
+        int t;
+        scanf("%d", &t);
+        while (t--) {
             memset(visited, 0, sizeof visited);
             int n;
             scanf("%d", &n);
             for (int i = 0; i < n; ++i) {
                 scanf("%s", graph[i]);
             }
-            int startX, startY, endX, endY;
-            scanf("%d%d%d%d", &startX, &startY, &endX, &endY);
-            if (graph[startX][startY] == '#' || graph[endX][endY] == '#' || !dfs(startX, startY, endX, endY, n)) {
-                puts("NO");
-            } else {
+            int sx, sy, ex, ey;
+            scanf("%d%d%d%d", &sx, &sy, &ex, &ey);
+            if (graph[sx][sy] != '#' && graph[ex][ey] != '#' && dfs(sx, sy, ex, ey, n)) {
                 puts("YES");
+            } else {
+                puts("NO");
             }
         }
         return 0;
