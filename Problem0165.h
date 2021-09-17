@@ -14,44 +14,41 @@ class Problem0165 {
     // https://www.acwing.com/solution/content/951/
 private:
     const int N = 18;
-    int catWeight[N];
-    int weightSum[N];
+    int catW[N];
+    int wSum[N];
 
-    void dfs(const int catIdx, const int tankIdx, const int n, const int maxW, int &answer) {
-        if (tankIdx >= answer) {
+    void dfs(int catIdx, int tankTop, int n, int maxWSum, int &answer) {
+        if (tankTop + 1 >= answer) {  // 最优性剪枝
             return;
         }
         if (catIdx == n) {
-            answer = min(answer, tankIdx);
+            answer = tankTop + 1;
         }
-
-        // 尝试将猫放入已有的车内
-        for (int i = 0; i < tankIdx; ++i) {
-            if (weightSum[i] + catWeight[catIdx] > maxW) {
+        for (int i = 0; i <= tankTop; ++i) {
+            if (wSum[i] + catW[catIdx] > maxWSum) {
                 continue;
             }
-            weightSum[i] += catWeight[catIdx];
-            dfs(catIdx + 1, tankIdx, n, answer);
-            weightSum[i] -= catWeight[catIdx];
+            // 将当前猫放到现有的某辆车里
+            wSum[i] += catW[catIdx];
+            dfs(catIdx + 1, tankTop, n, maxWSum, answer);
+            wSum[i] -= catW[catIdx];
         }
-
-        // 尝试将猫放入新的车内
-        weightSum[tankIdx] = catWeight[catIdx];
-        dfs(catIdx + 1, tankIdx + 1, n, answer);
-        weightSum[tankIdx] = 0;
+        // 将当前猫放到新的车里
+        wSum[tankTop + 1] = catW[catIdx];
+        dfs(catIdx + 1, tankTop + 1, n, maxWSum, answer);
+        wSum[tankTop + 1] = 0;
     }
 
     int main() {
-        int n, maxVolume;
-        scanf("%d%d", &n, &maxVolume);
+        int n, maxWSum;
+        scanf("%d%d", &n, &maxWSum);
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &catWeight[i]);
+            scanf("%d", &catW[i]);
         }
-        // 优化搜索顺序，先处理体重较大的
-        sort(catWeight, catWeight + n);
-        reverse(catWeight, catWeight + n);
+        sort(catW, catW + n);
+        reverse(catW, catW + n);
         int answer = n;
-        dfs(0, 1, n, maxVolume, answer);
+        dfs(0, 0, n, maxWSum, answer);
         printf("%d\n", answer);
         return 0;
     }
