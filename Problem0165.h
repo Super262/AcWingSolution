@@ -12,13 +12,12 @@ using namespace std;
 
 class Problem0165 {
     // https://www.acwing.com/solution/content/951/
-public:
+private:
     const int N = 18;
     int catWeight[N];
     int weightSum[N];
-    int maxVolume;
 
-    void dfs(const int catIdx, const int currentCount, const int n, int &answer) {
+    void dfs(const int catIdx, const int currentCount, const int n, const int maxVolume, int &answer) {
         if (currentCount >= answer) {
             return;
         }
@@ -43,7 +42,7 @@ public:
     }
 
     int main() {
-        int n;
+        int n, maxVolume;
         scanf("%d%d", &n, &maxVolume);
         for (int i = 0; i < n; ++i) {
             scanf("%d", &catWeight[i]);
@@ -52,7 +51,7 @@ public:
         sort(catWeight, catWeight + n);
         reverse(catWeight, catWeight + n);
         int answer = n;
-        dfs(0, 1, n, answer);
+        dfs(0, 1, n, maxVolume, answer);
         printf("%d\n", answer);
         return 0;
     }
