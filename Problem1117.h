@@ -11,12 +11,11 @@
 using namespace std;
 
 class Problem1117 {
-public:
+private:
     const int N = 20;
     string word[N];
-    int readCount[N];
-    int commonLength[N][N];
-
+    int visitCount[N];
+    int minCommonLen[N][N];
     void findConnection(const int n) {
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
@@ -24,8 +23,8 @@ public:
                 const auto &b = word[j];
                 for (int length = 1; length < min(a.size(), b.size()); ++length) {
                     if (a.substr(a.size() - length) == b.substr(0, length)) {
-                        // 寻找最短的公共部分
-                        commonLength[i][j] = length;
+                        // 由于希望最后的"龙"最长，我们寻找最短的公共部分
+                        minCommonLen[i][j] = length;
                         break;
                     }
                 }
@@ -33,16 +32,16 @@ public:
         }
     }
 
-    void dfs(const string& dragon, const int currentWordIdx, const int n, int &answer) {
+    void dfs(const string &dragon, const int currentWordIdx, const int n, int &answer) {
         answer = max((int) dragon.size(), answer);
-        ++readCount[currentWordIdx];
+        ++visitCount[currentWordIdx];
         for (int i = 0; i < n; ++i) {
-            if (readCount[i] >= 2 || commonLength[currentWordIdx][i] == 0) {
+            if (visitCount[i] >= 2 || minCommonLen[currentWordIdx][i] == 0) {
                 continue;
             }
-            dfs(dragon + word[i].substr(commonLength[currentWordIdx][i]), i, n, answer);
+            dfs(dragon + word[i].substr(minCommonLen[currentWordIdx][i]), i, n, answer);
         }
-        --readCount[currentWordIdx];
+        --visitCount[currentWordIdx];
     }
 
     int main() {
