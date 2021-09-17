@@ -11,39 +11,38 @@
 using namespace std;
 
 class Problem1116 {
-public:
-    bool visited[10][10];
-    int dx[] = {1, 1, -1, -1, 2, 2, -2, -2}, dy[] = {2, -2, 2, -2, -1, 1, -1, 1};
+private:
+    const int N = 10;
+    bool visited[N][N];
+    const int dx[] = {-1, -1, -2, -2, 1, 1, 2, 2};
+    const int dy[] = {2, -2, 1, -1, -2, 2, -1, 1};
 
-    void dfs(const int startX, const int startY, const int currentCount, const int n, const int m, int &answer) {
-        if (currentCount == n * m) {
+    void dfs(int sx, int sy, int n, int m, int curCount, int &answer) {
+        if (curCount == n * m) {
             ++answer;
             return;
         }
-        visited[startX][startY] = true;
+        visited[sx][sy] = true;
         for (int i = 0; i < 8; ++i) {
-            int nextX = startX + dx[i];
-            int nextY = startY + dy[i];
-            if (nextX < 0 || nextX >= n || nextY < 0 | nextY >= m) {
+            auto nx = sx + dx[i];
+            auto ny = sy + dy[i];
+            if (nx < 0 || nx >= n || ny < 0 || ny >= m || visited[nx][ny]) {
                 continue;
             }
-            if (visited[nextX][nextY]) {
-                continue;
-            }
-            dfs(nextX, nextY, currentCount + 1, n, m, answer);
+            dfs(nx, ny, n, m, curCount + 1, answer);
+            visited[nx][ny] = false;
         }
-        visited[startX][startY] = false;
     }
 
     int main() {
         int t;
         scanf("%d", &t);
         while (t--) {
-            int n, m, startX, startY;
-            scanf("%d%d%d%d", &n, &m, &startX, &startY);
+            int n, m, sx, sy;
+            scanf("%d%d%d%d", &n, &m, &sx, &sy);
             int answer = 0;
             memset(visited, 0, sizeof visited);
-            dfs(startX, startY, 1, n, m, answer);
+            dfs(sx, sy, n, m, 1, answer);
             printf("%d\n", answer);
         }
         return 0;
