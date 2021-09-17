@@ -17,28 +17,28 @@ private:
     int catWeight[N];
     int weightSum[N];
 
-    void dfs(const int catIdx, const int currentCount, const int n, const int maxVolume, int &answer) {
-        if (currentCount >= answer) {
+    void dfs(const int catIdx, const int tankIdx, const int n, const int maxW, int &answer) {
+        if (tankIdx >= answer) {
             return;
         }
         if (catIdx == n) {
-            answer = min(answer, currentCount);
+            answer = min(answer, tankIdx);
         }
 
         // 尝试将猫放入已有的车内
-        for (int i = 0; i < currentCount; ++i) {
-            if (weightSum[i] + catWeight[catIdx] > maxVolume) {
+        for (int i = 0; i < tankIdx; ++i) {
+            if (weightSum[i] + catWeight[catIdx] > maxW) {
                 continue;
             }
             weightSum[i] += catWeight[catIdx];
-            dfs(catIdx + 1, currentCount, n, answer);
+            dfs(catIdx + 1, tankIdx, n, answer);
             weightSum[i] -= catWeight[catIdx];
         }
 
         // 尝试将猫放入新的车内
-        weightSum[currentCount] = catWeight[catIdx];
-        dfs(catIdx + 1, currentCount + 1, n, answer);
-        weightSum[currentCount] = 0;
+        weightSum[tankIdx] = catWeight[catIdx];
+        dfs(catIdx + 1, tankIdx + 1, n, answer);
+        weightSum[tankIdx] = 0;
     }
 
     int main() {
