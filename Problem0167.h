@@ -39,7 +39,7 @@ public:
             if (isSelected[i]) {
                 continue;
             }
-            if (currentPackSize + partSize[i] > packMaxVolume) {
+            if (currentPackSize + partSize[i] > packMaxVolume) { // 超限，不可用
                 continue;
             }
             isSelected[i] = true;
@@ -47,11 +47,11 @@ public:
                 return true;
             }
             isSelected[i] = false;
-            if (currentPackSize == 0 || currentPackSize + partSize[i] == packMaxVolume) {
+            if (currentPackSize == 0 || currentPackSize + partSize[i] == packMaxVolume) {  // 第一次尝试失败或最后一次尝试失败
                 return false;
             }
             int nextI = i;
-            while (nextI < partsNum && partSize[nextI] == partSize[i]) {
+            while (nextI < partsNum && partSize[nextI] == partSize[i]) {  // 略过后面所有与当前木棍相等的木棍
                 ++nextI;
             }
             i = nextI - 1;
