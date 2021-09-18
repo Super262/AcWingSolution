@@ -13,6 +13,11 @@ using namespace std;
 
 class Problem0167 {
     // https://www.acwing.com/solution/content/36030/（代码错误：调用的开始索引应从1开始）
+    // 按照组合数枚举：
+    // 1. 从大到小枚举木棍；
+    // 2. 当前木棍加入到组合中失败，直接略过后面所有与其相等的木棍；
+    // 3. 第1根木棍失败，当前组合一定失败；
+    // 4. 最后1根失败，当前组合一定失败。
 public:
     const int N = 64;
     int partSize[N];
