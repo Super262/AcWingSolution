@@ -47,19 +47,17 @@ private:
         fill(rowState, rowState + N, M - 1);
         fill(columnState, columnState + N, M - 1);
         fill(cellState[0], cellState[0] + N, M - 1);
-        int cnt = 0;
-        int k = 0;
+        int emptyCnt = 0;
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                if (str[k] == '.') {
-                    ++cnt;
+                if (str[i * N + j] == '.') {
+                    ++emptyCnt;
                 } else {
                     modifyValue(i, j, str[k] - '0', true);
                 }
-                ++k;
             }
         }
-        return cnt;
+        return emptyCnt;
     }
 
     bool dfs(const int cnt) {
