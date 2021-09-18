@@ -16,15 +16,15 @@ class Problem0166 {
 public:
     const int N = 9, M = 1 << N;
     int numOfOnes[M], idxOfOne[M];
-    int rowState[N], columnState[N], cellState[3][3];  // state二进制的9位对应1～9的出现情况（0不出现，1出现）
+    int rowState[N], columnState[N], cellState[3][3];  // 整数二进制的9位对应当前整数是否可以被填入（0不可用，1可用）
     char str[100];
 
     int lowBit(const int x) {
         return x & (-x);
     }
 
-    void modifyValue(const int x, const int y, const int value, bool toIncrease) {
-        if (toIncrease) {
+    void modifyValue(const int x, const int y, const int value, bool toDraw) {
+        if (toDraw) {
             str[x * N + y] = (char) ('0' + value);
             int s = 1 << (value - 1);
             rowState[x] -= s;
