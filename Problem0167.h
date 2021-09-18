@@ -18,40 +18,40 @@ class Problem0167 {
     // 2. 当前木棍加入到组合中失败，直接略过后面所有与其相等的木棍；
     // 3. 第1根木棍失败，当前组合一定失败；
     // 4. 最后1根失败，当前组合一定失败。
-public:
+private:
     const int N = 64;
-    int partSize[N];
+    int parts[N];
     bool isSelected[N];
 
     bool dfs(const int packIdx,
-             const int currentPackSize,
-             const int packMaxVolume,
+             const int currentPartsSum,
+             const int packCapacity,
              const int partIdx,
              const int partsNum,
-             const int partsSizeSum) {
-        if (packIdx * packMaxVolume == partsSizeSum) {
+             const int allPartsSum) {
+        if (packIdx * packCapacity == allPartsSum) {
             return true;
         }
-        if (currentPackSize == packMaxVolume) {
-            return dfs(packIdx + 1, 0, packMaxVolume, 0, partsNum, partsSizeSum);
+        if (currentPartsSum == packCapacity) {
+            return dfs(packIdx + 1, 0, packCapacity, 0, partsNum, allPartsSum);
         }
         for (int i = partIdx; i < partsNum; ++i) {
             if (isSelected[i]) {
                 continue;
             }
-            if (currentPackSize + partSize[i] > packMaxVolume) { // 超限，不可用
+            if (currentPartsSum + parts[i] > packCapacity) { // 超限，不可用
                 continue;
             }
             isSelected[i] = true;
-            if (dfs(packIdx, currentPackSize + partSize[i], packMaxVolume, i + 1, partsNum, partsSizeSum)) {
+            if (dfs(packIdx, currentPartsSum + parts[i], packCapacity, i + 1, partsNum, allPartsSum)) {
                 return true;
             }
             isSelected[i] = false;
-            if (currentPackSize == 0 || currentPackSize + partSize[i] == packMaxVolume) {  // 第一次尝试失败或最后一次尝试失败
+            if (currentPartsSum == 0 || currentPartsSum + parts[i] == packCapacity) {  // 第一次尝试失败或最后一次尝试失败
                 return false;
             }
             int nextI = i;
-            while (nextI < partsNum && partSize[nextI] == partSize[i]) {  // 略过后面所有与当前木棍相等的木棍
+            while (nextI < partsNum && parts[nextI] == parts[i]) {  // 略过后面所有与当前木棍相等的木棍
                 ++nextI;
             }
             i = nextI - 1;
@@ -66,22 +66,22 @@ public:
             if (n == 0) {
                 break;
             }
-            int partsSizeSum = 0;
+            int partsSum = 0;
             for (int i = 0; i < n; ++i) {
-                scanf("%d", &partSize[i]);
-                partsSizeSum += partSize[i];
+                scanf("%d", &parts[i]);
+                partsSum += parts[i];
             }
-            sort(partSize, partSize + n);
-            reverse(partSize, partSize + n);
+            sort(parts, parts + n);
+            reverse(parts, parts + n);
             memset(isSelected, 0, sizeof isSelected);
-            int packMaxVolume = 1;
+            int packCapacity = 1;
             while (true) {
-                if (partsSizeSum % packMaxVolume == 0 && dfs(0, 0, packMaxVolume, 0, n, partsSizeSum)) {
+                if (partsSum % packCapacity == 0 && dfs(0, 0, packCapacity, 0, n, partsSum)) {
                     break;
                 }
-                ++packMaxVolume;
+                ++packCapacity;
             }
-            printf("%d\n", packMaxVolume);
+            printf("%d\n", packCapacity);
         }
         return 0;
     }
