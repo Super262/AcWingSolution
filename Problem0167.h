@@ -24,34 +24,34 @@ private:
     bool isSelected[N];
 
     bool dfs(const int packIdx,
-             const int currentPartsSum,
              const int packCapacity,
              const int partIdx,
              const int partsNum,
+             const int currentPartsSum,
              const int allPartsSum) {
         if (packIdx * packCapacity == allPartsSum) {
             return true;
         }
         if (currentPartsSum == packCapacity) {
-            return dfs(packIdx + 1, 0, packCapacity, 0, partsNum, allPartsSum);
+            return dfs(packIdx + 1, packCapacity, 0, partsNum, 0, allPartsSum);
         }
         for (int i = partIdx; i < partsNum; ++i) {
             if (isSelected[i]) {
                 continue;
             }
-            if (currentPartsSum + parts[i] > packCapacity) { // 超限，不可用
+            if (currentPartsSum + parts[i] > packCapacity) {
                 continue;
             }
             isSelected[i] = true;
-            if (dfs(packIdx, currentPartsSum + parts[i], packCapacity, i + 1, partsNum, allPartsSum)) {
+            if (dfs(packIdx, packCapacity, i + 1, partsNum, currentPartsSum + parts[i], allPartsSum)) {
                 return true;
             }
             isSelected[i] = false;
-            if (currentPartsSum == 0 || currentPartsSum + parts[i] == packCapacity) {  // 第一次尝试失败或最后一次尝试失败
+            if (currentPartsSum == 0 || currentPartsSum + parts[i] == packCapacity) {
                 return false;
             }
             int nextI = i;
-            while (nextI < partsNum && parts[nextI] == parts[i]) {  // 略过后面所有与当前木棍相等的木棍
+            while (nextI < partsNum && parts[nextI] == parts[i]) {
                 ++nextI;
             }
             i = nextI - 1;
@@ -66,17 +66,17 @@ private:
             if (n == 0) {
                 break;
             }
-            int partsSum = 0;
+            int allPartsSum = 0;
             for (int i = 0; i < n; ++i) {
                 scanf("%d", &parts[i]);
-                partsSum += parts[i];
+                allPartsSum += parts[i];
             }
             sort(parts, parts + n);
             reverse(parts, parts + n);
             memset(isSelected, 0, sizeof isSelected);
             int packCapacity = 1;
             while (true) {
-                if (partsSum % packCapacity == 0 && dfs(0, 0, packCapacity, 0, n, partsSum)) {
+                if (allPartsSum % packCapacity == 0 && dfs(0, packCapacity, 0, n, 0, allPartsSum)) {
                     break;
                 }
                 ++packCapacity;
