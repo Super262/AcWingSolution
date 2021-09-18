@@ -53,7 +53,7 @@ private:
                 if (str[i * N + j] == '.') {
                     ++emptyCnt;
                 } else {
-                    modifyValue(i, j, str[k] - '0', true);
+                    modifyValue(i, j, str[i * N + j] - '0', true);
                 }
             }
         }
