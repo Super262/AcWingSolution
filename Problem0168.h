@@ -13,47 +13,34 @@ using namespace std;
 class Problem0168 {
     // https://www.acwing.com/solution/content/31876/
 private:
-    const int INF = 0x7f7f7f7f;
     const int M = 20;
-    int minV[M + 2], minS[M + 2];
+    int minS[M + 2], minV[M + 2];
     int R[M + 2], H[M + 2];
+    const int INF = 0x3f3f3f3f;
 
-    void dfs(const int currentLevel,
-             const int prevVolume,
-             const int prevArea,
-             const int lowestLevel,
-             const int targetVolume,
-             int &answer) {
-        if (currentLevel == 0) {
-            if (prevVolume == targetVolume) {
-                answer = min(answer, prevArea);
+    void dfs(int currentL, int prevV, int prevS, int lowestL, int targetV, int &answer) {
+        if (currentL == 0) {
+            if (prevV == targetV) {
+                answer = min(answer, prevS);
             }
             return;
         }
-        if (prevVolume + minV[currentLevel] > targetVolume) {
+        if (prevV + minV[currentL] > targetV) {
             return;
         }
-        if (prevArea + minS[currentLevel] >= answer) {
+        if (prevS + minS[currentL] >= answer) {
             return;
         }
-        if (prevArea + 2 * (targetVolume - prevVolume) / R[currentLevel + 1] >= answer) {
+        if (prevS + 2 * (targetV - prevV) / R[currentL + 1] >= answer) {
             return;
         }
-        // 先处理半径，再处理高（R^2 比 H 对结果影响大）
-        for (int r = min(R[currentLevel + 1] - 1,
-                         (int) sqrt((targetVolume - prevVolume - minV[currentLevel - 1]) / currentLevel));
-             r >= currentLevel; --r) {
-            for (int h = min(H[currentLevel + 1] - 1, (targetVolume - prevVolume - minV[currentLevel - 1]) / r / r);
-                 h >= currentLevel; --h) {
-                R[currentLevel] = r;
-                H[currentLevel] = h;
-                int topArea = currentLevel == lowestLevel ? r * r : 0;  // 加入顶部的面积（所有层的顶部面积和 == Rm * Rm）
-                dfs(currentLevel - 1,
-                    prevVolume + r * r * h,
-                    prevArea + 2 * r * h + topArea,
-                    lowestLevel,
-                    targetVolume,
-                    answer);
+        for (int r = min(R[currentL + 1] - 1, (int) sqrt((targetV - prevV - minV[currentL - 1]) / currentL));
+             r >= currentL; --r) {
+            for (int h = min(H[currentL + 1] - 1, (targetV - prevV - minV[currentL - 1]) / r / r); h >= currentL; --h) {
+                R[currentL] = r;
+                H[currentL] = h;
+                int topS = currentL == lowestL ? r * r : 0;
+                dfs(currentL - 1, prevV + r * r * h, prevS + 2 * r * h + topS, lowestL, targetV, answer);
             }
         }
     }
@@ -61,19 +48,17 @@ private:
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        R[m + 1] = INF;
-        H[m + 1] = INF;
         for (int i = 1; i <= m; ++i) {
             minV[i] = minV[i - 1] + i * i * i;
-            minS[i] = minS[i - 1] + 2 * i * i;  // 这里的minS不包含顶部的面积，只有侧面积
+            minS[i] = minS[i - 1] + 2 * i * i;
         }
+        R[m + 1] = H[m + 1] = INF;
         int answer = INF;
         dfs(m, 0, 0, m, n, answer);
         if (answer == INF) {
-            printf("0\n");
-        } else {
-            printf("%d\n", answer);
+            answer = 0;
         }
+        printf("%d\n", answer);
         return 0;
     }
 };
