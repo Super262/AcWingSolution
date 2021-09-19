@@ -39,7 +39,7 @@ private:
             for (int h = min(H[currentL + 1] - 1, (targetV - prevV - minV[currentL - 1]) / r / r); h >= currentL; --h) {
                 R[currentL] = r;
                 H[currentL] = h;
-                int topS = currentL == lowestL ? r * r : 0;
+                int topS = currentL == lowestL ? r * r : 0;  // 所有层的顶部面积和 = Rm * Rm
                 dfs(currentL - 1, prevV + r * r * h, prevS + 2 * r * h + topS, lowestL, targetV, answer);
             }
         }
@@ -50,7 +50,7 @@ private:
         scanf("%d%d", &n, &m);
         for (int i = 1; i <= m; ++i) {
             minV[i] = minV[i - 1] + i * i * i;
-            minS[i] = minS[i - 1] + 2 * i * i;
+            minS[i] = minS[i - 1] + 2 * i * i;  // 不包括顶部面积
         }
         R[m + 1] = H[m + 1] = INF;
         int answer = INF;
