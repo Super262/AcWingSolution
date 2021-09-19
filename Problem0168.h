@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0168 {
     // https://www.acwing.com/solution/content/31876/
-public:
+private:
     const int INF = 0x7f7f7f7f;
     const int M = 20;
     int minV[M + 2], minS[M + 2];
@@ -21,7 +21,7 @@ public:
     void dfs(const int currentLevel,
              const int prevVolume,
              const int prevArea,
-             const int firstLevel,
+             const int lowestLevel,
              const int targetVolume,
              int &answer) {
         if (currentLevel == 0) {
@@ -47,11 +47,11 @@ public:
                  h >= currentLevel; --h) {
                 R[currentLevel] = r;
                 H[currentLevel] = h;
-                int t = currentLevel == firstLevel ? r * r : 0;
+                int topArea = currentLevel == lowestLevel ? r * r : 0;  // 加入顶部的面积（所有层的顶部面积和 == Rm * Rm）
                 dfs(currentLevel - 1,
                     prevVolume + r * r * h,
-                    prevArea + 2 * r * h + t,
-                    firstLevel,
+                    prevArea + 2 * r * h + topArea,
+                    lowestLevel,
                     targetVolume,
                     answer);
             }
@@ -65,7 +65,7 @@ public:
         H[m + 1] = INF;
         for (int i = 1; i <= m; ++i) {
             minV[i] = minV[i - 1] + i * i * i;
-            minS[i] = minS[i - 1] + 2 * i * i;
+            minS[i] = minS[i - 1] + 2 * i * i;  // 这里的minS不包含顶部的面积，只有侧面积
         }
         int answer = INF;
         dfs(m, 0, 0, m, n, answer);
