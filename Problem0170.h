@@ -24,16 +24,16 @@ private:
         }
         for (int i = prevDepth; i >= 0; --i) {
             for (int j = i; j >= 0; --j) {
-                int nextS = path[i] + path[j];
-                if (nextS > n || nextS <= path[prevDepth] || isSelected[nextS]) {
+                int nextNum = path[i] + path[j];
+                if (nextNum > n || nextNum <= path[prevDepth] || isSelected[nextNum]) {
                     continue;
                 }
-                isSelected[nextS] = true;
-                path[prevDepth + 1] = nextS;
+                isSelected[nextNum] = true;
+                path[prevDepth + 1] = nextNum;
                 if (dfs(prevDepth + 1, maxDepth, n)) {
                     return true;
                 }
-                isSelected[nextS] = false;
+                isSelected[nextNum] = false;
             }
         }
         return false;
