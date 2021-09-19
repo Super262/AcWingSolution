@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0180 {
     // https://www.acwing.com/solution/content/4050/
-public:
+private:
     const int MAX_DEPTH = 5, N = 15;
     int books[N];
     int levelTemp[MAX_DEPTH][N];
@@ -25,7 +25,7 @@ public:
             }
             ++tot;
         }
-        return (tot + 2) / 3;
+        return (tot + 2) / 3;  // 返回tot/3（上取整）
     }
 
     bool dfs(const int currentDepth, const int n, const int maxDepth) {
@@ -35,7 +35,7 @@ public:
         if (funcF(n) == 0) {
             return true;
         }
-        for (int length = 1; length <= n; ++length) {
+        for (int length = 1; length <= n; ++length) {  // 把长度为length的部分放到其他位置
             for (int start = 0; start + length - 1 < n; ++start) {
                 int end = start + length - 1;
                 for (int k = end + 1; k < n; ++k) {
