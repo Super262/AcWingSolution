@@ -22,7 +22,7 @@ private:
         if (prevDepth == maxDepth) {
             return path[prevDepth] == n;
         }
-        for (int i = prevDepth; i >= 0; --i) {
+        for (int i = prevDepth; i >= 0; --i) { // 剪枝：优先选择较大的数字
             for (int j = i; j >= 0; --j) {
                 int nextNum = path[i] + path[j];
                 if (nextNum > n || nextNum <= path[prevDepth] || isSelected[nextNum]) {
