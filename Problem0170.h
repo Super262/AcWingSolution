@@ -12,15 +12,16 @@ using namespace std;
 
 class Problem0170 {
     // https://www.acwing.com/solution/content/38248/
-public:
+    // 1. 优先枚举较大的数
+    // 2. 排除等效冗余：如果某两组数的和相等，我们只枚举其中一组
+private:
     int path[101];
+    bool isSelected[101];
 
     bool dfs(const int prevDepth, const int maxDepth, const int n) {
         if (prevDepth == maxDepth) {
             return path[prevDepth] == n;
         }
-        bool isSelected[2 * path[prevDepth] + 1];
-        memset(isSelected, 0, sizeof isSelected);
         for (int i = prevDepth; i >= 0; --i) {
             for (int j = i; j >= 0; --j) {
                 int nextS = path[i] + path[j];
@@ -32,13 +33,13 @@ public:
                 if (dfs(prevDepth + 1, maxDepth, n)) {
                     return true;
                 }
+                isSelected[nextS] = false;
             }
         }
         return false;
     }
 
     int main() {
-        path[0] = 1;
         int n;
         while (true) {
             scanf("%d", &n);
@@ -46,6 +47,8 @@ public:
                 break;
             }
             int maxDepth = 0;
+            path[0] = 1;
+            memset(isSelected, 0, sizeof isSelected);
             while (!dfs(0, maxDepth, n)) {
                 ++maxDepth;
             }
