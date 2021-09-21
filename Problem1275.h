@@ -18,7 +18,7 @@ private:
     const int N = 200005;
     Node nodes[N * 4];
 
-    void buildTree(int idx, int l, int r) {
+    void buildTree(const int idx, const int l, const int r) {
         nodes[idx].l = l;
         nodes[idx].r = r;
         if (l == r) {
@@ -44,7 +44,7 @@ private:
         return v;
     }
 
-    void modifyNode(int idx, int x, int v) {
+    void modifyNode(const int idx, const int x, const int v) {
         if (nodes[idx].l == nodes[idx].r) {
             nodes[idx].v = v;
             return;
