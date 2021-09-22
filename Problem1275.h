@@ -29,19 +29,18 @@ private:
         buildTree(idx << 1 | 1, mid + 1, r);
     }
 
-    int queryMax(const int idx, const int l, const int r) {
+    int queryMax(int idx, int l, int r) {
         if (nodes[idx].l >= l && nodes[idx].r <= r) {
             return nodes[idx].v;
         }
         auto mid = (nodes[idx].l + nodes[idx].r) >> 1;
-        int v = 0;
-        if (l <= mid) {
-            v = queryMax(idx << 1, l, r);
+        if (r <= mid) {
+            return queryMax(idx << 1, l, r);
         }
-        if (r > mid) {
-            v = max(v, queryMax(idx << 1 | 1, l, r));
+        if (l > mid) {
+            return queryMax(idx << 1 | 1, l, r);
         }
-        return v;
+        return max(queryMax(idx << 1, l, r), queryMax(idx << 1 | 1, l, r));
     }
 
     void modifyNode(const int idx, const int x, const int v) {
