@@ -15,22 +15,22 @@ class Problem0245 {
     // https://www.acwing.com/solution/content/19422/
 private:
     struct Node {
-        int l, r;  // 区间端点
-        int allSum;  // 区间和
-        int prefixMax;  // 区间最大前缀和
-        int suffixMax;  // 区间最大后缀和
-        int subMax;  // 区间最大子段和
+        int l, r;
+        int allSum;
+        int prefixMax;
+        int suffixMax;
+        int subMax;
     };
 
-    const int N = 500010;
+    const int N = 500005;
+    Node nodes[N * 4];
     int items[N];
-    Node nodes[4 * N];
 
-    void pushUp(Node &root, const Node &lChild, const Node &rChild) {
-        root.allSum = lChild.allSum + rChild.allSum;
-        root.prefixMax = max(lChild.prefixMax, lChild.allSum + rChild.prefixMax);
-        root.suffixMax = max(rChild.suffixMax, rChild.allSum + lChild.suffixMax);
-        root.subMax = max(max(lChild.subMax, rChild.subMax), lChild.suffixMax + rChild.prefixMax);
+    void pushUp(Node &root, const Node &lc, const Node &rc) {
+        root.allSum = lc.allSum + rc.allSum;
+        root.prefixMax = max(lc.allSum + rc.prefixMax, lc.prefixMax);
+        root.suffixMax = max(rc.allSum + lc.suffixMax, rc.suffixMax);
+        root.subMax = max(max(lc.subMax, rc.subMax), lc.suffixMax + rc.prefixMax);
     }
 
     void buildTree(const int idx, const int l, const int r) {
@@ -78,10 +78,8 @@ private:
             return queryMax(idx << 1 | 1, l, r);
         }
         Node result;
-        auto lt = queryMax(idx << 1, l, r);
-        auto rt = queryMax(idx << 1 | 1, l, r);
         memset(&result, 0xCF, sizeof result);
-        pushUp(result, lt, rt);
+        pushUp(result, queryMax(idx << 1, l, r), queryMax(idx << 1 | 1, l, r));
         return result;
     }
 
@@ -93,10 +91,10 @@ private:
         }
         buildTree(1, 1, n);
         int op, x, y;
-        while (m--) {
+        for (int i = 1; i <= m; ++i) {
             scanf("%d%d%d", &op, &x, &y);
             if (op == 1) {
-                if (x > y) {
+                if (x > y) {   // 千万不要忘记题目的这个要求
                     swap(x, y);
                 }
                 printf("%d\n", queryMax(1, x, y).subMax);
