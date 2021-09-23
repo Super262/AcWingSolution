@@ -13,8 +13,8 @@ using namespace std;
 
 class Problem0906 {
     // 1. 将所有区间按照左端点从小到大排序
-    // 2. 从前向后处理每个区间：判断能否将其放到某个现有的组i中（left > maxRight[i] ）
-    // 3. 如果不存在这样的组，就开设一个新组；如果存在这样的组j，则将其放入并更新maxRight[j]
+    // 2. 从前向后处理每个区间：判断能否将其放到某个现有的组i中（left > minRight[i]）
+    // 3. 如果不存在这样的组，就开设一个新组；如果存在这样的组j，则将其放入并更新minRight[j]
 private:
     struct Range {
         int left;
