@@ -10,48 +10,58 @@
 using namespace std;
 
 class Problem0240 {
-public:
-    int findRoot(const int target, vector<int> &parent, vector<int> &distanceToParent) {
-        if (target != parent[target]) {
-            int r = findRoot(parent[target], parent, distanceToParent);
-            distanceToParent[target] += distanceToParent[parent[target]];
-            parent[target] = r;
+    // https://www.acwing.com/solution/content/24842/
+private:
+    const int N = 50005;
+    int parent[N];
+    int dist[N];  // 当前节点到根结点的距离
+
+    int findRoot(const int x) {
+        if (x != parent[x]) {
+            auto root = findRoot(parent[x]);
+            dist[x] += dist[parent[x]];
+            parent[x] = root;
         }
-        return parent[target];
+        return parent[x];
+    }
+
+    bool mergeSets(const int x, const int y, const int rel) {
+        auto px = findRoot(x);
+        auto py = findRoot(y);
+        if (rel == 1 && px == py && (dist[x] - dist[y]) % 3) {
+            return false;
+        }
+        if (rel == 2 && px == py && (dist[x] - dist[y] - 1) % 3) {
+            return false;
+        }
+        if (px == py) {
+            return true;
+        }
+        parent[px] = py;
+        if (rel == 1) {
+            dist[px] = dist[y] - dist[x];
+        } else {
+            dist[px] = dist[y] - dist[x] + 1;
+        }
+        return true;
     }
 
     int main() {
         int n, k;
         scanf("%d%d", &n, &k);
-        vector<int> parent(n + 1, 0);
-        vector<int> distanceToParent(n + 1, 0);
         for (int i = 1; i <= n; ++i) {
             parent[i] = i;
         }
-        int op, a, b;
         int result = 0;
-        for (int i = 0; i < k; ++i) {
-            scanf("%d%d%d", &op, &a, &b);
-            if(a > n || b > n) {
+        int op, x, y;
+        while (k--) {
+            scanf("%d%d%d", &op, &x, &y);
+            if (x > n || y > n) {
                 ++result;
                 continue;
             }
-            auto ra = findRoot(a, parent, distanceToParent);
-            auto rb = findRoot(b, parent, distanceToParent);
-            if (op == 1) {
-                if (ra == rb && (distanceToParent[a] - distanceToParent[b]) % 3) {
-                    ++result;
-                } else if (ra != rb) {
-                    parent[ra] = rb;
-                    distanceToParent[ra] = distanceToParent[b] - distanceToParent[a];
-                }
-            } else {
-                if (ra == rb && (distanceToParent[a] - distanceToParent[b] - 1) % 3) {
-                    ++result;
-                } else if (ra != rb) {
-                    parent[ra] = rb;
-                    distanceToParent[ra] = distanceToParent[b] - distanceToParent[a] + 1;
-                }
+            if (!mergeSets(x, y, op)) {
+                ++result;
             }
         }
         printf("%d\n", result);
