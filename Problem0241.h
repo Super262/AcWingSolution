@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem0241 {
     // https://www.acwing.com/solution/content/13818/
+    // https://halfrost.com/binary_indexed_tree/
     // 输入序列中的最大值（树状数组索引的上限） <= 输入序列的长度（n）
 private:
     const int N = 200010;
