@@ -11,6 +11,9 @@ using namespace std;
 
 class Problem0789 {
 private:
+    int arr[100000];
+    int n;
+
     void printRange(const int target) {
         int left = 0;
         int right = n - 1;
