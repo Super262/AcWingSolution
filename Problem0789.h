@@ -10,62 +10,51 @@
 using namespace std;
 
 class Problem0789 {
-public:
-    void print_range(const int *array, const unsigned long long n, const int &target) {
-        unsigned long long left, right, mid;
-        left = 0;
-        right = n - 1;
+private:
+    void printRange(const int target) {
+        int left = 0;
+        int right = n - 1;
         while (left < right) {
-            // 选择一个靠"左"的"中点"；
-            mid = left + (right - left) / 2;
-            if (array[mid] == target) {
+            auto mid = left + ((right - left) >> 1);
+            if (arr[mid] >= target) {
                 right = mid;
-            } else if (array[mid] > target) {
-                right = mid - 1;
             } else {
                 left = mid + 1;
             }
         }
-
-        if (array[left] != target) {
+        if (arr[left] != target) {
             printf("-1 -1\n");
             return;
         }
-        printf("%llu ", left);
+        printf("%d ", left);
         left = 0;
         right = n - 1;
         while (left < right) {
-            // 选择一个靠"右"的"中点"；
-            mid = left + (right - left + 1) / 2;
-            if (array[mid] == target) {
+            auto mid = left + ((right - left + 1) >> 1);
+            if (arr[mid] <= target) {
                 left = mid;
-            } else if (array[mid] > target) {
-                right = mid - 1;
             } else {
-                left = mid + 1;
+                right = mid - 1;
             }
         }
-        if (array[left] != target) {
+        if (arr[left] != target) {
             printf("-1 -1\n");
             return;
         }
-        printf("%llu\n", right);
+        printf("%d\n", right);
     }
 
     int main() {
-        unsigned long long n;
-        unsigned long long targetsCount;
-        scanf("%lld%lld", &n, &targetsCount);
-        auto array = new int[n];
-        for (unsigned long long i = 0; i < n; ++i) {
-            scanf("%d", &array[i]);
+        int q;
+        scanf("%d%d", &n, &q);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &arr[i]);
         }
-        int target;
-        for (unsigned long long i = 0; i < targetsCount; ++i) {
-            scanf("%d", &target);
-            print_range(array, n, target);
+        for (int i = 0; i < q; ++i) {
+            int t;
+            scanf("%d", &t);
+            printRange(t);
         }
-        delete[] array;
         return 0;
     }
 };
