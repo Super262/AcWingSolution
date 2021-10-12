@@ -16,7 +16,9 @@ class Problem0241 {
     // 输入序列中的最大值（树状数组索引的上限） <= 输入序列的长度（n）
 private:
     const int N = 200010;
-    int fenwickTable[N];
+    int height[N];
+    int fenwickTable[N];  // 树状数组的索引从1开始
+    int leftGre[N], leftLess[N], rightGre[N], rightLess[N];
 
     int lowBit(const int x) {
         return x & -x;
@@ -39,25 +41,24 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        int height[n], leftGre[n], leftLess[n], rightGre[n], rightLess[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 1; i <= n; ++i) {
             scanf("%d", &height[i]);
         }
-        for (int i = 0; i < n; ++i) {
+        for (int i = 1; i <= n; ++i) {
             auto y = height[i];
             leftGre[i] = prefixSum(n) - prefixSum(y);
             leftLess[i] = prefixSum(y - 1);
             updateItem(y, 1, n);
         }
         memset(fenwickTable, 0, sizeof fenwickTable);
-        for (int i = n - 1; i >= 0; --i) {
+        for (int i = n; i > 0; --i) {
             auto y = height[i];
             rightGre[i] = prefixSum(n) - prefixSum(y);
             rightLess[i] = prefixSum(y - 1);
             updateItem(y, 1, n);
         }
         long long resV = 0, resA = 0;
-        for (int i = 0; i < n; ++i) {
+        for (int i = 1; i <= n; ++i) {
             resA += (long long) leftLess[i] * rightLess[i];
             resV += (long long) leftGre[i] * rightGre[i];
         }
