@@ -17,7 +17,7 @@ class Problem0241 {
 private:
     const int N = 200010;
     int height[N];
-    int fenwickTable[N];
+    int fenwickTable[N];  // 树状数组保存每个数字出现个数
     int leftGre[N], leftLess[N], rightGre[N], rightLess[N];
 
     int lowBit(const int x) {
