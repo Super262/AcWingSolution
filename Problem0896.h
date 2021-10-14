@@ -13,24 +13,23 @@ using namespace std;
 class Problem0896 {
 private:
     int longestIS(const int arr[], const int n) {
-        auto lisHead = new int[n + 1];
+        int lisTail[n + 1];  // lisTail[i]表示长度为i的LIS中最小的末尾元素
+        memset(lisTail, 0x7f, sizeof lisTail);
         int result = 0;
-        lisHead[result] = -0x7f7f7f7f;
         for (int i = 0; i < n; ++i) {
             int t = arr[i];
             int minL = 0, maxL = result;
             while (minL < maxL) {
-                int mid = minL + (maxL - minL + 1) / 2;  // 靠右端点，查找长度上界
-                if (lisHead[mid] >= t) {
+                auto mid = minL + (maxL - minL + 1) / 2;  // 靠右端点，查找长度上界（即最大的i，使lisTail[i] < t）
+                if (lisTail[mid] >= t) {
                     maxL = mid - 1;
                 } else {
                     minL = mid;
                 }
             }
-            lisHead[maxL + 1] = t;
+            lisTail[maxL + 1] = min(t, lisTail[maxL + 1]);
             result = max(result, maxL + 1);
         }
-        delete[] lisHead;
         return result;
     }
 
