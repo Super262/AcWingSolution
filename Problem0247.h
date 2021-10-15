@@ -32,7 +32,7 @@ private:
         double length;  // 总长度
     };
 
-    const int N = 100010;
+    const int N = 10010;
     Segment segments[N * 2];
     Node nodes[N * 2 * 4];
     vector<double> ys;  // 离散化y值
