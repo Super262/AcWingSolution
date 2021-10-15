@@ -61,6 +61,7 @@ private:
 
     void increaseRange(const int idx, const int l, const int r, const int val) {
         if (nodes[idx].l >= l && nodes[idx].r <= r) {
+            // 注意：这时需要修改sumOfKids，而不是等待pushUp
             nodes[idx].sumOfKids += (long long) (nodes[idx].r - nodes[idx].l + 1) * val;
             nodes[idx].incrementForKids += val;
             return;
