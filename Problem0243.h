@@ -41,6 +41,7 @@ private:
         lc.sumOfKids += (long long) (lc.r - lc.l + 1) * root.incrementForKids;
         rc.sumOfKids += (long long) (rc.r - rc.l + 1) * root.incrementForKids;
 
+        // 注意：pushDown操作不会修改root的sum值，只会传递增量到子节点并清除根结点的增量；pushUp负责修改根节点
         root.incrementForKids = 0;
     }
 
