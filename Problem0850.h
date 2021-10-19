@@ -14,13 +14,13 @@ using namespace std;
 
 class Problem0850 {
 private:
-    const int N = 150010;
+    const int N = 150005;
     int headIndex[N];
-    int nextIndex[N];
-    int vertexValue[N];
-    int weight[N];
+    int vertexValue[2 * N];
+    int nextIndex[2 * N];
+    int weight[2 * N];
 
-    void addEdge(const int a, const int b, const int w, int &idx) {
+    void addEdge(int a, int b, int w, int &idx) {
         vertexValue[idx] = b;
         weight[idx] = w;
         nextIndex[idx] = headIndex[a];
@@ -28,35 +28,35 @@ private:
         ++idx;
     }
 
-    int dijkstra(const int start, const int n) {
-        auto dist = new int[n + 1];
-        auto selected = new bool[n + 1];
+    int dijkstra(const int start, int end, int n) {
+        int dist[n + 1];
+        bool selected[n + 1];
+        memset(dist, 0x3f, sizeof dist);
+        memset(selected, 0, sizeof selected);
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        memset(dist, 0x7f, sizeof(int) * (n + 1));
-        memset(selected, 0, sizeof(bool) * (n + 1));
         dist[start] = 0;
         heap.emplace(pair<int, int>(dist[start], start));
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
-            auto closestVertex = t.second;
-            if (selected[closestVertex]) {
+            auto closeV = t.second;
+            if (selected[closeV]) {
                 continue;
             }
-            selected[closestVertex] = true;
-            for (int idx = headIndex[closestVertex]; idx != -1; idx = nextIndex[idx]) {
-                int nextV = vertexValue[idx];
-                if (weight[idx] == 0x7f7f7f7f || dist[nextV] < dist[closestVertex] + weight[idx]) {
+            selected[closeV] = true;
+            for (int idx = headIndex[closeV]; idx != -1; idx = nextIndex[idx]) {
+                auto childV = vertexValue[idx];
+                if (dist[childV] < dist[closeV] + weight[idx]) {
                     continue;
                 }
-                dist[nextV] = dist[closestVertex] + weight[idx];
-                heap.emplace(pair<int, int>(dist[nextV], nextV));
+                dist[childV] = dist[closeV] + weight[idx];
+                heap.emplace(pair<int, int>(dist[childV], childV));
             }
         }
-        int result = dist[n];
-        delete[] dist;
-        delete[] selected;
-        return result == 0x7f7f7f7f ? -1 : result;
+        if (dist[end] == 0x3f3f3f3f) {
+            return -1;
+        }
+        return dist[end];
     }
 
     int main() {
@@ -64,13 +64,13 @@ private:
         memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
+        int x, y, w;
         int idx = 0;
         for (int i = 0; i < m; ++i) {
-            int x, y, w;
             scanf("%d%d%d", &x, &y, &w);
             addEdge(x, y, w, idx);
         }
-        printf("%d\n", dijkstra(1, n));
+        printf("%d\n", dijkstra(1, n, n));
         return 0;
     }
 };
