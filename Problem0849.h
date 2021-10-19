@@ -15,38 +15,38 @@ private:
     const int N = 510;
     int graph[N][N];
 
-    int dijkstra(const int start, const int n) {
-        auto dist = new int[n + 1];
-        auto selected = new bool[n + 1];
-        memset(dist, 0x7f, sizeof(int) * (n + 1));
-        memset(selected, 0, sizeof(bool) * (n + 1));
+    int dijkstra(const int start, const int end, const int n) {
+        int dist[n + 1];
+        bool selected[n + 1];
+        memset(dist, 0x3f, sizeof dist);
+        memset(selected, 0, sizeof selected);
         dist[start] = 0;
-        for (int k = 1; k <= n; ++k) {
-            int closestVertex = -1;
+        for (int k = 0; k < n; ++k) {
+            int closestV = -1;
             for (int v = 1; v <= n; ++v) {
-                if (!selected[v] && (closestVertex == -1 || dist[closestVertex] > dist[v])) {
-                    closestVertex = v;
-                }
-            }
-            if (closestVertex == -1) {
-                return -1;
-            }
-            selected[closestVertex] = true;
-            for (int v = 1; v <= n; ++v) {
-                if (graph[closestVertex][v] == 0x7f7f7f7f) {
+                if (selected[v]) {
                     continue;
                 }
-                dist[v] = min(dist[v], dist[closestVertex] + graph[closestVertex][v]);
+                if (closestV == -1 || dist[v] < dist[closestV]) {
+                    closestV = v;
+                }
+            }
+            if (closestV == -1) {
+                return -1;
+            }
+            selected[closestV] = true;
+            for (int v = 1; v <= n; ++v) {
+                dist[v] = min(dist[v], dist[closestV] + graph[closestV][v]);
             }
         }
-        int result = dist[n];
-        delete[] dist;
-        delete[] selected;
-        return result == 0x7f7f7f7f ? -1 : result;
+        if (dist[end] == 0x3f3f3f3f) {
+            return -1;
+        }
+        return dist[end];
     }
 
     int main() {
-        memset(graph, 0x7f, sizeof graph);
+        memset(graph, 0x3f, sizeof graph);
         int n, m;
         scanf("%d%d", &n, &m);
         for (int i = 0; i < m; ++i) {
@@ -54,10 +54,9 @@ private:
             scanf("%d%d%d", &x, &y, &w);
             graph[x][y] = min(graph[x][y], w);
         }
-        printf("%d\n", dijkstra(1, n));
+        printf("%d\n", dijkstra(1, n, n));
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0849_H
