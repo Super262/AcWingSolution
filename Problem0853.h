@@ -36,7 +36,7 @@ private:
         delete[] temp;
         delete[] dist;
         // "正无穷"可能被负权边更新而减小，所以这里使用"0x3f3f3f3f/2"
-        return result >= 0x7f7f7f7f / 2 ? 0x7f7f7f7f : result;
+        return result >= 0x3f3f3f3f / 2 ? 0x3f3f3f3f : result;
     }
 
     int main() {
