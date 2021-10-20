@@ -10,60 +10,51 @@
 
 using namespace std;
 
-class Problem1126 {
-public:
-    double **graph;
+class Problem1126 {  // 算法正确性证明：将边的权重的乘运算转换为对数的加运算
+private:
+    double graph[2010][2010];
 
-    double dijkstra(const int start, const int end, const int n) {
-        auto dist = new double[n + 1];
-        auto isSelected = new bool[n + 1];
-        memset(dist, 0, sizeof(double) * (n + 1));
-        memset(isSelected, 0, sizeof(bool) * (n + 1));
+    double dijkstra(const int &start, const int &end, const int &n) {
+        double dist[n + 1];
+        bool selected[n + 1];
+        memset(dist, 0, sizeof dist);
+        memset(selected, 0, sizeof selected);
         dist[start] = 1;
-        for (int k = 1; k <= n; ++k) {
-            int closestNode = -1;
+        for (int k = 0; k < n; ++k) {
+            auto closeV = -1;
             for (int v = 1; v <= n; ++v) {
-                if (!isSelected[v] && (closestNode == -1 || dist[v] > dist[closestNode])) {
-                    closestNode = v;
+                if (selected[v]) {
+                    continue;
+                }
+                if (closeV == -1 || dist[v] > dist[closeV]) {
+                    closeV = v;
                 }
             }
-            if (closestNode == -1) {
-                break;
+            if (closeV == -1) {
+                return 0;
             }
-            isSelected[closestNode] = true;
+            selected[closeV] = true;
             for (int v = 1; v <= n; ++v) {
-                // 不要将dist和graph中的无效值全部设置为-1，会导致这里的乘法结果为很大的正数，导致计算错误
-                dist[v] = max(dist[v], dist[closestNode] * graph[closestNode][v]);
+                dist[v] = max(dist[v], dist[closeV] * graph[closeV][v]);
             }
         }
-        auto result = dist[end];
-        delete[] dist;
-        delete[] isSelected;
-        return result;
+        return dist[end];
     }
 
     int main() {
+        memset(graph, 0, sizeof graph);
         int n, m;
         scanf("%d%d", &n, &m);
-        graph = new double *[n + 1];
-        for (int i = 1; i <= n; ++i) {
-            graph[i] = new double[n + 1];
-            memset(graph[i], 0, sizeof(double) * (n + 1));
-        }
+        int x, y, w;
         for (int i = 0; i < m; ++i) {
-            int a, b, w;
-            scanf("%d%d%d", &a, &b, &w);
-            double z = (100.0 - w) / 100;
-            graph[a][b] = max(graph[a][b], z);
-            graph[b][a] = max(graph[b][a], z);
+            scanf("%d%d%d", &x, &y, &w);
+            double t = (100.0 - w) / 100.0;
+            graph[x][y] = max(graph[x][y], t);
+            graph[y][x] = max(graph[y][x], t);
         }
-        int start, end;
-        scanf("%d%d", &start, &end);
-        printf("%.8f\n", 100 / dijkstra(start, end, n));
-        for (int i = 1; i <= n; ++i) {
-            delete[] graph[i];
-        }
-        delete[] graph;
+        int s, e;
+        scanf("%d%d", &s, &e);
+        printf("%.8lf\n", 100.0 / dijkstra(s, e, n));
         return 0;
     }
 };
