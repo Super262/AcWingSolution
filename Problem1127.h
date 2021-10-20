@@ -13,91 +13,77 @@
 using namespace std;
 
 class Problem1127 {
-public:
-    int *headIndex;
-    int *vertexValue;
-    int *nextIndex;
-    int *edgeWeight;
-    const int INF = 0x7f7f7f7f;
+private:
+    const int N = 810, M = 3000;
+    int headIndex[N];
+    int nextIndex[M];
+    int vertexValue[M];
+    int weight[M];
 
-    int dijkstraSum(const int start, const int p, const int *home, const int n) {
-        auto dist = new int[p + 1];
-        auto visited = new bool[p + 1];
+    void addEdge(const int &a, const int &b, const int &w, int &idx) {
+        vertexValue[idx] = b;
+        weight[idx] = w;
+        nextIndex[idx] = headIndex[a];
+        headIndex[a] = idx;
+        ++idx;
+    }
+
+    int dijkstraSum(const int &start, const int &p, const int home[], const int &n) {
+        int dist[p + 1];
+        bool selected[p + 1];
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        memset(dist, 0x7f, sizeof(int) * (p + 1));
-        memset(visited, 0, sizeof(bool) * (p + 1));
+        memset(dist, 0x3f, sizeof dist);
+        memset(selected, 0, sizeof selected);
         dist[start] = 0;
-        heap.emplace(pair<int, int>(0, start));
+        heap.emplace(pair<int, int>(dist[start], start));
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
-            auto rootV = t.second;
-            if (visited[rootV]) {
+            auto root = t.second;
+            if (selected[root]) {
                 continue;
             }
-            visited[rootV] = true;
-            auto rootD = t.first;
-            for (int idx = headIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
-                int childV = vertexValue[idx];
-                if (rootD == INF || dist[childV] <= rootD + edgeWeight[idx]) {
+            selected[root] = true;
+            for (auto idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
+                auto nV = vertexValue[idx];
+                if (dist[nV] < dist[root] + weight[idx]) {
                     continue;
                 }
-                dist[childV] = rootD + edgeWeight[idx];
-                heap.emplace(pair<int, int>(dist[childV], childV));
+                dist[nV] = dist[root] + weight[idx];
+                heap.emplace(pair<int, int>(dist[nV], nV));
             }
         }
         int result = 0;
         for (int i = 0; i < n; ++i) {
-            if (dist[home[i]] == INF) {
-                result = INF;
-                break;
+            if (dist[home[i]] == 0x3f3f3f3f) {
+                return 0x3f3f3f3f;
             }
             result += dist[home[i]];
         }
-        delete[] dist;
         return result;
     }
 
-    void addEdge(const int s, const int e, const int w, int &idx) {
-        vertexValue[idx] = e;
-        edgeWeight[idx] = w;
-        nextIndex[idx] = headIndex[s];
-        headIndex[s] = idx;
-        ++idx;
-    }
-
     int main() {
+        memset(headIndex, -1, sizeof headIndex);
+        memset(nextIndex, -1, sizeof nextIndex);
         int n, p, c;
         scanf("%d%d%d", &n, &p, &c);
-        headIndex = new int[p + 1];
-        vertexValue = new int[2 * c + 1];
-        nextIndex = new int[2 * c + 1];
-        edgeWeight = new int[2 * c + 1];
-        auto home = new int[n];
-        memset(headIndex, -1, sizeof(int) * (p + 1));
-        memset(vertexValue, 0, sizeof(int) * (2 * c + 1));
-        memset(nextIndex, -1, sizeof(int) * (2 * c + 1));
-        memset(edgeWeight, 0, sizeof(int) * (2 * c + 1));
+        int home[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &home[i]);
         }
+        int x, y, w;
         int idx = 0;
         for (int i = 0; i < c; ++i) {
-            int a, b, w;
-            scanf("%d%d%d", &a, &b, &w);
-            addEdge(a, b, w, idx);
-            addEdge(b, a, w, idx);
+            scanf("%d%d%d", &x, &y, &w);
+            addEdge(x, y, w, idx);
+            addEdge(y, x, w, idx);
         }
-        int result = INF;
+        int result = 0x3f3f3f3f;
         for (int i = 1; i <= p; ++i) {
             result = min(result, dijkstraSum(i, p, home, n));
         }
         printf("%d\n", result);
-        delete[] headIndex;
-        delete[] vertexValue;
-        delete[] nextIndex;
-        delete[] edgeWeight;
-        delete[] home;
         return 0;
     }
 };
