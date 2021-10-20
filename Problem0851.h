@@ -34,6 +34,7 @@ private:
         memset(dist, 0x3f, sizeof dist);
         memset(isInQueue, 0, sizeof isInQueue);
         q[++tt] = start;
+        isInQueue[root] = true;
         dist[start] = 0;
         while (hh <= tt) {
             auto root = q[hh++];
