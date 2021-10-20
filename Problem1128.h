@@ -36,12 +36,12 @@ private:
         }
         floyd(n);
         int result = -1;
-        for (int i = 2; i <= n; ++i) {
-            if (dist[1][i] == 0x3f3f3f3f) {
+        for (int end = 2; end <= n; ++end) {  // 注意：end不等于起点
+            if (dist[1][end] == 0x3f3f3f3f) {
                 result = -1;
                 break;
             }
-            result = max(result, dist[1][i]);
+            result = max(result, dist[1][end]);
         }
         printf("%d\n", result);
         return 0;
