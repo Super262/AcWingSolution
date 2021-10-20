@@ -11,18 +11,14 @@
 using namespace std;
 
 class Problem1128 {
-public:
-    const int N = 100;
-    const int INF = 0x7f7f7f7f;
-    int dist[N + 1][N + 1];
+private:
+    const int N = 110;
+    int dist[N][N];
 
-    void floyd(const int n) {
+    int floyd(const int n) {
         for (int k = 1; k <= n; ++k) {
             for (int i = 1; i <= n; ++i) {
                 for (int j = 1; j <= n; ++j) {
-                    if (dist[i][k] == INF || dist[k][j] == INF) {
-                        continue;
-                    }
                     dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
@@ -30,19 +26,18 @@ public:
     }
 
     int main() {
-        memset(dist, 0x7f, sizeof dist);
+        memset(dist, 0x3f, sizeof dist);
         int n, m;
         scanf("%d%d", &n, &m);
+        int x, y, w;
         for (int i = 0; i < m; ++i) {
-            int a, b, w;
-            scanf("%d%d%d", &a, &b, &w);
-            dist[a][b] = w;
-            dist[b][a] = w;
+            scanf("%d%d%d", &x, &y, &w);
+            dist[x][y] = dist[y][x] = w;
         }
         floyd(n);
         int result = -1;
-        for (int i = 1; i <= n; ++i) {
-            if (dist[1][i] >= INF) {
+        for (int i = 2; i <= n; ++i) {
+            if (dist[1][i] == 0x3f3f3f3f) {
                 result = -1;
                 break;
             }
