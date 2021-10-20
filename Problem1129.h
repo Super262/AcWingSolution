@@ -11,80 +11,63 @@
 using namespace std;
 
 class Problem1129 {
-public:
-    int *headIndex;
-    int *nextIndex;
-    int *vertexValue;
-    int *edgeWeight;
+private:
+    const int N = 7000;
+    int headIndex[N];
+    int vertexValue[2 * N];
+    int nextIndex[2 * N];
+    int weight[2 * N];
 
-    void addEdge(const int s, const int e, const int w, int &idx) {
-        vertexValue[idx] = e;
-        edgeWeight[idx] = w;
-        nextIndex[idx] = headIndex[s];
-        headIndex[s] = idx;
+    void addEdge(const int &a, const int &b, const int &w, int &idx) {
+        vertexValue[idx] = b;
+        weight[idx] = w;
+        nextIndex[idx] = headIndex[a];
+        headIndex[a] = idx;
         ++idx;
     }
 
-    int spfa(const int start, const int end, const int n, const int m) {
-        if (start == end) {
-            return 0;
-        }
-        auto dist = new int[n + 1];
-        auto isInQueue = new bool[n + 1];
-        memset(dist, 0x7f, sizeof(int) * (n + 1));
-        memset(isInQueue, 0, sizeof(bool) * (n + 1));
-        auto q = new int[m + 1];
+    int spfa(const int &start, const int &end, const int &n) {
+        int dist[n + 1];
+        bool inQueue[n + 1];
+        int q[N];
         int hh = 0, tt = -1;
+        memset(inQueue, 0, sizeof inQueue);
+        memset(dist, 0x3f, sizeof dist);
         dist[start] = 0;
-        isInQueue[start] = true;
+        inQueue[start] = true;
         q[++tt] = start;
         while (hh <= tt) {
             auto root = q[hh++];
-            isInQueue[root] = false;
-            for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-                int childV = vertexValue[idx];
-                if (dist[childV] <= dist[root] + edgeWeight[idx]) {
+            inQueue[root] = false;
+            for (auto idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
+                auto nV = vertexValue[idx];
+                if (dist[nV] < dist[root] + weight[idx]) {
                     continue;
                 }
-                dist[childV] = dist[root] + edgeWeight[idx];
-                if (isInQueue[childV]) {
+                dist[nV] = dist[root] + weight[idx];
+                if (inQueue[nV]) {
                     continue;
                 }
-                isInQueue[childV] = true;
-                q[++tt] = childV;
+                inQueue[nV] = true;
+                q[++tt] = nV;
             }
         }
-        int result = dist[end];
-        delete[] dist;
-        delete[] isInQueue;
-        delete[] q;
-        return result;
+        return dist[end];
     }
 
     int main() {
-        int t, c, start, end;
-        scanf("%d%d%d%d", &t, &c, &start, &end);
-        headIndex = new int[t + 1];
-        nextIndex = new int[2 * c + 1];
-        vertexValue = new int[2 * c + 1];
-        edgeWeight = new int[2 * c + 1];
-        memset(headIndex, -1, sizeof(int) * (t + 1));
-        memset(nextIndex, -1, sizeof(int) * (2 * c + 1));
-        memset(vertexValue, 0, sizeof(int) * (2 * c + 1));
-        memset(edgeWeight, 0, sizeof(int) * (2 * c + 1));
+        memset(headIndex, -1, sizeof headIndex);
+        memset(nextIndex, -1, sizeof nextIndex);
+        int t, c, s, e;
+        scanf("%d%d%d%d", &t, &c, &s, &e);
+        int x, y, w;
         int idx = 0;
         for (int i = 0; i < c; ++i) {
-            int a, b, w;
-            scanf("%d%d%d", &a, &b, &w);
-            addEdge(a, b, w, idx);
-            addEdge(b, a, w, idx);
+            scanf("%d%d%d", &x, &y, &w);
+            addEdge(x, y, w, idx);
+            addEdge(y, x, w, idx);
         }
-        int result = spfa(start, end, t, c);
-        printf("%d\n", result);
-        delete[] headIndex;
-        delete[] nextIndex;
-        delete[] vertexValue;
-        delete[] edgeWeight;
+        printf("%d\n", spfa(s, e, t));
         return 0;
     }
 };
