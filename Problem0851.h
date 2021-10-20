@@ -36,7 +36,7 @@ private:
         q[++tt] = start;
         isInQueue[root] = true;
         dist[start] = 0;
-        while (hh <= tt) {
+        while (hh <= tt) {  // 先尝试更新距离，再尝试压入队列
             auto root = q[hh++];
             isInQueue[root] = false;
             for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {

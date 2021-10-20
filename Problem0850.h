@@ -36,7 +36,7 @@ private:
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
         dist[start] = 0;
         heap.emplace(pair<int, int>(dist[start], start));
-        while (!heap.empty()) {
+        while (!heap.empty()) {  // 判断节点是否被选择，再压入队列
             auto t = heap.top();
             heap.pop();
             auto closeV = t.second;
