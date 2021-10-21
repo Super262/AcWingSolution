@@ -18,10 +18,10 @@ private:
     int dist[N];
     bool visited[N];
 
-    int dijkstra(const int lowestLevel, const int highestLevel, const int n) {
+    int dijkstra(const int lowestLevel, const int highestLevel, const int start, const int end, const int n) {
         memset(visited, 0, sizeof(int) * (n + 1));
         memset(dist, 0x3f, sizeof(int) * (n + 1));
-        dist[0] = 0;
+        dist[start] = 0;
         for (int k = 1; k <= n + 1; ++k) {
             int closestNode = -1;
             for (int v = 0; v <= n; ++v) {
@@ -40,7 +40,7 @@ private:
                 dist[v] = min(dist[v], dist[closestNode] + graph[closestNode][v]);
             }
         }
-        return dist[1];
+        return dist[end];
     }
 
     int main() {
@@ -60,7 +60,7 @@ private:
         }
         int result = 0x3f3f3f3f;
         for (int l = level[1] - m; l <= level[1]; ++l) {
-            result = min(result, dijkstra(l, l + m, n));
+            result = min(result, dijkstra(l, l + m, 0, 1, n));
         }
         printf("%d\n", result);
         return 0;
