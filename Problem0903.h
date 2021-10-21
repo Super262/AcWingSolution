@@ -11,17 +11,16 @@
 using namespace std;
 
 class Problem0903 {
-public:
+private:
     const int N = 101;
     int graph[N][N];
     int level[N];
     int dist[N];
     bool visited[N];
-    const int INF = 0x7f7f7f7f;
 
     int dijkstra(const int lowestLevel, const int highestLevel, const int n) {
         memset(visited, 0, sizeof(int) * (n + 1));
-        memset(dist, 0x7f, sizeof(int) * (n + 1));
+        memset(dist, 0x3f, sizeof(int) * (n + 1));
         dist[0] = 0;
         for (int k = 1; k <= n + 1; ++k) {
             int closestNode = -1;
@@ -35,7 +34,7 @@ public:
             }
             visited[closestNode] = true;
             for (int v = 0; v <= n; ++v) {
-                if (level[v] < lowestLevel || level[v] > highestLevel || graph[closestNode][v] == INF) {
+                if (level[v] < lowestLevel || level[v] > highestLevel) {
                     continue;
                 }
                 dist[v] = min(dist[v], dist[closestNode] + graph[closestNode][v]);
@@ -45,12 +44,9 @@ public:
     }
 
     int main() {
-        memset(graph, 0x7f, sizeof graph);
+        memset(graph, 0x3f, sizeof graph);
         int m, n;
         scanf("%d%d", &m, &n);
-        for (int i = 0; i <= n; ++i) {
-            graph[i][i] = 0;
-        }
         for (int idx = 1; idx <= n; ++idx) {
             int p, l, x;
             scanf("%d%d%d", &p, &l, &x);
@@ -62,7 +58,7 @@ public:
                 graph[id][idx] = min(graph[id][idx], cost);
             }
         }
-        int result = INF;
+        int result = 0x3f3f3f3f;
         for (int l = level[1] - m; l <= level[1]; ++l) {
             result = min(result, dijkstra(l, l + m, n));
         }
