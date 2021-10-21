@@ -15,12 +15,12 @@ private:
     const int N = 101;
     int graph[N][N];
     int level[N];
-    int dist[N];
-    bool selected[N];
 
     int dijkstra(const int lowestLevel, const int highestLevel, const int start, const int end, const int n) {
-        memset(selected, 0, sizeof(int) * (n + 1));
-        memset(dist, 0x3f, sizeof(int) * (n + 1));
+        bool selected[n + 1];
+        int dist[n + 1];
+        memset(selected, 0, sizeof selected);
+        memset(dist, 0x3f, sizeof dist);
         dist[start] = 0;
         for (int k = 1; k <= n + 1; ++k) {
             int closestNode = -1;
