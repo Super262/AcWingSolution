@@ -16,23 +16,23 @@ private:
     int graph[N][N];
     int level[N];
     int dist[N];
-    bool visited[N];
+    bool selected[N];
 
     int dijkstra(const int lowestLevel, const int highestLevel, const int start, const int end, const int n) {
-        memset(visited, 0, sizeof(int) * (n + 1));
+        memset(selected, 0, sizeof(int) * (n + 1));
         memset(dist, 0x3f, sizeof(int) * (n + 1));
         dist[start] = 0;
         for (int k = 1; k <= n + 1; ++k) {
             int closestNode = -1;
             for (int v = 0; v <= n; ++v) {
-                if (!visited[v] && (closestNode == -1 || dist[v] < dist[closestNode])) {
+                if (!selected[v] && (closestNode == -1 || dist[v] < dist[closestNode])) {
                     closestNode = v;
                 }
             }
             if (closestNode == -1) {
                 break;
             }
-            visited[closestNode] = true;
+            selected[closestNode] = true;
             for (int v = 0; v <= n; ++v) {
                 if (level[v] < lowestLevel || level[v] > highestLevel) {
                     continue;
