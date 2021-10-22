@@ -12,67 +12,53 @@
 using namespace std;
 
 class Problem0920 {
-public:
-    bool **graph;
+private:
+    bool graph[501][501];
 
-    int bfs(const int start, const int end, const int n) {
+    int bfs(const int &start, const int &end, const int &n) {
         if (start == end) {
             return 1;
         }
-        auto q = new int[n + 1];
+        int q[n + 1];
+        bool visited[n + 1];
         int hh = 0, tt = -1;
-        auto visited = new bool[n + 1];
+        memset(visited, 0, sizeof visited);
         int result = -1;
-        bool hasReached = false;
-        memset(visited, 0, sizeof(bool) * (n + 1));
         q[++tt] = start;
         visited[start] = true;
         while (hh <= tt) {
-            int currentLevelSize = tt - hh + 1;
+            auto curL = tt - hh + 1;
             ++result;
-            while (currentLevelSize--) {
+            while (curL--) {
                 auto root = q[hh++];
                 if (root == end) {
-                    hasReached = true;
-                    break;
+                    return result;
                 }
                 for (int i = 1; i <= n; ++i) {
-                    if (i == root) {
+                    if (!graph[root][i] || visited[i]) {
                         continue;
                     }
-                    if (graph[root][i] && !visited[i]) {
-                        visited[i] = true;
-                        q[++tt] = i;
-                    }
+                    q[++tt] = i;
+                    visited[i] = true;
                 }
             }
         }
-        delete[] visited;
-        delete[] q;
-        if (!hasReached) {
-            return -1;
-        }
-        return result;
+        return -1;
     }
 
     int main() {
         int m, n;
         scanf("%d%d", &m, &n);
-        graph = new bool *[n + 1];
-        for (int i = 1; i <= n; ++i) {
-            graph[i] = new bool[n + 1];
-            memset(graph[i], 0, sizeof(bool) * (n + 1));
-        }
+        memset(graph, 0, sizeof graph);
+        int stops[n + 1];
         string path;
-        auto stops = new int[n];
-        getline(cin, path);  // 过滤掉上一行的回车符！！
+        getline(cin, path);
         for (int k = 0; k < m; ++k) {
             getline(cin, path);
             stringstream ssin(path);
-            int s;
             int tt = 0;
-            while (ssin >> s) {
-                stops[tt++] = s;
+            while (ssin >> stops[tt]) {
+                ++tt;
             }
             for (int i = 0; i < tt; ++i) {
                 for (int j = i + 1; j < tt; ++j) {
@@ -86,10 +72,6 @@ public:
         } else {
             printf("%d\n", result - 1);
         }
-        for (int i = 1; i <= n; ++i) {
-            delete[] graph[i];
-        }
-        delete[] graph;
         return 0;
     }
 };
