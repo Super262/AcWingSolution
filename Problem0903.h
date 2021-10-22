@@ -25,7 +25,7 @@ private:
         memset(dist, 0x3f, sizeof dist);
         memset(selected, 0, sizeof selected);
         dist[start] = 0;
-        for (int k = 1; k <= n + 1; ++k) {
+        for (int k = 1; k <= n + 1; ++k) {  // 注意：包括虚拟源点0，一共有n+1个点
             int closeV = -1;
             for (int v = 0; v <= n; ++v) {
                 if (selected[v]) {
@@ -65,7 +65,7 @@ private:
             }
         }
         int result = 0x3f3f3f3f;
-        for (int l = level[1] - m; l <= level[1]; ++l) {
+        for (int l = level[1] - m; l <= level[1]; ++l) {  // 枚举所有等级区间
             result = min(result, dijkstra(0, 1, n, l, l + m));
         }
         printf("%d\n", result);
