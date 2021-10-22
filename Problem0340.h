@@ -13,15 +13,13 @@ using namespace std;
 
 class Problem0340 {
     // https://www.acwing.com/solution/content/13645/
-public:
+private:
     const int N = 1010;
     const int M = 20010;
     int headIndex[N];
     int nextIndex[M];
     int vertexValue[M];
     int edgeWeight[M];
-    bool visited[N];
-    int dist[N];
 
     void addEdge(const int s, const int e, const int w, int &idx) {
         vertexValue[idx] = e;
@@ -31,12 +29,14 @@ public:
         ++idx;
     }
 
-    bool check(const int bound, const int n, const int k) {
+    bool check(const int bound, const int start, const int end, const int n, const int k) {
         deque<int> q;
+        bool visited[n + 1];
+        int dist[n + 1];
         memset(visited, 0, sizeof visited);
-        memset(dist, 0x7f, sizeof dist);
-        dist[1] = 0;
-        q.push_front(1);
+        memset(dist, 0x3f, sizeof dist);
+        dist[start] = 0;
+        q.push_front(start);
         while (!q.empty()) {
             auto root = q.front();
             q.pop_front();
@@ -58,7 +58,7 @@ public:
                 }
             }
         }
-        return dist[n] <= k;
+        return dist[end] <= k;
     }
 
     int main() {
@@ -75,10 +75,10 @@ public:
             addEdge(a, b, w, idx);
             addEdge(b, a, w, idx);
         }
-        int left = 0, right = 1000001;
+        int left = 0, right = 1000001;  // 左端点取0，因为0可能是一个解；右端点取1000001，因为1到N可能不连通
         while (left < right) {
             int mid = left + (right - left) / 2;
-            if (check(mid, n, k)) {
+            if (check(mid, 1, n, n, k)) {
                 right = mid;
             } else {
                 left = mid + 1;
