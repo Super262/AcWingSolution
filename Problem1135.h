@@ -13,11 +13,13 @@
 using namespace std;
 
 class Problem1135 {
-public:
+    // 1. 预处理出从1，a，b，c，d，e出发到其它所有点的最短路径
+    // 2. DFS遍历所有拜访顺序，对于每1种拜访顺序，通过查表得到最短距离
+private:
     const int N = 50010;
     const int M = 200010;
     const int SOURCES_NUM = 6;
-    int source[SOURCES_NUM];
+    int sourceV[SOURCES_NUM];
     int headIndex[N];
     int vertexValue[M];
     int nextIndex[M];
@@ -37,8 +39,8 @@ public:
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
         memset(visited, 0, sizeof visited);
         memset(dist[sIdx], 0x7f, sizeof dist[sIdx]);
-        heap.emplace(pair<int, int>(0, source[sIdx]));
-        dist[sIdx][source[sIdx]] = 0;
+        heap.emplace(pair<int, int>(0, sourceV[sIdx]));
+        dist[sIdx][sourceV[sIdx]] = 0;
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
@@ -69,7 +71,7 @@ public:
                 continue;
             }
             visited[i] = true;
-            res = min(res, dfs(selectedSourcesCount + 1, i, d + dist[currentV][source[i]]));
+            res = min(res, dfs(selectedSourcesCount + 1, i, d + dist[currentV][sourceV[i]]));
             visited[i] = false;
         }
         return res;
@@ -82,9 +84,9 @@ public:
         memset(edgeWeight, 0, sizeof edgeWeight);
         int n, m;
         scanf("%d%d", &n, &m);
-        source[0] = 1;
+        sourceV[0] = 1;
         for (int i = 1; i < SOURCES_NUM; ++i) {
-            scanf("%d", &source[i]);
+            scanf("%d", &sourceV[i]);
         }
         int idx = 0;
         for (int i = 1; i <= m; ++i) {
