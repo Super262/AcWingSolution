@@ -13,31 +13,37 @@ using namespace std;
 class Problem0903 {
 private:
     const int N = 101;
-    int graph[N][N];
     int level[N];
+    int graph[N][N];
 
-    int dijkstra(const int lowestLevel, const int highestLevel, const int start, const int end, const int n) {
-        bool selected[n + 1];
+    int dijkstra(const int start, const int end, const int n, const int lowL, const int highL) {
+        if (start == end) {
+            return 0;
+        }
         int dist[n + 1];
-        memset(selected, 0, sizeof selected);
+        bool selected[n + 1];
         memset(dist, 0x3f, sizeof dist);
+        memset(selected, 0, sizeof selected);
         dist[start] = 0;
         for (int k = 1; k <= n + 1; ++k) {
-            int closestNode = -1;
+            int closeV = -1;
             for (int v = 0; v <= n; ++v) {
-                if (!selected[v] && (closestNode == -1 || dist[v] < dist[closestNode])) {
-                    closestNode = v;
-                }
-            }
-            if (closestNode == -1) {
-                break;
-            }
-            selected[closestNode] = true;
-            for (int v = 0; v <= n; ++v) {
-                if (level[v] < lowestLevel || level[v] > highestLevel) {
+                if (selected[v]) {
                     continue;
                 }
-                dist[v] = min(dist[v], dist[closestNode] + graph[closestNode][v]);
+                if (closeV == -1 || dist[v] < dist[closeV]) {
+                    closeV = v;
+                }
+            }
+            if (closeV == -1) {
+                break;
+            }
+            selected[closeV] = true;
+            for (int v = 0; v <= n; ++v) {
+                if (level[v] < lowL || level[v] > highL) {
+                    continue;
+                }
+                dist[v] = min(dist[v], dist[closeV] + graph[closeV][v]);
             }
         }
         return dist[end];
@@ -47,20 +53,20 @@ private:
         memset(graph, 0x3f, sizeof graph);
         int m, n;
         scanf("%d%d", &m, &n);
-        for (int idx = 1; idx <= n; ++idx) {
+        for (int i = 1; i <= n; ++i) {
             int p, l, x;
             scanf("%d%d%d", &p, &l, &x);
-            graph[0][idx] = min(graph[0][idx], p);
-            level[idx] = l;
+            graph[0][i] = min(graph[0][i], p);
+            level[i] = l;
             while (x--) {
-                int id, cost;
-                scanf("%d%d", &id, &cost);
-                graph[id][idx] = min(graph[id][idx], cost);
+                int j, cost;
+                scanf("%d%d", &j, &cost);
+                graph[j][i] = min(graph[j][i], cost);
             }
         }
         int result = 0x3f3f3f3f;
         for (int l = level[1] - m; l <= level[1]; ++l) {
-            result = min(result, dijkstra(l, l + m, 0, 1, n));
+            result = min(result, dijkstra(0, 1, n, l, l + m));
         }
         printf("%d\n", result);
         return 0;
