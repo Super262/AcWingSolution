@@ -25,11 +25,11 @@ private:
                 left = mid + 1;
             }
         }
-        if (arr[left] != target) {
+        if (arr[right] != target) {
             printf("-1 -1\n");
             return;
         }
-        printf("%d ", left);
+        printf("%d ", right);
         left = 0;
         right = n - 1;
         while (left < right) {
@@ -44,7 +44,7 @@ private:
             printf("-1 -1\n");
             return;
         }
-        printf("%d\n", right);
+        printf("%d\n", left);
     }
 
     int main() {
