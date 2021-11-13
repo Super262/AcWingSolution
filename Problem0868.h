@@ -12,15 +12,16 @@ using namespace std;
 
 class Problem0868 {
 public:
+    // 时间复杂度：O(n)
     int primesCount(const int n) {
-        bool *isFiltered = new bool[n + 1];
-        int *primes = new int[n + 1];
-        memset(isFiltered, 0, (n + 1) * sizeof(bool));
-        memset(primes, 0, (n + 1) * sizeof(int));
-        int count = 0;
+        int result = 0;
+        bool isFiltered[n + 1];
+        int primes[n + 1];
+        memset(isFiltered, 0, sizeof isFiltered);
+        memset(primes, 0, sizeof primes);
         for (int f = 2; f <= n; ++f) {
             if (!isFiltered[f]) {
-                primes[count++] = f;
+                primes[result++] = f;
             }
             for (int j = 0; primes[j] <= n / f; ++j) {
                 isFiltered[primes[j] * f] = true;
@@ -29,9 +30,7 @@ public:
                 }
             }
         }
-        delete[] isFiltered;
-        delete[] primes;
-        return count;
+        return result;
     }
 
     int main() {
