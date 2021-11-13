@@ -12,7 +12,7 @@
 using namespace std;
 
 class Problem0321 {
-    // https://www.acwing.com/solution/content/34369/
+    // https://www.acwing.com/solution/content/62836/
 public:
     const int N = 8;
     const int M = 15;
