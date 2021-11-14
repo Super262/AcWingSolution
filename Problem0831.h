@@ -52,18 +52,15 @@ private:
     int main() {
         int pLen;
         scanf("%d", &pLen);
-        auto p = new char[pLen + 1];
+        char p[pLen + 1];
         scanf("%s", p);
         int sLen;
         scanf("%d", &sLen);
-        auto s = new char[sLen + 1];
+        char s[sLen + 1];
         scanf("%s", s);
-        auto nextStart = new int[pLen];
+        int nextStart[pLen];
         buildNextStart(p, nextStart, pLen);
         printMatchedStart(s, sLen, p, nextStart, pLen);
-        delete[] p;
-        delete[] s;
-        delete[] nextStart;
         return 0;
     }
 };
