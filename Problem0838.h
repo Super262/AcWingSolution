@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0838 {
 public:
-    void downNode(vector<int>& heap, unsigned long long rootIndex) {
+    void downNode(vector<int> &heap, unsigned long long rootIndex) {
         unsigned long long minimalIndex = rootIndex;
         while (true) {
             if (rootIndex * 2 < heap.size() && heap[rootIndex * 2] < heap[minimalIndex]) {
@@ -29,13 +29,20 @@ public:
         }
     }
 
-    void buildHeap(vector<int>& heap) {
+    void upNode(vector<int> &heap, unsigned long long rootIndex) {
+        while (rootIndex / 2 && heap[rootIndex / 2] > heap[rootIndex]) {
+            swap(heap[rootIndex / 2], heap[rootIndex]);
+            rootIndex /= 2;
+        }
+    }
+
+    void buildHeap(vector<int> &heap) {
         for (unsigned long long i = (heap.size() - 1) / 2; i > 0; --i) {
             downNode(heap, i);
         }
     }
 
-    int heapPop(vector<int>& heap) {
+    int heapPop(vector<int> &heap) {
         auto result = heap[1];
         heap[1] = heap[heap.size() - 1];
         heap.pop_back();
