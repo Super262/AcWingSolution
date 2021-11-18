@@ -10,51 +10,57 @@
 class Problem0835 {
     // 完整背诵这部分代码！
 private:
-    void insertStr(const char str[], int &nextIdx, int children[][26], int wordCount[]) {
-        int currentNodeIdx = 0;
-        for (int i = 0; str[i]; ++i) {
-            auto childIdx = str[i] - 'a';
-            if (!children[currentNodeIdx][childIdx]) {
-                children[currentNodeIdx][childIdx] = nextIdx;
-                ++nextIdx;
+    struct Node {
+        int cnt;
+        Node *children[26]{};
+
+        Node() {
+            cnt = 0;
+            for (auto &item: children) {
+                item = nullptr;
             }
-            currentNodeIdx = children[currentNodeIdx][childIdx];
         }
-        ++wordCount[currentNodeIdx];
+    };
+
+    void insertStr(Node *root, const char str[]) {
+        auto current = root;
+        for (int i = 0; str[i]; ++i) {
+            if (!current->children[str[i] - 'a']) {
+                current->children[str[i] - 'a'] = new Node();
+            }
+            current = current->children[str[i] - 'a'];
+        }
+        ++current->cnt;
     }
 
-    int queryStr(const char str[], int children[][26], int wordCount[]) {
-        int currentNodeIdx = 0;
+    int queryStr(Node *root, const char str[]) {
+        auto current = root;
         for (int i = 0; str[i]; ++i) {
-            auto childIdx = str[i] - 'a';
-            if (!children[currentNodeIdx][childIdx]) {
+            if (!current->children[str[i] - 'a']) {
                 return 0;
             }
-            currentNodeIdx = children[currentNodeIdx][childIdx];
+            current = current->children[str[i] - 'a'];
         }
-        return wordCount[currentNodeIdx];
+        return current->cnt;
     }
 
     int main() {
         const int N = 100010;
-        int children[N][26];
         char str[N];
-        int wordsCount[N];
         char op[2];
         int n;
         scanf("%d", &n);
-        int nextIdx = 1;
+        auto root = new Node();
         for (int i = 0; i < n; ++i) {
             scanf("%s%s", op, str);
             if (op[0] == 'I') {
-                insertStr(str, nextIdx, children, wordsCount);
+                insertStr(root, str);
             } else {
-                printf("%d\n", queryStr(str, children, wordsCount));
+                printf("%d\n", queryStr(root, str));
             }
         }
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0835_H
