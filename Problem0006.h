@@ -19,7 +19,7 @@ private:
 
     int knapsack(Item items[], const int m, const int n) {
         int dp[2][m + 1];
-        int dq[m + 1];
+        int q[m + 1];
         memset(dp, 0, sizeof dp);
         for (int i = 0; i < n; ++i) {
             auto v = items[i].v;
@@ -28,14 +28,14 @@ private:
             for (int r = 0; r < v; ++r) {
                 int hh = 0, tt = -1;
                 for (int j = r; j <= m; j += v) {
-                    while (hh <= tt && dq[hh] < j - s * v) {
+                    while (hh <= tt && q[hh] < j - s * v) {
                         ++hh;
                     }
-                    while (hh <= tt && dp[i % 2][dq[tt]] - dq[tt] / v * w <= dp[i % 2][j] - j / v * w) {
+                    while (hh <= tt && dp[i % 2][q[tt]] - q[tt] / v * w <= dp[i % 2][j] - j / v * w) {
                         --tt;
                     }
-                    dq[++tt] = j;
-                    dp[(i + 1) % 2][j] = max(dp[(i + 1) % 2][j], dp[i % 2][dq[hh]] + (j - dq[hh]) / v * w);
+                    q[++tt] = j;
+                    dp[(i + 1) % 2][j] = max(dp[(i + 1) % 2][j], dp[i % 2][q[hh]] + (j - q[hh]) / v * w);
                 }
             }
         }
