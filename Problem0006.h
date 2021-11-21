@@ -17,12 +17,10 @@ private:
         int v, w, s;
     };
 
-    Item items[1010];
-    const int N = 20010;
-    int dp[2][N];  // 滚动数组
-    int dq[N];
-
-    int knapsack(const int m, const int n) {
+    int knapsack(Item items[], const int m, const int n) {
+        int dp[2][m + 1];
+        int dq[m + 1];
+        memset(dp, 0, sizeof dp);
         for (int i = 0; i < n; ++i) {
             auto v = items[i].v;
             auto w = items[i].w;
@@ -47,10 +45,11 @@ private:
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
+        Item items[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d%d%d", &items[i].v, &items[i].w, &items[i].s);
         }
-        printf("%d\n", knapsack(m, n));
+        printf("%d\n", knapsack(items, m, n));
         return 0;
     }
 };
