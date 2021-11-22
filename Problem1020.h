@@ -13,46 +13,37 @@ using namespace std;
 // https://www.acwing.com/solution/content/6485/
 
 class Problem1020 {
-    // “01背包”的改进：物品体积可以超过背包容量
+    // “01背包”的改进：dp[i][j]表示氧气至少为i、氮气至少为j时的最小重量
     // 非法状态的值是0x3f3f3f3f
 private:
     struct Item {
         int ox, ni, w;
     };
 
-    const int M = 22, N = 80, K = 1000;
-    int dp[M][N];  // dp[i][j]代表氧的容量不少于i、氮的容量不少于j时的最小重量
-    Item items[K];
-
-    int knapsack(const int m, const int n, const int k) {
-        const int INF = 0x3f3f3f3f;
+    int knapsack(Item items[], const int m, const int n, const int k) {
+        int dp[m + 1][n + 1];
         memset(dp, 0x3f, sizeof dp);
         dp[0][0] = 0;
         for (int d = 0; d < k; ++d) {
-            for (int i = M - 1; i >= 0; --i) {
-                for (int j = N - 1; j >= 0; --j) {
-                    auto preI = max(i - items[d].ox, 0);
-                    auto preJ = max(j - items[d].ni, 0);
+            for (int i = m; i >= 0; --i) {
+                for (int j = n; j >= 0; --j) {
+                    auto preI = max(0, i - items[d].ox);
+                    auto preJ = max(0, j - items[d].ni);
                     dp[i][j] = min(dp[i][j], dp[preI][preJ] + items[d].w);
                 }
             }
         }
-        int result = INF;
-        for (int i = M - 1; i >= m; --i) {
-            for (int j = N - 1; j >= n; --j) {
-                result = min(result, dp[i][j]);
-            }
-        }
-        return result;
+        return dp[m][n];
     }
 
     int main() {
         int m, n, k;
         scanf("%d%d%d", &m, &n, &k);
+        Item items[k];
         for (int i = 0; i < k; ++i) {
             scanf("%d%d%d", &items[i].ox, &items[i].ni, &items[i].w);
         }
-        printf("%d\n", knapsack(m, n, k));
+        printf("%d\n", knapsack(items, m, n, k));
         return 0;
     }
 };
