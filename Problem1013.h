@@ -7,35 +7,35 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
 class Problem1013 {
 private:
-    const int N = 11, M = 16;
-    int itemsValue[N][M];
-    int dp[N][M];
-    int solution[N];
-
-    int knapsack(const int n, const int m) {
+    int knapsack(const vector<vector<Item>> &items, const int &m, int solution[]) {
+        const int n = (int) items.size() - 1;
+        int dp[n + 1][m + 1];
+        memset(dp, 0, sizeof dp);
         for (int i = 1; i <= n; ++i) {
             for (int j = 0; j <= m; ++j) {
-                for (int k = 0; k <= j; ++k) {
-                    dp[i][j] = max(dp[i][j], dp[i - 1][j - k] + itemsValue[i][k]);
+                dp[i][j] = dp[i - 1][j];  // 不要忘记这一行！
+                for (auto it: items[i]) {  // 组内遍历
+                    if (j < it.v) {
+                        continue;
+                    }
+                    dp[i][j] = max(dp[i][j], dp[i - 1][j - it.v] + it.w);
                 }
             }
         }
-        auto currentNum = m;
+        auto currentV = m;
         for (int i = n; i >= 1; --i) {
-            for (int j = currentNum; j >= 0; --j) {
-                if (dp[i][currentNum] == dp[i - 1][currentNum - j] + itemsValue[i][j]) {
-                    currentNum -= j;
-                    solution[i] = j;
-                    break;
+            for (auto it: items[i]) {  // 组内遍历
+                if (it.v > currentV || dp[i][currentV] != dp[i - 1][currentV - it.v] + it.w) {
+                    continue;
                 }
-            }
-            // 千万不要忘记这个判断（及时跳出循环）
-            if (currentNum == 0) {
+                solution[i] = it.v;
+                currentV -= it.v;
                 break;
             }
         }
@@ -43,14 +43,18 @@ private:
     }
 
     int main() {
-        int n, m;
+        int n;
+        int m;
         scanf("%d%d", &n, &m);
+        int solution[n + 1];
+        vector<vector<Item>> items(n + 1, vector<Item>(m + 1, Item()));
         for (int i = 1; i <= n; ++i) {
             for (int j = 1; j <= m; ++j) {
-                scanf("%d", &itemsValue[i][j]);
+                items[i][j].v = j;
+                scanf("%d", &items[i][j].w);
             }
         }
-        printf("%d\n", knapsack(n, m));
+        printf("%d\n", knapsack(items, m, solution));
         for (int i = 1; i <= n; ++i) {
             printf("%d %d\n", i, solution[i]);
         }
