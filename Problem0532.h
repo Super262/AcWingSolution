@@ -13,22 +13,25 @@ using namespace std;
 
 class Problem0532 {
 private:
-    int dp[25010];
-    int items[110];
-
-    int knapsack(const int n) {
-        // 转化为完全背包问题
+    int knapsack(const int items[], const int &n) {
+        int m = 0;
+        for (int i = 0; i < n; ++i) {  // 取最大值作为背包的容积
+            m = max(m, items[i]);
+        }
+        int dp[m + 1];
         memset(dp, 0, sizeof dp);
-        sort(items, items + n);
-        int result = 0;
-        dp[0] = 1;
+        dp[0] = 1;  // 初始化
         for (int i = 0; i < n; ++i) {
-            if (dp[items[i]] == 0) {
-                ++result;
+            for (int j = items[i]; j <= m; ++j) {
+                dp[j] += dp[j - items[i]];  // 统计每一项有几种组成方式
             }
-            for (int j = items[i]; j <= items[n - 1]; ++j) {
-                dp[j] += dp[j - items[i]];
+        }
+        int result = 0;
+        for (int i = 0; i < n; ++i) {
+            if (dp[items[i]] != 1) {  // 统计只能由自身组成的项的个数
+                continue;
             }
+            ++result;
         }
         return result;
     }
@@ -39,10 +42,11 @@ private:
         while (t--) {
             int n;
             scanf("%d", &n);
+            int items[n];
             for (int i = 0; i < n; ++i) {
                 scanf("%d", &items[i]);
             }
-            printf("%d\n", knapsack(n));
+            printf("%d\n", knapsack(items, n));
         }
         return 0;
     }
