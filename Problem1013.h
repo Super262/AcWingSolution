@@ -20,7 +20,7 @@ private:
         for (int i = 1; i <= n; ++i) {
             for (int j = 0; j <= m; ++j) {
                 dp[i][j] = dp[i - 1][j];  // 不要忘记这一行！
-                for (auto it: items[i]) {  // 组内遍历
+                for (const auto &it: items[i]) {  // 组内遍历
                     if (j < it.v) {
                         continue;
                     }
@@ -30,7 +30,7 @@ private:
         }
         auto currentV = m;
         for (int i = n; i >= 1; --i) {
-            for (auto it: items[i]) {  // 组内遍历
+            for (const auto &it: items[i]) {  // 组内遍历
                 if (it.v > currentV || dp[i][currentV] != dp[i - 1][currentV - it.v] + it.w) {
                     continue;
                 }
