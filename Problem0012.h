@@ -12,18 +12,19 @@ using namespace std;
 
 class Problem0012 {
     // https://www.acwing.com/solution/content/2687/
+    // 求具体方案时，不能使用压缩空间后的DP数组
+    // 同时，反序求最优解，保证字典序最小：可以选择第1个物品时，一定要选上
 private:
     struct Item {
-        int v, w;
+        int v;
+        int w;
     };
 
-    const int N = 1002;
-    int dp[N][N];
-    Item items[N];
-
-    void knapsack(const int n, const int packVolume) {
-        for (auto i = n; i >= 1; --i) {
-            for (int j = 0; j <= packVolume; ++j) {
+    void knapsack(Item items[], const int &n, const int &m) {
+        int dp[n + 2][m + 1];
+        memset(dp, 0, sizeof dp);
+        for (int i = n; i >= 1; --i) {
+            for (int j = m; j >= 0; --j) {  // 体积从0开始循环，不能跳过[0, items[i].v)
                 dp[i][j] = dp[i + 1][j];
                 if (j < items[i].v) {
                     continue;
@@ -31,7 +32,7 @@ private:
                 dp[i][j] = max(dp[i][j], dp[i + 1][j - items[i].v] + items[i].w);
             }
         }
-        auto currentV = packVolume;
+        auto currentV = m;
         for (int i = 1; i <= n; ++i) {
             if (currentV < items[i].v || dp[i][currentV] != dp[i + 1][currentV - items[i].v] + items[i].w) {
                 continue;
@@ -43,12 +44,13 @@ private:
     }
 
     int main() {
-        int n, packVolume;
-        scanf("%d%d", &n, &packVolume);
+        int n, m;
+        scanf("%d%d", &n, &m);
+        Item items[n + 1];
         for (int i = 1; i <= n; ++i) {
             scanf("%d%d", &items[i].v, &items[i].w);
         }
-        knapsack(n, packVolume);
+        knapsack(items, n, m);
         return 0;
     }
 };
