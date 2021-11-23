@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0320 {
 private:
-    int rangeModel(int items[], const int &n) {
+    int rangeModel(const int items[], const int &n) {
         int dp[2 * n + 1][2 * n + 1];
         memset(dp, 0, sizeof dp);
         for (int length = 3; length <= n + 1; ++length) {  // 注意length的起点和终点
