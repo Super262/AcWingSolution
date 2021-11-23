@@ -12,23 +12,20 @@ using namespace std;
 
 class Problem0320 {
 private:
-    const int N = 100;
-    int items[2 * N + 1];
-    int dp[2 * N + 1][2 * N + 1];
-
-    int rangeModel(const int n) {
-        for (int length = 3; length <= n + 1; ++length) {
-            for (int start = 1; start + length - 1 <= 2 * n; ++start) {
-                int end = start + length - 1;
-                for (int mid = start + 1; mid < end; ++mid) {
-                    dp[start][end] = max(dp[start][end],
-                                         dp[start][mid] + dp[mid][end] + items[start] * items[mid] * items[end]);
+    int rangeModel(int items[], const int &n) {
+        int dp[2 * n + 1][2 * n + 1];
+        memset(dp, 0, sizeof dp);
+        for (int length = 3; length <= n + 1; ++length) {  // 注意length的起点和终点
+            for (int st = 0; st + length - 1 <= 2 * n; ++st) {
+                auto ed = st + length - 1;
+                for (auto mid = st + 1; mid + 1 <= ed; ++mid) {
+                    dp[st][ed] = max(dp[st][ed], dp[st][mid] + dp[mid][ed] + items[st] * items[mid] * items[ed]);
                 }
             }
         }
         int result = 0;
-        for (int i = 1; i <= n; ++i) {
-            result = max(result, dp[i][i + n]);
+        for (int st = 1; st + n <= 2 * n; ++st) {
+            result = max(result, dp[st][st + n]);
         }
         return result;
     }
@@ -36,11 +33,12 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
+        int items[2 * n + 1];
         for (int i = 1; i <= n; ++i) {
             scanf("%d", &items[i]);
             items[i + n] = items[i];
         }
-        printf("%d\n", rangeModel(n));
+        printf("%d\n", rangeModel(items, n));
         return 0;
     }
 };
