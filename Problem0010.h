@@ -23,11 +23,11 @@ private:
                   const int root,
                   vector<vector<int>> &dp,
                   const vector<vector<int>> &graph) {
-        for (auto son: graph[root]) {
+        for (auto son: graph[root]) {  // 循环物品组
             knapsack(items, m, son, dp, graph);
-            for (int j = m - items[root].v; j >= 0; --j) {
-                // 遍历所有可能方案
-                for (int childV = 0; childV <= j; ++childV) {
+            for (int j = m - items[root].v; j >= 0; --j) {  // 循环体积
+                // 遍历所有可能方案：暂时不选择根结点时的方案
+                for (int childV = 0; childV <= j; ++childV) {  // 循环决策
                     dp[root][j] = max(dp[root][j], dp[root][j - childV] + dp[son][childV]);
                 }
             }
