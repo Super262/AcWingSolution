@@ -47,7 +47,6 @@ private:
         printf("%d\n", answer);
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM1072_H
