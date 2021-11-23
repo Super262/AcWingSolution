@@ -18,24 +18,13 @@ private:
         int v, w;
     };
 
-    const int N = 102;
-    int dp[N][N];
-    Item items[N];
-    int headIndex[N];
-    int nextIndex[N];
-    int vertexValue[N];
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    void knapsack(const int m, const int root) {
-        for (auto idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            auto son = vertexValue[idx];
-            knapsack(m, son);
+    void knapsack(const vector<Item> &items,
+                  const int m,
+                  const int root,
+                  vector<vector<int>> &dp,
+                  const vector<vector<int>> &graph) {
+        for (auto son: graph[root]) {
+            knapsack(items, m, son, dp, graph);
             for (int j = m - items[root].v; j >= 0; --j) {
                 // 遍历所有可能方案
                 for (int childV = 0; childV <= j; ++childV) {
@@ -54,11 +43,11 @@ private:
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        int idx = 0;
+        vector<Item> items(n + 1);
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+        vector<vector<int>> graph(n + 1, vector<int>());
         int root = 0;
         for (int i = 1; i <= n; ++i) {
             int t;
@@ -66,10 +55,10 @@ private:
             if (t == -1) {
                 root = i;
             } else {
-                addEdge(t, i, idx);
+                graph[t].emplace_back(i);
             }
         }
-        knapsack(m, root);
+        knapsack(items, m, root, dp, graph);
         printf("%d\n", dp[root][m]);
         return 0;
     }
