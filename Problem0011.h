@@ -11,56 +11,60 @@
 using namespace std;
 
 class Problem0011 {
-public:
-    int solutionsCount(const int *itemSize, const int *itemValue, const int N, const int packVolume) {
+private:
+    struct Item {
+        int v, w;
+
+        Item() {
+            v = 0;
+            w = 0;
+        }
+    };
+
+
+    int knapsack(Item items[], const int m, const int n) {
         const int MOD = 1000000007;
-        auto dp = new int[packVolume + 1];
-        auto pathsNum = new int[packVolume + 1];
-        memset(dp, 0, sizeof(int) * (packVolume + 1));
-        memset(pathsNum, 0, sizeof(int) * (packVolume + 1));
-        dp[0] = 0;
+        int pathsNum[m + 1];
+        int dp[m + 1];
+        memset(pathsNum, 0, sizeof pathsNum);
+        memset(dp, 0, sizeof dp);
         pathsNum[0] = 1;
-        for (int i = 0; i < N; ++i) {
-            for (int j = packVolume; j >= itemSize[i]; --j) {
-                int maxValue = max(dp[j], dp[j - itemSize[i]] + itemValue[i]);
-                int count = 0;
-                if (maxValue == dp[j]) {
+        for (int i = 1; i <= n; ++i) {
+            for (int j = m; j >= items[i].v; --j) {
+                int maxV = max(dp[j], dp[j - items[i].v] + items[i].w);
+                long count = 0;
+                if (maxV == dp[j]) {
                     count += pathsNum[j];
                     count %= MOD;
                 }
-                if (maxValue == dp[j - itemSize[i]] + itemValue[i]) {
-                    count += pathsNum[j - itemSize[i]];
+                if (maxV == dp[j - items[i].v] + items[i].w) {
+                    count += pathsNum[j - items[i].v];
                     count %= MOD;
                 }
-                dp[j] = maxValue;
-                pathsNum[j] = count;
+                dp[j] = maxV;
+                pathsNum[j] = (int) count;
             }
         }
-        int result = 0;
-        int maxValue = dp[packVolume];
-        for (int i = 0; i <= packVolume; ++i) {
-            if (maxValue != dp[i]) {
+        long result = 0;
+        int maxV = dp[m];
+        for (int i = 0; i <= m; ++i) {
+            if (maxV != dp[i]) {
                 continue;
             }
             result += pathsNum[i];
             result %= MOD;
         }
-        delete[] dp;
-        delete[] pathsNum;
-        return result;
+        return (int) result;
     }
 
     int main() {
-        int N, packVolume;
-        scanf("%d%d", &N, &packVolume);
-        auto *itemSize = new int[N];
-        auto *itemValue = new int[N];
-        for (int i = 0; i < N; ++i) {
-            scanf("%d%d", &itemSize[i], &itemValue[i]);
+        int n, m;
+        scanf("%d%d", &n, &m);
+        Item items[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            scanf("%d%d", &items[i].v, &items[i].w);
         }
-        printf("%d\n", solutionsCount(itemSize, itemValue, N, packVolume));
-        delete[] itemValue;
-        delete[] itemSize;
+        printf("%d\n", knapsack(items, m, n));
         return 0;
     }
 };
