@@ -6,7 +6,7 @@
 #define ACWINGSOLUTION_PROBLEM0323_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -14,46 +14,28 @@ class Problem0323 {
     // 保证所有边至少有1个顶点被选择
     // https://www.acwing.com/solution/content/66365/
 private:
-    const int N = 1501;
-    int headIndex[N];
-    int vertexValue[10 * N];
-    int nextIndex[10 * N];
-    int dp[N][2];
-    bool hasFather[N];
-
-    void addEdge(int a, int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    void dfs(int root) {
+    void dfs(const int root, const vector<vector<int>> &graph, vector<vector<int>> &dp) {
         dp[root][0] = 0;
         dp[root][1] = 1;
-        for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            auto childV = vertexValue[idx];
-            dfs(childV);
-            dp[root][0] += dp[childV][1];
-            dp[root][1] += min(dp[childV][1], dp[childV][0]);
+        for (const auto &nextV: graph[root]) {
+            dfs(nextV, graph, dp);
+            dp[root][0] += dp[nextV][1];
+            dp[root][1] += min(dp[nextV][1], dp[nextV][0]);
         }
     }
 
     int main() {
         int n;
         while (cin >> n) {
-            memset(headIndex, -1, sizeof headIndex);
-            memset(nextIndex, -1, sizeof nextIndex);
-            memset(hasFather, 0, sizeof hasFather);
-            memset(dp, 0x3f, sizeof dp);
-            int idx = 0;
+            vector<vector<int>> graph(n + 1, vector<int>());
+            vector<bool> hasFather(n + 1, false);
             for (int i = 0; i < n; ++i) {
                 int r, m;
                 scanf("%d:(%d) ", &r, &m);
                 for (int j = 0; j < m; ++j) {
                     int b;
                     scanf("%d", &b);
-                    addEdge(r, b, idx);  // 所有边是单向边
+                    graph[r].push_back(b);  // 所有边是单向边
                     hasFather[b] = true;
                 }
             }
@@ -61,7 +43,8 @@ private:
             while (hasFather[root]) {
                 ++root;
             }
-            dfs(root);
+            vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+            dfs(root, graph, dp);
             printf("%d\n", min(dp[root][0], dp[root][1]));
         }
         return 0;
