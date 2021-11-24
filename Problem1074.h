@@ -19,8 +19,8 @@ private:
                 continue;
             }
             dfs(t.first, root, m, graph, dp);
-            for (int j = m; j >= 0; --j) {
-                for (int k = 0; k < j; ++k) {
+            for (int j = m; j >= 0; --j) {  // 循环体积
+                for (int k = 0; k < j; ++k) {  // 循环决策
                     dp[root][j] = max(dp[root][j], dp[root][j - k - 1] + t.second + dp[t.first][k]);
                 }
             }
