@@ -59,6 +59,7 @@ private:
                 continue;
             }
             // 遍历所有可能的根结点（数、因数和）
+            // 不要忘记传入visited！
             downMax(i, -1, answer, graph, visited);
         }
         printf("%d\n", answer);
