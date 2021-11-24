@@ -10,6 +10,7 @@
 using namespace std;
 
 class Problem0901 {
+    // 如果题意是寻找不增序列（相邻两项可以相等），DP思想失效（状态转移存在环），需使用图论中的最长路算法
 private:
     const int N = 300;
     int matrix[N][N];
