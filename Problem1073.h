@@ -6,41 +6,31 @@
 #define ACWINGSOLUTION_PROBLEM1073_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 
 using namespace std;
 
 class Problem1073 {
     // https://www.acwing.com/solution/content/29249/
-public:
-    int headIndex[10010];
-    int vertexValue[20010];
-    int nextIndex[20010];
-    int weight[20010];
-    int d1[10010];
-    int d2[10010];
-    int u1[10010];
-    int d1Next[10010];
-
-    void addEdge(const int a, const int b, const int w, int &idx) {
-        vertexValue[idx] = b;
-        weight[idx] = w;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    int dfs_down(const int root, const int father) {
-        for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            int child = vertexValue[idx];
-            if (child == father) {
+    // 向下搜索：用子节点的返回值更新父节点
+    // 向上搜索：用父节点的返回值更新子节点
+    // 注意：向下搜索的起点可以是任意点，向上搜索的起点必须和向下搜索的起点一致！
+private:
+    int dfsDown(int root,
+                int father,
+                const vector<vector<pair<int, int>>> &graph,
+                vector<int> &d1,
+                vector<int> &d2,
+                vector<int> &d1Next) {
+        for (const auto &t: graph[root]) {
+            if (t.first == father) {
                 continue;
             }
-            int d = dfs_down(child, root) + weight[idx];
+            auto d = dfsDown(t.first, root, graph, d1, d2, d1Next) + t.second;
             if (d >= d1[root]) {
                 d2[root] = d1[root];
                 d1[root] = d;
-                d1Next[root] = child;
+                d1Next[root] = t.first;
             } else if (d > d2[root]) {
                 d2[root] = d;
             }
@@ -48,38 +38,44 @@ public:
         return d1[root];
     }
 
-    void dfs_up(const int root, const int father) {
-        for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            int child = vertexValue[idx];
-            if (child == father) {
+    void dfsUp(int root, int father,
+               const vector<vector<pair<int, int>>> &graph,
+               vector<int> &d1,
+               vector<int> &d2,
+               vector<int> &u1,
+               vector<int> &d1Next) {
+        for (const auto &t: graph[root]) {
+            if (t.first == father) {
                 continue;
             }
-            if (d1Next[root] == child) {
-                u1[child] = max(u1[root], d2[root]) + weight[idx];
+            if (d1Next[root] == t.first) {
+                u1[t.first] = max(u1[root], d2[root]) + t.second;
             } else {
-                u1[child] = max(u1[root], d1[root]) + weight[idx];
+                u1[t.first] = max(u1[root], d1[root]) + t.second;
             }
-            dfs_up(child, root);
+            dfsUp(t.first, root, graph, d1, d2, u1, d1Next);
         }
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof headIndex);
         int n;
         scanf("%d", &n);
-        int idx = 0;
+        vector<vector<pair<int, int>>> graph(n + 1, vector<pair<int, int>>());
+        vector<int> d1(n + 1, 0);
+        vector<int> d2(n + 1, 0);
+        vector<int> u1(n + 1, 0);
+        vector<int> d1Next(n + 1, 0);
         for (int i = 0; i < n - 1; ++i) {
             int a, b, w;
             scanf("%d%d%d", &a, &b, &w);
-            addEdge(a, b, w, idx);
-            addEdge(b, a, w, idx);
+            graph[b].push_back({a, w});
+            graph[a].push_back({b, w});
         }
-        dfs_down(1, -1);
-        dfs_up(1, -1);
+        dfsDown(n, -1, graph, d1, d2, d1Next);
+        dfsUp(n, -1, graph, d1, d2, u1, d1Next);
         int result = 0x7f7f7f7f;
         for (int i = 1; i <= n; ++i) {
-            result = min(result, max(d1[i], u1[i]));
+            result = min(result, max(u1[i], d1[i]));
         }
         printf("%d\n", result);
         return 0;
