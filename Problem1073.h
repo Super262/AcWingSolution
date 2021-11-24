@@ -38,7 +38,8 @@ private:
         return d1[root];
     }
 
-    void dfsUp(int root, int father,
+    void dfsUp(int root,
+               int father,
                const vector<vector<pair<int, int>>> &graph,
                vector<int> &d1,
                vector<int> &d2,
