@@ -6,57 +6,42 @@
 #define ACWINGSOLUTION_PROBLEM0846_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 
 using namespace std;
 
 class Problem0846 {
 private:
-    const int N = 100010;
-    bool visited[N];
-    int headIndex[N];
-    int vertexValue[2 * N];
-    int nextIndex[2 * N];
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    int dfs(const int root, const int n, int &answer) {
+    int dfs(int root, const int n, const vector<vector<int>> &graph, vector<bool> &visited, int &answer) {
         visited[root] = true;
-        int maxComponentSize = 1;
-        int nodesCount = 1;
-        for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-            auto childV = vertexValue[idx];
-            if (visited[childV]) {
+        int nodes_count = 1;
+        int max_component = 0;
+        for (const auto &nv: graph[root]) {
+            if (visited[nv]) {
                 continue;
             }
-            auto childSize = dfs(childV, n, answer);
-            maxComponentSize = max(maxComponentSize, childSize);
-            nodesCount += childSize;
+            auto child_size = dfs(nv, n, graph, visited, answer);
+            nodes_count += child_size;
+            max_component = max(max_component, child_size);
         }
-        maxComponentSize = max(maxComponentSize, n - nodesCount);
-        answer = min(answer, maxComponentSize);
-        return nodesCount;
+        max_component = max(max_component, n - nodes_count);
+        answer = min(answer, max_component);
+        return nodes_count;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n;
         scanf("%d", &n);
-        int idx = 0;
-        for (int i = 0; i < n; ++i) {
-            int a, b;
+        vector<vector<int>> graph(n + 1, vector<int>());
+        int a, b;
+        for (int i = 0; i < n - 1; ++i) {
             scanf("%d%d", &a, &b);
-            addEdge(a, b, idx);
-            addEdge(b, a, idx);
+            graph[a].emplace_back(b);
+            graph[b].emplace_back(a);
         }
         int answer = n;
-        dfs(1, n, answer);
+        vector<bool> visited(n + 1, false);
+        dfs(1, n, graph, visited, answer);
         printf("%d\n", answer);
         return 0;
     }
