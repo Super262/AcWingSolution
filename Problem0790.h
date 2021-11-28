@@ -12,26 +12,26 @@ using namespace std;
 
 class Problem0790 {
 public:
-    long double getCubicRoot(const long double x) {
-        auto left = min(-1.0l, x);
-        auto right = max(1.0l, x);
-        while (fabs(right - left) > 1e-8) {
-            auto mid = left + (right - left) / 2;
+    long double cubicRoot(const long double x) {
+        auto l = min(x, -1.0l);
+        auto r = max(x, 1.0l);
+        while (l < r) {
+            auto mid = l + (r - l) / 2;
             if (fabs(mid * mid * mid - x) < 1e-8) {
                 return mid;
             } else if (mid * mid * mid > x) {
-                right = mid;
+                r = mid;
             } else {
-                left = mid;
+                l = mid;
             }
         }
-        return left;
+        return r;
     }
 
     int main() {
         long double x;
         scanf("%Lf", &x);
-        printf("%.6Lf", getCubicRoot(x));
+        printf("%.6Lf\n", cubicRoot(x));
         return 0;
     }
 };
