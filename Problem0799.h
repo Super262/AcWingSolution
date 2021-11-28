@@ -6,38 +6,36 @@
 #define ACWINGSOLUTION_PROBLEM0799_H
 
 #include <iostream>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
 class Problem0799 {
-public:
-    const int N = 100010;
-    int n;
-    int arr[N];
-    int count[N];
-
-    int longestUniqueSeq() {
-        if (n < 2) {
-            return n;
-        }
+private:
+    int longestUnique(const vector<int> &nums) {
+        const int n = (int) nums.size();
+        unordered_map<int, int> counter;
         int result = 0;
-        for (int left = 0, right = 0; right < n; ++right) {
-            ++count[arr[right]];
-            while (left < right && count[arr[right]] > 1) {
-                --count[arr[left]];
-                ++left;
+        for (int l = 0, r = 0; r < n; ++r) {
+            ++counter[nums[r]];
+            while (l < r && counter[nums[r]] > 1) {
+                --counter[nums[l]];
+                ++l;
             }
-            result = max(right - left + 1, result);
+            result = max(result, r - l + 1);
         }
         return result;
     }
 
     int main() {
+        int n;
         scanf("%d", &n);
+        vector<int> nums(n);
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &arr[i]);
+            scanf("%d", &nums[i]);
         }
-        printf("%d\n", longestUniqueSeq());
+        printf("%d\n", longestUnique(nums));
         return 0;
     }
 };
