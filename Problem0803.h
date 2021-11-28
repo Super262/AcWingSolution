@@ -12,8 +12,9 @@
 using namespace std;
 
 class Problem0803 {
-public:
-    void mergeSegments(vector<pair<int, int>> &segments) {
+    // 贪心算法：左端点排序
+private:
+    vector<pair<int, int>> mergeSegments(vector<pair<int, int>> &segments) {
         sort(segments.begin(), segments.end());
         const int invalidValue = -2e9;
         vector<pair<int, int>> result;
@@ -21,7 +22,7 @@ public:
         int end = invalidValue;
         for (auto &s: segments) {
             if (s.first > end) {
-                if (start != invalidValue) {
+                if (end != invalidValue) {
                     result.emplace_back(pair<int, int>(start, end));
                 }
                 start = s.first;
@@ -30,26 +31,23 @@ public:
                 end = max(end, s.second);
             }
         }
-        if (start != invalidValue) {
+        if (end != invalidValue) {
             result.emplace_back(pair<int, int>(start, end));
         }
-        segments = result;
+        return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        int l, r;
-        vector<pair<int, int>> segments;
+        vector<pair<int, int>> segments(n);
         for (int i = 0; i < n; ++i) {
-            scanf("%d %d\n", &l, &r);
-            segments.emplace_back(pair<int, int>(l, r));
+            scanf("%d%d", &segments[i].first, &segments[i].second);
         }
-        mergeSegments(segments);
-        printf("%ld\n", segments.size());
+        auto result = mergeSegments(segments);
+        printf("%ld", result.size());
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0803_H
