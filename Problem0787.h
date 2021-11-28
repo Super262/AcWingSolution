@@ -6,58 +6,59 @@
 #define ACWINGSOLUTION_PROBLEM0787_H
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class Problem0787 {
-public:
-    void merge_two_sides(const int left, const int mid, const int right, int arr[], int temp[]) {
-        int tempTop = left;
-        int pLeft = left;
-        int pRight = mid + 1;
-        while (pLeft <= mid && pRight <= right) {
-            if (arr[pLeft] < arr[pRight]) {
-                temp[tempTop++] = arr[pLeft++];
-            } else {
-                temp[tempTop++] = arr[pRight++];
-            }
-        }
-        while (pLeft <= mid) {
-            temp[tempTop++] = arr[pLeft++];
-        }
-        while (pRight <= right) {
-            temp[tempTop++] = arr[pRight++];
-        }
-        for (int i = left; i <= right; ++i) {
-            arr[i] = temp[i];
-        }
-    }
-
-    void merge_sort(int arr[], int temp[], const int start, const int end) {
-        if (start >= end) {
+private:
+    void mergeSort(vector<int> &nums, int st, int ed, vector<int> &temp) {
+        if (st >= ed) {
             return;
         }
-        int mid = start + ((end - start) >> 1);
-        merge_sort(arr, temp, start, mid);
-        merge_sort(arr, temp, mid + 1, end);
-        merge_two_sides(start, mid, end, arr, temp);
+        auto mid = st + (ed - st) / 2;
+        mergeSort(nums, st, mid, temp);
+        mergeSort(nums, mid + 1, ed, temp);
+        int t = st;
+        int l = st;
+        int r = mid + 1;
+        while (l <= mid && r <= ed) {
+            if (nums[l] <= nums[r]) {
+                temp[t] = nums[l];
+                ++l;
+            } else {
+                temp[t] = nums[r];
+                ++r;
+            }
+            ++t;
+        }
+        while (l <= mid) {
+            temp[t] = nums[l];
+            ++l;
+            ++t;
+        }
+        while (r <= ed) {
+            temp[t] = nums[r];
+            ++r;
+            ++t;
+        }
+        for (int i = st; i <= ed; ++i) {
+            nums[i] = temp[i];
+        }
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        int *arr = new int[n];
-        int *temp = new int[n];
+        vector<int> nums(n);
+        vector<int> temp(n);
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &arr[i]);
+            scanf("%d", &nums[i]);
         }
-        merge_sort(arr, temp, 0, n - 1);
+        mergeSort(nums, 0, n - 1, temp);
         for (int i = 0; i < n; ++i) {
-            printf("%d ", arr[i]);
+            printf("%d ", nums[i]);
         }
-        printf("\n");
-        delete[] temp;
-        delete[] arr;
         return 0;
     }
 };
