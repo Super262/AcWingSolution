@@ -26,7 +26,11 @@ public:
         return 0;
     }
 
-    void dealOperators(const char op, unordered_map<char,char> &preferenceIn, unordered_map<char,char> &preferenceOut, stack<int> &nums, stack<char> &operators) {
+    void dealOperators(const char op,
+                       unordered_map<char, char> &preferenceIn,
+                       unordered_map<char, char> &preferenceOut,
+                       stack<int> &nums,
+                       stack<char> &operators) {
         if (operators.empty() || preferenceOut[operators.top()] < preferenceIn[op]) {
             operators.emplace(op);
             return;
@@ -40,7 +44,7 @@ public:
             nums.pop();
             nums.emplace(doOperation(a, b, temp));
         }
-        if(operators.empty() || preferenceOut[operators.top()] != preferenceIn[op]) {
+        if (operators.empty() || preferenceOut[operators.top()] != preferenceIn[op]) {
             operators.emplace(op);
         } else {
             operators.pop();
@@ -48,8 +52,8 @@ public:
     }
 
     int calculate(const string &s) {
-        unordered_map<char,char> preferenceIn;
-        unordered_map<char,char> preferenceOut;
+        unordered_map<char, char> preferenceIn;
+        unordered_map<char, char> preferenceOut;
         stack<int> nums;
         stack<char> operators;
         preferenceIn['+'] = 2;
@@ -65,7 +69,7 @@ public:
         preferenceOut['('] = 1;
         preferenceOut[')'] = 6;
         bool waitingNum = true;
-        for (const char ch : s) {
+        for (const char ch: s) {
             if (ch >= '0' && ch <= '9') {
                 if (waitingNum) {
                     nums.emplace(ch - '0');
