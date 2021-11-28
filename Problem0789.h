@@ -6,57 +6,57 @@
 #define ACWINGSOLUTION_PROBLEM0789_H
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class Problem0789 {
 private:
-    int arr[100000];
-    int n;
-
-    void printRange(const int target) {
-        int left = 0;
-        int right = n - 1;
-        while (left < right) {
-            auto mid = left + ((right - left) >> 1);
-            if (arr[mid] >= target) {
-                right = mid;
+    void queryRange(const vector<int> &nums, const int t) {
+        int l = 0;
+        int r = (int) nums.size() - 1;
+        while (l < r) {
+            auto mid = l + (r - l) / 2;
+            if (nums[mid] >= t) {
+                r = mid;
             } else {
-                left = mid + 1;
+                l = mid + 1;
             }
         }
-        if (arr[right] != target) {
+        if (nums[r] != t) {
             printf("-1 -1\n");
             return;
         }
-        printf("%d ", right);
-        left = 0;
-        right = n - 1;
-        while (left < right) {
-            auto mid = left + ((right - left + 1) >> 1);
-            if (arr[mid] <= target) {
-                left = mid;
+        printf("%d ", r);
+        l = 0;
+        r = (int) nums.size() - 1;
+        while (l < r) {
+            auto mid = l + (r - l + 1) / 2;
+            if (nums[mid] <= t) {
+                l = mid;
             } else {
-                right = mid - 1;
+                r = mid - 1;
             }
         }
-        if (arr[left] != target) {
+        if (nums[l] != t) {
             printf("-1 -1\n");
             return;
         }
-        printf("%d\n", left);
+        printf("%d\n", l);
     }
 
     int main() {
-        int q;
-        scanf("%d%d", &n, &q);
+        int n;
+        int k;
+        scanf("%d%d", &n, &k);
+        vector<int> nums(n);
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &arr[i]);
+            scanf("%d", &nums[i]);
         }
-        for (int i = 0; i < q; ++i) {
-            int t;
+        int t;
+        for (int i = 0; i < k; ++i) {
             scanf("%d", &t);
-            printRange(t);
+            queryRange(nums, t);
         }
         return 0;
     }
