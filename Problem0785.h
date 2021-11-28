@@ -6,54 +6,48 @@
 #define ACWINGSOLUTION_PROBLEM0785_H
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class Problem0785 {
-public:
-    void quick_sort(int a[], const int start, const int end) {
-        if (start >= end) {
+private:
+    void quickSort(vector<int> &nums, int st, int ed) {
+        if (st >= ed) {
             return;
         }
-        int left = start - 1;
-        int right = end + 1;
-
-//        选择偏左的中点
-        int pivot = a[start + ((end - start) >> 1)];  // 注意：一定要将移位运算的部分用括号括起来
-
-//        选择偏右的中点
-//        int pivot = a[start + ((end - start) >> 1) + 1];
-
-        while (left < right) {
-            while (a[++left] < pivot);
-            while (a[--right] > pivot);
-            if (left < right) {
-                swap(a[left], a[right]);
+        auto l = st - 1;
+        auto r = ed + 1;
+        // auto p = nums[st + (ed - st) / 2];  // 选择偏左的中点
+        auto p = nums[st + (ed - st + 1) / 2];  // 选择偏右的中点
+        while (l < r) {
+            while (nums[++l] < p);  // 注意：循环条件不包含 l < r
+            while (nums[--r] > p);
+            if (l < r) {
+                swap(nums[l], nums[r]);
             }
         }
+        // 对应偏左的中点
+        // quickSort(nums, st, r);
+        // quickSort(nums, r + 1, ed);
 
-//        对应偏左的中点
-        quick_sort(a, start, right);
-        quick_sort(a, right + 1, end);
-
-//        对应偏右的中点
-//        quick_sort(a, start, left - 1);
-//        quick_sort(a, left, end);
+        // 对应偏右的中点
+        quickSort(nums, st, l - 1);
+        quickSort(nums, l, ed);
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        int *a = new int[n];
+        vector<int> nums(n, 0);
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &a[i]);
+            scanf("%d", &nums[i]);
         }
-        quick_sort(a, 0, n - 1);
+        quickSort(nums, 0, n - 1);
         for (int i = 0; i < n; ++i) {
-            printf("%d ", a[i]);
+            printf("%d ", nums[i]);
         }
         printf("\n");
-        delete[] a;
         return 0;
     }
 };
