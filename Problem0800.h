@@ -5,38 +5,45 @@
 #ifndef ACWINGSOLUTION_PROBLEM0800_H
 #define ACWINGSOLUTION_PROBLEM0800_H
 
+#include <vector>
 #include <iostream>
 
 using namespace std;
 
 class Problem0800 {
-public:
-    int main() {
-        unsigned long long n, m;
-        int target;
-        scanf("%lld%lld%d", &n, &m, &target);
-        auto arr1 = new int[n];
-        auto arr2 = new int[m];
-        for (unsigned long long i = 0; i < n; ++i) {
-            scanf("%d", &arr1[i]);
-        }
-        for (unsigned long long i = 0; i < m; ++i) {
-            scanf("%d", &arr2[i]);
-        }
-        unsigned long long i = 0;
-        unsigned long long j = m - 1;
+private:
+    pair<int, int> targetSum(const vector<int> &nums1, const vector<int> &nums2, int t) {
+        const int n = (int) nums1.size();
+        const int m = (int) nums2.size();
+        int i = 0;
+        int j = m - 1;
         while (i < n && j >= 0) {
-            if (arr1[i] + arr2[j] == target) {
-                printf("%llu %llu\n", i, j);
-                break;
-            } else if (arr1[i] + arr2[j] > target) {
+            if (nums1[i] + nums2[j] == t) {
+                return {i, j};
+            } else if (nums1[i] + nums2[j] > t) {
                 --j;
             } else {
                 ++i;
             }
         }
-        delete[] arr1;
-        delete[] arr2;
+        return {-1, -1};
+    }
+
+    int main() {
+        int n;
+        int m;
+        int t;
+        scanf("%d%d%d", &n, &m, &t);
+        vector<int> nums1(n);
+        vector<int> nums2(m);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &nums1[i]);
+        }
+        for (int i = 0; i < m; ++i) {
+            scanf("%d", &nums2[i]);
+        }
+        auto res = targetSum(nums1, nums2, t);
+        printf("%d %d\n", res.first, res.second);
         return 0;
     }
 };
