@@ -21,7 +21,7 @@ public:
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<int> arr(n + 1, 0);
+        vector<int> arr(n + 2, 0);  // 长度为n+2！
         int t;
         // 初始化：区间起点和终点相同
         for (int i = 1; i <= n; ++i) {
