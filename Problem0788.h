@@ -6,57 +6,65 @@
 #define ACWINGSOLUTION_PROBLEM0788_H
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class Problem0788 {
-public:
-    unsigned long long mergeSortToGetCount(int a[],
-                                           int temp[],
-                                           const unsigned long long start,
-                                           const unsigned long long end) {
-        // 返回值会超过int的表示范围
-        if (start >= end) {
+private:
+    long long mergeSort(vector<int> &nums, int st, int ed, vector<int> &temp) {
+        if (st >= ed) {
             return 0;
         }
-        unsigned long long mid = start + (end - start) / 2;
-        unsigned long long result =
-                mergeSortToGetCount(a, temp, start, mid) + mergeSortToGetCount(a, temp, mid + 1, end);
-        unsigned long long pLeft = start;
-        unsigned long long pRight = mid + 1;
-        unsigned long long tempTop = start;
-        while (pLeft <= mid && pRight <= end) {
-            if (a[pLeft] <= a[pRight]) {  // 此处的边界条件应为"小于或等于"，而不是"小于"！
-                temp[tempTop++] = a[pLeft++];
-            } else {
-                temp[tempTop++] = a[pRight++];
-                result += mid - pLeft + 1;
+        const auto mid = st + (ed - st) / 2;
+        auto result = mergeSort(nums, st, mid, temp) + mergeSort(nums, mid + 1, ed, temp);
+        auto l = st;
+        auto r = mid + 1;
+        while (r <= ed) {
+            while (l <= mid && nums[l] <= nums[r]) {
+                ++l;
             }
+            result += mid - l + 1;
+            ++r;
         }
-        while (pLeft <= mid) {
-            temp[tempTop++] = a[pLeft++];
+        l = st;
+        r = mid + 1;
+        auto t = st;
+        while (l <= mid && r <= ed) {
+            if (nums[l] <= nums[r]) {
+                temp[t] = nums[l];
+                ++l;
+            } else {
+                temp[t] = nums[r];
+                ++r;
+            }
+            ++t;
         }
-        while (pRight <= end) {
-            temp[tempTop++] = a[pRight++];
-            result += mid - pLeft + 1;
+        while (l <= mid) {
+            temp[t] = nums[l];
+            ++l;
+            ++t;
         }
-        for (unsigned long long i = start; i <= end; ++i) {
-            a[i] = temp[i];
+        while (r <= ed) {
+            temp[t] = nums[r];
+            ++r;
+            ++t;
+        }
+        for (auto i = st; i <= ed; ++i) {
+            nums[i] = temp[i];
         }
         return result;
     }
 
     int main() {
-        unsigned long long n;
-        scanf("%lld", &n);
-        int *arr = new int[n];
-        int *temp = new int[n];
-        for (unsigned long long i = 0; i < n; ++i) {
-            scanf("%d", &arr[i]);
+        int n;
+        scanf("%d", &n);
+        vector<int> nums(n);
+        vector<int> temp(n);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &nums[i]);
         }
-        printf("%llu\n", mergeSortToGetCount(arr, temp, 0, n - 1));
-        delete[] arr;
-        delete[] temp;
+        printf("%lld\n", mergeSort(nums, 0, n - 1, temp));
         return 0;
     }
 };
