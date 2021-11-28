@@ -6,43 +6,43 @@
 #define ACWINGSOLUTION_PROBLEM0786_H
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class Problem0786 {
-public:
-    int arr[100000];
-    int n;
-
-    void quickPartition(const int start, const int end, const int k) {
-        if (start >= end) {
+private:
+    void quickSelect(vector<int> &nums, int st, int ed, int k) {
+        if (st >= ed) {
             return;
         }
-        auto pivot = arr[start + (end - start) / 2];
-        auto left = start - 1;
-        auto right = end + 1;
-        while (left < right) {
-            while (arr[++left] < pivot);
-            while (arr[--right] > pivot);
-            if (left < right) {
-                swap(arr[left], arr[right]);
+        auto p = nums[st + (ed - st) / 2];
+        auto l = st - 1;
+        auto r = ed + 1;
+        while (l < r) {
+            while (nums[++l] < p);
+            while (nums[--r] > p);
+            if (l < r) {
+                swap(nums[l], nums[r]);
             }
         }
-        if (right - start + 1 >= k) {
-            quickPartition(start, right, k);
+        if (k <= r - st + 1) {
+            quickSelect(nums, st, r, k);
         } else {
-            quickPartition(right + 1, end, k - (right - start + 1));
+            quickSelect(nums, r + 1, ed, k - (r - st + 1));
         }
     }
 
     int main() {
+        int n;
         int k;
         scanf("%d%d", &n, &k);
+        vector<int> nums(n);
         for (int i = 0; i < n; ++i) {
-            scanf("%d", &arr[i]);
+            scanf("%d", &nums[i]);
         }
-        quickPartition(0, n - 1, k);
-        printf("%d\n", arr[k - 1]);
+        quickSelect(nums, 0, n - 1, k);
+        printf("%d\n", nums[k - 1]);
         return 0;
     }
 };
