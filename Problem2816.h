@@ -11,40 +11,41 @@
 using namespace std;
 
 class Problem2816 {
-public:
-    bool isSubseq(const int a[], const unsigned int m, const int b[], const unsigned int n) {
-        unsigned int i = 0;
-        unsigned int j = 0;
-        while(j < n && i < m) {
-            if(a[i] == b[j]) {
+private:
+    bool isSubArray(const vector<int> &nums1, const vector<int> &nums2) {
+        const auto n = (int) nums1.size();
+        const auto m = (int) nums2.size();
+        int i = 0;
+        int j = 0;
+        while (i < n && j < m) {
+            if (nums1[i] == nums2[j]) {
                 ++i;
             }
             ++j;
         }
-        if (i == m) {
+        if (i == n) {
             return true;
         }
         return false;
     }
 
     int main() {
-        unsigned int m, n;
-        scanf("%d%d", &m, &n);
-        auto a = new int[m];
-        auto b = new int[n];
-        for (unsigned int i = 0; i < m; ++i) {
-            scanf("%d", &a[i]);
+        int n;
+        int m;
+        scanf("%d%d", &n, &m);
+        vector<int> nums1(n);
+        vector<int> nums2(m);
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &nums1[i]);
         }
-        for (unsigned int i = 0; i < n; ++i) {
-            scanf("%d", &b[i]);
+        for (int i = 0; i < m; ++i) {
+            scanf("%d", &nums2[i]);
         }
-        if (isSubseq(a, m, b, n)) {
+        if (isSubArray(nums1, nums2)) {
             printf("Yes\n");
         } else {
             printf("No\n");
         }
-        delete[] a;
-        delete[] b;
         return 0;
     }
 };
