@@ -6,47 +6,45 @@
 #define ACWINGSOLUTION_PROBLEM0854_H
 
 #include <iostream>
+#include <vector>
 #include <cstring>
 
 using namespace std;
 
 class Problem0854 {
 private:
-    const int N = 210;
-    const int INF = 0x7f7f7f7f;
-    int dist[N][N];
-
-    void floyd(const int n) {
-        // 注意循环顺序：最外层循环的变量一定是中间节点
-        // i, j 可以交换层级，k 只在最外层
-        for (int k = 1; k <= n; ++k) {
-            for (int i = 1; i <= n; ++i) {
-                for (int j = 1; j <= n; ++j) {
-                    if (dist[i][k] == INF || dist[k][j] == INF) {
+    vector<vector<int>> floyd(const int n, const vector<vector<int>> &graph) {
+        vector<vector<int>> dist(graph);
+        for (int i = 1; i <= n; ++i) {  // 注意：起点和终点相同，距离为0
+            dist[i][i] = 0;
+        }
+        for (int mid = 1; mid <= n; ++mid) {
+            for (int st = 1; st <= n; ++st) {
+                for (int ed = 1; ed <= n; ++ed) {
+                    if (dist[st][mid] == 0x3f3f3f3f || dist[mid][ed] == 0x3f3f3f3f) {  // 排除负边的影响，INF恒为0x3f3f3f3f
                         continue;
                     }
-                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                    dist[st][ed] = min(dist[st][ed], dist[st][mid] + dist[mid][ed]);
                 }
             }
         }
+        return dist;
     }
 
     int main() {
-        memset(dist, 0x7f, sizeof dist);
         int n, m, k;
         scanf("%d%d%d", &n, &m, &k);
-        for (int i = 1; i <= n; ++i) {
-            dist[i][i] = 0;
-        }
-        int a, b, w;
+        vector<vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
+        int x, y, z;
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &a, &b, &w);
-            dist[a][b] = min(dist[a][b], w);
+            scanf("%d%d%d", &x, &y, &z);
+            graph[x][y] = min(graph[x][y], z);
         }
-        floyd(n);
+        auto dist = floyd(n, graph);
+        int a, b;
         for (int i = 0; i < k; ++i) {
             scanf("%d%d", &a, &b);
-            if (dist[a][b] == INF) {
+            if (dist[a][b] == 0x3f3f3f3f) {
                 printf("impossible\n");
             } else {
                 printf("%d\n", dist[a][b]);
