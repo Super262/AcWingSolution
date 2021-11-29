@@ -6,71 +6,57 @@
 #define ACWINGSOLUTION_PROBLEM0850_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 #include <queue>
-#include <algorithm>
+#include <cstring>
 
 using namespace std;
 
 class Problem0850 {
 private:
-    const int N = 150005;
-    int headIndex[N];
-    int vertexValue[2 * N];
-    int nextIndex[2 * N];
-    int weight[2 * N];
-
-    void addEdge(int a, int b, int w, int &idx) {
-        vertexValue[idx] = b;
-        weight[idx] = w;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    int dijkstra(const int start, int end, int n) {
+    int dijkstra(const int st, const int ed, const int n, const vector<vector<pair<int, int>>> &graph) {
         int dist[n + 1];
         bool selected[n + 1];
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
         memset(dist, 0x3f, sizeof dist);
         memset(selected, 0, sizeof selected);
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        dist[start] = 0;
-        heap.emplace(pair<int, int>(dist[start], start));
-        while (!heap.empty()) {  // 判断节点是否被选择，再压入队列
+        dist[st] = 0;
+        heap.push({dist[st], st});
+        while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
-            auto closeV = t.second;
-            if (selected[closeV]) {
+            auto rv = t.second;
+            if (selected[rv]) {
                 continue;
             }
-            selected[closeV] = true;
-            for (int idx = headIndex[closeV]; idx != -1; idx = nextIndex[idx]) {
-                auto childV = vertexValue[idx];
-                if (dist[childV] < dist[closeV] + weight[idx]) {
+            selected[rv] = true;
+            auto rd = t.first;
+            for (const auto &nt: graph[rv]) {
+                auto nv = nt.second;
+                auto nd = nt.first;
+                if (dist[nv] < dist[rv] + nd) {
                     continue;
                 }
-                dist[childV] = dist[closeV] + weight[idx];
-                heap.emplace(pair<int, int>(dist[childV], childV));
+                dist[nv] = dist[rv] + nd;
+                heap.push({dist[nv], nv});
             }
         }
-        if (dist[end] == 0x3f3f3f3f) {
+        if (dist[ed] == 0x3f3f3f3f) {
             return -1;
         }
-        return dist[end];
+        return dist[ed];
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        int x, y, w;
-        int idx = 0;
+        vector<vector<pair<int, int>>> graph(n + 1, vector<pair<int, int>>());
+        int u, v, w;
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &x, &y, &w);
-            addEdge(x, y, w, idx);
+            scanf("%d%d%d", &u, &v, &w);
+            graph[u].push_back({w, v});
         }
-        printf("%d\n", dijkstra(1, n, n));
+        printf("%d\n", dijkstra(1, n, n, graph));
         return 0;
     }
 };
