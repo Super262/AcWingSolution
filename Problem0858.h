@@ -5,65 +5,56 @@
 #ifndef ACWINGSOLUTION_PROBLEM0858_H
 #define ACWINGSOLUTION_PROBLEM0858_H
 
-#include <cstring>
 #include <iostream>
+#include <cstring>
+#include <vector>
 
 using namespace std;
 
 class Problem0858 {
 private:
-    const int N = 510;
-    const int INF = 0x7f7f7f7f;
-    int graph[N][N];
-
-    int prim(const int n) {
-        auto isSelected = new bool[n + 1];
-        auto dist = new int[n + 1];
-        memset(isSelected, 0, sizeof(bool) * (n + 1));
-        memset(dist, 0x7f, sizeof(int) * (n + 1));
+    int prim(const int n, const vector<vector<int>> &graph) {
         int result = 0;
-        bool hasMST = true;
-        for (int k = 0; k < n; ++k) {
-            int closestVertex = 0;
+        int dist[n + 1];
+        bool selected[n + 1];
+        memset(dist, 0x3f, sizeof dist);
+        memset(selected, 0, sizeof selected);
+        for (int k = 1; k <= n; ++k) {
+            int closest_v = -1;
             for (int v = 1; v <= n; ++v) {
-                if (isSelected[v] || (closestVertex && dist[closestVertex] <= dist[v])) {
+                if (selected[v]) {
                     continue;
                 }
-                closestVertex = v;
+                if (closest_v == -1 || dist[closest_v] >= dist[v]) {
+                    closest_v = v;
+                }
             }
-            if (k && dist[closestVertex] == INF) {
-                hasMST = false;
-                break;
+            if (k > 1 && dist[closest_v] == 0x3f3f3f3f) {
+                return 0x3f3f3f3f;
             }
-            isSelected[closestVertex] = true;
-            // 先更新result再更新dist
-            if (k) {
-                result += dist[closestVertex];
+            selected[closest_v] = true;
+            if (k > 1) {
+                result += dist[closest_v];
             }
             for (int v = 1; v <= n; ++v) {
-                dist[v] = min(dist[v], graph[closestVertex][v]);
+                dist[v] = min(dist[v], graph[closest_v][v]);
             }
         }
-        if (!hasMST) {
-            result = INF;
-        }
-        delete[] isSelected;
-        delete[] dist;
         return result;
     }
 
     int main() {
-        memset(graph, 0x7f, sizeof graph);
         int n, m;
         scanf("%d%d", &n, &m);
-        int a, b, w;
+        vector<vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
+        int u, v, w;
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &a, &b, &w);
-            graph[a][b] = min(graph[a][b], w);
-            graph[b][a] = graph[a][b];
+            scanf("%d%d%d", &u, &v, &w);
+            graph[u][v] = min(graph[u][v], w);
+            graph[v][u] = min(graph[v][u], w);
         }
-        int result = prim(n);
-        if (result == INF) {
+        int result = prim(n, graph);
+        if (result == 0x3f3f3f3f) {
             printf("impossible\n");
         } else {
             printf("%d\n", result);
