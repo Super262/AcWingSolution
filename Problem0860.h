@@ -5,35 +5,21 @@
 #ifndef ACWINGSOLUTION_PROBLEM0860_H
 #define ACWINGSOLUTION_PROBLEM0860_H
 
-#include <iostream>
+#include <vector>
 #include <cstring>
+#include <iostream>
 
 using namespace std;
 
 class Problem0860 {
 private:
-    using namespace std;
-    const int N = 100010;
-    int headIndex[N];
-    int nextIndex[2 * N];
-    int vertexValue[2 * N];
-    int colorValue[N];
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    bool dfs(const int v, const int c) {
-        colorValue[v] = c;
-        for (auto idx = headIndex[v]; idx != -1; idx = nextIndex[idx]) {
-            auto nextV = vertexValue[idx];
-            if (colorValue[nextV] == colorValue[v]) {
+    bool dfs(int root, int val, vector<int> &color, const vector<vector<int>> &graph) {
+        color[root] = val;
+        for (const auto &nv: graph[root]) {
+            if (color[nv] == val) {
                 return false;
             }
-            if (!colorValue[nextV] && !dfs(nextV, 3 - c)) {
+            if (color[nv] == 0 && !dfs(nv, 3 - val, color, graph)) {
                 return false;
             }
         }
@@ -41,31 +27,30 @@ private:
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        int a, b;
-        int idx = 0;
+        vector<vector<int>> graph(n + 1, vector<int>());
+        vector<int> color(n + 1, 0);
+        int u, v;
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d", &a, &b);
-            addEdge(a, b, idx);
-            addEdge(b, a, idx);
+            scanf("%d%d", &u, &v);
+            graph[u].emplace_back(v);
+            graph[v].emplace_back(u);
         }
         bool result = true;
-        for (int v = 1; v <= n; ++v) {
-            if (colorValue[v]) {
+        for (int i = 1; i <= n; ++i) {
+            if (color[i] != 0) {
                 continue;
             }
-            if (!dfs(v, 1)) {
+            if (!dfs(i, 1, color, graph)) {
                 result = false;
                 break;
             }
         }
         if (result) {
-            puts("Yes");
+            printf("Yes\n");
         } else {
-            puts("No");
+            printf("No\n");
         }
         return 0;
     }
