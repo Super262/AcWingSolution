@@ -6,71 +6,54 @@
 #define ACWINGSOLUTION_PROBLEM0848_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
+#include <queue>
 
 using namespace std;
 
 class Problem0848 {
 private:
-    const int N = 100010;
-    int headIndex[N];
-    int nextIndex[2 * N];
-    int vertexValue[2 * N];
-    int inDegree[N];
-    int result[N];
-    int q[2 * N];
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        ++inDegree[b];
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    bool bfs(const int n) {
-        // 拓扑排序的BFS过程不需要visited数组
-        int resultTop = 0;
-        int hh = 0, tt = -1;
+    vector<int> bfs(const int n, const vector<vector<int>> &graph, vector<int> &in_degree) {
+        queue<int> q;
+        vector<int> res;
         for (int i = 1; i <= n; ++i) {
-            if (inDegree[i]) {
-                continue;
+            if (in_degree[i] == 0) {
+                q.emplace(i);
             }
-            q[++tt] = i;
         }
-        while (hh <= tt) {
-            auto node = q[hh++];
-            result[resultTop++] = node;
-            for (int idx = headIndex[node]; idx != -1; idx = nextIndex[idx]) {
-                int nV = vertexValue[idx];
-                --inDegree[nV];
-                if (inDegree[nV]) {
-                    continue;
+        while (!q.empty()) {
+            auto t = q.front();
+            q.pop();
+            res.emplace_back(t);
+            for (const auto &v: graph[t]) {
+                --in_degree[v];
+                if (in_degree[v] == 0) {
+                    q.emplace(v);
                 }
-                q[++tt] = nV;
             }
         }
-        return resultTop == n;
+        return res;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        int idx = 0;
+        vector<vector<int>> graph(n + 1, vector<int>());
+        vector<int> in_degree(n + 1, 0);
+        int u, v;
         for (int i = 0; i < m; ++i) {
-            int a, b;
-            scanf("%d%d", &a, &b);
-            addEdge(a, b, idx);
+            scanf("%d%d", &u, &v);
+            graph[u].emplace_back(v);
+            ++in_degree[v];
         }
-        if (bfs(n)) {
-            for (int i = 0; i < n; ++i) {
-                printf("%d ", result[i]);
+        auto res = bfs(n, graph, in_degree);
+        if (res.size() != n) {
+            printf("-1\n");
+        } else {
+            for (const auto &x: res) {
+                printf("%d ", x);
             }
             printf("\n");
-        } else {
-            printf("-1\n");
         }
         return 0;
     }
