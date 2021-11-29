@@ -30,7 +30,7 @@ private:
                     closestV = v;
                 }
             }
-            if (closestV == -1) {
+            if (dist[closestV] == 0x3f3f3f3f) {
                 return -1;
             }
             selected[closestV] = true;
