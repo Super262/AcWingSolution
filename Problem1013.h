@@ -13,6 +13,16 @@ using namespace std;
 
 class Problem1013 {
 private:
+    struct Item {
+        int v;
+        int w;
+
+        Item() {
+            v = 0;
+            w = 0;
+        }
+    };
+
     int knapsack(const vector<vector<Item>> &items, const int &m, int solution[]) {
         const int n = (int) items.size() - 1;
         int dp[n + 1][m + 1];
