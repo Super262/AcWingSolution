@@ -7,27 +7,26 @@
 
 #include <iostream>
 #include <cstring>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
 class Problem0849 {
 private:
-    const int N = 510;
-    int graph[N][N];
-
-    int dijkstra(const int start, const int end, const int n) {
+    int dijkstra(int st, int ed, const int n, const vector<vector<int>> &graph) {
         int dist[n + 1];
         bool selected[n + 1];
         memset(dist, 0x3f, sizeof dist);
         memset(selected, 0, sizeof selected);
-        dist[start] = 0;
-        for (int k = 0; k < n; ++k) {
+        dist[st] = 0;
+        for (int k = 1; k <= n; ++k) {
             int closestV = -1;
             for (int v = 1; v <= n; ++v) {
                 if (selected[v]) {
                     continue;
                 }
-                if (closestV == -1 || dist[v] < dist[closestV]) {
+                if (closestV == -1 || dist[closestV] > dist[v]) {
                     closestV = v;
                 }
             }
@@ -39,22 +38,22 @@ private:
                 dist[v] = min(dist[v], dist[closestV] + graph[closestV][v]);
             }
         }
-        if (dist[end] == 0x3f3f3f3f) {
+        if (dist[ed] == 0x3f3f3f3f) {
             return -1;
         }
-        return dist[end];
+        return dist[ed];
     }
 
     int main() {
-        memset(graph, 0x3f, sizeof graph);
         int n, m;
         scanf("%d%d", &n, &m);
+        vector<vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
+        int u, v, w;
         for (int i = 0; i < m; ++i) {
-            int x, y, w;
-            scanf("%d%d%d", &x, &y, &w);
-            graph[x][y] = min(graph[x][y], w);
+            scanf("%d%d%d", &u, &v, &w);
+            graph[u][v] = min(graph[u][v], w);
         }
-        printf("%d\n", dijkstra(1, n, n));
+        printf("%d\n", dijkstra(1, n, n, graph));
         return 0;
     }
 };
