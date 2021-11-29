@@ -6,74 +6,58 @@
 #define ACWINGSOLUTION_PROBLEM0851_H
 
 #include <iostream>
+#include <vector>
 #include <cstring>
+#include <queue>
 
 using namespace std;
 
 class Problem0851 {
 private:
-    const int N = 100010;
-    int headIndex[N];
-    int nextIndex[N];
-    int vertexValue[N];
-    int weight[N];
-
-    void addEdge(int a, int b, int w, int &idx) {
-        vertexValue[idx] = b;
-        weight[idx] = w;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    int spfa(int start, int end, int n) {
-        int q[N];
-        int hh = 0, tt = -1;
-        bool isInQueue[n + 1];
+    int spfa(int st, int ed, int n, const vector<vector<pair<int, int>>> &graph) {
         int dist[n + 1];
+        bool is_in_queue[n + 1];
+        queue<int> q;
         memset(dist, 0x3f, sizeof dist);
-        memset(isInQueue, 0, sizeof isInQueue);
-        q[++tt] = start;
-        isInQueue[root] = true;
-        dist[start] = 0;
-        while (hh <= tt) {  // 先尝试更新距离，再尝试压入队列
-            auto root = q[hh++];
-            isInQueue[root] = false;
-            for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-                auto nextV = vertexValue[idx];
-                if (dist[nextV] < dist[root] + weight[idx]) {
+        memset(is_in_queue, 0, sizeof is_in_queue);
+        dist[st] = 0;
+        q.emplace(st);
+        is_in_queue[st] = true;
+        while (!q.empty()) {
+            auto root = q.front();
+            q.pop();
+            is_in_queue[root] = false;
+            for (const auto &e: graph[root]) {
+                auto nv = e.second;
+                auto nd = e.first;
+                if (dist[nv] < dist[root] + nd) {
                     continue;
                 }
-                dist[nextV] = dist[root] + weight[idx];
-                if (isInQueue[nextV]) {
+                dist[nv] = dist[root] + nd;
+                if (is_in_queue[nv]) {
                     continue;
                 }
-                q[++tt] = nextV;
-                isInQueue[nextV] = true;
+                q.emplace(nv);
+                is_in_queue[nv] = true;
             }
         }
-        if (dist[end] == 0x3f3f3f3f) {
-            return -1;
-        }
-        return dist[end];
+        return dist[ed];
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        int x, y, w;
-        int idx = 0;
+        vector<vector<pair<int, int>>> graph(n + 1, vector<pair<int, int>>());
+        int x, y, z;
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &x, &y, &w);
-            addEdge(x, y, w, idx);
+            scanf("%d%d%d", &x, &y, &z);
+            graph[x].push_back({z, y});
         }
-        auto result = spfa(1, n, n);
-        if (result == -1) {
+        auto res = spfa(1, n, n, graph);
+        if (res == 0x3f3f3f3f) {
             printf("impossible\n");
         } else {
-            printf("%d\n", result);
+            printf("%d\n", res);
         }
         return 0;
     }
