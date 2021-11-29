@@ -5,59 +5,43 @@
 #ifndef ACWINGSOLUTION_PROBLEM0861_H
 #define ACWINGSOLUTION_PROBLEM0861_H
 
-#include <cstring>
 #include <iostream>
+#include <vector>
+#include <cstring>
 
 using namespace std;
 
 class Problem0861 {
 private:
-    const int N = 510;
-    const int M = 100010;
-    int headIndex[N];
-    int nextIndex[M];
-    int vertexValue[M];
-    int matchedVertex[N];
-    bool visited[N];
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    bool hasMatched(const int v1) {
-        for (auto idx = headIndex[v1]; idx != -1; idx = nextIndex[idx]) {
-            auto v2 = vertexValue[idx];
-            if (visited[v2]) {
+    bool has_matched(int root, const vector<vector<int>> &graph, vector<int> &left_friends, bool visited[]) {
+        for (const auto nv: graph[root]) {
+            if (visited[nv]) {
                 continue;
             }
-            visited[v2] = true;
-            if (matchedVertex[v2] && !hasMatched(matchedVertex[v2])) {
-                continue;
+            visited[nv] = true;
+            if (left_friends[nv] == 0 || has_matched(left_friends[nv], graph, left_friends, visited)) {
+                left_friends[nv] = root;
+                return true;
             }
-            matchedVertex[v2] = v1;
-            return true;
         }
         return false;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n1, n2, m;
         scanf("%d%d%d", &n1, &n2, &m);
-        int a, b;
-        int idx = 0;
+        vector<vector<int>> graph(n1 + 1, vector<int>());
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d", &a, &b);
-            addEdge(a, b, idx);
+            int u, v;
+            scanf("%d%d", &u, &v);
+            graph[u].emplace_back(v);
         }
+        vector<int> left_friends(n2 + 1, 0);
+        bool visited[n2 + 1];
         int result = 0;
-        for (int v1 = 1; v1 <= n1; ++v1) {
+        for (int v = 1; v <= n1; ++v) {
             memset(visited, 0, sizeof visited);
-            if (hasMatched(v1)) {
+            if (has_matched(v, graph, left_friends, visited)) {
                 ++result;
             }
         }
