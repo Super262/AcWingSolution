@@ -5,47 +5,48 @@
 #ifndef ACWINGSOLUTION_PROBLEM0853_H
 #define ACWINGSOLUTION_PROBLEM0853_H
 
-#include <iostream>
 #include <cstring>
+#include <vector>
+#include <iostream>
 
 using namespace std;
 
 class Problem0853 {
 private:
     struct Edge {
-        int start;
-        int end;
-        int weight;
+        int st, ed, w;
     };
 
-    Edge edges[10010];
-
-    int bellmanFord(const int start, const int end, const int n, const int edgesSize, int pathLen) {
+    int bellman_ford(int st, int ed, int n, int k, const vector<Edge> &edges) {
         int dist[n + 1];
         int temp[n + 1];
         memset(dist, 0x3f, sizeof dist);
-        dist[start] = 0;
-        while (pathLen--) {
+        memset(temp, 0x3f, sizeof temp);
+        dist[st] = 0;
+        while (k--) {
             memcpy(temp, dist, sizeof dist);
-            for (int i = 0; i < edgesSize; ++i) {
-                dist[edges[i].end] = min(dist[edges[i].end], temp[edges[i].start] + edges[i].weight);
+            for (const auto &e: edges) {
+                if (temp[e.st] == 0x3f3f3f3f) {
+                    continue;
+                }
+                dist[e.ed] = min(dist[e.ed], temp[e.st] + e.w);
             }
         }
-        // "正无穷"可能被负权边更新而减小，所以这里使用"0x3f3f3f3f/2"
-        return dist[n] >= 0x3f3f3f3f / 2 ? 0x3f3f3f3f : dist[n];
+        return dist[ed];
     }
 
     int main() {
         int n, m, k;
         scanf("%d%d%d", &n, &m, &k);
+        vector<Edge> edges(m);
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d%d", &edges[i].start, &edges[i].end, &edges[i].weight);
+            scanf("%d%d%d", &edges[i].st, &edges[i].ed, &edges[i].w);
         }
-        int result = bellmanFord(1, n, n, m, k);
-        if (result == 0x3f3f3f3f) {
-            printf("impossible\n");
+        auto res = bellman_ford(1, n, n, k, edges);
+        if (res == 0x3f3f3f3f) {
+            printf("impossible");
         } else {
-            printf("%d\n", result);
+            printf("%d\n", res);
         }
         return 0;
     }
