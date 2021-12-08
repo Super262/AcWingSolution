@@ -15,7 +15,7 @@ private:
         int l, r, v;
     };
 
-    const int N = 200005;
+    static const int N = 200005;
     Node nodes[N * 4];
 
     void buildTree(const int idx, const int l, const int r) {
