@@ -14,7 +14,7 @@ using namespace std;
 
 class Problem0851 {
 private:
-    int spfa(int st, int ed, int n, const vector<vector<pair<int, int>>> &graph) {
+    int Spfa(int st, int ed, int n, const vector<vector<pair<int, int>>> &graph) {
         int dist[n + 1];
         bool is_in_queue[n + 1];
         queue<int> q;
@@ -53,7 +53,7 @@ private:
             scanf("%d%d%d", &x, &y, &z);
             graph[x].push_back({z, y});
         }
-        auto res = spfa(1, n, n, graph);
+        auto res = Spfa(1, n, n, graph);
         if (res == 0x3f3f3f3f) {
             printf("impossible\n");
         } else {
