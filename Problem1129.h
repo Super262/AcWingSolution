@@ -16,27 +16,27 @@ class Problem1129 {
 private:
     int Spfa(const int &start, const int &end, const int &n, const vector<vector<pair<int, int>>> &graph) {
         int dist[n + 1];
-        bool inQueue[n + 1];
+        bool in_queue[n + 1];
         queue<int> q;
-        memset(inQueue, 0, sizeof inQueue);
+        memset(in_queue, 0, sizeof in_queue);
         memset(dist, 0x3f, sizeof dist);
         q.emplace(start);
         dist[start] = 0;
-        inQueue[start] = true;
+        in_queue[start] = true;
         while (!q.empty()) {
             auto root = q.front();
             q.pop();
-            inQueue[root] = false;
+            in_queue[root] = false;
             for (auto t: graph[root]) {
                 auto nV = t.second;
                 if (dist[nV] < dist[root] + t.first) {
                     continue;
                 }
                 dist[nV] = dist[root] + t.first;
-                if (inQueue[nV]) {
+                if (in_queue[nV]) {
                     continue;
                 }
-                inQueue[nV] = true;
+                in_queue[nV] = true;
                 q.emplace(nV);
             }
         }
