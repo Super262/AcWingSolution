@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
 #include <queue>
 #include <algorithm>
 
@@ -14,21 +15,10 @@ using namespace std;
 
 class Problem1127 {
 private:
-    const int N = 810, M = 3000;
-    int headIndex[N];
-    int nextIndex[M];
-    int vertexValue[M];
-    int weight[M];
-
-    void addEdge(const int &a, const int &b, const int &w, int &idx) {
-        vertexValue[idx] = b;
-        weight[idx] = w;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    int dijkstraSum(const int &start, const int &p, const int home[], const int &n) {
+    int DijkstraSum(const int &start,
+                    const int &p,
+                    const vector<int> &home,
+                    const vector<vector<pair<int, int>>> &graph) {
         int dist[p + 1];
         bool selected[p + 1];
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
@@ -44,31 +34,31 @@ private:
                 continue;
             }
             selected[root] = true;
-            for (auto idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-                auto nV = vertexValue[idx];
-                if (dist[nV] < dist[root] + weight[idx]) {
+            for (const auto &nt: graph[root]) {
+                auto nv = nt.second;
+                auto nd = nt.first;
+                if (dist[nv] < dist[root] + nd) {
                     continue;
                 }
-                dist[nV] = dist[root] + weight[idx];
-                heap.emplace(pair<int, int>(dist[nV], nV));
+                dist[nv] = dist[root] + nd;
+                heap.emplace(pair<int, int>(dist[nv], nv));
             }
         }
         int result = 0;
-        for (int i = 0; i < n; ++i) {
-            if (dist[home[i]] == 0x3f3f3f3f) {
+        for (const auto &x: home) {
+            if (dist[x] == 0x3f3f3f3f) {
                 return 0x3f3f3f3f;
             }
-            result += dist[home[i]];
+            result += dist[x];
         }
         return result;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, p, c;
         scanf("%d%d%d", &n, &p, &c);
-        int home[n];
+        vector<vector<pair<int, int>>> graph(p + 1, vector<pair<int, int>>());
+        vector<int> home(n);
         for (int i = 0; i < n; ++i) {
             scanf("%d", &home[i]);
         }
@@ -76,12 +66,12 @@ private:
         int idx = 0;
         for (int i = 0; i < c; ++i) {
             scanf("%d%d%d", &x, &y, &w);
-            addEdge(x, y, w, idx);
-            addEdge(y, x, w, idx);
+            graph[x].emplace_back(w, y);
+            graph[y].emplace_back(w, x);
         }
         int result = 0x3f3f3f3f;
         for (int i = 1; i <= p; ++i) {
-            result = min(result, dijkstraSum(i, p, home, n));
+            result = min(result, DijkstraSum(i, p, home, graph));
         }
         printf("%d\n", result);
         return 0;
