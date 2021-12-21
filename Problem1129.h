@@ -6,68 +6,54 @@
 #define ACWINGSOLUTION_PROBLEM1129_H
 
 #include <iostream>
+#include <vector>
+#include <queue>
 #include <cstring>
 
 using namespace std;
 
 class Problem1129 {
 private:
-    const int N = 7000;
-    int headIndex[N];
-    int vertexValue[2 * N];
-    int nextIndex[2 * N];
-    int weight[2 * N];
-
-    void addEdge(const int &a, const int &b, const int &w, int &idx) {
-        vertexValue[idx] = b;
-        weight[idx] = w;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    int spfa(const int &start, const int &end, const int &n) {
+    int Spfa(const int &start, const int &end, const int &n, const vector<vector<pair<int, int>>> &graph) {
         int dist[n + 1];
         bool inQueue[n + 1];
-        int q[N];
-        int hh = 0, tt = -1;
+        queue<int> q;
         memset(inQueue, 0, sizeof inQueue);
         memset(dist, 0x3f, sizeof dist);
+        q.emplace(start);
         dist[start] = 0;
         inQueue[start] = true;
-        q[++tt] = start;
-        while (hh <= tt) {
-            auto root = q[hh++];
+        while (!q.empty()) {
+            auto root = q.front();
+            q.pop();
             inQueue[root] = false;
-            for (auto idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-                auto nV = vertexValue[idx];
-                if (dist[nV] < dist[root] + weight[idx]) {
+            for (auto t: graph[root]) {
+                auto nV = t.second;
+                if (dist[nV] < dist[root] + t.first) {
                     continue;
                 }
-                dist[nV] = dist[root] + weight[idx];
+                dist[nV] = dist[root] + t.first;
                 if (inQueue[nV]) {
                     continue;
                 }
                 inQueue[nV] = true;
-                q[++tt] = nV;
+                q.emplace(nV);
             }
         }
         return dist[end];
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int t, c, s, e;
         scanf("%d%d%d%d", &t, &c, &s, &e);
+        vector<vector<pair<int, int>>> graph(t + 1, vector<pair<int, int>>());
         int x, y, w;
-        int idx = 0;
         for (int i = 0; i < c; ++i) {
             scanf("%d%d%d", &x, &y, &w);
-            addEdge(x, y, w, idx);
-            addEdge(y, x, w, idx);
+            graph[x].emplace_back(w, y);
+            graph[y].emplace_back(w, x);
         }
-        printf("%d\n", spfa(s, e, t));
+        printf("%d\n", Spfa(s, e, t, graph));
         return 0;
     }
 };
