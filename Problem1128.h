@@ -7,15 +7,13 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
 class Problem1128 {
 private:
-    const int N = 110;
-    int dist[N][N];
-
-    int floyd(const int n) {
+    int floyd(const int n, vector<vector<int>> &dist) {
         for (int k = 1; k <= n; ++k) {
             for (int i = 1; i <= n; ++i) {
                 for (int j = 1; j <= n; ++j) {
@@ -26,15 +24,15 @@ private:
     }
 
     int main() {
-        memset(dist, 0x3f, sizeof dist);
         int n, m;
         scanf("%d%d", &n, &m);
+        vector<vector<int>> dist(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
         int x, y, w;
         for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &x, &y, &w);
             dist[x][y] = dist[y][x] = w;
         }
-        floyd(n);
+        floyd(n, dist);
         int result = -1;
         for (int end = 2; end <= n; ++end) {  // 注意：end不等于起点
             if (dist[1][end] == 0x3f3f3f3f) {
