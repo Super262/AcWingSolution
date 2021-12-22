@@ -15,11 +15,11 @@ using namespace std;
 class Problem0340 {
     // https://www.acwing.com/solution/content/13645/
 private:
-    int Dijkstra(const int bound,
-                 const int st,
-                 const int ed,
-                 const int n,
-                 const vector<vector<pair<int, int>>> &graph) {
+    int Bfs(const int bound,
+            const int st,
+            const int ed,
+            const int n,
+            const vector<vector<pair<int, int>>> &graph) {
         deque<int> q;
         bool selected[n + 1];
         int dist[n + 1];
@@ -64,7 +64,7 @@ private:
         int left = 0, right = 1000001;  // 左端点取0，因为0可能是一个解；右端点取1000001，因为1到N可能不连通
         while (left < right) {
             auto mid = left + (right - left) / 2;
-            if (Dijkstra(mid, 1, n, n, graph) <= k) {
+            if (Bfs(mid, 1, n, n, graph) <= k) {
                 right = mid;
             } else {
                 left = mid + 1;
