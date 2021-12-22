@@ -72,6 +72,7 @@ private:
                         heap.emplace(pair<int, int>(dist[child_v], child_v));
                     }
                 }
+                // 删除横跨2个连通块的边
                 if (vertex_block[child_v] != vertex_block[root_v]) {
                     --block_in_degree[vertex_block[child_v]];
                     if (block_in_degree[vertex_block[child_v]] == 0) {
