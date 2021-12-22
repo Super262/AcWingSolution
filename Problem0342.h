@@ -42,7 +42,7 @@ private:
         }
     }
 
-    void Dijkstra(const int bIdx,
+    void Dijkstra(const int block_idx,
                   const vector<vector<pair<int, int>>> &graph,
                   const vector<int> &vertex_block,
                   vector<int> &dist,
@@ -51,7 +51,7 @@ private:
                   vector<bool> &visited,
                   vector<int> &block_in_degree) {
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        for (auto v: block_vertexes[bIdx]) {
+        for (auto v: block_vertexes[block_idx]) {
             heap.emplace(pair<int, int>(dist[v], v));
         }
         while (!heap.empty()) {
@@ -83,14 +83,14 @@ private:
         }
     }
 
-    void topSort(const int block_count,
-                 const int st,
-                 const int vertex_count,
-                 const vector<vector<pair<int, int>>> &graph,
-                 const vector<int> &vertex_block,
-                 vector<int> &dist,
-                 const vector<vector<int>> &block_vertexes,
-                 vector<int> &block_in_degree) {
+    void TopoSort(const int block_count,
+                  const int st,
+                  const int vertex_count,
+                  const vector<vector<pair<int, int>>> &graph,
+                  const vector<int> &vertex_block,
+                  vector<int> &dist,
+                  const vector<vector<int>> &block_vertexes,
+                  vector<int> &block_in_degree) {
         queue<int> blocks_queue;
         for (int i = 0; i < block_count; ++i) {
             if (block_in_degree[i] != 0) {
@@ -135,7 +135,7 @@ private:
             graph[a].emplace_back(w, b);
             ++block_in_degree[vertex_block[b]];
         }
-        topSort(block_count, s, t, graph, vertex_block, dist, block_vertexes, block_in_degree);
+        TopoSort(block_count, s, t, graph, vertex_block, dist, block_vertexes, block_in_degree);
         for (int i = 1; i <= t; ++i) {
             if (dist[i] >= INF - (10000 * 50000)) { // 不通的路可能有负边，不能直接用INF
                 puts("NO PATH");
