@@ -71,7 +71,6 @@ private:
         scanf("%d%d", &n, &m);
         vector<int> sources(sources_num);
         vector<vector<pair<int, int>>> graph(n + 1);
-        vector<vector<int>> dist(sources_num, vector<int>(n + 1, 0x3f3f3f3f));
         sources[0] = 1;
         for (int i = 1; i < sources_num; ++i) {
             scanf("%d", &sources[i]);
@@ -82,6 +81,7 @@ private:
             graph[a].emplace_back(w, b);
             graph[b].emplace_back(w, a);
         }
+        vector<vector<int>> dist(sources_num, vector<int>(n + 1, 0x3f3f3f3f));
         for (int i = 0; i < sources_num; ++i) {
             Dijkstra(sources[i], graph, dist[i]);
         }
