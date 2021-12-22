@@ -21,19 +21,19 @@ private:
                  const int n,
                  const vector<vector<pair<int, int>>> &graph) {
         deque<int> q;
-        bool visited[n + 1];
+        bool selected[n + 1];
         int dist[n + 1];
-        memset(visited, 0, sizeof visited);
+        memset(selected, 0, sizeof selected);
         memset(dist, 0x3f, sizeof dist);
         dist[st] = 0;
         q.push_front(st);
         while (!q.empty()) {
             auto root = q.front();
             q.pop_front();
-            if (visited[root]) {
+            if (selected[root]) {
                 continue;
             }
-            visited[root] = true;
+            selected[root] = true;
             for (const auto &nt: graph[root]) {
                 auto child = nt.second;
                 int w = nt.first > bound ? 1 : 0;
