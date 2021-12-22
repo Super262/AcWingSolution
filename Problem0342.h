@@ -112,7 +112,7 @@ private:
         scanf("%d%d%d%d", &t, &r, &p, &s);
         vector<vector<pair<int, int>>> graph(t + 1);
         vector<int> vertex_block(t + 1, -1);
-        vector<int> dist(t + 1, 0x3f3f3f3f);
+        vector<int> dist(t + 1, INF);
         vector<vector<int>> block_vertexes(t + 1);
         vector<int> block_in_degree(t + 1, 0);
         for (int i = 0; i < r; ++i) {
