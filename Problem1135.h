@@ -6,7 +6,7 @@
 #define ACWINGSOLUTION_PROBLEM1135_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 #include <queue>
 #include <algorithm>
 
@@ -16,91 +16,79 @@ class Problem1135 {
     // 1. 预处理出从1，a，b，c，d，e出发到其它所有点的最短路径
     // 2. DFS遍历所有拜访顺序，对于每1种拜访顺序，通过查表得到最短距离
 private:
-    const int N = 50010;
-    const int M = 200010;
-    const int SOURCES_NUM = 6;
-    int sourceV[SOURCES_NUM];
-    int headIndex[N];
-    int vertexValue[M];
-    int nextIndex[M];
-    int edgeWeight[M];
-    int dist[SOURCES_NUM][N];
-    bool visited[N];
-
-    void addEdge(const int s, const int e, const int w, int &idx) {
-        vertexValue[idx] = e;
-        edgeWeight[idx] = w;
-        nextIndex[idx] = headIndex[s];
-        headIndex[s] = idx;
-        ++idx;
-    }
-
-    void dijkstra(const int sIdx) {
+    void dijkstra(const int st,
+                  const vector<vector<pair<int, int>>> &graph,
+                  const vector<int> &sources,
+                  vector<int> &dist) {
+        vector<bool> visited(graph.size(), false);
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        memset(visited, 0, sizeof visited);
-        memset(dist[sIdx], 0x7f, sizeof dist[sIdx]);
-        heap.emplace(pair<int, int>(0, sourceV[sIdx]));
-        dist[sIdx][sourceV[sIdx]] = 0;
+        heap.emplace(pair<int, int>(0, st));
+        dist[st] = 0;
         while (!heap.empty()) {
             auto t = heap.top();
             heap.pop();
-            auto rootV = t.second;
-            if (visited[rootV]) {
+            auto rv = t.second;
+            if (visited[rv]) {
                 continue;
             }
-            visited[rootV] = true;
-            auto rootD = t.first;
-            for (auto idx = headIndex[rootV]; idx != -1; idx = nextIndex[idx]) {
-                auto childV = vertexValue[idx];
-                if (dist[sIdx][childV] <= rootD + edgeWeight[idx]) {
+            visited[rv] = true;
+            auto rd = t.first;
+            for (const auto &nt: graph[rv]) {
+                auto nv = nt.second;
+                auto nd = nt.first;
+                if (dist[nv] <= rd + nd) {
                     continue;
                 }
-                dist[sIdx][childV] = rootD + edgeWeight[idx];
-                heap.emplace(pair<int, int>(dist[sIdx][childV], childV));
+                dist[nv] = rd + nd;
+                heap.emplace(pair<int, int>(dist[nv], nv));
             }
         }
     }
 
-    int dfs(const int selectedSourcesCount, const int currentV, const int d) {
-        if (selectedSourcesCount == SOURCES_NUM) {
+    int dfs(const int selected_sources_count,
+            const int s_idx,
+            const int d,
+            const vector<int> &sources,
+            const vector<vector<int>> &dist,
+            vector<bool> &visited) {
+        if (selected_sources_count == sources.size()) {
             return d;
         }
-        int res = 0x7f7f7f7f;
-        for (int i = 1; i < SOURCES_NUM; ++i) {
+        int res = 0x3f3f3f3f;
+        for (int i = 1; i < sources.size(); ++i) {
             if (visited[i]) {
                 continue;
             }
             visited[i] = true;
-            res = min(res, dfs(selectedSourcesCount + 1, i, d + dist[currentV][sourceV[i]]));
+            res = min(res, dfs(selected_sources_count + 1, i, d + dist[s_idx][sources[i]], sources, dist, visited));
             visited[i] = false;
         }
         return res;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(vertexValue, 0, sizeof vertexValue);
-        memset(nextIndex, -1, sizeof nextIndex);
-        memset(edgeWeight, 0, sizeof edgeWeight);
+        const int sources_num = 6;
         int n, m;
         scanf("%d%d", &n, &m);
-        sourceV[0] = 1;
-        for (int i = 1; i < SOURCES_NUM; ++i) {
-            scanf("%d", &sourceV[i]);
+        vector<int> sources(sources_num);
+        vector<vector<pair<int, int>>> graph(n + 1);
+        vector<vector<int>> dist(sources_num, vector<int>(n + 1, 0x3f3f3f3f));
+        sources[0] = 1;
+        for (int i = 1; i < sources_num; ++i) {
+            scanf("%d", &sources[i]);
         }
-        int idx = 0;
         for (int i = 1; i <= m; ++i) {
             int a, b, w;
             scanf("%d%d%d", &a, &b, &w);
-            addEdge(a, b, w, idx);
-            addEdge(b, a, w, idx);
+            graph[a].emplace_back(w, b);
+            graph[b].emplace_back(w, a);
         }
-        for (int i = 0; i < SOURCES_NUM; ++i) {
-            dijkstra(i);
+        for (int i = 0; i < sources_num; ++i) {
+            dijkstra(sources[i], graph, sources, dist[i]);
         }
-        memset(visited, 0, sizeof visited);
+        vector<bool> visited(sources_num, false);
         visited[0] = true;
-        printf("%d\n", dfs(1, 0, 0));
+        printf("%d\n", dfs(1, 0, 0, sources, dist, visited));
         return 0;
     }
 };
