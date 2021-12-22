@@ -1,3 +1,0 @@
-/Users/fengwei/CppProjects/AcWingSolution/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/fengwei/CppProjects/AcWingSolution/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/fengwei/CppProjects/AcWingSolution/cmake-build-debug/CMakeFiles/AcWingSolution.dir
