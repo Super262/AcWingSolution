@@ -18,7 +18,6 @@ class Problem1135 {
 private:
     void Dijkstra(const int st,
                   const vector<vector<pair<int, int>>> &graph,
-                  const vector<int> &sources,
                   vector<int> &dist) {
         vector<bool> visited(graph.size(), false);
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
@@ -84,7 +83,7 @@ private:
             graph[b].emplace_back(w, a);
         }
         for (int i = 0; i < sources_num; ++i) {
-            Dijkstra(sources[i], graph, sources, dist[i]);
+            Dijkstra(sources[i], graph, dist[i]);
         }
         vector<bool> visited(sources_num, false);
         visited[0] = true;
