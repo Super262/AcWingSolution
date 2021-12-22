@@ -6,103 +6,82 @@
 #define ACWINGSOLUTION_PROBLEM0341_H
 
 #include <iostream>
-#include <cstring>
 #include <algorithm>
+#include <vector>
+#include <queue>
 
 using namespace std;
 
 class Problem0341 {
-    // https://www.acwing.com/solution/content/3709/ (每个点可被多次经过：不能使用Dijkstra算法)
-public:
-#include <iostream>
-#include <cstring>
-#include <algorithm>
-
-    using namespace std;
-    const int N = 100010;
-    const int M = 2000010;
-    int price[N];
-    int headIndexFromStart[N], headIndexFromEnd[N], nextIndex[M], vertexValue[M];
-    int minPriceFromStart[N], maxPriceFromEnd[N], q[N];
-    bool isInQueue[N];
-
-    void addEdge(const int s, const int e, int &idx, bool fromStart) {
-        vertexValue[idx] = e;
-        if (fromStart) {
-            nextIndex[idx] = headIndexFromStart[s];
-            headIndexFromStart[s] = idx;
+    // https://www.acwing.com/solution/content/3709/ (每个点可被多次经过，当前结果不是最终结果：不能使用Dijkstra算法)
+private:
+    void spfa(const int n,
+              const bool is_forward,
+              const vector<vector<int>> &graph,
+              const vector<int> &price,
+              vector<int> &result) {
+        vector<bool> is_in_queue(n + 1, false);
+        queue<int> q;
+        if (is_forward) {
+            result[1] = price[1];
+            is_in_queue[1] = true;
+            q.emplace(1);
         } else {
-            nextIndex[idx] = headIndexFromEnd[s];
-            headIndexFromEnd[s] = idx;
+            result[n] = price[n];
+            is_in_queue[n] = true;
+            q.emplace(n);
         }
-        ++idx;
-    }
-
-    void spfa(const int s, const bool fromStart) {
-        int hh = 0, tt = -1;
-        int *headIndex;
-        if (fromStart) {
-            memset(minPriceFromStart, 0x7f, sizeof minPriceFromStart);
-            minPriceFromStart[s] = price[s];
-            headIndex = headIndexFromStart;
-        } else {
-            memset(maxPriceFromEnd, -1, sizeof maxPriceFromEnd);
-            maxPriceFromEnd[s] = price[s];
-            headIndex = headIndexFromEnd;
-        }
-        memset(isInQueue, 0, sizeof isInQueue);
-        q[++tt] = s;
-        isInQueue[s] = true;
-        while (hh <= tt) {
-            auto root = q[hh++];
-            isInQueue[root] = false;
-            for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-                int childV = vertexValue[idx];
-                if (fromStart && minPriceFromStart[childV] <= min(minPriceFromStart[root], price[childV])) {
+        while (!q.empty()) {
+            auto root = q.front();
+            q.pop();
+            is_in_queue[root] = false;
+            for (const auto &nv: graph[root]) {
+                if (is_forward && result[nv] <= min(result[root], price[nv])) {
                     continue;
                 }
-                if (((!fromStart) && maxPriceFromEnd[childV] >= max(maxPriceFromEnd[root], price[childV]))) {
+                if (!is_forward && result[nv] >= max(result[root], price[nv])) {
                     continue;
                 }
-                if (fromStart) {
-                    minPriceFromStart[childV] = min(minPriceFromStart[root], price[childV]);
+                if (is_forward) {
+                    result[nv] = min(result[root], price[nv]);
                 } else {
-                    maxPriceFromEnd[childV] = max(maxPriceFromEnd[root], price[childV]);
+                    result[nv] = max(result[root], price[nv]);
                 }
-                if (isInQueue[childV]) {
+                if (is_in_queue[nv]) {
                     continue;
                 }
-                isInQueue[childV] = true;
-                q[++tt] = childV;
+                is_in_queue[nv] = true;
+                q.emplace(nv);
             }
         }
     }
 
     int main() {
-        memset(headIndexFromStart, -1, sizeof headIndexFromStart);
-        memset(headIndexFromEnd, -1, sizeof headIndexFromEnd);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
+        vector<vector<int>> forward_graph(n + 1);
+        vector<vector<int>> backward_graph(n + 1);
+        vector<int> price(n + 1);
         for (int i = 1; i <= n; ++i) {
             scanf("%d", &price[i]);
         }
-        int idx = 0;
         for (int i = 1; i <= m; ++i) {
             int a, b, c;
             scanf("%d%d%d", &a, &b, &c);
-            addEdge(a, b, idx, true);
-            addEdge(b, a, idx, false);
+            forward_graph[a].emplace_back(b);
+            backward_graph[b].emplace_back(a);
             if (c == 2) {
-                addEdge(b, a, idx, true);
-                addEdge(a, b, idx, false);
+                forward_graph[b].emplace_back(a);
+                backward_graph[a].emplace_back(b);
             }
         }
-        spfa(1, true);
-        spfa(n, false);
+        vector<int> min_price_forward(n + 1, 0x3f3f3f3f);
+        vector<int> max_price_backward(n + 1, -1);
+        spfa(n, true, forward_graph, price, min_price_forward);
+        spfa(n, false, backward_graph, price, max_price_backward);
         int result = 0;
         for (int i = 1; i <= n; ++i) {
-            result = max(result, maxPriceFromEnd[i] - minPriceFromStart[i]);
+            result = max(result, max_price_backward[i] - min_price_forward[i]);
         }
         printf("%d\n", result);
         return 0;
