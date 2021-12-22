@@ -19,7 +19,7 @@ private:
     void Dijkstra(const int st,
                   const vector<vector<pair<int, int>>> &graph,
                   vector<int> &dist) {
-        vector<bool> visited(graph.size(), false);
+        vector<bool> selected(graph.size(), false);
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
         heap.emplace(pair<int, int>(0, st));
         dist[st] = 0;
@@ -27,10 +27,10 @@ private:
             auto t = heap.top();
             heap.pop();
             auto rv = t.second;
-            if (visited[rv]) {
+            if (selected[rv]) {
                 continue;
             }
-            visited[rv] = true;
+            selected[rv] = true;
             auto rd = t.first;
             for (const auto &nt: graph[rv]) {
                 auto nv = nt.second;
