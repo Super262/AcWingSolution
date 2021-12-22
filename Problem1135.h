@@ -16,7 +16,7 @@ class Problem1135 {
     // 1. 预处理出从1，a，b，c，d，e出发到其它所有点的最短路径
     // 2. DFS遍历所有拜访顺序，对于每1种拜访顺序，通过查表得到最短距离
 private:
-    void dijkstra(const int st,
+    void Dijkstra(const int st,
                   const vector<vector<pair<int, int>>> &graph,
                   const vector<int> &sources,
                   vector<int> &dist) {
@@ -45,7 +45,7 @@ private:
         }
     }
 
-    int dfs(const int selected_sources_count,
+    int Dfs(const int selected_sources_count,
             const int s_idx,
             const int d,
             const vector<int> &sources,
@@ -60,7 +60,7 @@ private:
                 continue;
             }
             visited[i] = true;
-            res = min(res, dfs(selected_sources_count + 1, i, d + dist[s_idx][sources[i]], sources, dist, visited));
+            res = min(res, Dfs(selected_sources_count + 1, i, d + dist[s_idx][sources[i]], sources, dist, visited));
             visited[i] = false;
         }
         return res;
@@ -84,11 +84,11 @@ private:
             graph[b].emplace_back(w, a);
         }
         for (int i = 0; i < sources_num; ++i) {
-            dijkstra(sources[i], graph, sources, dist[i]);
+            Dijkstra(sources[i], graph, sources, dist[i]);
         }
         vector<bool> visited(sources_num, false);
         visited[0] = true;
-        printf("%d\n", dfs(1, 0, 0, sources, dist, visited));
+        printf("%d\n", Dfs(1, 0, 0, sources, dist, visited));
         return 0;
     }
 };
