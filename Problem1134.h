@@ -12,6 +12,7 @@
 using namespace std;
 
 class Problem1134 {
+    // 可以基于BFS或Dijkstra（依照拓扑顺序搜索，距离一旦确定，不会再变化），不能使用SPFA或Bellman-Ford
 private:
     vector<int> bfs(int st, const vector<vector<int>> &graph) {
         vector<int> dist(graph.size(), 0x3f3f3f3f);
