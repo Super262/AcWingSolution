@@ -29,7 +29,7 @@ private:
             const vector<vector<int>> &graph,
             const vector<int> &keys) {
         vector<vector<bool>> visited(n * m, vector<bool>(1 << (p + 1), false));
-        vector<vector<int>> dist(n * m, vector<int>(1 << (p + 1), 0x3f3f3f3));
+        vector<vector<int>> dist(n * m, vector<int>(1 << (p + 1), 0x3f3f3f3f));
         queue<pair<int, int>> q;
         const int dx[] = {0, 1, -1, 0};
         const int dy[] = {1, 0, 0, -1};
