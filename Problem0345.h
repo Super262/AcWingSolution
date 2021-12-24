@@ -19,7 +19,7 @@ private:
     int res[N][N];
     int n = 0, k = 0, m = 0, s = 0, e = 0;
 
-    void multiply(int c[][N], int a[][N], int b[][N]) {
+    void Multiply(int c[][N], int a[][N], int b[][N]) {
         // c可能和a、b相同，设置缓冲区
         int temp[N][N];
         memset(temp, 0x3f, sizeof temp);
@@ -33,16 +33,16 @@ private:
         memcpy(c, temp, sizeof temp);
     }
 
-    void qmi() {
+    void Qmi() {
         memset(res, 0x3f, sizeof res);
         for (int i = 1; i <= n; ++i) {
             res[i][i] = 0;
         }
         while (k) {
             if (k & 1) {
-                multiply(res, res, graph);
+                Multiply(res, res, graph);
             }
-            multiply(graph, graph, graph);
+            Multiply(graph, graph, graph);
             k >>= 1;
         }
     }
@@ -71,7 +71,7 @@ private:
             graph[a][b] = min(graph[a][b], c);
             graph[b][a] = graph[a][b];
         }
-        qmi();
+        Qmi();
         printf("%d\n", res[ids[s]][ids[e]]);
         return 0;
     }
