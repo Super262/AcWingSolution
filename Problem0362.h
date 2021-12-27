@@ -8,7 +8,6 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
-#include <list>
 #include <queue>
 
 using namespace std;
@@ -21,7 +20,7 @@ class Problem0362 {
     // 3. S(i) - S(i - 1) <= 1
     // 由于输入的区间的某个端点可能为0，我们调整区间的最小起点为1，数据范围变成[1, 50001]
 private:
-    int Spfa(const int n, const vector<list<pair<int, int>>> &graph) {
+    int Spfa(const int n, const vector<vector<pair<int, int>>> &graph) {
         int dist[n + 1];
         bool in_queue[n + 1];
         queue<int> q;
@@ -53,7 +52,7 @@ private:
 
     int main() {
         const int m = 50001;
-        vector<list<pair<int, int>>> graph(m + 1);
+        vector<vector<pair<int, int>>> graph(m + 1);
         for (int i = 1; i <= m; ++i) {
             graph[i - 1].emplace_back(0, i);
             graph[i].emplace_back(-1, i - 1);
