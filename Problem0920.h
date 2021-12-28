@@ -15,9 +15,7 @@ using namespace std;
 
 class Problem0920 {
 private:
-    bool graph[501][501];
-
-    int bfs(const int &start, const int &end, const int &n, const vector<vector<bool>> &graph) {
+    int Bfs(const int &start, const int &end, const int &n, const vector<vector<bool>> &graph) {
         queue<int> q;
         bool visited[n + 1];
         int result = 0;
@@ -25,8 +23,8 @@ private:
         q.emplace(start);
         visited[start] = true;
         while (!q.empty()) {
-            auto curL = (int) q.size();
-            while (curL--) {
+            auto cur_size = (int) q.size();
+            while (cur_size--) {
                 auto root = q.front();
                 q.pop();
                 if (root == end) {
@@ -65,7 +63,7 @@ private:
                 }
             }
         }
-        auto result = bfs(1, n, n, graph);
+        auto result = Bfs(1, n, n, graph);
         if (result == -1) {
             puts("NO");
         } else {
