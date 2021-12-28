@@ -7,26 +7,30 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
 class Problem0903 {
 private:
-    int level[101];
-    int graph[101][101];
-
-    int Dijkstra(const int st, const int ed, const int n, const int low_l, const int high_l) {
+    int Dijkstra(const int st,
+                 const int ed,
+                 const int n,
+                 const int low_l,
+                 const int high_l,
+                 const vector<int> &level,
+                 const vector<vector<int>> &graph) {
         if (st == ed) {
             return 0;
         }
-        int dist[n + 1];
-        bool selected[n + 1];
+        int dist[n];
+        bool selected[n];
         memset(dist, 0x3f, sizeof dist);
         memset(selected, 0, sizeof selected);
         dist[st] = 0;
-        for (int k = 1; k <= n + 1; ++k) {  // 注意：包括虚拟源点0，一共有n+1个点
+        for (int k = 1; k <= n; ++k) {
             int close_v = -1;
-            for (int v = 0; v <= n; ++v) {
+            for (int v = 0; v < n; ++v) {
                 if (selected[v]) {
                     continue;
                 }
@@ -38,7 +42,7 @@ private:
                 break;
             }
             selected[close_v] = true;
-            for (int v = 0; v <= n; ++v) {
+            for (int v = 0; v < n; ++v) {
                 if (level[v] < low_l || level[v] > high_l) {
                     continue;
                 }
@@ -49,9 +53,10 @@ private:
     }
 
     int main() {
-        memset(graph, 0x3f, sizeof graph);
         int m, n;
         scanf("%d%d", &m, &n);
+        vector<vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
+        vector<int> level(n + 1, 0);
         for (int i = 1; i <= n; ++i) {
             int p, l, x;
             scanf("%d%d%d", &p, &l, &x);
@@ -65,7 +70,7 @@ private:
         }
         int result = 0x3f3f3f3f;
         for (int l = level[1] - m; l <= level[1]; ++l) {  // 枚举所有等级区间
-            result = min(result, Dijkstra(0, 1, n, l, l + m));
+            result = min(result, Dijkstra(0, 1, n + 1, l, l + m, level, graph));
         }
         printf("%d\n", result);
         return 0;
