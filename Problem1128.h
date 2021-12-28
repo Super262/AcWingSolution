@@ -6,7 +6,6 @@
 #define ACWINGSOLUTION_PROBLEM1128_H
 
 #include <iostream>
-#include <cstring>
 #include <vector>
 
 using namespace std;
@@ -27,6 +26,9 @@ private:
         int n, m;
         scanf("%d%d", &n, &m);
         vector<vector<int>> dist(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
+        for (int i = 1; i <= n; ++i) {
+            dist[i][i] = 0;
+        }
         int x, y, w;
         for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &x, &y, &w);
