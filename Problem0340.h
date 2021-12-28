@@ -70,10 +70,10 @@ private:
                 left = mid + 1;
             }
         }
-        if (left == 1000001) {
+        if (right == 1000001) {
             printf("%d\n", -1);
         } else {
-            printf("%d\n", left);
+            printf("%d\n", right);
         }
         return 0;
     }
