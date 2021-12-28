@@ -8,6 +8,8 @@
 #include <iostream>
 #include <sstream>
 #include <cstring>
+#include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -15,22 +17,18 @@ class Problem0920 {
 private:
     bool graph[501][501];
 
-    int bfs(const int &start, const int &end, const int &n) {
-        if (start == end) {
-            return 1;
-        }
-        int q[n + 1];
+    int bfs(const int &start, const int &end, const int &n, const vector<vector<bool>> &graph) {
+        queue<int> q;
         bool visited[n + 1];
-        int hh = 0, tt = -1;
+        int result = 0;
         memset(visited, 0, sizeof visited);
-        int result = -1;
-        q[++tt] = start;
+        q.emplace(start);
         visited[start] = true;
-        while (hh <= tt) {
-            auto curL = tt - hh + 1;
-            ++result;
+        while (!q.empty()) {
+            auto curL = (int) q.size();
             while (curL--) {
-                auto root = q[hh++];
+                auto root = q.front();
+                q.pop();
                 if (root == end) {
                     return result;
                 }
@@ -38,10 +36,11 @@ private:
                     if (!graph[root][i] || visited[i]) {
                         continue;
                     }
-                    q[++tt] = i;
+                    q.emplace(i);
                     visited[i] = true;
                 }
             }
+            ++result;
         }
         return -1;
     }
@@ -49,7 +48,7 @@ private:
     int main() {
         int m, n;
         scanf("%d%d", &m, &n);
-        memset(graph, 0, sizeof graph);
+        vector<vector<bool>> graph(n + 1, vector<bool>(n + 1, false));
         int stops[n + 1];
         string path;
         getline(cin, path);
@@ -66,7 +65,7 @@ private:
                 }
             }
         }
-        int result = bfs(1, n, n);
+        auto result = bfs(1, n, n, graph);
         if (result == -1) {
             puts("NO");
         } else {
