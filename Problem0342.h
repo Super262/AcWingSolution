@@ -33,6 +33,8 @@ private:
              vector<vector<int>> &block_vertexes) {
         vertex_block[root] = block_idx;
         block_vertexes[block_idx].emplace_back(root);
+        // 请问为什么一开始要将所有该连通块的点都加入进来呢？
+        // 因为不确定连通块内的哪个点可以作为起点，所以就一股脑全加进来就行了，可以作为起点的就自然出现在堆顶了
         for (const auto &nt: graph[root]) {
             auto childV = nt.second;
             if (vertex_block[childV] != -1) {
