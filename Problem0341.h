@@ -15,7 +15,7 @@ using namespace std;
 class Problem0341 {
     // https://www.acwing.com/solution/content/3709/ (每个点可被多次经过，当前结果不是最终结果：不能使用Dijkstra算法)
 private:
-    void spfa(const int n,
+    void Spfa(const int n,
               const bool is_forward,
               const vector<vector<int>> &graph,
               const vector<int> &price,
@@ -77,8 +77,8 @@ private:
         }
         vector<int> min_price_forward(n + 1, 0x3f3f3f3f);
         vector<int> max_price_backward(n + 1, -1);
-        spfa(n, true, forward_graph, price, min_price_forward);
-        spfa(n, false, backward_graph, price, max_price_backward);
+        Spfa(n, true, forward_graph, price, min_price_forward);
+        Spfa(n, false, backward_graph, price, max_price_backward);
         int result = 0;
         for (int i = 1; i <= n; ++i) {
             result = max(result, max_price_backward[i] - min_price_forward[i]);
