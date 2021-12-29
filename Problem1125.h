@@ -11,11 +11,11 @@
 
 using namespace std;
 
-const double INF = 0x3f3f3f3f;
-
 class Problem1125 {
     // https://www.acwing.com/solution/content/8428/
 private:
+    const double INF = 0x3f3f3f3f;
+
     double GetRealDistance(int a, int b, const vector<pair<int, int>> &points) {
         auto x1 = points[a].first;
         auto y1 = points[a].second;
@@ -28,6 +28,9 @@ private:
         for (int k = 0; k < n; ++k) {
             for (int i = 0; i < n; ++i) {
                 for (int j = 0; j < n; ++j) {
+                    if (dist[i][k] == INF || dist[k][j] == INF) {
+                        continue;
+                    }
                     dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
@@ -63,7 +66,7 @@ private:
         double res_1 = 0;
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
-                if (dist[i][j] > INF / 2) {
+                if (dist[i][j] == INF) {
                     continue;
                 }
                 max_length[i] = max(max_length[i], dist[i][j]);
@@ -73,7 +76,7 @@ private:
         double res_2 = INF;  // 两个牧场的牧区间最短的距离
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
-                if (dist[i][j] < INF / 2) {
+                if (dist[i][j] != INF) {
                     continue;
                 }
                 res_2 = min(res_2, max_length[i] + max_length[j] + GetRealDistance(i, j, points));
