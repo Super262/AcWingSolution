@@ -24,86 +24,85 @@ class Problem0342 {
 private:
     const int INF = 0x3f3f3f3f;
 
-    void Dfs(const int root,
+    void Dfs(const int st,
              const int block_idx,
-             const vector<vector<pair<int, int>>> &graph,
              vector<int> &vertex_block,
-             vector<vector<int>> &block_vertexes) {
-        vertex_block[root] = block_idx;
-        block_vertexes[block_idx].emplace_back(root);
-        // 请问为什么一开始要将所有该连通块的点都加入进来呢？
-        // 因为不确定连通块内的哪个点可以作为起点，所以就一股脑全加进来就行了，可以作为起点的就自然出现在堆顶了
-        for (const auto &nt: graph[root]) {
-            auto childV = nt.second;
-            if (vertex_block[childV] != -1) {
+             vector<vector<int>> &block_vertexes,
+             const vector<vector<pair<int, int>>> &graph) {
+        vertex_block[st] = block_idx;
+        block_vertexes[block_idx].emplace_back(st);
+        for (const auto &nt: graph[st]) {
+            auto nv = nt.second;
+            if (vertex_block[nv] != -1) {
                 continue;
             }
-            Dfs(childV, block_idx, graph, vertex_block, block_vertexes);
+            Dfs(nv, block_idx, vertex_block, block_vertexes, graph);
         }
     }
 
-    void Dijkstra(const int block_idx,
-                  const vector<vector<pair<int, int>>> &graph,
-                  const vector<int> &vertex_block,
-                  vector<int> &dist,
-                  queue<int> &blocks_queue,
+    void Dijkstra(const int b_idx,
                   const vector<vector<int>> &block_vertexes,
-                  vector<bool> &visited,
-                  vector<int> &block_in_degree) {
+                  vector<int> &block_in_degree,
+                  const vector<int> &vertex_block,
+                  queue<int> &block_queue,
+                  const vector<vector<pair<int, int>>> &graph,
+                  vector<int> &dist,
+                  vector<bool> &selected) {
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        for (auto v: block_vertexes[block_idx]) {
-            heap.emplace(pair<int, int>(dist[v], v));
+        // 请问为什么一开始要将所有该连通块的点都加入进来呢？
+        // 因为不确定连通块内的哪个点可以作为起点，所以就一股脑全加进来就行了，可以作为起点的就自然出现在堆顶了
+        for (const auto &v: block_vertexes[b_idx]) {
+            heap.push({dist[v], v});
         }
         while (!heap.empty()) {
-            auto t = heap.top();
+            auto rt = heap.top();
             heap.pop();
-            auto root_v = t.second;
-            if (visited[root_v]) {
+            auto rv = rt.second;
+            if (selected[rv]) {
                 continue;
             }
-            visited[root_v] = true;
-            auto root_d = t.first;
-            for (const auto &nt: graph[root_v]) {
-                auto child_v = nt.second;
-                auto child_d = nt.first;
-                if (dist[root_v] != INF && dist[child_v] > root_d + child_d) {
-                    dist[child_v] = root_d + child_d;
-                    if (vertex_block[child_v] == vertex_block[root_v]) {
-                        heap.emplace(pair<int, int>(dist[child_v], child_v));
+            selected[rv] = true;
+            for (const auto &nt: graph[rv]) {
+                auto nv = nt.second;
+                auto nd = nt.first;
+                if (dist[nv] > dist[rv] + nd) {
+                    dist[nv] = dist[rv] + nd;
+                    if (vertex_block[nv] == vertex_block[rv]) {
+                        heap.push({dist[nv], nv});
                     }
                 }
                 // 删除横跨2个连通块的边
-                if (vertex_block[child_v] != vertex_block[root_v]) {
-                    --block_in_degree[vertex_block[child_v]];
-                    if (block_in_degree[vertex_block[child_v]] == 0) {
-                        blocks_queue.emplace(vertex_block[child_v]);
+                if (vertex_block[nv] != vertex_block[rv]) {
+                    --block_in_degree[vertex_block[nv]];
+                    if (block_in_degree[vertex_block[nv]] == 0) {
+                        block_queue.emplace(vertex_block[nv]);
                     }
                 }
             }
         }
     }
 
-    void TopoSort(const int block_count,
-                  const int st,
-                  const int vertex_count,
-                  const vector<vector<pair<int, int>>> &graph,
-                  const vector<int> &vertex_block,
-                  vector<int> &dist,
+    void TopoSort(const int st,
+                  const int block_count,
+                  vector<int> &block_in_degree,
                   const vector<vector<int>> &block_vertexes,
-                  vector<int> &block_in_degree) {
-        queue<int> blocks_queue;
+                  const int vertex_count,
+                  vector<int> &dist,
+                  const vector<int> &vertex_block,
+                  const vector<vector<pair<int, int>>> &graph) {
+        queue<int> block_queue;
         for (int i = 0; i < block_count; ++i) {
             if (block_in_degree[i] != 0) {
                 continue;
             }
-            blocks_queue.emplace(i);
+            block_queue.emplace(i);
         }
-        vector<bool> visited(vertex_count, false);
+        vector<bool> selected(vertex_count + 1, false);
         dist[st] = 0;
-        while (!blocks_queue.empty()) {
-            auto b_idx = blocks_queue.front();
-            blocks_queue.pop();
-            Dijkstra(b_idx, graph, vertex_block, dist, blocks_queue, block_vertexes, visited, block_in_degree);
+        while (!block_queue.empty()) {
+            auto b_idx = block_queue.front();
+            block_queue.pop();
+            Dijkstra(b_idx, block_vertexes, block_in_degree, vertex_block, block_queue, graph, dist, selected);
         }
     }
 
@@ -111,33 +110,33 @@ private:
         int t, r, p, s;
         scanf("%d%d%d%d", &t, &r, &p, &s);
         vector<vector<pair<int, int>>> graph(t + 1);
-        vector<int> vertex_block(t + 1, -1);
-        vector<int> dist(t + 1, INF);
-        vector<vector<int>> block_vertexes(t + 1);
-        vector<int> block_in_degree(t + 1, 0);
         for (int i = 0; i < r; ++i) {
             int a, b, w;
             scanf("%d%d%d", &a, &b, &w);
             graph[a].emplace_back(w, b);
             graph[b].emplace_back(w, a);
         }
+        vector<int> vertex_block(t + 1, -1);
+        vector<vector<int>> block_vertexes(t + 1);
         int block_count = 0;
         for (int i = 1; i <= t; ++i) {
             if (vertex_block[i] != -1) {
                 continue;
             }
-            Dfs(i, block_count, graph, vertex_block, block_vertexes);
-            block_count++;
+            Dfs(i, block_count, vertex_block, block_vertexes, graph);
+            ++block_count;
         }
+        vector<int> block_in_degree(t + 1, 0);
         for (int i = 1; i <= p; ++i) {
             int a, b, w;
             scanf("%d%d%d", &a, &b, &w);
             graph[a].emplace_back(w, b);
             ++block_in_degree[vertex_block[b]];
         }
-        TopoSort(block_count, s, t, graph, vertex_block, dist, block_vertexes, block_in_degree);
+        vector<int> dist(t + 1, INF);
+        TopoSort(s, block_count, block_in_degree, block_vertexes, t, dist, vertex_block, graph);
         for (int i = 1; i <= t; ++i) {
-            if (dist[i] >= INF - (10000 * 50000)) { // 不通的路可能有负边，不能直接用INF
+            if (dist[i] >= INF - 50000 * 10000) {  // 不通的路可能有负边，不能直接用INF
                 puts("NO PATH");
             } else {
                 printf("%d\n", dist[i]);
