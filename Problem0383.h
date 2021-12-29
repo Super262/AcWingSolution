@@ -17,9 +17,7 @@ class Problem0383 {
     // 采用Dijkstra算法的思想：https://www.acwing.com/solution/content/12246/
 private:
     struct Node {
-        int id;  // 顶点编号
-        int type;  // 0：最短路径；1：次短路径
-        int value;  // 路径长度
+        int id, type, value;
 
         bool operator>(const Node &node) const {
             return value > node.value;
@@ -27,35 +25,36 @@ private:
     };
 
     int Dijkstra(int st, int ed, const vector<vector<pair<int, int>>> &graph) {
-        int dist[graph.size()][2];
-        int counter[graph.size()][2];
-        bool selected[graph.size()][2];
+        const auto n = (int) graph.size();
+        int dist[n][2];
+        bool selected[n][2];
+        int counter[n][2];
         priority_queue<Node, vector<Node>, greater<Node>> heap;
         memset(dist, 0x3f, sizeof dist);
-        memset(counter, 0, sizeof counter);
         memset(selected, 0, sizeof selected);
+        memset(counter, 0, sizeof counter);
         dist[st][0] = 0;
-        heap.push({st, 0, 0});
         counter[st][0] = 1;
+        heap.push({st, 0, dist[st][0]});
         while (!heap.empty()) {
-            auto root = heap.top();
+            auto r = heap.top();
             heap.pop();
-            if (selected[root.id][root.type]) {
+            auto rv = r.id;
+            auto rt = r.type;
+            if (selected[rv][rt]) {
                 continue;
             }
-            auto rv = root.id;
-            auto rt = root.type;
             selected[rv][rt] = true;
-            for (const auto &nt: graph[rv]) {
-                auto nv = nt.second;
-                auto nd = nt.first;
+            for (const auto &nx: graph[rv]) {
+                auto nv = nx.second;
+                auto nd = nx.first;
                 if (dist[nv][0] > dist[rv][rt] + nd) {
                     dist[nv][1] = dist[nv][0];
-                    counter[nv][1] = counter[nv][0];
                     heap.push({nv, 1, dist[nv][1]});
+                    counter[nv][1] = counter[nv][0];
                     dist[nv][0] = dist[rv][rt] + nd;
-                    counter[nv][0] = counter[rv][rt];
                     heap.push({nv, 0, dist[nv][0]});
+                    counter[nv][0] = counter[rv][rt];
                 } else if (dist[nv][0] == dist[rv][rt] + nd) {
                     counter[nv][0] += counter[rv][rt];
                 } else if (dist[nv][1] > dist[rv][rt] + nd) {
@@ -67,11 +66,11 @@ private:
                 }
             }
         }
-        auto result = counter[ed][0];
+        auto res = counter[ed][0];
         if (dist[ed][1] == dist[ed][0] + 1) {
-            result += counter[ed][1];
+            res += counter[ed][1];
         }
-        return result;
+        return res;
     }
 
     int main() {
