@@ -6,7 +6,6 @@
 #define ACWINGSOLUTION_PROBLEM0341_H
 
 #include <iostream>
-#include <algorithm>
 #include <vector>
 #include <queue>
 
