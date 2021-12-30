@@ -31,7 +31,10 @@ private:
                     closest_v = v;
                 }
             }
-            if (k > 1 && dist[closest_v] == INF) {
+            if (closest_v == -1) {  // 不要忘记这个判断
+                return INF;
+            }
+            if (k > 1 && dist[closest_v] == INF) {  // 不要忘记这个判断
                 return INF;
             }
             selected[closest_v] = true;
