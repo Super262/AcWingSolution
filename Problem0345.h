@@ -12,7 +12,7 @@
 using namespace std;
 
 class Problem0345 {
-    // 利用Floyd算法的特点，结合快速幂：https://www.acwing.com/solution/content/17209/
+    // 基于Floyd算法设计的新算法，满足集合律，可以使用快速幂：https://www.acwing.com/solution/content/17209/
 private:
     const int INF = 0x3f3f3f3f;
 
