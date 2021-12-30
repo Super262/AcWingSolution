@@ -14,6 +14,8 @@ using namespace std;
 
 class Problem0859 {
 private:
+    const int INF = 0x3f3f3f3f;
+
     struct Edge {
         int u;
         int v;
@@ -44,7 +46,7 @@ private:
             res += e.w;
         }
         if (cnt != n - 1) {  // MST边数应为n-1
-            return 0x3f3f3f3f;
+            return INF;
         }
         return res;
     }
@@ -61,7 +63,7 @@ private:
             scanf("%d%d%d", &edges[i].u, &edges[i].v, &edges[i].w);
         }
         auto res = kruskal(n, edges, parent);
-        if (res == 0x3f3f3f3f) {
+        if (res == INF) {
             printf("impossible\n");
         } else {
             printf("%d\n", res);
