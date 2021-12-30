@@ -6,7 +6,7 @@
 #define ACWINGSOLUTION_PROBLEM0345_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 #include <unordered_map>
 
 using namespace std;
@@ -14,15 +14,10 @@ using namespace std;
 class Problem0345 {
     // 利用Floyd算法的特点，结合快速幂：https://www.acwing.com/solution/content/17209/
 private:
-    static const int N = 210;
-    int graph[N][N];
-    int res[N][N];
-    int n = 0, k = 0, m = 0, s = 0, e = 0;
+    const int INF = 0x3f3f3f3f;
 
-    void Multiply(int c[][N], int a[][N], int b[][N]) {
-        // c可能和a、b相同，设置缓冲区
-        int temp[N][N];
-        memset(temp, 0x3f, sizeof temp);
+    vector<vector<int>> Multiply(const int n, vector<vector<int>> &a, vector<vector<int>> &b) {
+        vector<vector<int>> temp(n + 1, vector<int>(n + 1, INF));
         for (int t = 1; t <= n; ++t) {
             for (int i = 1; i <= n; ++i) {
                 for (int j = 1; j <= n; ++j) {
@@ -30,27 +25,31 @@ private:
                 }
             }
         }
-        memcpy(c, temp, sizeof temp);
+        return temp;
     }
 
-    void Qmi() {
-        memset(res, 0x3f, sizeof res);
+    vector<vector<int>> Qmi(const int n, vector<vector<int>> &graph, int k) {
+        vector<vector<int>> res(n + 1, vector<int>(n + 1, INF));
         for (int i = 1; i <= n; ++i) {
             res[i][i] = 0;
         }
         while (k) {
             if (k & 1) {
-                Multiply(res, res, graph);
+                res = Multiply(n, res, graph);
             }
-            Multiply(graph, graph, graph);
+            graph = Multiply(n, graph, graph);
             k >>= 1;
         }
+        return res;
     }
 
     int main() {
+        const int N = 210;
+        int k, m, s, e;
         scanf("%d%d%d%d", &k, &m, &s, &e);
-        memset(graph, 0x3f, sizeof graph);
         unordered_map<int, int> ids;
+        vector<vector<int>> graph(N, vector<int>(N, INF));
+        int n = 0;
         if (!ids.count(s)) {
             ids[s] = ++n;
         }
@@ -71,7 +70,7 @@ private:
             graph[a][b] = min(graph[a][b], c);
             graph[b][a] = graph[a][b];
         }
-        Qmi();
+        auto res = Qmi(n, graph, k);
         printf("%d\n", res[ids[s]][ids[e]]);
         return 0;
     }
