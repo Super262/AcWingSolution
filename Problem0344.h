@@ -32,13 +32,14 @@ private:
         vector<vector<int>> dist(graph);
         auto res = INF;
         for (int k = 1; k <= n; ++k) {
-            for (int i = 1; i < k; ++i) {
+            for (int i = 1; i < k; ++i) {  // 此时，k尚未被插入
                 for (int j = i + 1; j < k; ++j) {
                     if ((long long) dist[i][j] + graph[j][k] + graph[k][i] >= res) {  // 注意类型转换
                         continue;
                     }
                     path.clear();
                     res = dist[i][j] + graph[j][k] + graph[k][i];
+                    // 输出环（k -> i -> j -> k）的所有点：k，min_path[i:j]
                     path.emplace_back(k);
                     path.emplace_back(i);
                     GetPath(i, j, mid_point, path);
