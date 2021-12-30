@@ -33,7 +33,7 @@ private:
             }
         }
         for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < i; ++j) {
+            for (int j = 0; j < i; ++j) {   // 避免重复计算，j < i
                 if (!dist[i][j] && !dist[j][i]) {
                     return 0;
                 }
@@ -69,6 +69,7 @@ private:
         for (int i = 0; i < n; ++i) {
             res[i] = nodes[i].ch;
         }
+        res[n] = '\0';
         return res;
     }
 
