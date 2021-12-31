@@ -15,6 +15,8 @@ class Problem1146 {
     // 技巧：超级源点
     // https://www.acwing.com/solution/content/8713/
 private:
+    const int INF = 0x3f3f3f3f;
+
     int Prim(const vector<vector<int>> &graph) {
         int result = 0;
         const auto n = (int) graph.size();
@@ -31,6 +33,12 @@ private:
                 if (close_v == -1 || dist[v] < dist[close_v]) {
                     close_v = v;
                 }
+            }
+            if (close_v == -1) {  // 不要忘记这个判断
+                return INF;
+            }
+            if (k > 1 && dist[close_v] == INF) {  // 不要忘记这个判断
+                return INF;
             }
             selected[close_v] = true;
             if (k > 1) {
