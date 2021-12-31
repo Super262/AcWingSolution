@@ -79,7 +79,7 @@ private:
                 auto v = (temp[length - 2] - 'a') * 26 + (temp[length - 1] - 'a');
                 graph[u].emplace_back(length, v);
             }
-            if (!Spfa(graph, 0)) {
+            if (!Spfa(graph, 0)) {  // 要先判断最低点，排除无解情况，因为二分过程不能确定无解情况
                 printf("No solution\n");
             } else {
                 double left = 0, right = 1001;
