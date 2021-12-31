@@ -20,66 +20,84 @@ class Problem1169 {
     // 本题不能使用vector保存图信息，会超时
 private:
     static const int N = 100010, M = 300010;
-    int n, m;
-    int h[N], e[M], w[M], ne[M], idx;
-    LL dist[N];
+    int h[N], e[M], ne[M], w[M];
+    long long dist[N];
     int q[N], cnt[N];
     bool st[N];
 
-    void add(int a, int b, int c) {
-        e[idx] = b, w[idx] = c, ne[idx] = h[a], h[a] = idx++;
+    void add(int a, int b, int c, int &idx) {
+        e[idx] = b;
+        w[idx] = c;
+        ne[idx] = h[a];
+        h[a] = idx;
+        ++idx;
     }
 
-    bool spfa() {
-        int hh = 0, tt = 1;
+    bool spfa(int n) {
+        int tt = -1;
         memset(dist, -0x3f, sizeof dist);
+        memset(cnt, 0, sizeof cnt);
+        memset(st, 0, sizeof st);
         dist[0] = 0;
-        q[0] = 0;
+        q[++tt] = 0;
         st[0] = true;
-
-        while (hh != tt) {
-            int t = q[--tt];
-            st[t] = false;
-
-            for (int i = h[t]; ~i; i = ne[i]) {
-                int j = e[i];
-                if (dist[j] < dist[t] + w[i]) {
-                    dist[j] = dist[t] + w[i];
-                    cnt[j] = cnt[t] + 1;
-                    if (cnt[j] >= n + 1) return false;
-                    if (!st[j]) {
-                        q[tt++] = j;
-                        st[j] = true;
-                    }
+        while (tt >= 0) {
+            auto root = q[tt--];
+            st[root] = false;
+            for (int i = h[root]; i != -1; i = ne[i]) {
+                auto nv = e[i];
+                if (dist[nv] >= dist[root] + w[i]) {
+                    continue;
                 }
+                dist[nv] = dist[root] + w[i];
+                cnt[nv] = cnt[root] + 1;
+                if (cnt[nv] >= n) {
+                    return false;
+                }
+                if (st[nv]) {
+                    continue;
+                }
+                st[nv] = true;
+                q[++tt] = nv;
             }
         }
-
         return true;
     }
 
     int main() {
-        scanf("%d%d", &n, &m);
         memset(h, -1, sizeof h);
-        while (m--) {
+        memset(ne, -1, sizeof ne);
+        int n, k;
+        scanf("%d%d", &n, &k);
+        int idx = 0;
+        while (k--) {
             int x, a, b;
             scanf("%d%d%d", &x, &a, &b);
-            if (x == 1) add(b, a, 0), add(a, b, 0);
-            else if (x == 2) add(a, b, 1);
-            else if (x == 3) add(b, a, 0);
-            else if (x == 4) add(b, a, 1);
-            else add(a, b, 0);
+            if (x == 1) {
+                add(b, a, 0, idx);
+                add(a, b, 0, idx);
+            } else if (x == 2) {
+                add(a, b, 1, idx);
+            } else if (x == 3) {
+                add(b, a, 0, idx);
+            } else if (x == 4) {
+                add(b, a, 1, idx);
+            } else {
+                add(a, b, 0, idx);
+            }
         }
-
-        for (int i = 1; i <= n; i++) add(0, i, 1);
-
-        if (!spfa()) puts("-1");
-        else {
-            LL res = 0;
-            for (int i = 1; i <= n; i++) res += dist[i];
+        for (int v = 1; v <= n; ++v) {
+            add(0, v, 1, idx);
+        }
+        if (!spfa(n + 1)) {
+            puts("-1");
+        } else {
+            long long res = 0;
+            for (int v = 1; v <= n; ++v) {
+                res += dist[v];
+            }
             printf("%lld\n", res);
         }
-
         return 0;
     }
 };
