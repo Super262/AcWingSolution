@@ -70,7 +70,7 @@ private:
             if (next_w > first_next) {
                 second_next = first_next;
                 first_next = next_w;
-            } else if (next_w < first_next && next_w > second_next) {  // 不要忘记第2个条件
+            } else if (next_w < first_next && next_w > second_next) {  // 不要忘记这需要2个条件
                 second_next = next_w;
             }
             dfs(graph, t.second, v, first_next, second_next, first_longest_part, second_longest_part);
