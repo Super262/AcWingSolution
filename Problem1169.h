@@ -15,6 +15,7 @@ using namespace std;
 typedef long long LL;
 
 class Problem1169 {
+    // 差分约束问题的源点条件：从源点出发，一定可达所有边
     // 最小值：SPFA求最长路
     // 本题不能使用vector保存图信息，会超时
 private:
