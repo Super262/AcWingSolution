@@ -84,7 +84,7 @@ private:
         if (Spfa(n, n, graph, dist)) {
             printf("%d\n", -1);
         } else {
-            Spfa(1, n, graph, dist);
+            Spfa(1, n, graph, dist);  //  搜索起点为X1，相当于设X1=0，判断Xn是否为INF
             if (dist[n] == INF) {
                 printf("%d\n", -2);
             } else {
