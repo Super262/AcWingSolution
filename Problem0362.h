@@ -14,6 +14,7 @@ using namespace std;
 
 class Problem0362 {
     // https://www.acwing.com/solution/content/8205/
+    // 在定义约束后，一定要验算，保证条件足够；同时，找到超级源点
     // S(i)：区间[0, i]中被选择的数的个数
     // 1. S(i) >= S(i - 1)
     // 2. S(b) - S(a - 1) >= c
