@@ -81,7 +81,7 @@ private:
             }
             Tarjan(v, graph, vid, dfn, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
         }
-        unordered_set<long long> edges_set; // 判重，避免加入重边：a * 100000 + b，a、b是强连通块的编号
+        unordered_set<long long> edges_set; // 判重，避免加入重边：a * 100000ll + b，a、b是强连通块的编号
         vector<vector<int>> scc_dag(scc_cnt + 1);
         for (int u = 1; u <= n; ++u) {
             auto a = vid[u];
@@ -90,10 +90,10 @@ private:
                 if (a == b) {
                     continue;
                 }
-                if (edges_set.count(a * 100000 + b)) {
+                if (edges_set.count(a * 100000ll + b)) {
                     continue;
                 }
-                edges_set.insert(a * 100000 + b);
+                edges_set.insert(a * 100000ll + b);
                 scc_dag[a].emplace_back(b);
             }
         }
