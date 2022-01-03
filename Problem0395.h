@@ -26,7 +26,7 @@ private:
                 const vector<vector<pair<int, int>>> &graph,
                 stack<int> &stk,
                 int &time_stamp,
-                int &dcc_cnt) {
+                int &edcc_cnt) {
         ++time_stamp;
         disc[u] = time_stamp;
         low[u] = time_stamp;
@@ -35,7 +35,7 @@ private:
             auto v = nt.first;
             auto ei = nt.second;
             if (!disc[v]) {
-                Tarjan(v, ei, disc, low, did, graph, stk, time_stamp, dcc_cnt);
+                Tarjan(v, ei, disc, low, did, graph, stk, time_stamp, edcc_cnt);
                 low[u] = min(low[u], low[v]);
                 // 若disc[u] < low[v], (u, v) 是桥
             } else if (ei != (pi ^ 1)) {
@@ -43,12 +43,12 @@ private:
             }
         }
         if (disc[u] == low[u]) {
-            ++dcc_cnt;
+            ++edcc_cnt;
             int y;
             do {
                 y = stk.top();
                 stk.pop();
-                did[y] = dcc_cnt;
+                did[y] = edcc_cnt;
             } while (y != u);
         }
     }
@@ -69,7 +69,7 @@ private:
         int did[n + 1];
         stack<int> stk;
         int time_stamp = 0;
-        int dcc_cnt = 0;
+        int edcc_cnt = 0;
         memset(disc, 0, sizeof disc);
         memset(low, 0, sizeof low);
         memset(did, 0, sizeof did);
@@ -77,9 +77,9 @@ private:
             if (disc[v]) {
                 continue;
             }
-            Tarjan(v, -1, disc, low, did, graph, stk, time_stamp, dcc_cnt);
+            Tarjan(v, -1, disc, low, did, graph, stk, time_stamp, edcc_cnt);
         }
-        int degree[dcc_cnt + 1];
+        int degree[edcc_cnt + 1];
         memset(degree, 0, sizeof degree);
         for (int u = 1; u <= n; ++u) {
             for (const auto &t: graph[u]) {
@@ -90,7 +90,7 @@ private:
             }
         }
         int cnt = 0;
-        for (int i = 1; i <= dcc_cnt; ++i) {
+        for (int i = 1; i <= edcc_cnt; ++i) {
             if (degree[i] != 1) {
                 continue;
             }
