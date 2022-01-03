@@ -14,7 +14,7 @@ using namespace std;
 class Problem1183 {
     // 为什么边双连通分量求解时的栈不需要一个 in_stack 的数组呢？因为无向图里是没有横插边的，所以不可能走到前面的点
     // 思想：求割点，如果没有割点那答案就是连通块的个数，否则，就是删去割点后连通块的个数。
-    // https://www.acwing.com/solution/content/65436/
+    // https://www.acwing.com/solution/content/43015/
 private:
     void Tarjan(const int u,
                 const int root,
@@ -22,7 +22,7 @@ private:
                 int disc[],
                 int low[],
                 int &time_stamp,
-                int &answer) {
+                int &answer) {  // 由于不需要找到每个连通分量，所以不需要用到栈
         ++time_stamp;
         disc[u] = time_stamp;
         low[u] = time_stamp;
