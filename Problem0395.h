@@ -26,7 +26,7 @@ private:
                 const vector<vector<pair<int, int>>> &graph,
                 stack<int> &stk,
                 int &time_stamp,
-                int &edcc_cnt) {
+                int &edcc_cnt) {  // 标记无向图中的双连通分量
         ++time_stamp;
         disc[u] = time_stamp;
         low[u] = time_stamp;
