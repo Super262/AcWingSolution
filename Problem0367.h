@@ -17,8 +17,8 @@ private:
     void Tarjan(const int root,
                 const vector<vector<int>> &graph,
                 vector<int> &low,
-                vector<int> &dfn,
-                vector<int> &vid,
+                vector<int> &disc,
+                vector<int> &sid,
                 vector<int> &scc_size,
                 stack<int> &stk,
                 vector<bool> &in_stk,
@@ -27,17 +27,17 @@ private:
         stk.emplace(root);
         in_stk[root] = true;
         ++time_stamp;
-        dfn[root] = time_stamp;
+        disc[root] = time_stamp;
         low[root] = time_stamp;
         for (const auto &nv: graph[root]) {
-            if (!dfn[nv]) {
-                Tarjan(nv, graph, low, dfn, vid, scc_size, stk, in_stk, scc_cnt, time_stamp);
+            if (!disc[nv]) {
+                Tarjan(nv, graph, low, disc, sid, scc_size, stk, in_stk, scc_cnt, time_stamp);
                 low[root] = min(low[root], low[nv]);
             } else if (in_stk[nv]) {
-                low[root] = min(low[root], dfn[nv]);
+                low[root] = min(low[root], disc[nv]);
             }
         }
-        if (low[root] == dfn[root]) {
+        if (low[root] == disc[root]) {
             ++scc_cnt;
             int y;
             do {
@@ -45,7 +45,7 @@ private:
                 stk.pop();
                 in_stk[y] = false;
                 ++scc_size[scc_cnt];
-                vid[y] = scc_cnt;
+                sid[y] = scc_cnt;
             } while (y != root);
         }
     }
@@ -65,25 +65,25 @@ private:
             }
         }
         vector<int> low(n + 1, 0);
-        vector<int> dfn(n + 1, 0);
-        vector<int> vid(n + 1, 0);
+        vector<int> disc(n + 1, 0);
+        vector<int> sid(n + 1, 0);
         vector<int> scc_size(n + 1, 0);
         vector<bool> in_stk(n + 1, false);
         stack<int> stk;
         int scc_cnt = 0;
         int time_stamp = 0;
         for (int v = 1; v <= n; ++v) {
-            if (dfn[v]) {
+            if (disc[v]) {
                 continue;
             }
-            Tarjan(v, graph, low, dfn, vid, scc_size, stk, in_stk, scc_cnt, time_stamp);
+            Tarjan(v, graph, low, disc, sid, scc_size, stk, in_stk, scc_cnt, time_stamp);
         }
         vector<int> de_out(n + 1, 0);
         vector<int> de_in(n + 1, 0);
         for (int v = 1; v <= n; ++v) {
-            auto a = vid[v];
+            auto a = sid[v];
             for (const auto &nv: graph[v]) {
-                auto b = vid[nv];
+                auto b = sid[nv];
                 if (a == b) {
                     continue;
                 }

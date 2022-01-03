@@ -19,7 +19,7 @@ private:
     void Tarjan(const int u,
                 const vector<vector<int>> &graph,
                 int vid[],
-                int dfn[],
+                int disc[],
                 int low[],
                 int scc_size[],
                 bool in_stk[],
@@ -27,19 +27,19 @@ private:
                 int &scc_cnt,
                 int &time_stamp) {
         ++time_stamp;
-        dfn[u] = time_stamp;
+        disc[u] = time_stamp;
         low[u] = time_stamp;
         in_stk[u] = true;
         stk.emplace(u);
         for (const auto &nv: graph[u]) {
-            if (!dfn[nv]) {
-                Tarjan(nv, graph, vid, dfn, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
+            if (!disc[nv]) {
+                Tarjan(nv, graph, vid, disc, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
                 low[u] = min(low[u], low[nv]);
             } else if (in_stk[nv]) {
-                low[u] = min(low[u], dfn[nv]);
+                low[u] = min(low[u], disc[nv]);
             }
         }
-        if (low[u] == dfn[u]) {
+        if (low[u] == disc[u]) {
             ++scc_cnt;
             int y;
             do {
@@ -62,31 +62,31 @@ private:
             graph[a].emplace_back(b);
         }
         // 为提高速度，不使用vector初始化状态数组
-        int vid[n + 1];
-        int dfn[n + 1];
+        int sid[n + 1];
+        int disc[n + 1];
         int low[n + 1];
         int scc_size[n + 1];
         bool in_stk[n + 1];
         stack<int> stk;
         int scc_cnt = 0;
         int time_stamp = 0;
-        memset(vid, 0, sizeof vid);
-        memset(dfn, 0, sizeof dfn);
+        memset(sid, 0, sizeof sid);
+        memset(disc, 0, sizeof disc);
         memset(low, 0, sizeof low);
         memset(scc_size, 0, sizeof scc_size);
         memset(in_stk, 0, sizeof in_stk);
         for (int v = 1; v <= n; ++v) {
-            if (dfn[v]) {
+            if (disc[v]) {
                 continue;
             }
-            Tarjan(v, graph, vid, dfn, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
+            Tarjan(v, graph, sid, disc, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
         }
         unordered_set<long long> edges_set; // 判重，避免加入重边：a * 100000ll + b，a、b是强连通块的编号
         vector<vector<int>> scc_dag(scc_cnt + 1);
         for (int u = 1; u <= n; ++u) {
-            auto a = vid[u];
+            auto a = sid[u];
             for (const auto &v: graph[u]) {
-                auto b = vid[v];
+                auto b = sid[v];
                 if (a == b) {
                     continue;
                 }

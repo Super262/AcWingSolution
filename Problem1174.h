@@ -19,32 +19,32 @@ private:
                 int &scc_cnt,
                 stack<int> &stk,
                 const vector<vector<int>> &graph,
-                vector<int> &vid,
+                vector<int> &sid,
                 vector<int> &low,
-                vector<int> &dfn,
+                vector<int> &disc,
                 vector<bool> &in_stk,
                 vector<int> &scc_size) {
         ++time_stamp;
-        dfn[root] = time_stamp;
+        disc[root] = time_stamp;
         low[root] = time_stamp;
         stk.emplace(root);
         in_stk[root] = true;
         for (const auto &nv: graph[root]) {
-            if (!dfn[nv]) {
-                Tarjan(nv, time_stamp, scc_cnt, stk, graph, vid, low, dfn, in_stk, scc_size);
+            if (!disc[nv]) {
+                Tarjan(nv, time_stamp, scc_cnt, stk, graph, sid, low, disc, in_stk, scc_size);
                 low[root] = min(low[root], low[nv]);
             } else if (in_stk[nv]) {
-                low[root] = min(low[root], dfn[nv]);
+                low[root] = min(low[root], disc[nv]);
             }
         }
-        if (dfn[root] == low[root]) {
+        if (disc[root] == low[root]) {
             ++scc_cnt;
             int y;
             do {
                 y = stk.top();
                 stk.pop();
                 in_stk[y] = false;
-                vid[y] = scc_cnt;
+                sid[y] = scc_cnt;
                 ++scc_size[scc_cnt];
             } while (y != root);
         }
@@ -60,24 +60,24 @@ private:
             graph[a].emplace_back(b);
         }
         vector<int> low(n + 1, 0);  // low[u]：从u开始的搜索路径的所有点的时间戳的最小值
-        vector<int> dfn(n + 1, 0);  // dfn[u]: u被发现的时间
+        vector<int> disc(n + 1, 0);  // disc[u]: u被发现的时间
         stack<int> stk;
         vector<bool> in_stk(n + 1, false);
         vector<int> scc_size(n + 1, 0);  // scc_size[i]：编号为i的强连通块的大小
-        vector<int> id(n + 1, 0);  // id[x]：点x所在的强连通块的编号
+        vector<int> sid(n + 1, 0);  // sid[x]：点x所在的强连通块的编号
         int scc_cnt = 0;  // 当前强连通块的个数
         int time_stamp = 0;  // 当前时间
         for (int v = 1; v <= n; ++v) {
-            if (dfn[v]) {
+            if (disc[v]) {
                 continue;
             }
-            Tarjan(v, time_stamp, scc_cnt, stk, graph, id, low, dfn, in_stk, scc_size);
+            Tarjan(v, time_stamp, scc_cnt, stk, graph, sid, low, disc, in_stk, scc_size);
         }
         vector<int> de_out(n + 1, 0);  // 记录每个连通分量的出度
         for (int v = 1; v <= n; ++v) {
-            auto a = id[v];
+            auto a = sid[v];
             for (const auto &nv: graph[v]) {
-                auto b = id[nv];
+                auto b = sid[nv];
                 if (a == b) {
                     continue;
                 }

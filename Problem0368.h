@@ -18,7 +18,7 @@ private:
     void Tarjan(const int u,
                 const vector<vector<pair<int, int>>> &graph,
                 int vid[],
-                int dfn[],
+                int disc[],
                 int low[],
                 int scc_size[],
                 bool in_stk[],
@@ -26,20 +26,20 @@ private:
                 int &scc_cnt,
                 int &time_stamp) {
         ++time_stamp;
-        dfn[u] = time_stamp;
+        disc[u] = time_stamp;
         low[u] = time_stamp;
         stk.emplace(u);
         in_stk[u] = true;
         for (const auto &nt: graph[u]) {
             auto nv = nt.second;
-            if (!dfn[nv]) {
-                Tarjan(nv, graph, vid, dfn, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
+            if (!disc[nv]) {
+                Tarjan(nv, graph, vid, disc, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
                 low[u] = min(low[u], low[nv]);
             } else if (in_stk[nv]) {
-                low[u] = min(low[u], dfn[nv]);
+                low[u] = min(low[u], disc[nv]);
             }
         }
-        if (low[u] == dfn[u]) {
+        if (low[u] == disc[u]) {
             ++scc_cnt;
             int y;
             do {
@@ -77,7 +77,7 @@ private:
             }
         }
         int vid[n + 1];
-        int dfn[n + 1];
+        int disc[n + 1];
         int low[n + 1];
         int scc_size[n + 1];
         bool in_stk[n + 1];
@@ -85,11 +85,11 @@ private:
         int scc_cnt = 0;
         int time_stamp = 0;
         memset(vid, 0, sizeof vid);
-        memset(dfn, 0, sizeof dfn);
+        memset(disc, 0, sizeof disc);
         memset(low, 0, sizeof low);
         memset(scc_size, 0, sizeof scc_size);
         memset(in_stk, 0, sizeof in_stk);
-        Tarjan(0, graph, vid, dfn, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
+        Tarjan(0, graph, vid, disc, low, scc_size, in_stk, stk, scc_cnt, time_stamp);
         bool success = true;
         vector<vector<pair<int, int>>> scc_dag(scc_cnt + 1);
         for (int v = 0; v <= n; ++v) {
