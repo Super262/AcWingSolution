@@ -14,6 +14,12 @@
 using namespace std;
 
 class Problem0396 {
+    // 1. 出口数量 res >= 2
+    // 2. 对每个连通块，(1) 若无割点，则任选2个点作为出口，方案数为 cnt * (cnt - 1) / 2，cnt为连通块中点的数量；
+    //  (2) 有割点，需要"缩点"；需要注意的是，每个割点至少属于2个V-DCC；
+    //      步骤：把每个割点单独作为1个点；从每个V-DCC向其所包含的每个割点连边，统计每个V-DCC的度数；
+    //           若某个V-DCC的度数为1，说明它只有1个割点，我们要在该V-DCC的内部设置1个出口
+    //           若某个V-DCC的度数大于1，说明它有多个割点，我们无需在该V-DCC的内部设置出口
 private:
     void Tarjan(const int u,
                 const int root,
@@ -29,7 +35,7 @@ private:
         disc[u] = time_stamp;
         low[u] = time_stamp;
         stk.emplace(u);
-        if (u == root && graph[u].empty()) {  // u是孤立点
+        if (u == root && graph[u].empty()) {  // u是孤立点，本身是V-DCC
             ++vdcc_cnt;
             vdcc[vdcc_cnt].emplace_back(u);
             return;
@@ -39,7 +45,7 @@ private:
             if (!disc[v]) {
                 Tarjan(v, root, graph, vdcc, stk, disc, low, is_cut, time_stamp, vdcc_cnt);
                 low[u] = min(low[u], low[v]);
-                if (disc[u] <= low[v]) {
+                if (disc[u] <= low[v]) {  // 开始寻找V-DCC的时机
                     ++cnt;
                     if (u != root || cnt > 1) {  // 割点：不是根结点，有分枝
                         is_cut[u] = true;
@@ -51,7 +57,7 @@ private:
                         stk.pop();
                         vdcc[vdcc_cnt].emplace_back(y);
                     } while (y != v);
-                    vdcc[vdcc_cnt].emplace_back(u);
+                    vdcc[vdcc_cnt].emplace_back(u);  // 不要忘记啊，u也属于这个V-DCC
                 }
             } else {
                 low[u] = min(low[u], disc[v]);
