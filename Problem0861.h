@@ -34,7 +34,7 @@ private:
         for (int i = 0; i < m; ++i) {
             int u, v;
             scanf("%d%d", &u, &v);
-            graph[u].emplace_back(v);
+            graph[u].emplace_back(v);  // 这里我们只建立单向边
         }
         vector<int> left_friends(n2 + 1, 0);
         bool visited[n2 + 1];
