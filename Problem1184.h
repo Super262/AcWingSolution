@@ -6,102 +6,112 @@
 #define ACWINGSOLUTION_PROBLEM1184_H
 
 #include <iostream>
-#include <cstdio>
 #include <cstring>
-#include <algorithm>
 
 using namespace std;
 
 class Problem1184 {
     // https://www.acwing.com/solution/content/16024/
 private:
-    const int N = 100100, M = 400100;
-    int headIndex[N], vertexValue[M], nextIndex[M];
-    int answer[N * 2];
-    bool used[M];
-    int din[N], dout[N];
-    int type;
-    int answerTop = 0;
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
+    void AddEdge(const int a, const int b, int &idx, int head_idx[], int next_idx[], int vertex_value[]) {
+        vertex_value[idx] = b;
+        next_idx[idx] = head_idx[a];
+        head_idx[a] = idx;
         ++idx;
     }
 
-    void dfs(const int u) {
-        for (int &idx = headIndex[u]; idx != -1;) {
-            if (used[idx]) {
-                idx = nextIndex[idx];
+    void Dfs(const int u,
+             const int type,
+             int head_idx[],
+             int next_idx[],
+             int vertex_value[],
+             bool used[],
+             int answer[],
+             int &ans_top) {
+        for (auto &i = head_idx[u]; i != -1;) {  // 注意，i是引用
+            if (used[i]) {  // 如果当前边已经被使用
+                i = next_idx[i];  // 删除当前边
                 continue;
             }
-            used[idx] = true;
-            if (type == 1) {
-                used[idx ^ 1] = true;
+            used[i] = true;  // 标记当前边
+            if (type == 1) {  // 无向图边和反向边的索引组合：(0, 1)，(2, 3)，……
+                used[i ^ 1] = true;  // 标记反向边
             }
             int t;
-            if (type == 1) {
-                t = idx / 2 + 1;
-                if (idx & 1) {
+            if (type == 1) {  // 无向图
+                t = i / 2 + 1;  // t是索引对的位置：(0, 1) -> 1，(2, 3) -> 2，……
+                if (i & 1) {  // 是反向边
                     t = -t;
                 }
-            } else {
-                t = idx + 1;
+            } else {  // 有向图
+                t = i + 1;
             }
-            int v = vertexValue[idx];
-            idx = nextIndex[idx];
-            dfs(v);
-            answer[answerTop++] = t;
+            auto v = vertex_value[i];
+            i = next_idx[i];
+            Dfs(v, type, head_idx, next_idx, vertex_value, used, answer, ans_top);
+            answer[ans_top++] = t;
         }
     }
 
     int main() {
-        int n, m;
+        int type, n, m;
         scanf("%d%d%d", &type, &n, &m);
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
+        int head_idx[n + 10];
+        int next_idx[2 * m + 10];  // 注意：无向图边数为2*m
+        int vertex_value[2 * m + 10];
+        int din[n + 1];
+        int dout[n + 1];
+        memset(head_idx, -1, sizeof head_idx);
+        memset(next_idx, -1, sizeof next_idx);
+        memset(din, 0, sizeof din);
+        memset(dout, 0, sizeof dout);
         int idx = 0;
         for (int i = 0; i < m; ++i) {
             int a, b;
             scanf("%d%d", &a, &b);
-            addEdge(a, b, idx);
+            AddEdge(a, b, idx, head_idx, next_idx, vertex_value);
             if (type == 1) {
-                addEdge(b, a, idx);
+                AddEdge(b, a, idx, head_idx, next_idx, vertex_value);
             }
             ++din[b];
             ++dout[a];
         }
         if (type == 1) {
-            for (int i = 1; i <= n; ++i) {
-                if ((din[i] + dout[i]) & 1) {
+            for (int v = 1; v <= n; ++v) {
+                // 无向图含欧拉回路的充要条件是每个点的度都为偶数
+                if ((din[v] + dout[v]) & 1) {
                     puts("NO");
                     return 0;
                 }
             }
         } else {
-            for (int i = 1; i <= n; ++i) {
-                if (din[i] != dout[i]) {
+            for (int v = 1; v <= n; ++v) {
+                // 有向图含欧拉回路的充要条件是每个点的入度等于出度
+                if (din[v] != dout[v]) {
                     puts("NO");
                     return 0;
                 }
             }
         }
-        for (int i = 1; i <= n; ++i) {
-            if (headIndex[i] == -1) {
-                continue;
+        int answer[2 * m + 10];
+        bool used[2 * m + 10];
+        int ans_top = 0;
+        memset(used, 0, sizeof used);
+        for (int v = 1; v <= n; ++v) {
+            if (head_idx[v] != -1) {
+                Dfs(v, type, head_idx, next_idx, vertex_value, used, answer, ans_top);
+                break;
             }
-            dfs(i);
-            break;
         }
-        if (answerTop < m) {
+        if (ans_top < m) {
             puts("NO");
             return 0;
         }
         puts("YES");
-        for (int i = answerTop - 1; i >= 0; --i) {
-            cout << answer[i] << " ";
+        for (int i = ans_top - 1; i >= 0; --i) {
+            printf("%d ", answer[i]);
         }
+        printf("\n");
         return 0;
     }
 };
