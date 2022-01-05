@@ -27,7 +27,7 @@ private:
         while (cin >> x1 >> y1 >> x2 >> y2) {
             auto dx = x2 - x1;
             auto dy = y2 - y1;
-            length += sqrt(dx * dx + dy * dy) * 2;
+            length += sqrt(dx * dx + dy * dy) * 2;  // 不要忘记乘2：双向道路
         }
         auto minutes = (long) round(length / 1000 / 20 * 60);
         auto hours = minutes / 60;
