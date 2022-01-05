@@ -103,7 +103,7 @@ private:
                 break;
             }
         }
-        if (ans_top < m) {
+        if (ans_top < m) {  // 图不连通
             puts("NO");
             return 0;
         }
