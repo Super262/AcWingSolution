@@ -27,7 +27,7 @@ private:
              int vertex_value[],
              bool used[],
              int answer[],
-             int &ans_top) {
+             int &ans_top) {  // 邻接表的欧拉回路
         for (auto &i = head_idx[u]; i != -1;) {  // 注意，i是引用
             if (used[i]) {  // 如果当前边已经被使用
                 i = next_idx[i];  // 删除当前边
