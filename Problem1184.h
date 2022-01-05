@@ -47,7 +47,7 @@ private:
                 t = i + 1;
             }
             auto v = vertex_value[i];
-            i = next_idx[i];  // 注意：这里要先修改i，再开始递归
+            i = next_idx[i];  // 注意：这里要先修改i，即删除当前边，再开始递归
             Dfs(v, type, head_idx, next_idx, vertex_value, used, answer, ans_top);
             answer[ans_top++] = t;
         }
