@@ -25,7 +25,7 @@ private:
         const int N = 26;
         int parent[N];  // 记录节点的祖宗节点
         int in_degree[N], out_degree[N];  // 记录节点的入度和出度
-        int existed[N];  // 记录字母是否在输入中出现
+        bool existed[N];  // 记录字母是否在输入中出现
         char temp[1010];
         int t;
         scanf("%d", &t);
