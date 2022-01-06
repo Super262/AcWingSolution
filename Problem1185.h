@@ -47,7 +47,7 @@ private:
                 existed[b] = true;
                 ++out_degree[a];
                 ++in_degree[b];
-                parent[FindRoot(a, parent)] = FindRoot(b, parent);  // 将首位两端的元素合并到同一个并查集里面去
+                parent[FindRoot(a, parent)] = FindRoot(b, parent);  // 将首尾两端的元素合并到同一个并查集里面去
             }
 
             bool success = true;
