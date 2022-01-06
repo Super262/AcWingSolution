@@ -70,7 +70,7 @@ private:
                 continue;
             }
 
-            // 出入度合法的情况下不存在有向图欧拉路径的那两种情况，那么说明是不合法的
+            // 注意：两个条件用AND连接！出入度合法的情况下不存在有向图欧拉路径的那两种情况，那么说明是不合法的
             if (success && !(end_cnt == 0 && start_cnt == 0 || end_cnt == 1 && start_cnt == 1)) {
                 success = false;
             }
