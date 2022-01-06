@@ -6,64 +6,58 @@
 #define ACWINGSOLUTION_PROBLEM1191_H
 
 #include <iostream>
+#include <vector>
+#include <queue>
 #include <cstring>
 
 using namespace std;
 
 class Problem1191 {
 private:
-    const int N = 101;
-    int headIndex[N], nextIndex[N * N], vertexValue[N * N];
-    int degree[N];
-    int q[N];
-
-    void topoSort(const int n) {
-        int hh = 0, tt = -1;
-        for (int i = 1; i <= n; ++i) {
-            if (degree[i]) {
+    vector<int> TopoSort(const int n, const vector<vector<int>> &graph, int degree[]) {
+        queue<int> q;
+        for (int v = 1; v <= n; ++v) {
+            if (degree[v]) {
                 continue;
             }
-            q[++tt] = i;
+            q.emplace(v);
         }
-        while (hh <= tt) {
-            auto root = q[hh++];
-            for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-                auto childV = vertexValue[idx];
-                --degree[childV];
-                if (degree[childV] == 0) {
-                    q[++tt] = childV;
+        vector<int> res;
+        while (!q.empty()) {
+            auto root = q.front();
+            q.pop();
+            res.emplace_back(root);
+            for (const auto &nv: graph[root]) {
+                --degree[nv];
+                if (degree[nv] != 0) {
+                    continue;
                 }
+                q.emplace(nv);
             }
         }
-    }
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
+        return res;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n;
         scanf("%d", &n);
-        int idx = 0;
-        for (int i = 1; i <= n; ++i) {
-            int a;
+        int degree[n + 1];
+        vector<vector<int>> graph(n + 1);
+        memset(degree, 0, sizeof degree);
+        for (int u = 1; u <= n; ++u) {
             while (true) {
-                scanf("%d", &a);
-                if (a == 0) {
+                int v;
+                scanf("%d", &v);
+                if (v == 0) {
                     break;
                 }
-                addEdge(i, a, idx);
-                ++degree[a];
+                graph[u].emplace_back(v);
+                ++degree[v];
             }
         }
-        topoSort(n);
-        for (int i = 0; i < n; ++i) {
-            printf("%d ", q[i]);
+        auto res = TopoSort(n, graph, degree);
+        for (const auto &v: res) {
+            printf("%d ", v);
         }
         printf("\n");
         return 0;
