@@ -7,56 +7,50 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
+#include <queue>
 
 using namespace std;
 
 class Problem1192 {
 private:
-    const int N = 10010;
-    int headIndex[N], nextIndex[2 * N], vertexValue[2 * N];
-    int degree[N];
-    int q[N];
-
-    void addEdge(const int a, const int b, int &idx) {
-        vertexValue[idx] = b;
-        nextIndex[idx] = headIndex[a];
-        headIndex[a] = idx;
-        ++idx;
-    }
-
-    bool topoSort(const int n) {
-        int hh = 0, tt = -1;
-        for (int i = 1; i <= n; ++i) {
-            if (degree[i]) {
+    bool TopoSort(const int n, int degree[], const vector<vector<int>> &graph, vector<int> &res) {
+        queue<int> q;
+        for (int v = 1; v <= n; ++v) {
+            if (degree[v]) {
                 continue;
             }
-            q[++tt] = i;
+            q.emplace(v);
         }
-        while (hh <= tt) {
-            auto root = q[hh++];
-            for (int idx = headIndex[root]; idx != -1; idx = nextIndex[idx]) {
-                auto childV = vertexValue[idx];
-                --degree[childV];
-                if (degree[childV] == 0) {
-                    q[++tt] = childV;
+        while (!q.empty()) {
+            auto root = q.front();
+            q.pop();
+            res.emplace_back(root);
+            for (const auto &nv: graph[root]) {
+                --degree[nv];
+                if (degree[nv] != 0) {
+                    continue;
                 }
+                q.emplace(nv);
             }
         }
-        return tt + 1 == n;
+        return res.size() == n;
     }
 
     int main() {
-        memset(headIndex, -1, sizeof headIndex);
-        memset(nextIndex, -1, sizeof nextIndex);
         int n, m;
         scanf("%d%d", &n, &m);
-        int a, b, idx = 0;
+        vector<vector<int>> graph(n + 1);
+        int degree[n + 1];
+        memset(degree, 0, sizeof degree);
         while (m--) {
+            int a, b;
             scanf("%d%d", &a, &b);
-            addEdge(b, a, idx);
+            graph[b].emplace_back(a);
             ++degree[a];
         }
-        if (!topoSort(n)) {
+        vector<int> res;
+        if (!TopoSort(n, degree, graph, res)) {
             puts("Poor Xed");
             return 0;
         }
@@ -64,10 +58,8 @@ private:
         for (int i = 1; i <= n; ++i) {
             dist[i] = 100;
         }
-        for (int i = 0; i < n; ++i) {
-            auto v = q[i];
-            for (auto j = headIndex[v]; j != -1; j = nextIndex[j]) {
-                auto u = vertexValue[j];
+        for (const auto &v: res) {
+            for (const auto &u: graph[v]) {
                 dist[u] = max(dist[u], dist[v] + 1);
             }
         }
