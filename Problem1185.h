@@ -5,7 +5,6 @@
 #ifndef ACWINGSOLUTION_PROBLEM1185_H
 #define ACWINGSOLUTION_PROBLEM1185_H
 
-#include <algorithm>
 #include <cstring>
 #include <iostream>
 
