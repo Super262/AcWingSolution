@@ -36,7 +36,7 @@ public:
     int main() {
         int n;
         scanf("%d", &n);
-        printf("%d", PrimesCount(n));
+        printf("%d\n", PrimesCount(n));
         return 0;
     }
 };
