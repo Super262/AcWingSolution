@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0867 {
 public:
-    void primeFactorizations(int n) {
+    void PrimeFactorizations(int n) {
         for (int f = 2; f <= n / f; ++f) {
             if (n % f == 0) {
                 int s = 0;
@@ -34,7 +34,7 @@ public:
         int n;
         while (m--) {
             scanf("%d", &n);
-            primeFactorizations(n);
+            PrimeFactorizations(n);
         }
         return 0;
     }
