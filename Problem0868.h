@@ -13,30 +13,30 @@ using namespace std;
 class Problem0868 {
 public:
     // 时间复杂度：O(n)
-    int primesCount(const int n) {
-        int result = 0;
-        bool isFiltered[n + 1];
+    int PrimesCount(const int n) {
+        bool is_filtered[n + 1];
         int primes[n + 1];
-        memset(isFiltered, 0, sizeof isFiltered);
+        int p_cnt = 0;
+        memset(is_filtered, 0, sizeof is_filtered);
         memset(primes, 0, sizeof primes);
         for (int f = 2; f <= n; ++f) {
-            if (!isFiltered[f]) {
-                primes[result++] = f;
+            if (!is_filtered[f]) {
+                primes[p_cnt++] = f;
             }
             for (int j = 0; primes[j] <= n / f; ++j) {
-                isFiltered[primes[j] * f] = true;
+                is_filtered[primes[j] * f] = true;
                 if (f % primes[j] == 0) {
                     break;
                 }
             }
         }
-        return result;
+        return p_cnt;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        printf("%d", primesCount(n));
+        printf("%d", PrimesCount(n));
         return 0;
     }
 };
