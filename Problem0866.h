@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0866 {
 public:
-    bool isPrime(const int &num) {
+    bool IsPrime(const int &num) {
         if (num < 2) {
             return false;
         }
@@ -30,7 +30,7 @@ public:
         int num;
         while (n--) {
             scanf("%d", &num);
-            if (isPrime(num)) {
+            if (IsPrime(num)) {
                 puts("Yes");
             } else {
                 puts("No");
