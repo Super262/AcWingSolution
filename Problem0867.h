@@ -12,10 +12,9 @@ using namespace std;
 class Problem0867 {
 public:
     void primeFactorizations(int n) {
-        int s;
         for (int f = 2; f <= n / f; ++f) {
             if (n % f == 0) {
-                s = 0;
+                int s = 0;
                 while (n % f == 0) {
                     n /= f;
                     ++s;
