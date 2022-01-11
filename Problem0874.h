@@ -19,7 +19,7 @@ private:
         memset(phi, 0, sizeof phi);
         memset(primes, 0, sizeof primes);
         memset(filtered, 0, sizeof filtered);
-        phi[1] = 1;
+        phi[1] = 1;  // 不要忘记这步初始化
         int count = 0;
         for (int f = 2; f <= n; ++f) {  // 基于线性筛改造而来
             if (!filtered[f]) {
