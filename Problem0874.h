@@ -21,10 +21,10 @@ private:
         memset(filtered, 0, sizeof filtered);
         phi[1] = 1;
         int count = 0;
-        for (int f = 2; f <= n; ++f) {
+        for (int f = 2; f <= n; ++f) {  // 基于线性筛改造而来
             if (!filtered[f]) {
                 primes[count++] = f;
-                phi[f] = f - 1;
+                phi[f] = f - 1;  // f是质数，[1 : f - 1]所有数都和f互质，phi(f) = f - 1
             }
             for (int j = 0; primes[j] <= n / f; ++j) {
                 filtered[primes[j] * f] = true;
