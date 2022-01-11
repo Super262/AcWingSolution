@@ -12,8 +12,8 @@ using namespace std;
 
 class Problem0870 {
 public:
-    void GetFactorsCount(unsigned long n, unordered_map<unsigned long, unsigned long> &prime_count) {
-        for (unsigned long f = 2; f <= n / f; ++f) {
+    void GetFactorsCount(int n, unordered_map<int, int> &prime_count) {
+        for (int f = 2; f <= n / f; ++f) {
             while (n % f == 0) {
                 n /= f;
                 ++prime_count[f];
@@ -27,19 +27,18 @@ public:
     int main() {
         int m;
         scanf("%d", &m);
-        unsigned long n;
-        unordered_map<unsigned long, unsigned long> prime_count;
+        int n;
+        unordered_map<int, int> prime_count;
         while (m--) {
-            scanf("%ld", &n);
+            scanf("%d", &n);
             GetFactorsCount(n, prime_count);
         }
-        unsigned long result = 1;
-        const unsigned long base = 1e9 + 7;
+        int result = 1;
+        const int MOD = 1e9 + 7;
         for (const auto &p: prime_count) {
-            result *= p.second + 1;
-            result %= base;
+            result = (int) ((long long) result * (p.second + 1) % MOD);
         }
-        printf("%ld\n", result);
+        printf("%d\n", result);
         return 0;
     }
 };
