@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0873 {
 public:
-    int euler(int n) {
+    int Euler(int n) {
         auto result = n;
         for (int f = 2; f <= n / f; ++f) {
             if (n % f) {
@@ -34,7 +34,7 @@ public:
         int m;
         while (n--) {
             scanf("%d", &m);
-            printf("%d\n", euler(m));
+            printf("%d\n", Euler(m));
         }
         return 0;
     }
