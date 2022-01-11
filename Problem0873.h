@@ -10,7 +10,7 @@
 using namespace std;
 
 class Problem0873 {
-public:
+private:
     int Euler(int n) {
         auto result = n;
         for (int f = 2; f <= n / f; ++f) {
