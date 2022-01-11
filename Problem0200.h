@@ -18,8 +18,10 @@ private:
     };
 
     int Gcd(int a, int b) {
-        if (b) {
-            return Gcd(b, a % b);
+        while (b) {
+            auto t = b;
+            b = a % b;
+            a = t;
         }
         return a;
     }
