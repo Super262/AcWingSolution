@@ -11,40 +11,38 @@
 using namespace std;
 
 class Problem0871 {
-public:
-    void getFactorCount(unsigned long n, unordered_map<unsigned long, unsigned long> &factorCount) {
-        for (unsigned long f = 2; f <= n / f; ++f) {
+private:
+    void GetFactors(int n, unordered_map<int, int> &factor) {
+        for (int f = 2; f <= n / f; ++f) {
             while (n % f == 0) {
                 n /= f;
-                ++factorCount[f];
+                ++factor[f];
             }
         }
         if (n > 1) {
-            ++factorCount[n];
+            ++factor[n];
         }
     }
 
     int main() {
         int m;
         scanf("%d", &m);
-        unordered_map<unsigned long, unsigned long> factorCount;
-        unsigned long n;
+        unordered_map<int, int> factors;
+        int n;
         while (m--) {
-            scanf("%ld", &n);
-            getFactorCount(n, factorCount);
+            scanf("%d", &n);
+            GetFactors(n, factors);
         }
-        const unsigned long base = 1e9 + 7;
-        unsigned long result = 1;
-        for (const auto &p:factorCount) {
-            unsigned long temp = 1;
-            for (unsigned long k = 0; k < p.second; ++k) {
-                temp = temp * p.first + 1;
-                temp %= base;
+        const int MOD = 1e9 + 7;
+        int result = 1;
+        for (const auto &p: factors) {
+            int temp = 1;
+            for (int k = 0; k < p.second; ++k) {
+                temp = (int) (((long long) temp * p.first + 1) % MOD);
             }
-            result *= temp;
-            result %= base;
+            result = (int) ((long long) result * temp % MOD);
         }
-        printf("%ld\n", result);
+        printf("%d\n", result);
         return 0;
     }
 };
