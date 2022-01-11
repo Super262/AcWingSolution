@@ -11,6 +11,7 @@
 using namespace std;
 
 class Problem0871 {
+    // 牢记模版：https://www.acwing.com/solution/content/16981/
 private:
     void GetFactors(int n, unordered_map<int, int> &factor) {
         for (int f = 2; f <= n / f; ++f) {
