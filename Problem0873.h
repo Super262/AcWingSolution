@@ -9,12 +9,11 @@
 
 using namespace std;
 
-
 class Problem0873 {
 public:
-    unsigned long long euler(unsigned long long n) {
-        unsigned long long result = n;
-        for (unsigned long long f = 2; f <= n / f; ++f) {
+    int euler(int n) {
+        auto result = n;
+        for (int f = 2; f <= n / f; ++f) {
             if (n % f) {
                 continue;
             }
@@ -32,10 +31,10 @@ public:
     int main() {
         int n;
         scanf("%d", &n);
-        unsigned long long m;
+        int m;
         while (n--) {
-            scanf("%lld", &m);
-            printf("%lld\n", euler(m));
+            scanf("%d", &m);
+            printf("%d\n", euler(m));
         }
         return 0;
     }
