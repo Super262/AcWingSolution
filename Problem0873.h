@@ -20,7 +20,7 @@ private:
             while (n % f == 0) {
                 n /= f;
             }
-            result = result / f * (f - 1);  // 为保证结果正确，不使用 result * (1 - 1 / a)，这里都是整除运算
+            result = result / f * (f - 1);  // 为保证结果正确，不使用 result * (1 - 1 / a)，这里都是整除运算；为避免溢出，先除后乘
         }
         if (n > 1) {
             result = result / n * (n - 1);
