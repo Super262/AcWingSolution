@@ -11,9 +11,9 @@
 using namespace std;
 
 class Problem0869 {
-public:
-    void getDivisors(const int n, int *divisors, int &count) {
-        count = 0;
+private:
+    int GetDivisors(const int n, int divisors[]) {
+        int count = 0;
         for (int f = 1; f <= n / f; ++f) {
             if (n % f) {
                 continue;
@@ -24,17 +24,17 @@ public:
             }
         }
         sort(divisors, divisors + count);
+        return count;
     }
 
     int main() {
         int m;
         scanf("%d", &m);
         int n;
-        int *divisors = new int[100];
-        int count = 0;
+        int divisors[20000];
         while (m--) {
             scanf("%d", &n);
-            getDivisors(n, divisors, count);
+            auto count = GetDivisors(n, divisors);
             for (int i = 0; i < count; ++i) {
                 printf("%d ", divisors[i]);
             }
