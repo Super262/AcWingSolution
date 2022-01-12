@@ -11,8 +11,8 @@ using namespace std;
 
 
 class Problem0875 {
-public:
-    long long qmi(long long b, long long p, long long m) {
+private:
+    long long qpower(long long b, long long p, long long m) {
         long long result = 1;
         while (p) {
             if (p & 1) {
@@ -30,7 +30,7 @@ public:
         long long b, p, m;
         while (n--) {
             scanf("%lld%lld%lld", &b, &p, &m);
-            printf("%lld\n", qmi(b, p, m));
+            printf("%lld\n", qpower(b, p, m));
         }
         return 0;
     }
