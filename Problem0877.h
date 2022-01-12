@@ -10,15 +10,16 @@
 using namespace std;
 
 class Problem0877 {
-public:
-    int exgcd(int a, int &x, int b, int &y) {
+private:
+    // https://www.acwing.com/solution/content/1393/
+    int ExGcd(int a, int &x, int b, int &y) {
         if (!b) {
             x = 1;
             y = 0;
             return a;
         }
         int x1, y1, gcd;
-        gcd = exgcd(b, x1, a % b, y1);
+        gcd = ExGcd(b, x1, a % b, y1);
         x = y1;
         y = x1 - a / b * y1;
         return gcd;
@@ -30,7 +31,7 @@ public:
         int a, x, b, y;
         while (n--) {
             scanf("%d%d", &a, &b);
-            exgcd(a, x, b, y);
+            ExGcd(a, x, b, y);
             printf("%d %d\n", x, y);
         }
         return 0;
