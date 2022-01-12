@@ -32,6 +32,7 @@ private:
         while (n--) {
             scanf("%d%d", &a, &b);
             ExGcd(a, x, b, y);
+            // ax+by=c通解为 x=c/d*x′+k*b/d,y=c/d*y′+k*a/d
             printf("%d %d\n", x, y);
         }
         return 0;
