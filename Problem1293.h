@@ -34,7 +34,7 @@ private:
         bool filtered[n + 2];
         memset(primes, 0, sizeof primes);
         memset(filtered, 0, sizeof filtered);
-        GetPrimes(n + 1, primes, filtered);
+        GetPrimes(n + 1, primes, filtered);  // 相当于将1～n映射到2～n
         if (n <= 2) {
             printf("%d\n", 1);
         } else {
