@@ -10,15 +10,15 @@
 using namespace std;
 
 class Problem0876 {
-public:
-    unsigned long long qmi(unsigned long long b, unsigned long long p, const unsigned long long m) {
-        unsigned long long result = 1;
+private:
+    int QuickPower(int b, int p, const int m) {
+        int result = 1;
         while (p) {
             if (p & 1) {
-                result = result * b % m;
+                result = (int) ((long long) result * b % m);
             }
             p >>= 1;
-            b = b * b % m;
+            b = (int) ((long long) b * b % m);
         }
         return result;
     }
@@ -30,7 +30,7 @@ public:
         while (n--) {
             scanf("%d%d", &a, &p);
             if (a % p) {
-                printf("%lld\n", qmi(a, p - 2, p));
+                printf("%d\n", QuickPower(a, p - 2, p));
             } else {
                 puts("impossible");
             }
