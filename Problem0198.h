@@ -13,10 +13,10 @@ using namespace std;
 class Problem0198 {
     // https://www.acwing.com/solution/content/12080/
 private:
-    void Dfs(int p_idx, const int primes[], int max_power, int f_cnt, int &answer, int temp, int &result, int n) {
-        if (f_cnt > answer || (answer == f_cnt && temp < result)) {
+    void Dfs(int p_idx, const int primes[], int max_power, int d_cnt, int &answer, int temp, int &result, int n) {
+        if (d_cnt > answer || (answer == d_cnt && temp < result)) {
             result = temp;
-            answer = f_cnt;
+            answer = d_cnt;
         }
         if (p_idx == 9) {
             return;
@@ -26,8 +26,8 @@ private:
                 return;
             }
             temp *= primes[p_idx];
-            // 注意约数的计算：f_cnt * (i + 1)
-            Dfs(p_idx + 1, primes, max_power, f_cnt * (i + 1), answer, temp, result, n);
+            // 注意约数的计算：d_cnt * (i + 1)
+            Dfs(p_idx + 1, primes, max_power, d_cnt * (i + 1), answer, temp, result, n);
         }
     }
 
