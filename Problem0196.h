@@ -29,8 +29,8 @@ private:
         return cnt;
     }
 
-    int GeneratePrimes(const int l, const int r, int primes[], const int n, bool filtered[]) {
-        for (int i = 0; i < n; ++i) {
+    int GeneratePrimes(const int l, const int r, int primes[], const int p_cnt, bool filtered[]) {
+        for (int i = 0; i < p_cnt; ++i) {
             long long p = primes[i];  // 避免溢出
             // 大于等于l的最小的p的倍数：(l + p - 1) / p * p
             for (auto num = max(2 * p, (l + p - 1) / p * p); num <= r; num += p) {  // 筛去[L, R]间p的倍数
