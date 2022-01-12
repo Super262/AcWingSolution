@@ -9,17 +9,16 @@
 
 using namespace std;
 
-
 class Problem0875 {
 private:
-    long long qpower(long long b, long long p, long long m) {
-        long long result = 1;
+    int QuickPower(int b, int p, const int m) {
+        int result = 1;
         while (p) {
             if (p & 1) {
-                result = result * b % m;
+                result = (int) ((long long) result * b % m);
             }
             p >>= 1;
-            b = b * b % m;
+            b = (int) ((long long) b * b % m);
         }
         return result;
     }
@@ -27,10 +26,10 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        long long b, p, m;
+        int b, p, m;
         while (n--) {
-            scanf("%lld%lld%lld", &b, &p, &m);
-            printf("%lld\n", qpower(b, p, m));
+            scanf("%d%d%d", &b, &p, &m);
+            printf("%d\n", QuickPower(b, p, m));
         }
         return 0;
     }
