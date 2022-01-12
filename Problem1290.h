@@ -30,6 +30,7 @@ private:
         long long n;
         scanf("%d%lld", &m, &n);
         // 注意，qpow(m, n, MOD) - qpow(m - 1, n - 1, MOD)可能为负数！
+        // 注意顺序：((a % M) + M) % M
         printf("%lld\n", (qpow(m, n, MOD) - (long long) m * qpow(m - 1, n - 1, MOD) % MOD + MOD) % MOD);
         return 0;
     }
