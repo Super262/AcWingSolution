@@ -40,8 +40,8 @@ private:
         } else {
             printf("%d\n", 2);
         }
-        for (int i = 1; i <= n; ++i) {
-            if (filtered[i + 1]) {
+        for (int i = 2; i <= n + 1; ++i) {
+            if (filtered[i]) {
                 printf("%d ", 2);
             } else {
                 printf("%d ", 1);
