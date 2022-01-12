@@ -11,6 +11,7 @@
 using namespace std;
 
 class Problem0222 {
+    // https://www.acwing.com/solution/content/24456/
 private:
     long long ExGcd(long long a, long long &x, long long b, long long &y) {
         if (!b) {
