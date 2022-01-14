@@ -11,27 +11,27 @@
 using namespace std;
 
 class Problem0883 {
-public:
-    int gauss(double **matrix, const int n) {
-        const double minDouble = 1e-6;
+private:
+    static const int N = 101;
+
+    int Gauss(double matrix[][N], const int n) {
+        const double min_value = 1e-6;
         int column, row;
         for (column = 0, row = 0; column < n; ++column) {
-
             // 1. 寻找当前列的最大值
-            int maximalRow = row;
+            int max_row = row;
             for (int i = row; i < n; ++i) {
-                if (abs(matrix[i][column]) > abs(matrix[maximalRow][column])) {
-                    maximalRow = i;
+                if (abs(matrix[i][column]) > abs(matrix[max_row][column])) {
+                    max_row = i;
                 }
             }
-
-            if (abs(matrix[maximalRow][column]) <= minDouble) {
+            if (abs(matrix[max_row][column]) <= min_value) {
                 continue;
             }
 
             // 2. 将最大值所在的行调整到当前行
             for (int i = column; i <= n; ++i) {
-                swap(matrix[maximalRow][i], matrix[row][i]);
+                swap(matrix[max_row][i], matrix[row][i]);
             }
 
             // 3. 设置当前行的首元素为"1"（从后向前，保证操作的正确性，避免基准值——首元素被提前更改）
@@ -41,7 +41,7 @@ public:
 
             // 4. 将下面所有行（row+1开始）的当前列（column）设置为0
             for (int i = row + 1; i < n; ++i) {
-                if (abs(matrix[i][column]) <= minDouble) {
+                if (abs(matrix[i][column]) <= min_value) {
                     continue;
                 }
 
@@ -54,7 +54,7 @@ public:
         }
         if (row < n) {
             for (int i = row; i < n; ++i) {
-                if (abs(matrix[i][n]) > minDouble) {
+                if (abs(matrix[i][n]) > min_value) {
                     return 2;  // 方程组无解
                 }
             }
@@ -67,20 +67,27 @@ public:
                 matrix[i][n] -= matrix[i][j] * matrix[j][n];
             }
         }
+
+        // 去掉输出 -0.00 的情况
+        for (int i = 0; i < n; ++i) {
+            if (abs(matrix[i][n]) < min_value) {
+                matrix[i][n] = 0;
+            }
+        }
+
         return 0;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto **matrix = new double *[n];
+        double matrix[n][N];
         for (int i = 0; i < n; ++i) {
-            matrix[i] = new double[n + 1];
             for (int j = 0; j <= n; ++j) {
                 scanf("%lf", &matrix[i][j]);
             }
         }
-        int t = gauss(matrix, n);
+        int t = Gauss(matrix, n);
         if (t == 1) {
             puts("Infinite group solutions");
         } else if (t == 2) {
@@ -90,10 +97,6 @@ public:
                 printf("%.2lf\n", matrix[i][n]);
             }
         }
-        for (int i = 0; i < n; ++i) {
-            delete[] matrix[i];
-        }
-        delete[] matrix;
         return 0;
     }
 };
