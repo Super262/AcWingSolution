@@ -10,37 +10,36 @@
 using namespace std;
 
 class Problem0886 {
-public:
-    unsigned int qmi(unsigned int a, unsigned int x, const unsigned int m) {
-        unsigned int result = 1;
+private:
+    int QuickPower(int a, int x, const int m) {
+        int result = 1;
         while (x) {
             if (x & 1) {
-                result = (unsigned int) ((unsigned long long) result * a % m);
+                result = (int) ((long long) result * a % m);
             }
             x >>= 1;
-            a = (unsigned int) ((unsigned long long) a * a % m);
+            a = (int) ((long long) a * a % m);
         }
         return result;
     }
 
     int main() {
-        const unsigned int N = 100000;
-        const unsigned int M = 1e9 + 7;
-        auto fact = new unsigned int[N + 1];
-        auto inFact = new unsigned int[N + 1];
-        fact[0] = inFact[0] = 1;
-        for (unsigned int i = 1; i <= N; ++i) {
-            fact[i] = (unsigned int) ((unsigned long long) fact[i - 1] * i % M);
-            inFact[i] = (unsigned int) ((unsigned long long) inFact[i - 1] * qmi(i, M - 2, M) % M);
+        const int N = 100000;
+        const int M = 1e9 + 7;
+        int fact[N + 1];
+        int in_fact[N + 1];
+        fact[0] = in_fact[0] = 1;
+        for (int i = 1; i <= N; ++i) {
+            fact[i] = (int) ((long long) fact[i - 1] * i % M);
+            // 求解阶乘的乘法逆元
+            in_fact[i] = (int) ((long long) in_fact[i - 1] * QuickPower(i, M - 2, M) % M);
         }
         int n, a, b;
         scanf("%d", &n);
         while (n--) {
             scanf("%d%d", &a, &b);
-            printf("%d\n", (unsigned int) ((unsigned long long) fact[a] * inFact[b] % M * inFact[a - b] % M));
+            printf("%d\n", (int) ((long long) fact[a] * in_fact[b] % M * in_fact[a - b] % M));
         }
-        delete[] fact;
-        delete[] inFact;
         return 0;
     }
 };
