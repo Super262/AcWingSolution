@@ -62,7 +62,7 @@ private:
         }
 
         // 消元，求解X1～Xn
-        for (auto i = n - 1; i >= 0; --i) {
+        for (auto i = n - 2; i >= 0; --i) {
             for (auto j = i + 1; j < m - 1; ++j) {
                 matrix[i][m - 1] -= matrix[i][j] * matrix[j][m - 1];
             }
@@ -81,19 +81,20 @@ private:
         int n;
         scanf("%d", &n);
         double matrix[n][N];
+        auto m = n + 1;
         for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n + 1; ++j) {
+            for (int j = 0; j < m; ++j) {
                 scanf("%lf", &matrix[i][j]);
             }
         }
-        auto t = Gauss(matrix, n, n + 1);
+        auto t = Gauss(matrix, n, m);
         if (t == 1) {
             puts("Infinite group solutions");
         } else if (t == 2) {
             puts("No solution");
         } else {
             for (int i = 0; i < n; ++i) {
-                printf("%.2lf\n", matrix[i][n]);
+                printf("%.2lf\n", matrix[i][m - 1]);
             }
         }
         return 0;
