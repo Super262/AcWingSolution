@@ -12,25 +12,25 @@ using namespace std;
 
 
 class Problem0885 {
-public:
+private:
     int main() {
-        const unsigned long long LENGTH = 2001;
-        const unsigned long long M = 1e9 + 7;
-        unsigned long long combination[LENGTH][LENGTH];
+        const int LENGTH = 2001;
+        const int M = 1e9 + 7;
+        int combination[LENGTH][LENGTH];
         memset(combination, 0, sizeof combination);
         for (auto &ci: combination) {
             ci[0] = 1;
         }
-        for (unsigned long long i = 1; i < LENGTH; ++i) {
-            for (unsigned long long j = 1; j < LENGTH; ++j) {
-                combination[i][j] = (combination[i - 1][j] + combination[i - 1][j - 1]) % M;
+        for (int i = 1; i < LENGTH; ++i) {
+            for (int j = 1; j < LENGTH; ++j) {
+                combination[i][j] = (int) (((long long) combination[i - 1][j] + combination[i - 1][j - 1]) % M);
             }
         }
         int n, a, b;
         scanf("%d", &n);
         while (n--) {
             scanf("%d%d", &a, &b);
-            printf("%lld\n", combination[a][b]);
+            printf("%d\n", combination[a][b]);
         }
         return 0;
     }
