@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0889 {
 private:
-    int qmi(int a, int x, const int mod) {
+    int QuickPower(int a, int x, const int mod) {
         int result = 1;
         while (x) {
             if (x & 1) {
@@ -23,7 +23,7 @@ private:
         return result;
     }
 
-    int catalanNumber(const int n) {
+    int Catalan(const int n) {
         // 1 / (n + 1) * C(2 * n, n) = (2 * n)! / (n! * n!) == ((n + 1) * ... * (2 * n)) / n!
         const int mod = 1e9 + 7;
         int result = 1;
@@ -31,16 +31,16 @@ private:
             result = (int) ((long long) result * i % mod);
         }
         for (int i = 1; i <= n; ++i) {
-            result = (int) ((long long) result * qmi(i, mod - 2, mod) % mod);
+            result = (int) ((long long) result * QuickPower(i, mod - 2, mod) % mod);
         }
-        result = (int) ((long long) result * qmi(n + 1, mod - 2, mod) % mod);
+        result = (int) ((long long) result * QuickPower(n + 1, mod - 2, mod) % mod);
         return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        printf("%d", catalanNumber(n));
+        printf("%d", Catalan(n));
         return 0;
     }
 };
