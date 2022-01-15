@@ -10,28 +10,28 @@
 using namespace std;
 
 class Problem0891 {
-public:
-    bool simpleNim(const unsigned int *stonesCount, const unsigned int size) {
-        unsigned int result = 0;
-        for (unsigned int i = 0; i < size; ++i) {
-            result ^= stonesCount[i];
+    // https://www.acwing.com/solution/content/14269/
+private:
+    bool simpleNim(const int stones[], const int size) {
+        int result = 0;
+        for (int i = 0; i < size; ++i) {
+            result ^= stones[i];
         }
         return result != 0;
     }
 
     int main() {
-        unsigned int n;
+        int n;
         scanf("%d", &n);
-        auto stonesCount = new unsigned int[n];
-        for (unsigned int i = 0; i < n; ++i) {
-            scanf("%d", &stonesCount[i]);
+        int stones[n];
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &stones[i]);
         }
-        if (simpleNim(stonesCount, n)) {
+        if (simpleNim(stones, n)) {
             puts("Yes");
         } else {
             puts("No");
         }
-        delete[] stonesCount;
         return 0;
     }
 };
