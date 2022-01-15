@@ -12,7 +12,7 @@ using namespace std;
 class Problem0891 {
     // https://www.acwing.com/solution/content/14269/
 private:
-    bool simpleNim(const int stones[], const int size) {
+    bool SimpleNim(const int stones[], const int size) {
         int result = 0;
         for (int i = 0; i < size; ++i) {
             result ^= stones[i];
@@ -27,7 +27,7 @@ private:
         for (int i = 0; i < n; ++i) {
             scanf("%d", &stones[i]);
         }
-        if (simpleNim(stones, n)) {
+        if (SimpleNim(stones, n)) {
             puts("Yes");
         } else {
             puts("No");
