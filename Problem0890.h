@@ -13,29 +13,27 @@ class Problem0890 {
 private:
     int CountHelper(const int n, const int primes[], const int p_cnt) {
         int result = 0;
-        long long current;
-        int sets_count;
-        for (int s = 1; s < (1 << p_cnt); ++s) {
-            current = 1;
-            sets_count = 0;
+        for (int s = 1; s < (1 << p_cnt); ++s) {  // 利用位运算枚举所有因子包含的质数：选择primes[i]，s[i] == 1
+            long long factor = 1;  // 当前因子
+            int sets_count = 0;  // 可整除当前因子的质数个数
             for (int j = 0; j < p_cnt; ++j) {
                 if (!((s >> j) & 1)) {
                     continue;
                 }
-                current *= primes[j];
-                if (current > n) {
-                    current = 0;
+                factor *= primes[j];
+                if (factor > n) {
+                    factor = 0;
                     break;
                 }
                 ++sets_count;
             }
-            if (!current) {
+            if (!factor) {
                 continue;
             }
-            if (sets_count & 1) {
-                result += n / (int) current;
+            if (sets_count % 2) {
+                result += n / (int) factor;  // 加上奇数个集合交集的大小
             } else {
-                result -= n / (int) current;
+                result -= n / (int) factor;  // 减去偶数个集合交集的大小
             }
         }
         return result;
