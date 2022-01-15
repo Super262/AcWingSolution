@@ -24,7 +24,7 @@ private:
     }
 
     int Catalan(const int n) {
-        // 1 / (n + 1) * C(2 * n, n) = (2 * n)! / (n! * n!) == ((n + 1) * ... * (2 * n)) / n!
+        // 1 / (n + 1) * { C(2 * n, n) = (2 * n)! / (n! * n!) == ((n + 1) * ... * (2 * n)) / n! }
         const int mod = 1e9 + 7;
         int result = 1;
         for (auto i = n + 1; i <= 2 * n; ++i) {
