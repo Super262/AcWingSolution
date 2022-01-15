@@ -12,28 +12,26 @@
 
 using namespace std;
 
-
 class Problem0893 {
-public:
-    using namespace std;
-
-    unsigned int sg(const vector<unsigned int> &handSize,
-                    unordered_map<unsigned int, unsigned int> &stateTable,
-                    const unsigned int key) {
-        if (stateTable.find(key) != stateTable.end()) {
-            return stateTable.find(key)->second;
+    // https://www.acwing.com/solution/content/23435/
+private:
+    int SgFunc(const vector<int> &hands,
+               unordered_map<int, int> &state_table,
+               const int key) {
+        if (state_table.find(key) != state_table.end()) {
+            return state_table.find(key)->second;
         }
-        unordered_set<unsigned int> existedStates;
-        for (const unsigned int &h:handSize) {
+        unordered_set<unsigned int> existed_states;
+        for (auto &h: hands) {
             if (h > key) {
                 continue;
             }
-            existedStates.insert(sg(handSize, stateTable, key - h));
+            existed_states.insert(SgFunc(hands, state_table, key - h));
         }
-        unsigned int s = 0;
+        int s = 0;
         while (true) {
-            if (existedStates.find(s) == existedStates.end()) {
-                stateTable[key] = s;
+            if (existed_states.find(s) == existed_states.end()) {
+                state_table[key] = s;
                 return s;
             }
             ++s;
@@ -41,20 +39,20 @@ public:
     }
 
     int main() {
-        unsigned int m;
+        int m;
         scanf("%d", &m);
-        vector<unsigned int> handSize(m, 0);
-        for (unsigned int &h:handSize) {
+        vector<int> hands(m, 0);
+        for (auto &h: hands) {
             scanf("%d", &h);
         }
         int n;
         scanf("%d", &n);
-        unsigned int h;
-        unsigned int result = 0;
-        unordered_map<unsigned int, unsigned int> stateTable;
+        int result = 0;
+        unordered_map<int, int> state_table;
         while (n--) {
+            int h;
             scanf("%d", &h);
-            result ^= sg(handSize, stateTable, h);
+            result ^= SgFunc(hands, state_table, h);
         }
         if (result) {
             puts("Yes");
