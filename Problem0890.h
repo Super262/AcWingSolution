@@ -10,48 +10,45 @@
 using namespace std;
 
 class Problem0890 {
-public:
-    unsigned int countHelper(const unsigned int n, const unsigned int *primes, const unsigned int primesCount) {
-        unsigned int result = 0;
-        unsigned long long currentPrime;  // 当前选中的
-        unsigned int selectedSetsCount;
-
-
-        for (unsigned int s = 1; s < (1 << primesCount); ++s) {
-            currentPrime = 1;
-            selectedSetsCount = 0;
-            for (unsigned int j = 0; j < primesCount; ++j) {
+private:
+    int CountHelper(const int n, const int primes[], const int p_cnt) {
+        int result = 0;
+        long long current;
+        int sets_count;
+        for (int s = 1; s < (1 << p_cnt); ++s) {
+            current = 1;
+            sets_count = 0;
+            for (int j = 0; j < p_cnt; ++j) {
                 if (!((s >> j) & 1)) {
                     continue;
                 }
-                currentPrime *= primes[j];
-                if (currentPrime > n) {
-                    currentPrime = 0;
+                current *= primes[j];
+                if (current > n) {
+                    current = 0;
                     break;
                 }
-                ++selectedSetsCount;
+                ++sets_count;
             }
-            if (!currentPrime) {
+            if (!current) {
                 continue;
             }
-            if (selectedSetsCount & 1) {
-                result += n / (unsigned int) currentPrime;
+            if (sets_count & 1) {
+                result += n / (int) current;
             } else {
-                result -= n / (unsigned int) currentPrime;
+                result -= n / (int) current;
             }
         }
         return result;
     }
 
     int main() {
-        unsigned int n, m;
+        int n, m;
         scanf("%d%d", &n, &m);
-        auto primes = new unsigned int[m];
-        for (unsigned int i = 0; i < m; ++i) {
+        int primes[m];
+        for (int i = 0; i < m; ++i) {
             scanf("%d", &primes[i]);
         }
-        printf("%d\n", countHelper(n, primes, (unsigned int) m));
-        delete[] primes;
+        printf("%d\n", CountHelper(n, primes, m));
         return 0;
     }
 };
