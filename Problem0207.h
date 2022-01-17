@@ -41,7 +41,7 @@ private:
             }
             ++row;
         }
-        if (row < n) {
+        if (row <= n) {
             for (auto i = row; i <= n; ++i) {
                 if (a[i][m] > zero_value) {
                     return 2;
