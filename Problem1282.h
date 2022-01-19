@@ -12,6 +12,7 @@
 using namespace std;
 
 class Problem1282 {
+    // https://www.acwing.com/solution/content/18275/
 private:
     static const int N = 26, M = 1000010;
 
