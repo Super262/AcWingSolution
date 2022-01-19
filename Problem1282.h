@@ -41,27 +41,25 @@ private:
 
     void BuildAC(Node *root) {
         queue<Node *> q;
-        q.emplace(root);
+        for (int i = 0; i < N; ++i) {
+            if (root->children[i]) {
+                root->children[i]->fail = root;
+                q.emplace(root->children[i]);
+            } else {
+                root->children[i] = root;
+            }
+        }
         while (!q.empty()) {
             auto cur = q.front();
             q.pop();
             for (int i = 0; i < N; ++i) {
-                if (!cur->children[i]) {
-                    continue;
-                }
-                if (cur == root) {
-                    cur->children[i]->fail = root;
+                auto p = cur->children[i];
+                if (p) {
+                    p->fail = cur->fail->children[i];
+                    q.emplace(p);
                 } else {
-                    auto p = cur->fail;
-                    while (p != root && !p->children[i]) {
-                        p = p->fail;
-                    }
-                    if (p->children[i]) {
-                        p = p->children[i];
-                    }
-                    cur->children[i]->fail = p;
+                    cur->children[i] = cur->fail->children[i];
                 }
-                q.emplace(cur->children[i]);
             }
         }
     }
@@ -85,12 +83,7 @@ private:
             auto r = root;
             for (int i = 0; str[i]; ++i) {
                 int ch = str[i] - 'a';
-                while (r != root && !r->children[ch]) {
-                    r = r->fail;
-                }
-                if (r->children[ch]) {
-                    r = r->children[ch];
-                }
+                r = r->children[ch];
                 for (auto p = r; p; p = p->fail) {
                     res += p->cnt;
                     p->cnt = 0;
