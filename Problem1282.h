@@ -14,83 +14,77 @@ using namespace std;
 class Problem1282 {
     // https://www.acwing.com/solution/content/18275/
 private:
-    static const int N = 26, M = 1000010;
+    static const int N = 10010, S = 55, M = 1000010, K = 26;
+    int tree[N * S][K], counter[N * S], fail[N * S];
+    int q[N * S];
 
-    struct Node {
-        int cnt;
-        Node *children[N]{};
-        Node *fail;
-
-        Node() {
-            cnt = 0;
-            memset(children, 0, sizeof children);
-            fail = nullptr;
-        }
-    };
-
-    void InsertWord(Node *root, const char word[]) {
-        auto p = root;
-        for (int i = 0; word[i]; ++i) {
-            int ch = word[i] - 'a';
-            if (!p->children[ch]) {
-                p->children[ch] = new Node();
+    void InsertWord(const char s[], int &idx) {
+        int p = 0;
+        for (int i = 0; s[i]; ++i) {
+            auto ch = s[i] - 'a';
+            if (!tree[p][ch]) {
+                tree[p][ch] = ++idx;
             }
-            p = p->children[ch];
+            p = tree[p][ch];
         }
-        ++p->cnt;
+        ++counter[p];
     }
 
-    void BuildAC(Node *root) {
-        queue<Node *> q;
-        for (int i = 0; i < N; ++i) {
-            if (root->children[i]) {
-                root->children[i]->fail = root;
-                q.emplace(root->children[i]);
-            } else {
-                root->children[i] = root;
+    void BuildAC() {
+        int hh = 0, tt = -1;
+        for (int i = 0; i < K; ++i) {
+            if (!tree[0][i]) {
+                continue;
             }
+            q[++tt] = tree[0][i];
         }
-        while (!q.empty()) {
-            auto cur = q.front();
-            q.pop();
-            for (int i = 0; i < N; ++i) {
-                auto p = cur->children[i];
+        while (hh <= tt) {
+            auto cur = q[hh++];
+            for (int i = 0; i < K; ++i) {
+                auto p = tree[cur][i];
                 if (p) {
-                    p->fail = cur->fail->children[i];
-                    q.emplace(p);
+                    fail[p] = tree[fail[cur]][i];
+                    q[++tt] = p;
                 } else {
-                    cur->children[i] = cur->fail->children[i];
+                    tree[cur][i] = tree[fail[cur]][i];
                 }
             }
         }
+    }
+
+    int CountKey(const char s[]) {
+        int res = 0;
+        for (int i = 0, j = 0; s[i]; ++i) {
+            auto ch = s[i] - 'a';
+            j = tree[j][ch];
+            auto p = j;
+            while (p) {
+                res += counter[p];
+                counter[p] = 0;
+                p = fail[p];
+            }
+        }
+        return res;
     }
 
     int main() {
+        char str[M];
+        memset(str, 0, sizeof str);
         int t;
         scanf("%d", &t);
-        char str[M];
         while (t--) {
-            memset(str, 0, sizeof str);
-            auto root = new Node();
+            memset(tree, 0, sizeof tree);
+            memset(counter, 0, sizeof counter);
+            memset(fail, 0, sizeof fail);
             int n;
             scanf("%d", &n);
-            for (int i = 0; i < n; ++i) {
+            for (int i = 0, idx = 0; i < n; ++i) {
                 scanf("%s", str);
-                InsertWord(root, str);
+                InsertWord(str, idx);
             }
-            BuildAC(root);
+            BuildAC();
             scanf("%s", str);
-            int res = 0;
-            auto r = root;
-            for (int i = 0; str[i]; ++i) {
-                int ch = str[i] - 'a';
-                r = r->children[ch];
-                for (auto p = r; p; p = p->fail) {
-                    res += p->cnt;
-                    p->cnt = 0;
-                }
-            }
-            printf("%d\n", res);
+            printf("%d\n", CountKey(str));
         }
         return 0;
     }
