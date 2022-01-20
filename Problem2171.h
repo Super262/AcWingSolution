@@ -14,28 +14,28 @@ class Problem2171 {
 private:
     static const int INF = 0x3f3f3f3f;
 
-    void AddEdge(int a, int b, int c, int &idx, int head[], int nid[], int edge[], int flow[]) {
+    void AddEdge(int a, int b, int c, int &idx, int head[], int nid[], int edge[], int cap[]) {
         edge[idx] = b;
-        flow[idx] = c;
+        cap[idx] = c;
         nid[idx] = head[a];
         head[a] = idx;
         ++idx;
     }
 
-    bool HasPath(int s, int t, int q[], bool visited[], int d[], int pre[], int head[], int nid[], int e[], int f[]) {
+    bool HasPath(int s, int t, int q[], bool visited[], int f[], int pre[], int head[], int nid[], int e[], int cap[]) {
         int hh = 0, tt = -1;
         q[++tt] = s;
         visited[s] = true;
-        d[s] = INF;
+        f[s] = INF;
         while (hh <= tt) {
             auto cur = q[hh++];
             for (auto i = head[cur]; i != -1; i = nid[i]) {
                 auto v = e[i];
-                if (visited[v] || !f[i]) {
+                if (visited[v] || !cap[i]) {
                     continue;
                 }
                 visited[v] = true;
-                d[v] = min(d[cur], f[i]);
+                f[v] = min(f[cur], cap[i]);
                 pre[v] = i;
                 if (v == t) {
                     return true;
@@ -46,18 +46,18 @@ private:
         return false;
     }
 
-    int EK(int s, int t, int n, int head[], int nid[], int edge[], int flow[]) {
+    int EK(int s, int t, int n, int head[], int nid[], int edge[], int cap[]) {
         int r = 0;
         bool visited[n + 1];
-        int d[n + 1];
+        int flow[n + 1];
         int pre[n + 1];
         int q[n + 1];
         memset(visited, 0, sizeof visited);
-        while (HasPath(s, t, q, visited, d, pre, head, nid, edge, flow)) {
-            r += d[t];
+        while (HasPath(s, t, q, visited, flow, pre, head, nid, edge, cap)) {
+            r += flow[t];
             for (int i = t; i != s; i = edge[pre[i] ^ 1]) {
-                flow[pre[i]] -= d[t];
-                flow[pre[i] ^ 1] += d[t];
+                cap[pre[i]] -= flow[t];
+                cap[pre[i] ^ 1] += flow[t];
             }
             memset(visited, 0, sizeof visited);
         }
@@ -70,19 +70,19 @@ private:
         int head[n + 1];
         int nid[2 * m];
         int edge[2 * m];
-        int flow[2 * m];
+        int cap[2 * m];
         memset(head, -1, sizeof head);
         memset(nid, -1, sizeof nid);
         memset(edge, 0, sizeof edge);
-        memset(flow, 0, sizeof flow);
+        memset(cap, 0, sizeof cap);
         int idx = 0;
         while (m--) {
             int a, b, c;
             scanf("%d%d%d", &a, &b, &c);
-            AddEdge(a, b, c, idx, head, nid, edge, flow);
-            AddEdge(b, a, 0, idx, head, nid, edge, flow);
+            AddEdge(a, b, c, idx, head, nid, edge, cap);
+            AddEdge(b, a, 0, idx, head, nid, edge, cap);
         }
-        printf("%d\n", EK(s, t, n, head, nid, edge, flow));
+        printf("%d\n", EK(s, t, n, head, nid, edge, cap));
         return 0;
     }
 };
