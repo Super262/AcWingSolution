@@ -26,7 +26,7 @@ private:
         int c[n + 1];
         c[1] = 0;
         for (int i = 2; i <= n; ++i) {
-            c[i] = c[i - 1] + items[i - 1] - avg;
+            c[i] = c[i - 1] + items[i - 1] - avg;  // 动态求解加上前缀和、减去avg
         }
         sort(c + 1, c + n + 1);
         long long res = 0;
