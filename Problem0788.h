@@ -52,9 +52,7 @@ private:
             ++r;
             ++t;
         }
-        for (auto i = st; i <= ed; ++i) {
-            nums[i] = temp[i];
-        }
+        memcpy(nums + st, temp + st, (ed - st + 1) * sizeof(int));
         return result;
     }
 
