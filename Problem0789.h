@@ -6,15 +6,14 @@
 #define ACWINGSOLUTION_PROBLEM0789_H
 
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 class Problem0789 {
 private:
-    void queryRange(const vector<int> &nums, const int t) {
+    void QueryRange(const int nums[], const int n, const int t) {
         int l = 0;
-        int r = (int) nums.size() - 1;
+        int r = n - 1;
         while (l < r) {
             auto mid = l + (r - l) / 2;
             if (nums[mid] >= t) {
@@ -29,7 +28,7 @@ private:
         }
         printf("%d ", r);
         l = 0;
-        r = (int) nums.size() - 1;
+        r = n - 1;
         while (l < r) {
             auto mid = l + (r - l + 1) / 2;
             if (nums[mid] <= t) {
@@ -49,14 +48,14 @@ private:
         int n;
         int k;
         scanf("%d%d", &n, &k);
-        vector<int> nums(n);
+        int nums[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &nums[i]);
         }
         int t;
         for (int i = 0; i < k; ++i) {
             scanf("%d", &t);
-            queryRange(nums, t);
+            QueryRange(nums, n, t);
         }
         return 0;
     }
