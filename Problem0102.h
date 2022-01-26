@@ -13,16 +13,17 @@ using namespace std;
 class Problem0102 {
     // https://www.acwing.com/solution/content/1148/
 private:
-    bool checkAvg(const int cows[], const int &n, const int &f, const double &avg) {
-        double prefixSum[n + 1];
-        memset(prefixSum, 0, sizeof prefixSum);
+    bool CheckAvg(const int cows[], const int &n, const int &f, const double &avg) {
+        double prefix_sum[n + 1];
+        memset(prefix_sum, 0, sizeof prefix_sum);
+        // 利用前缀和，巧妙的解法，类似滑动窗口：优化O(n^2)到O(n)
         for (int i = 1; i <= n; ++i) {
-            prefixSum[i] = prefixSum[i - 1] + (cows[i] - avg);
+            prefix_sum[i] = prefix_sum[i - 1] + (cows[i] - avg);
         }
-        double preMin = prefixSum[0];
-        for (int i = 1, j = f; j <= n; ++i, ++j) {  // 巧妙的解法：优化O(n^2)到O(n)
-            preMin = min(preMin, prefixSum[i - 1]);
-            if (prefixSum[j] - preMin >= 0) {
+        double pre_min = prefix_sum[0];
+        for (int i = 1, j = f; j <= n; ++i, ++j) {
+            pre_min = min(pre_min, prefix_sum[i - 1]);  // 只检验最大值，只需比较和pre_min的差
+            if (prefix_sum[j] - pre_min >= 0) {
                 return true;
             }
         }
@@ -38,9 +39,9 @@ private:
             scanf("%d", &cows[i]);
             r = max(r, (double) cows[i]);
         }
-        while (r - l > 1e-5) {
+        while (r - l > 1e-5) {  // 二分查找浮点数
             auto mid = l + (r - l) / 2;
-            if (checkAvg(cows, n, f, mid)) {
+            if (CheckAvg(cows, n, f, mid)) {
                 l = mid;
             } else {
                 r = mid;
