@@ -10,15 +10,15 @@
 using namespace std;
 
 class Problem0801 {
-public:
-    int lowBit(const int x) {
+private:
+    int LowBit(const int x) {
         return x & (-x);
     }
 
-    int countOnes(int x) {
+    int CountOnes(int x) {
         int result = 0;
         while (x > 0) {
-            x -= lowBit(x);
+            x -= LowBit(x);
             ++result;
         }
         return result;
@@ -30,7 +30,7 @@ public:
         for (int i = 1; i <= n; ++i) {
             int x;
             scanf("%d", &x);
-            printf("%d ", countOnes(x));
+            printf("%d ", CountOnes(x));
         }
         return 0;
     }
