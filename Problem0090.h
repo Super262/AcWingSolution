@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0090 {
 private:
-    long long quickMul(long long a, long long b, const long long &p) {
+    long long QuickMul(long long a, long long b, const long long &p) {
         long long res = 0;
         while (b) {
             if (b & 1) {
@@ -26,7 +26,7 @@ private:
     int main() {
         long long a, b, p;
         scanf("%lld%lld%lld", &a, &b, &p);
-        printf("%lld\n", quickMul(a, b, p));
+        printf("%lld\n", QuickMul(a, b, p));
         return 0;
     }
 };
