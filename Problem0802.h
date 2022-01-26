@@ -11,10 +11,9 @@
 
 using namespace std;
 
-
 class Problem0802 {
 private:
-    int getIdx(int idx, const vector<int> &indices) {
+    int GetIdx(int idx, const vector<int> &indices) {
         return (int) (lower_bound(indices.begin(), indices.end(), idx) - indices.begin() + 1);  // 索引从1开始
     }
 
@@ -23,31 +22,36 @@ private:
         int m;
         scanf("%d%d", &n, &m);
         vector<int> indices;
-        vector<pair<int, int>> addReqs(n);
-        vector<pair<int, int>> queryReqs(m);
+        vector<pair<int, int>> add_reqs(n);
+        vector<pair<int, int>> query_reqs(m);
         for (int i = 0; i < n; ++i) {
-            scanf("%d%d", &addReqs[i].first, &addReqs[i].second);
-            indices.emplace_back(addReqs[i].first);
-            indices.emplace_back(addReqs[i].second);
+            int x, c;
+            scanf("%d%d", &x, &c);
+            indices.emplace_back(x);
+            add_reqs[i] = {x, c};
         }
         for (int i = 0; i < m; ++i) {
-            scanf("%d%d", &queryReqs[i].first, &queryReqs[i].second);
-            indices.emplace_back(queryReqs[i].first);
-            indices.emplace_back(queryReqs[i].second);
+            int l, r;
+            scanf("%d%d", &l, &r);
+            indices.emplace_back(l);
+            indices.emplace_back(r);
+            query_reqs[i] = {l, r};
         }
+        // 标准步骤：排序、去重
         sort(indices.begin(), indices.end());
         indices.erase(unique(indices.begin(), indices.end()), indices.end());
-        vector<int> storage(indices.size() + 1, 0);
-        for (const auto &p: addReqs) {
-            storage[getIdx(p.first, indices)] += p.second;
+
+        vector<int> data(indices.size() + 1, 0);  // 离散化后的索引从1开始，别忘记加1
+        for (const auto &p: add_reqs) {
+            data[GetIdx(p.first, indices)] += p.second;
         }
-        for (int i = 1; i < storage.size(); ++i) {
-            storage[i] += storage[i - 1];
+        for (int i = 1; i < data.size(); ++i) {
+            data[i] += data[i - 1];
         }
-        for (const auto &p: queryReqs) {
-            auto a = getIdx(p.first, indices);
-            auto b = getIdx(p.second, indices);
-            printf("%d\n", storage[b] - storage[a - 1]);
+        for (const auto &p: query_reqs) {
+            auto a = GetIdx(p.first, indices);
+            auto b = GetIdx(p.second, indices);
+            printf("%d\n", data[b] - data[a - 1]);
         }
         return 0;
     }
