@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem0102 {
     // https://www.acwing.com/solution/content/1148/
+    // 注意2个浮点数的比较方式，注意"零值"的精度
 private:
     bool CheckAvg(const int cows[], const int &n, const int &f, const double &avg) {
         double prefix_sum[n + 1];
@@ -23,7 +24,7 @@ private:
         double pre_min = prefix_sum[0];
         for (int i = 1, j = f; j <= n; ++i, ++j) {
             pre_min = min(pre_min, prefix_sum[i - 1]);  // 只检验最大值，只需比较和pre_min的差
-            if (prefix_sum[j] - pre_min >= 0) {
+            if (prefix_sum[j] - pre_min > 1e-9) {
                 return true;
             }
         }
