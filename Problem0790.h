@@ -12,8 +12,8 @@ using namespace std;
 
 class Problem0790 {
 public:
-    long double cubicRoot(const long double x) {
-        auto l = min(x, -1.0l);
+    long double GetCubicRoot(const long double x) {
+        auto l = min(x, -1.0l);  // 牢记左、右起点的临界值
         auto r = max(x, 1.0l);
         while (l < r) {
             auto mid = l + (r - l) / 2;
@@ -31,7 +31,7 @@ public:
     int main() {
         long double x;
         scanf("%Lf", &x);
-        printf("%.6Lf\n", cubicRoot(x));
+        printf("%.6Lf\n", GetCubicRoot(x));
         return 0;
     }
 };
