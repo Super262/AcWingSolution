@@ -14,15 +14,15 @@ using namespace std;
 class Problem0803 {
     // 贪心算法：左端点排序
 private:
-    vector<pair<int, int>> mergeSegments(vector<pair<int, int>> &segments) {
-        sort(segments.begin(), segments.end());
-        const int invalidValue = -2e9;
+    vector<pair<int, int>> MergeSegments(vector<pair<int, int>> &segs) {
+        sort(segs.begin(), segs.end());
+        const int invalid_value = -2e9;
         vector<pair<int, int>> result;
-        int start = invalidValue;
-        int end = invalidValue;
-        for (auto &s: segments) {
+        int start = invalid_value;
+        int end = invalid_value;
+        for (auto &s: segs) {
             if (s.first > end) {
-                if (end != invalidValue) {
+                if (end != invalid_value) {
                     result.emplace_back(pair<int, int>(start, end));
                 }
                 start = s.first;
@@ -31,7 +31,7 @@ private:
                 end = max(end, s.second);
             }
         }
-        if (end != invalidValue) {
+        if (end != invalid_value) {
             result.emplace_back(pair<int, int>(start, end));
         }
         return result;
@@ -40,11 +40,11 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        vector<pair<int, int>> segments(n);
+        vector<pair<int, int>> segs(n);
         for (int i = 0; i < n; ++i) {
-            scanf("%d%d", &segments[i].first, &segments[i].second);
+            scanf("%d%d", &segs[i].first, &segs[i].second);
         }
-        auto result = mergeSegments(segments);
+        auto result = MergeSegments(segs);
         printf("%ld", result.size());
         return 0;
     }
