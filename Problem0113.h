@@ -9,13 +9,19 @@
 // bool compare(int a, int b);
 // return bool means whether a is less than b.
 
+#include <vector>
+
+using namespace std;
+
+bool compare(int a, int b);
+
 class Solution {
     // https://www.acwing.com/solution/content/2676/
 public:
     vector<int> specialSort(int N) {
         vector<int> result(1, 1);
         for (int num = 2; num <= N; ++num) {
-            int l = 0, r = result.size() - 1;
+            int l = 0, r = (int) result.size() - 1;
             while (l <= r) {
                 auto mid = l + (r - l) / 2;
                 // 不存在相等的情况
