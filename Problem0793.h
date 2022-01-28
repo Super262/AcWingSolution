@@ -11,11 +11,11 @@
 using namespace std;
 
 class Problem0793 {
-public:
-    string mulBigInts(string a, int b) {
+private:
+    string MulBigInts(string a, int b) {
         reverse(a.begin(), a.end());
         string result;
-        unsigned long i = 0;
+        int i = 0;
         int t = 0;
         while (i < a.size() || t != 0) {
             if (i < a.size()) {
@@ -36,7 +36,7 @@ public:
         string a;
         int b;
         cin >> a >> b;
-        cout << mulBigInts(a, b) << endl;
+        cout << MulBigInts(a, b) << endl;
         return 0;
     }
 };
