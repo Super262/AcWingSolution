@@ -18,7 +18,7 @@ private:
         int graph[N + 10][N + 10];
         memset(graph, 0, sizeof graph);
         int n, r;
-        scanf("%d%d", &n, &r);  // 注意：r可能多于5000
+        scanf("%d%d", &n, &r);  // 注意：r的最大值为5001（[0:5000]共5001个点）
         r = min(r, N);
         int x, y, w;
         for (int i = 0; i < n; ++i) {
