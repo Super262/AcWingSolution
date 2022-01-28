@@ -35,6 +35,7 @@ private:
             }
         }
         printf("%lld\n", min(pos_sum, neg_sum) + abs(pos_sum - neg_sum));
+        // 如果剩下3个数没有处理掉那么左边有0 1 2 3 对应的右边 3 2 1 0 一共是3+1也就是abs(p-q)+1种可能
         printf("%lld\n", abs(pos_sum - neg_sum) + 1);
         return 0;
     }
