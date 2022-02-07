@@ -6,17 +6,19 @@
 #define ACWINGSOLUTION_PROBLEM0275_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Problem0275 {
     // https://www.acwing.com/solution/content/3954/
 private:
-    const int N = 50;
+    static const int N = 50;
     int graph[N + 1][N + 1];
-    int dp[2 * N + 1][N + 1][N + 1];
 
     int maxValue(const int m, const int n) {
+        int dp[m + n + 1][m + 1][m + 1];
+        memset(dp, 0, sizeof dp);
         for (int s = 2; s <= n + m; ++s) {
             for (int x1 = 1; x1 <= s - 1 && x1 <= m; ++x1) {
                 for (int x2 = 1; x2 <= s - 1 && x2 <= m; ++x2) {
@@ -35,14 +37,14 @@ private:
     }
 
     int main() {
-        int n, m;
-        scanf("%d%d", &n, &m);
-        for (int i = 1; i <= n; ++i) {
-            for (int j = 1; j <= m; ++j) {
+        int m, n;
+        scanf("%d%d", &m, &n);
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
                 scanf("%d", &graph[i][j]);
             }
         }
-        printf("%d\n", maxValue(n, m));
+        printf("%d\n", maxValue(m, n));
         return 0;
     }
 };
