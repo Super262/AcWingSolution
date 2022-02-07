@@ -46,7 +46,8 @@ private:
                 }
             }
             if (min_head_idx == n + 1) {
-                lis_head[count++] = height[i];
+                lis_head[count] = height[i];
+                ++count;
             } else {
                 lis_head[min_head_idx] = height[i];
             }
