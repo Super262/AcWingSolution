@@ -6,17 +6,19 @@
 #define ACWINGSOLUTION_PROBLEM1017_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Problem1017 {
 private:
-    const int N = 101;
-    int dp[N];
+    static const int N = 101;
     int height[N];
 
     int maxRange(const int n) {
+        int dp[n];
         int result = 0;
+        memset(dp, 0, sizeof dp);
         for (int i = 0; i < n; ++i) {
             dp[i] = 1;  // 在每次计算前，都要把当前dp初始化为1
             for (int j = 0; j < i; ++j) {
