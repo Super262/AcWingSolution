@@ -5,9 +5,13 @@
 #ifndef ACWINGSOLUTION_PROBLEM1018_H
 #define ACWINGSOLUTION_PROBLEM1018_H
 
+#include <iostream>
+
+using namespace std;
+
 class Problem1018 {
 private:
-    const int N = 101;
+    static const int N = 101;
     int graph[N][N];
 
     int minCost(const int n) {
