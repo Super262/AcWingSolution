@@ -16,7 +16,7 @@ class Problem1010 {
     // 1. 如果现有子序列的结尾都小于当前数，则创建新的子序列
     // 2. 将当前数放到结尾最小的子序列的后面，原结尾大于等于这个数
 private:
-    int lis(const int height[], const int n) {
+    int lds(const int height[], const int n) {
         int dp[n];
         int result = 0;
         for (int i = n - 1; i >= 0; --i) {
@@ -32,7 +32,7 @@ private:
         return result;
     }
 
-    int leastLISs(const int height[], const int n) {
+    int leastLDSs(const int height[], const int n) {
         int lis_head[n];
         int count = 0;
         for (int i = 0; i < n; ++i) {
@@ -61,8 +61,8 @@ private:
         while (scanf("%d", &height[n]) != -1) {
             ++n;
         }
-        printf("%d\n", lis(height, n));
-        printf("%d\n", leastLISs(height, n));
+        printf("%d\n", lds(height, n));
+        printf("%d\n", leastLDSs(height, n));
         return 0;
     }
 };
