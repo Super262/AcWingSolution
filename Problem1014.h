@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem1014 {
 private:
-    const int N = 1000;
+    static const int N = 1000;
     int height[N];
     int lisLength[N];
     int ldsLength[N];
