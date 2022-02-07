@@ -5,9 +5,13 @@
 #ifndef ACWINGSOLUTION_PROBLEM0482_H
 #define ACWINGSOLUTION_PROBLEM0482_H
 
+#include <iostream>
+
+using namespace std;
+
 class Problem0482 {
 private:
-    const int N = 100;
+    static const int N = 100;
     int height[N];
     int lisLength[N];
     int ldsLength[N];
