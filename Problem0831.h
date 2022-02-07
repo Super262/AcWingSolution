@@ -11,56 +11,56 @@ using namespace std;
 
 class Problem0831 {
 private:
-    void buildNextStart(const char p[], int nextStart[], const int pLen) {
-        nextStart[0] = 0;
+    void buildFail(const char p[], int fail[], const int n) {
+        fail[0] = 0;
         int right = 1;
         int left = 0;
-        while (right < pLen) {
+        while (right < n) {
             if (p[left] == p[right]) {
                 ++left;
-                nextStart[right] = left;
+                fail[right] = left;
                 ++right;
             } else if (left) {
-                left = nextStart[left - 1];
+                left = fail[left - 1];
             } else {
-                nextStart[right] = 0;
+                fail[right] = 0;
                 ++right;
             }
         }
     }
 
-    void printMatchedStart(const char s[], const int sLen, const char p[], const int nextStart[], const int pLen) {
+    void printFail(const char s[], const int s_len, const char p[], const int fail[], const int p_len) {
         int si = 0;
         int pi = 0;
-        while (si < sLen) {
+        while (si < s_len) {
             if (s[si] == p[pi]) {
                 ++si;
                 ++pi;
             } else if (pi) {
-                pi = nextStart[pi - 1];
+                pi = fail[pi - 1];
             } else {
                 ++si;
             }
-            if (pi == pLen) {
-                printf("%d ", si - pLen);
-                pi = nextStart[pi - 1];
+            if (pi == p_len) {
+                printf("%d ", si - p_len);
+                pi = fail[pi - 1];
             }
         }
         printf("\n");
     }
 
     int main() {
-        int pLen;
-        scanf("%d", &pLen);
-        char p[pLen + 1];
+        int p_len;
+        scanf("%d", &p_len);
+        char p[p_len + 1];
         scanf("%s", p);
-        int sLen;
-        scanf("%d", &sLen);
-        char s[sLen + 1];
+        int s_len;
+        scanf("%d", &s_len);
+        char s[s_len + 1];
         scanf("%s", s);
-        int nextStart[pLen];
-        buildNextStart(p, nextStart, pLen);
-        printMatchedStart(s, sLen, p, nextStart, pLen);
+        int fail[p_len];
+        buildFail(p, fail, p_len);
+        printFail(s, s_len, p, fail, p_len);
         return 0;
     }
 };
