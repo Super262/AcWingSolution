@@ -6,6 +6,7 @@
 #define ACWINGSOLUTION_PROBLEM0898_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
