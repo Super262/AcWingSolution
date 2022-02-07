@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0793 {
 private:
-    string MulBigInts(string a, int b) {
+    string MulBigInts(string &a, int b) {
         reverse(a.begin(), a.end());
         string result;
         int i = 0;
