@@ -11,61 +11,61 @@ using namespace std;
 
 class Problem0187 {
 private:
-    const int N = 50;
-    int lisHead[N];
-    int ldsHead[N];
+    static const int N = 50;
+    int lis_head[N];
+    int lds_head[N];
     int height[N];
 
-    void dfs(const int n, const int numIdx, const int lisCount, const int ldsCount, int &result) {
+    void dfs(const int n, const int idx, const int lis_cnt, const int lds_cnt, int &result) {
         // 剪枝：当前结果比已有结果差，直接返回
-        if (lisCount + ldsCount >= result) {
+        if (lis_cnt + lds_cnt >= result) {
             return;
         }
-        if (numIdx == n) {
-            result = lisCount + ldsCount;
+        if (idx == n) {
+            result = lis_cnt + lds_cnt;
             return;
         }
         // 尝试在所有的LIS中寻找插入位置或建立新的LIS
         int k = -1;
-        for (int i = 0; i < lisCount; ++i) {
-            if (lisHead[i] <= height[numIdx]) {
+        for (int i = 0; i < lis_cnt; ++i) {
+            if (lis_head[i] <= height[idx]) {
                 continue;
             }
-            if (k == -1 || lisHead[i] < lisHead[k]) {
+            if (k == -1 || lis_head[i] < lis_head[k]) {
                 k = i;
             }
         }
         if (k == -1) {
-            auto t = lisHead[lisCount];
-            lisHead[lisCount] = height[numIdx];
-            dfs(n, numIdx + 1, lisCount + 1, ldsCount, result);
-            lisHead[lisCount] = t;
+            auto t = lis_head[lis_cnt];
+            lis_head[lis_cnt] = height[idx];
+            dfs(n, idx + 1, lis_cnt + 1, lds_cnt, result);
+            lis_head[lis_cnt] = t;
         } else {
-            auto t = lisHead[k];
-            lisHead[k] = height[numIdx];
-            dfs(n, numIdx + 1, lisCount, ldsCount, result);
-            lisHead[k] = t;
+            auto t = lis_head[k];
+            lis_head[k] = height[idx];
+            dfs(n, idx + 1, lis_cnt, lds_cnt, result);
+            lis_head[k] = t;
         }
         // 尝试在所有的LDS中寻找插入位置或建立新的LDS
         k = -1;
-        for (int i = 0; i < ldsCount; ++i) {
-            if (ldsHead[i] >= height[numIdx]) {
+        for (int i = 0; i < lds_cnt; ++i) {
+            if (lds_head[i] >= height[idx]) {
                 continue;
             }
-            if (k == -1 || ldsHead[i] > ldsHead[k]) {
+            if (k == -1 || lds_head[i] > lds_head[k]) {
                 k = i;
             }
         }
         if (k == -1) {
-            auto t = ldsHead[ldsCount];
-            ldsHead[ldsCount] = height[numIdx];
-            dfs(n, numIdx + 1, lisCount, ldsCount + 1, result);
-            ldsHead[ldsCount] = t;
+            auto t = lds_head[lds_cnt];
+            lds_head[lds_cnt] = height[idx];
+            dfs(n, idx + 1, lis_cnt, lds_cnt + 1, result);
+            lds_head[lds_cnt] = t;
         } else {
-            auto t = ldsHead[k];
-            ldsHead[k] = height[numIdx];
-            dfs(n, numIdx + 1, lisCount, ldsCount, result);
-            ldsHead[k] = t;
+            auto t = lds_head[k];
+            lds_head[k] = height[idx];
+            dfs(n, idx + 1, lis_cnt, lds_cnt, result);
+            lds_head[k] = t;
         }
     }
 
