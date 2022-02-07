@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0898 {
 private:
-    const int N = 510;
+    static const int N = 510;
     int dp[N][N];
     int matrix[N][N];
 
