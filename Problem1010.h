@@ -17,7 +17,7 @@ class Problem1010 {
     // 2. 将当前数放到结尾最小的子序列的后面，原结尾大于等于这个数
 private:
     int lis(const int height[], const int n) {
-        auto dp = new int[n];
+        int dp[n];
         int result = 0;
         for (int i = n - 1; i >= 0; --i) {
             dp[i] = 1;
@@ -29,42 +29,39 @@ private:
             }
             result = max(result, dp[i]);
         }
-        delete[] dp;
         return result;
     }
 
     int leastLISs(const int height[], const int n) {
-        auto lisHead = new int[n];
+        int lis_head[n];
         int count = 0;
         for (int i = 0; i < n; ++i) {
-            int minHeadIdx = n + 1;
+            auto min_head_idx = n + 1;
             for (int j = 0; j < count; ++j) {
-                if (lisHead[j] < height[i]) {
+                if (lis_head[j] < height[i]) {
                     continue;
                 }
-                if (minHeadIdx == n + 1 || lisHead[j] < lisHead[minHeadIdx]) {
-                    minHeadIdx = j;
+                if (min_head_idx == n + 1 || lis_head[j] < lis_head[min_head_idx]) {
+                    min_head_idx = j;
                 }
             }
-            if (minHeadIdx == n + 1) {
-                lisHead[count++] = height[i];
+            if (min_head_idx == n + 1) {
+                lis_head[count++] = height[i];
             } else {
-                lisHead[minHeadIdx] = height[i];
+                lis_head[min_head_idx] = height[i];
             }
         }
-        delete[] lisHead;
         return count;
     }
 
     int main() {
-        auto height = new int[1000];
+        int height[1000];
         int n = 0;
-        while (cin >> height[n]) {
+        while (scanf("%d", &height[n]) != -1) {
             ++n;
         }
         printf("%d\n", lis(height, n));
         printf("%d\n", leastLISs(height, n));
-        delete[] height;
         return 0;
     }
 };
