@@ -11,10 +11,10 @@ using namespace std;
 
 class Problem1016 {
 private:
-    int maxSumLIS(const int *a, const int N) {
+    int maxSumLIS(const int *a, const int n) {
         int result = 0;
-        auto dp = new int[N];
-        for (int i = 0; i < N; ++i) {
+        int dp[n];
+        for (int i = 0; i < n; ++i) {
             dp[i] = a[i];
             for (int j = 0; j < i; ++j) {
                 if (a[j] >= a[i]) {
@@ -24,19 +24,17 @@ private:
             }
             result = max(dp[i], result);
         }
-        delete[] dp;
         return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto a = new int[n];
+        int a[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &a[i]);
         }
         printf("%d\n", maxSumLIS(a, n));
-        delete[] a;
         return 0;
     }
 };
