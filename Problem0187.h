@@ -46,7 +46,7 @@ private:
             dfs(n, idx + 1, lds_cnt, lis_cnt, result);
             lds_tail[k] = t;
         }
-        // 尝试在所有的LDS中寻找插入位置或建立新的LDS
+        // 尝试在所有的LIS中寻找插入位置或建立新的LIS
         k = -1;
         for (int i = 0; i < lis_cnt; ++i) {
             if (lis_tail[i] >= height[idx]) {
