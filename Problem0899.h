@@ -10,12 +10,10 @@
 
 using namespace std;
 
-
 class Problem0899 {
 private:
-
-    const int N = 1010;
-    const int M = 20;
+    static const int N = 1010;
+    static const int M = 20;
     int dp[M][M];
     char strs[N][M];
     char temp[M];
@@ -53,7 +51,7 @@ private:
             int maxStep;
             scanf("%s%d", temp + 1, &maxStep);
             for (int j = 0; j < n; ++j) {
-                if (editDistance(strs[j], strlen(strs[j] + 1), temp, strlen(temp + 1)) <= maxStep) {
+                if (editDistance(strs[j], (int) strlen(strs[j] + 1), temp, (int) strlen(temp + 1)) <= maxStep) {
                     ++result;
                 }
             }
