@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0897 {
 private:
-    const int N = 1010;
+    static const int N = 1010;
     char s1[N];
     char s2[N];
     int dp[N][N];
