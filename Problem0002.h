@@ -16,18 +16,18 @@ private:
         int size;
     };
 
-    const int N = 1010;
-    const int V = 1010;
+    static const int N = 1010;
+    static const int V = 1010;
     int dp[V];
     Item items[N];
 
-    int knapsackMaxValue(const int itemsNum, const int packVolume) {
-        for (int i = 0; i < itemsNum; ++i) {
-            for (int j = packVolume; j >= items[i].size; --j) {
+    int knapsackMaxValue(const int n, const int v) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = v; j >= items[i].size; --j) {
                 dp[j] = max(dp[j], dp[j - items[i].size] + items[i].value);
             }
         }
-        return dp[packVolume];
+        return dp[v];
     }
 
     int main() {
