@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem0272 {
     // dp[i][j]表示所有由序列a的前i个字母和序列b的前j个字母构成的，且以b[j]结尾的公共上升子序列
+    // https://www.acwing.com/solution/content/4955/
 private:
     static const int N = 3010;
     int dp[N][N];
