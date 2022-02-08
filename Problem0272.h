@@ -13,20 +13,20 @@ using namespace std;
 class Problem0272 {
     // dp[i][j]表示所有由序列a的前i个字母和序列b的前j个字母构成的，且以b[j]结尾的公共上升子序列
 private:
-    const int N = 3010;
+    static const int N = 3010;
     int dp[N][N];
     int a[N], b[N];
 
     int longestCommonIS(const int l1, const int l2) {
         // 不要忘记优化过程
         for (int i = 1; i <= l1; ++i) {
-            int maxPreJ = 0;
+            int max_pre_j = 0;
             for (int j = 1; j <= l2; ++j) {
                 dp[i][j] = dp[i - 1][j];
                 if (a[i] == b[j]) {
-                    dp[i][j] = max(maxPreJ + 1, dp[i][j]);
-                } else if (b[j] < a[i]){
-                    maxPreJ = max(maxPreJ, dp[i][j]);
+                    dp[i][j] = max(max_pre_j + 1, dp[i][j]);
+                } else if (b[j] < a[i]) {
+                    max_pre_j = max(max_pre_j, dp[i][j]);
                 }
             }
         }
