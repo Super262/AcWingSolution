@@ -13,7 +13,7 @@ using namespace std;
 
 class Problem0532 {
 private:
-    int knapsack(const int items[], const int &n) {
+    int knapsack(const int items[], const int n) {
         int m = 0;
         for (int i = 0; i < n; ++i) {  // 取最大值作为背包的容积
             m = max(m, items[i]);
