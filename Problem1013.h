@@ -23,13 +23,12 @@ private:
         }
     };
 
-    int knapsack(const vector<vector<Item>> &items, const int m, int solution[]) {
-        const int n = (int) items.size() - 1;
+    int knapsack(const vector<vector<Item>> &items, const int n, const int m, int solution[]) {
         int dp[n + 1][m + 1];
         memset(dp, 0, sizeof dp);
         for (int i = 1; i <= n; ++i) {
             for (int j = 0; j <= m; ++j) {
-                dp[i][j] = dp[i - 1][j];  // 不要忘记这一行！
+                dp[i][j] = dp[i - 1][j];  // 使用二维数组时，不要忘记这一行！
                 for (const auto &it: items[i]) {  // 组内遍历
                     if (j < it.v) {
                         continue;
@@ -64,7 +63,7 @@ private:
                 scanf("%d", &items[i][j].w);
             }
         }
-        printf("%d\n", knapsack(items, m, solution));
+        printf("%d\n", knapsack(items, n, m, solution));
         for (int i = 1; i <= n; ++i) {
             printf("%d %d\n", i, solution[i]);
         }
