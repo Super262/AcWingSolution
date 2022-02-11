@@ -24,7 +24,7 @@ private:
         }
     };
 
-    const int N = 100;
+    static const int N = 100;
     int dp[N * N + 10];
     Stone stones[N + 10];
 
