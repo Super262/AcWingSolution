@@ -13,19 +13,18 @@ using namespace std;
 class Problem1023 {
 public:
     int main() {
-        const int bookPrice[4]{10, 20, 50, 100};
+        const int price[4]{10, 20, 50, 100};
         int n;
         scanf("%d", &n);
-        auto dp = new int[n + 1];
-        memset(dp, 0, sizeof(int) * (n + 1));
+        int dp[n + 1];
+        memset(dp, 0, sizeof dp);
         dp[0] = 1;
-        for (int p : bookPrice) {
+        for (const int &p: price) {
             for (int j = p; j <= n; ++j) {
                 dp[j] += dp[j - p];
             }
         }
         printf("%d\n", dp[n]);
-        delete[] dp;
         return 0;
     }
 };
