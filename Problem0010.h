@@ -25,7 +25,7 @@ private:
                   vector<vector<int>> &dp,
                   const vector<vector<int>> &graph) {
         for (auto son: graph[root]) {  // 循环物品组
-            knapsack(items, m, son, dp, graph);
+            knapsack(items, m, son, dp, graph);  // 更新子结点状态
             for (int j = m - items[root].v; j >= 0; --j) {  // 循环体积
                 // 遍历所有可能方案：暂时不选择根结点时的方案
                 for (int child_v = 0; child_v <= j; ++child_v) {  // 循环决策
