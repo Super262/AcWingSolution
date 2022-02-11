@@ -13,17 +13,15 @@ using namespace std;
 class Problem0900 {
 public:
     int combinationsOfSum(const int sum) {
-        auto dp = new int[sum + 1];
-        memset(dp, 0, sizeof(int) * (sum + 1));
+        int dp[sum + 1];
+        memset(dp, 0, sizeof dp);
         dp[0] = 1;  // 不要忘记初始化！
         for (int s = 1; s <= sum; ++s) {
             for (int num = s; num <= sum; ++num) {
                 dp[num] = (dp[num] + dp[num - s]) % 1000000007;
             }
         }
-        int result = dp[sum];
-        delete[] dp;
-        return result;
+        return dp[sum];
     }
 
     int main() {
