@@ -19,13 +19,13 @@ private:
     int dp[1010];
     Item items[110];
 
-    int knapsack(const int n, const int packVolume) {
+    int knapsack(const int n, const int v) {
         for (int i = 0; i < n; ++i) {
-            for (int j = packVolume; j >= items[i].v; --j) {
+            for (int j = v; j >= items[i].v; --j) {
                 dp[j] = max(dp[j], dp[j - items[i].v] + items[i].w);
             }
         }
-        return dp[packVolume];
+        return dp[v];
     }
 
     int main() {
