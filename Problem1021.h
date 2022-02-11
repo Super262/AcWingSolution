@@ -9,7 +9,7 @@
 
 class Problem1021 {
 private:
-    const int N = 15, M = 3010;
+    static const int N = 15, M = 3010;
     int items[N];
     long long dp[M];
 
