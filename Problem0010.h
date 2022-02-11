@@ -48,7 +48,7 @@ private:
         scanf("%d%d", &n, &m);
         vector<Item> items(n + 1);
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
-        vector<vector<int>> graph(n + 1, vector<int>());
+        vector<vector<int>> graph(n + 1, vector<int>());  // 注意：这里只保存单向边（父->子）
         int root = 0;
         for (int i = 1; i <= n; ++i) {
             int t;
