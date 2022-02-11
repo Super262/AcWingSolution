@@ -24,9 +24,9 @@ private:
                   const int root,
                   vector<vector<int>> &dp,
                   const vector<vector<int>> &graph) {
-        for (auto son: graph[root]) {  // 循环物品组
+        for (const auto &son: graph[root]) {  // 循环物品组
             knapsack(items, m, son, dp, graph);  // 更新子结点状态
-            for (int j = m - items[root].v; j >= 0; --j) {  // 循环体积
+            for (auto j = m - items[root].v; j >= 0; --j) {  // 循环体积
                 // 遍历所有可能方案：暂时不选择根结点时的方案
                 for (int child_v = 0; child_v <= j; ++child_v) {  // 循环决策
                     dp[root][j] = max(dp[root][j], dp[root][j - child_v] + dp[son][child_v]);
@@ -34,12 +34,12 @@ private:
             }
         }
         // 将根结点加入背包
-        for (int j = m; j >= items[root].v; --j) {
+        for (auto j = m; j >= items[root].v; --j) {
             // 下列语句是直接赋值语句，而不是"dp[root][j] = max(dp[root][j], dp[root][j - items[root].v] + items[root].w);"
             dp[root][j] = dp[root][j - items[root].v] + items[root].w;
         }
         // 当背包容量小于根结点体积时，无法向背包中加入任何物品
-        for (int j = items[root].v - 1; j >= 0; --j) {
+        for (auto j = items[root].v - 1; j >= 0; --j) {
             dp[root][j] = 0;
         }
     }
