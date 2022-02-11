@@ -26,12 +26,12 @@ private:
         }
         dp[x][y] = 1;
         for (int i = 0; i < 4; ++i) {
-            auto nextX = x + dx[i];
-            auto nextY = y + dy[i];
-            if (nextX < 0 || nextX >= n || nextY < 0 || nextY >= m || matrix[nextX][nextY] >= matrix[x][y]) {
+            auto nx = x + dx[i];
+            auto ny = y + dy[i];
+            if (nx < 0 || nx >= n || ny < 0 || ny >= m || matrix[nx][ny] >= matrix[x][y]) {
                 continue;
             }
-            dp[x][y] = max(dp[x][y], dfs(nextX, nextY, n, m) + 1);
+            dp[x][y] = max(dp[x][y], dfs(nx, ny, n, m) + 1);
         }
         return dp[x][y];
     }
@@ -44,13 +44,13 @@ private:
                 scanf("%d", &matrix[i][j]);
             }
         }
-        int result = 0;
+        int res = 0;
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < m; ++j) {
-                result = max(result, dfs(i, j, n, m));
+                res = max(res, dfs(i, j, n, m));
             }
         }
-        printf("%d\n", result);
+        printf("%d\n", res);
         return 0;
     }
 };
