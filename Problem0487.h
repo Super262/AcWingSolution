@@ -26,7 +26,7 @@ private:
                 for (int s = 0; s < (1 << accessories[i].size()); ++s) {
                     auto v = masters[i].first;
                     auto vw = masters[i].second;
-                    for (int k = 0; k < (int) accessories[i].size(); ++k) {
+                    for (int k = 0; k < (int) accessories[i].size(); ++k) {  // 巧妙的做法：二进制状态压缩
                         if (((s >> k) & 1) == 0) {
                             continue;
                         }
