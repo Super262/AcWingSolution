@@ -15,7 +15,7 @@ class Problem0487 {
 private:
     int knapsack(const vector<pair<int, int>> &masters,
                  const vector<vector<pair<int, int>>> &accessories,
-                 const int &m) {
+                 const int m) {
         int dp[m + 1];
         memset(dp, 0, sizeof dp);
         for (int i = 1; i < (int) masters.size(); ++i) {
