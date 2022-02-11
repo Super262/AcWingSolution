@@ -24,11 +24,11 @@ private:
     Item items[110][110];
     int dp[110];
 
-    int knapsack(const int kindsNum, const int packVolume) {
+    int knapsack(const int kinds, const int m) {
         // dp[i][j]表示只从前i组物品中选，总体积不大于j的所有选法，
         // 所以注意这里的循环顺序：组、体积、物品
-        for (int i = 0; i < kindsNum; ++i) {
-            for (int v = packVolume; v >= 0; --v) {
+        for (int i = 0; i < kinds; ++i) {
+            for (int v = m; v >= 0; --v) {
                 for (int j = 0; items[i][j].size != -1; ++j) {
                     if (v < items[i][j].size) {
                         continue;
@@ -37,7 +37,7 @@ private:
                 }
             }
         }
-        return dp[packVolume];
+        return dp[m];
     }
 
     int main() {
