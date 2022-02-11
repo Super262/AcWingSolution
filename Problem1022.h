@@ -17,19 +17,19 @@ private:
         int v1, v2;
     };
 
-    const int N = 1001, M = 500, K = 100;
+    static const int N = 1001, M = 500, K = 100;
     int dp[N][M];
     Item items[K];
 
-    int knapsack(const int n, const int pack1, const int pack2) {
+    int knapsack(const int n, const int m1, const int m2) {
         for (int i = 0; i < n; ++i) {
-            for (int j = pack1; j >= items[i].v1; --j) {
-                for (int k = pack2 - 1; k >= items[i].v2; --k) {
+            for (int j = m1; j >= items[i].v1; --j) {
+                for (int k = m2 - 1; k >= items[i].v2; --k) {  // 注意细节：剩余的体力值必须大于1
                     dp[j][k] = max(dp[j][k], dp[j - items[i].v1][k - items[i].v2] + 1);
                 }
             }
         }
-        return dp[pack1][pack2 - 1];
+        return dp[m1][m2 - 1];
     }
 
     int main() {
@@ -39,11 +39,12 @@ private:
             scanf("%d%d", &items[i].v1, &items[i].v2);
         }
         int result = knapsack(k, n, m);
-        int minCost = m - 1;
-        while (minCost > 0 && dp[n][minCost - 1] == result) {
-            --minCost;
+        // 牢记以下求解过程
+        int min_cost = m - 1;
+        while (min_cost > 0 && dp[n][min_cost - 1] == result) {
+            --min_cost;
         }
-        printf("%d %d\n", result, m - minCost);
+        printf("%d %d\n", result, m - min_cost);
         return 0;
     }
 };
