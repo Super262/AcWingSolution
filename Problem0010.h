@@ -28,8 +28,8 @@ private:
             knapsack(items, m, son, dp, graph);
             for (int j = m - items[root].v; j >= 0; --j) {  // 循环体积
                 // 遍历所有可能方案：暂时不选择根结点时的方案
-                for (int childV = 0; childV <= j; ++childV) {  // 循环决策
-                    dp[root][j] = max(dp[root][j], dp[root][j - childV] + dp[son][childV]);
+                for (int child_v = 0; child_v <= j; ++child_v) {  // 循环决策
+                    dp[root][j] = max(dp[root][j], dp[root][j - child_v] + dp[son][child_v]);
                 }
             }
         }
