@@ -12,8 +12,8 @@ using namespace std;
 
 class Problem1024 {
 private:
-    const int V = 20001;
-    const int N = 30;
+    static const int V = 20001;
+    static const int N = 30;
     int items[N];
     int dp[V];
 
