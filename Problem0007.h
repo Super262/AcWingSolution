@@ -28,8 +28,8 @@ private:
             auto w = items[i].w;
             auto s = items[i].s;
             if (s == 0) {
-                for (int j = items[i].v; j <= m; ++j) {
-                    dp[j] = max(dp[j - items[i].v] + items[i].w, dp[j]);
+                for (int j = v; j <= m; ++j) {
+                    dp[j] = max(dp[j - v] + w, dp[j]);
                 }
             } else {
                 if (s == -1) {
