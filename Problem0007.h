@@ -6,6 +6,7 @@
 #define ACWINGSOLUTION_PROBLEM0007_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ private:
         int s;
     };
 
-    int knapsack(const Item items[], const int &n, const int &m) {
+    int knapsack(const Item items[], const int n, const int m) {
         int dp[m + 1];
         int temp[m + 1];
         int q[m + 1];
