@@ -21,37 +21,36 @@ private:
         }
     };
 
-
     int knapsack(Item items[], const int m, const int n) {
         const int MOD = 1000000007;
-        int pathsNum[m + 1];
+        int counter[m + 1];
         int dp[m + 1];
-        memset(pathsNum, 0, sizeof pathsNum);
+        memset(counter, 0, sizeof counter);
         memset(dp, 0, sizeof dp);
-        pathsNum[0] = 1;
+        counter[0] = 1;
         for (int i = 1; i <= n; ++i) {
             for (int j = m; j >= items[i].v; --j) {
-                int maxV = max(dp[j], dp[j - items[i].v] + items[i].w);
+                auto maximal = max(dp[j], dp[j - items[i].v] + items[i].w);
                 long count = 0;
-                if (maxV == dp[j]) {
-                    count += pathsNum[j];
+                if (maximal == dp[j]) {
+                    count += counter[j];
                     count %= MOD;
                 }
-                if (maxV == dp[j - items[i].v] + items[i].w) {
-                    count += pathsNum[j - items[i].v];
+                if (maximal == dp[j - items[i].v] + items[i].w) {
+                    count += counter[j - items[i].v];
                     count %= MOD;
                 }
-                dp[j] = maxV;
-                pathsNum[j] = (int) count;
+                dp[j] = maximal;
+                counter[j] = (int) count;
             }
         }
         long result = 0;
-        int maxV = dp[m];
+        auto maximal = dp[m];
         for (int i = 0; i <= m; ++i) {
-            if (maxV != dp[i]) {
+            if (maximal != dp[i]) {
                 continue;
             }
-            result += pathsNum[i];
+            result += counter[i];
             result %= MOD;
         }
         return (int) result;
