@@ -23,7 +23,7 @@ private:
         }
     };
 
-    int knapsack(const vector<vector<Item>> &items, const int &m, int solution[]) {
+    int knapsack(const vector<vector<Item>> &items, const int m, int solution[]) {
         const int n = (int) items.size() - 1;
         int dp[n + 1][m + 1];
         memset(dp, 0, sizeof dp);
@@ -38,14 +38,14 @@ private:
                 }
             }
         }
-        auto currentV = m;
+        auto current_v = m;
         for (int i = n; i >= 1; --i) {
             for (const auto &it: items[i]) {  // 组内遍历
-                if (it.v > currentV || dp[i][currentV] != dp[i - 1][currentV - it.v] + it.w) {
+                if (it.v > current_v || dp[i][current_v] != dp[i - 1][current_v - it.v] + it.w) {
                     continue;
                 }
                 solution[i] = it.v;
-                currentV -= it.v;
+                current_v -= it.v;
                 break;
             }
         }
