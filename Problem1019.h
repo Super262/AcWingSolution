@@ -16,7 +16,7 @@ private:
         int v, w, s;
     };
 
-    const int M = 500, N = 6001;
+    static const int M = 500, N = 6001;
     Item items[M];
     int dp[N];
     int pre[N];
