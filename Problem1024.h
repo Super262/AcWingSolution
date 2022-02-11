@@ -17,22 +17,22 @@ private:
     int items[N];
     int dp[V];
 
-    int knapsack(const int n, const int packVolume) {
+    int knapsack(const int n, const int m) {
         for (int i = 0; i < n; ++i) {
-            for (int j = packVolume; j >= items[i]; --j) {
+            for (int j = m; j >= items[i]; --j) {
                 dp[j] = max(dp[j - items[i]] + items[i], dp[j]);
             }
         }
-        return dp[packVolume];
+        return dp[m];
     }
 
     int main() {
-        int packVolume, n;
-        scanf("%d%d", &packVolume, &n);
+        int m, n;
+        scanf("%d%d", &m, &n);
         for (int i = 0; i < n; ++i) {
             scanf("%d", &items[i]);
         }
-        printf("%d\n", packVolume - knapsack(n, packVolume));
+        printf("%d\n", m - knapsack(n, m));
         return 0;
     }
 };
