@@ -35,6 +35,7 @@ private:
         }
         // 将根结点加入背包
         for (int j = m; j >= items[root].v; --j) {
+            // 下列语句是直接赋值语句，而不是"dp[root][j] = max(dp[root][j], dp[root][j - items[root].v] + items[root].w);"
             dp[root][j] = dp[root][j - items[root].v] + items[root].w;
         }
         // 当背包容量小于根结点体积时，无法向背包中加入任何物品
