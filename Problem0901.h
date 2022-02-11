@@ -13,11 +13,11 @@ class Problem0901 {
     // 如果题意是寻找不增序列（相邻两项可以相等），动态规划思想失效（状态转移存在环），需使用图论中的最长路算法
     // 之所以使用DFS，是因为DFS会主动按照拓扑顺序搜索，遵循动态规划的思想
 private:
-    const int N = 300;
+    static const int N = 300;
     int matrix[N][N];
     int dp[N][N];
-    int dx[] = {0, 1, -1, 0};
-    int dy[] = {1, 0, 0, -1};
+    const int dx[4] = {0, 1, -1, 0};
+    const int dy[4] = {1, 0, 0, -1};
 
     int dfs(const int x, const int y, const int n, const int m) {
         // 不要忘记递归退出条件！
