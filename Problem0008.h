@@ -15,11 +15,8 @@ public:
     int main() {
         int N, V, M;
         scanf("%d%d%d", &N, &V, &M);
-        auto dp = new int *[V + 1];
-        for (int i = 0; i <= V; ++i) {
-            dp[i] = new int[M + 1];
-            memset(dp[i], 0, sizeof(int) * (M + 1));
-        }
+        int dp[V + 1][M + 1];
+        memset(dp, 0, sizeof dp);
         for (int k = 0; k < N; ++k) {
             int v, m, w;
             scanf("%d%d%d", &v, &m, &w);
@@ -30,10 +27,6 @@ public:
             }
         }
         printf("%d\n", dp[V][M]);
-        for (int i = 0; i <= V; ++i) {
-            delete[] dp[i];
-        }
-        delete[] dp;
         return 0;
     }
 };
