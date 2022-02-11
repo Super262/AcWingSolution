@@ -20,7 +20,7 @@ private:
         int w;
     };
 
-    void knapsack(Item items[], const int &n, const int &m) {
+    void knapsack(Item items[], const int n, const int m) {
         int dp[n + 2][m + 1];
         memset(dp, 0, sizeof dp);
         for (int i = n; i >= 1; --i) {
@@ -32,13 +32,13 @@ private:
                 dp[i][j] = max(dp[i][j], dp[i + 1][j - items[i].v] + items[i].w);
             }
         }
-        auto currentV = m;
+        auto current_v = m;
         for (int i = 1; i <= n; ++i) {
-            if (currentV < items[i].v || dp[i][currentV] != dp[i + 1][currentV - items[i].v] + items[i].w) {
+            if (current_v < items[i].v || dp[i][current_v] != dp[i + 1][current_v - items[i].v] + items[i].w) {
                 continue;
             }
             printf("%d ", i);
-            currentV -= items[i].v;
+            current_v -= items[i].v;
         }
         printf("\n");
     }
