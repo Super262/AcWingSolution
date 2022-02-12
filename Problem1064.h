@@ -33,7 +33,7 @@ private:
         return false;
     }
 
-    vector<vector<int>> getPossiblePrevIdxes(vector<int> states, const int n) {
+    vector<vector<int>> getPossiblePrevIdxes(const vector<int> &states, const int n) {
         vector<vector<int>> res(states.size(), vector<int>());
         for (int i = 0; i < (int) states.size(); ++i) {
             for (int j = 0; j < (int) states.size(); ++j) {
