@@ -27,8 +27,9 @@ private:
     bool validState(const int s, const int n) {
         // N < 3，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 2) 可以大于 (N - 1)
         for (int i = 0; i < n; ++i) {
-            if ((s >> i & 1) == 1 && ((s >> (i + 1) & 1) == 1 || (s >> (i + 2) & 1) == 1))
+            if ((s >> i & 1) == 1 && ((s >> (i + 1) & 1) == 1 || (s >> (i + 2) & 1) == 1)) {
                 return false;
+            }
         }
         return true;
     }
