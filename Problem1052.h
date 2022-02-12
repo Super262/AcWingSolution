@@ -13,7 +13,7 @@ using namespace std;
 class Problem1052 {
     // https://www.acwing.com/solution/content/55449/
 private:
-    void buildNext(const char s[], const int n, int fail[]) {
+    void buildFail(const char s[], const int n, int fail[]) {
         fail[0] = 0;
         int l = 0;
         int r = 1;
@@ -33,7 +33,7 @@ private:
 
     int stateMachine(const int n, const char str[], const int m, int fail[]) {
         const int MOD = 1000000007;
-        buildNext(str, m, fail);
+        buildFail(str, m, fail);
         int dp[n + 1][m + 1];
         memset(dp, 0, sizeof dp);
         dp[0][0] = 1;
