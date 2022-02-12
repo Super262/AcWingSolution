@@ -49,12 +49,12 @@ private:
         int dp[2][1 << m][1 << m];
         memset(dp, 0, sizeof dp);
         for (int i = 1; i <= n + 2; ++i) {
-            for (int a = 0; a < (int) states.size(); ++a) {
-                for (int b = 0; b < (int) states.size(); ++b) {
+            for (int a = 0; a < (int) states.size(); ++a) {  // 枚举第i-2行状态
+                for (int b = 0; b < (int) states.size(); ++b) {  // 枚举第i-1行状态
                     if (graph[i - 1] & states[b]) {
                         continue;
                     }
-                    for (int c = 0; c < (int) states.size(); ++c) {
+                    for (int c = 0; c < (int) states.size(); ++c) {  // 枚举第i行状态
                         if (graph[i] & states[c]) {
                             continue;
                         }
