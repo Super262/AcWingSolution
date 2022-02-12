@@ -33,43 +33,43 @@ private:
     }
 
     vector<vector<int>> getPossiblePrevIdxes(vector<int> states, const int n) {
-        vector<vector<int>> result(states.size(), vector<int>());
+        vector<vector<int>> res(states.size(), vector<int>());
         for (int i = 0; i < states.size(); ++i) {
             for (int j = 0; j < states.size(); ++j) {
                 if ((states[i] & states[j]) || hasContinousOnes(states[i] | states[j], n)) {
                     continue;
                 }
-                result[i].emplace_back(j);
+                res[i].emplace_back(j);
             }
         }
-        return result;
+        return res;
     }
 
     long long stateCompression(const int n, const int k) {
-        vector<int> currentS;
-        vector<int> numOfOnes;
+        vector<int> states;
+        vector<int> num_of_ones;
         // 预处理出第i行所有可能的合法状态
         for (int s = 0; s < (1 << n); ++s) {
             if (hasContinousOnes(s, n)) {
                 continue;
             }
-            currentS.emplace_back(s);
-            numOfOnes.emplace_back(countOnes(s, n));
+            states.emplace_back(s);
+            num_of_ones.emplace_back(countOnes(s, n));
         }
         // 获取第(i-1)行的所有可能状态
-        auto prevSIdxes = getPossiblePrevIdxes(currentS, n);
+        auto prev_state = getPossiblePrevIdxes(states, n);
         // dp[i][k][s] 表示前i行共摆放了k个国王、第i行摆放方案为s（1表示摆放，0表示空白）的方案数量
         vector<vector<vector<long long>>> dp(n + 2, vector<vector<long long>>(k + 1, vector<long long>(1 << n, 0)));
         // 不要忘记初始化
         dp[0][0][0] = 1;
         for (int i = 1; i <= n + 1; ++i) {
             for (int j = 0; j <= k; ++j) {
-                for (int curSIdx = 0; curSIdx < currentS.size(); ++curSIdx) {
-                    for (int prevSIdx: prevSIdxes[curSIdx]) {
-                        if (numOfOnes[curSIdx] + numOfOnes[prevSIdx] > j) {
+                for (int cur = 0; cur < states.size(); ++cur) {
+                    for (int prev: prev_state[cur]) {
+                        if (num_of_ones[cur] + num_of_ones[prev] > j) {
                             continue;
                         }
-                        dp[i][j][currentS[curSIdx]] += dp[i - 1][j - numOfOnes[curSIdx]][currentS[prevSIdx]];
+                        dp[i][j][states[cur]] += dp[i - 1][j - num_of_ones[cur]][states[prev]];
                     }
                 }
             }
