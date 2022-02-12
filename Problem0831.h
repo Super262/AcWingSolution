@@ -12,19 +12,19 @@ using namespace std;
 class Problem0831 {
 private:
     void buildFail(const char p[], int fail[], const int n) {
-        fail[0] = 0;
-        int right = 1;
-        int left = 0;
-        while (right < n) {
-            if (p[left] == p[right]) {
-                ++left;
-                fail[right] = left;
-                ++right;
-            } else if (left) {
-                left = fail[left - 1];
+        int r = 1;
+        int l = 0;
+        fail[l] = 0;
+        while (r < n) {
+            if (p[l] == p[r]) {
+                ++l;
+                fail[r] = l;
+                ++r;
+            } else if (l) {
+                l = fail[l - 1];
             } else {
-                fail[right] = 0;
-                ++right;
+                fail[r] = 0;
+                ++r;
             }
         }
     }
