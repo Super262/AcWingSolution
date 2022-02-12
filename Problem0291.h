@@ -15,7 +15,7 @@ private:
     static const int N = 11;
     static const int M = 11;
     bool has_odd_zeroes[1 << N];
-    long long dp[M + 1][1 << N]; // dp[c][s]表示当前第c列（c >= 1）"横条"的摆放情况是s并在空白处填充"纵条"后的方案数
+    long long dp[2][1 << N]; // dp[c][s]表示当前第c列（c >= 1）"横条"的摆放情况是s并在空白处填充"纵条"后的方案数
 
     void initialize(const int n) {
         const int LAST_S = (1 << n) - 1;
@@ -43,15 +43,16 @@ private:
         dp[0][0] = 1;
         for (int c = 1; c <= m; ++c) {
             for (int s1 = 0; s1 <= LAST_S; ++s1) {
+                dp[c % 2][s1] = 0;  // 滚动数组优化，不要忘记初始化操作
                 for (int s0 = 0; s0 <= LAST_S; ++s0) {
                     if ((s0 & s1) || has_odd_zeroes[s0 | s1]) {
                         continue;
                     }
-                    dp[c][s1] += dp[c - 1][s0];
+                    dp[c % 2][s1] += dp[(c - 1) % 2][s0];
                 }
             }
         }
-        return dp[m][0];
+        return dp[m % 2][0];
     }
 
     int main() {
