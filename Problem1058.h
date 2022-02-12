@@ -12,7 +12,7 @@ using namespace std;
 class Problem1058 {
     // 状态机（最大收益）：dp[i][1]（手中有货），dp[i][2]（手中无货的第1天），dp[i][0]（手中无货的第2天及以后）
 private:
-    int stateMachine(const int items[], const int &n) {
+    int stateMachine(const int items[], const int n) {
         int dp[2][3];
         memset(dp, -0x3f, sizeof dp);
         dp[0][0] = 0;
