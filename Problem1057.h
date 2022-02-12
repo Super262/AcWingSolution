@@ -18,7 +18,7 @@ private:
         int dp[2][k + 1][2];
         memset(dp, -0x3f, sizeof dp);
         dp[0][0][0] = 0;
-        dp[1][0][0] = 0;
+        dp[1][0][0] = 0;  // 不要忘记这2个初始值，因为下面循环中i、j均从1开始
         for (int i = 1; i <= n; ++i) {
             for (int j = 1; j <= k; ++j) {
                 dp[i % 2][j][0] = max(dp[(i - 1) % 2][j][0], dp[(i - 1) % 2][j][1] + items[i]);
