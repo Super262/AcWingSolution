@@ -42,8 +42,8 @@ private:
         initialize(n);
         dp[0][0] = 1;
         for (int c = 1; c <= m; ++c) {
+            memset(dp[c % 2], 0, sizeof dp[c % 2]); // 滚动数组，不忘清零
             for (int s1 = 0; s1 <= LAST_S; ++s1) {
-                dp[c % 2][s1] = 0;  // 滚动数组优化，不要忘记初始化操作
                 for (int s0 = 0; s0 <= LAST_S; ++s0) {
                     if ((s0 & s1) || has_odd_zeroes[s0 | s1]) {
                         continue;

@@ -51,8 +51,8 @@ private:
         memset(dp, 0, sizeof dp);
         dp[0][0] = 1;  // 初始值
         for (int i = 1; i <= m + 1; ++i) {
+            memset(dp[i % 2], 0, sizeof dp[i % 2]);  // 滚动数组，不忘清零操作
             for (int k = 0; k < (int) states.size(); ++k) {
-                dp[i % 2][states[k]] = 0;  // 滚动数组，不忘清零操作
                 if (states[k] & graph[i]) {
                     continue;
                 }
