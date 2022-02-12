@@ -12,28 +12,27 @@ using namespace std;
 
 class Problem0291 {
 private:
-    const int N = 11;
-    const int M = 11;
-
-    bool hasOddZeroes[1 << N];
+    static const int N = 11;
+    static const int M = 11;
+    bool has_odd_zeroes[1 << N];
     long long dp[M + 1][1 << N]; // dp[c][s]表示当前第c列（c >= 1）"横条"的摆放情况是s并在空白处填充"纵条"后的方案数
 
     void initialize(const int n) {
         const int LAST_S = (1 << n) - 1;
         for (int s = 0; s <= LAST_S; ++s) {
-            int zeroesCount = 0;
+            int zeroes_count = 0;
             for (int i = 0; i < n; ++i) {
                 if ((s >> i) & 1) {
-                    if (zeroesCount & 1) {
+                    if (zeroes_count & 1) {
                         break;
                     }
-                    zeroesCount = 0;
+                    zeroes_count = 0;
                 } else {
-                    ++zeroesCount;
+                    ++zeroes_count;
                 }
             }
-            if (zeroesCount & 1) {
-                hasOddZeroes[s] = true;
+            if (zeroes_count & 1) {
+                has_odd_zeroes[s] = true;
             }
         }
     }
@@ -45,7 +44,7 @@ private:
         for (int c = 1; c <= m; ++c) {
             for (int s1 = 0; s1 <= LAST_S; ++s1) {
                 for (int s0 = 0; s0 <= LAST_S; ++s0) {
-                    if ((s0 & s1) || hasOddZeroes[s0 | s1]) {
+                    if ((s0 & s1) || has_odd_zeroes[s0 | s1]) {
                         continue;
                     }
                     dp[c][s1] += dp[c - 1][s0];
@@ -63,7 +62,7 @@ private:
                 break;
             }
             // 每次都有不同的输入，每次都需要初始化操作
-            memset(hasOddZeroes, 0, sizeof hasOddZeroes);
+            memset(has_odd_zeroes, 0, sizeof has_odd_zeroes);
             memset(dp, 0, sizeof dp);
             printf("%lld\n", mondrianDream(n, m));
         }
