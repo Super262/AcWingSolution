@@ -13,27 +13,27 @@ using namespace std;
 class Problem1052 {
     // https://www.acwing.com/solution/content/55449/
 private:
-    void buildNext(const char s[], const int &n, int next[]) {
-        next[0] = 0;
-        int left = 0;
-        int right = 1;
-        while (right < n) {
-            if (s[left] == s[right]) {
-                ++left;
-                next[right] = left;
-                ++right;
-            } else if (left != 0) {
-                left = next[left - 1];
+    void buildNext(const char s[], const int n, int fail[]) {
+        fail[0] = 0;
+        int l = 0;
+        int r = 1;
+        while (r < n) {
+            if (s[l] == s[r]) {
+                ++l;
+                fail[r] = l;
+                ++r;
+            } else if (l != 0) {
+                l = fail[l - 1];
             } else {
-                next[right] = 0;
-                ++right;
+                fail[r] = 0;
+                ++r;
             }
         }
     }
 
-    int stateMachine(const int &n, const char str[], const int &m, int nextStart[]) {
+    int stateMachine(const int &n, const char str[], const int &m, int fail[]) {
         const int MOD = 1000000007;
-        buildNext(str, m, nextStart);
+        buildNext(str, m, fail);
         int dp[n + 1][m + 1];
         memset(dp, 0, sizeof dp);
         dp[0][0] = 1;
@@ -43,7 +43,7 @@ private:
                 for (char ch = 'a'; ch <= 'z'; ++ch) {
                     auto u = j; // u是str下一个待匹配的字符的索引
                     while (u && ch != str[u]) {
-                        u = nextStart[u - 1];
+                        u = fail[u - 1];
                     }
                     if (str[u] == ch) {
                         ++u;
@@ -67,8 +67,8 @@ private:
         char str[51];
         scanf("%s", str);
         const int m = (int) strlen(str);
-        int nextStart[m];
-        printf("%d\n", stateMachine(n, str, m, nextStart));
+        int fail[m];
+        printf("%d\n", stateMachine(n, str, m, fail));
         return 0;
     }
 };
