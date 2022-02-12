@@ -14,7 +14,7 @@ class Problem1057 {
     // 一次交易：有货到无货，完整的一次买入卖出（dp[i][j][1]表示第j此交易刚刚开始，dp[i][j - 1][0]表示第(j - 1)次交易刚刚结束）
     // 滚动数组优化
 private:
-    int stateMachine(const int items[], const int &n, const int &k) {
+    int stateMachine(const int items[], const int n, const int k) {
         int dp[2][k + 1][2];
         memset(dp, -0x3f, sizeof dp);
         dp[0][0][0] = 0;
