@@ -66,7 +66,7 @@ private:
         for (int i = 1; i <= n + 1; ++i) {
             for (int j = 0; j <= k; ++j) {
                 memset(dp[i % 2][j], 0, sizeof dp[i % 2][j]);  // 滚动数组，不忘清零
-                for (int cur = 0; cur < states.size(); ++cur) {
+                for (int cur = 0; cur < (int) states.size(); ++cur) {
                     for (int prev: prev_state[cur]) {
                         if (ones_num[cur] + ones_num[prev] > j) {
                             continue;
