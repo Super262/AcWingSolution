@@ -31,7 +31,7 @@ private:
         }
     }
 
-    int stateMachine(const int &n, const char str[], const int &m, int fail[]) {
+    int stateMachine(const int n, const char str[], const int m, int fail[]) {
         const int MOD = 1000000007;
         buildNext(str, m, fail);
         int dp[n + 1][m + 1];
