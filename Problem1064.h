@@ -80,9 +80,9 @@ private:
     }
 
     int main() {
-        int N, K;
-        scanf("%d%d", &N, &K);
-        printf("%lld\n", stateCompression(N, K));
+        int n, k;
+        scanf("%d%d", &n, &k);
+        printf("%lld\n", stateCompression(n, k));
         return 0;
     }
 };
