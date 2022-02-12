@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -59,7 +60,8 @@ private:
         // 获取第(i-1)行的所有可能状态
         auto prev_state = getPossiblePrevIdxes(states, n);
         // dp[i][k][s] 表示前i行共摆放了k个国王、第i行摆放方案为s（1表示摆放，0表示空白）的方案数量
-        vector<vector<vector<long long>>> dp(n + 2, vector<vector<long long>>(k + 1, vector<long long>(1 << n, 0)));
+        long long dp[n + 2][k + 1][1 << n];
+        memset(dp, 0, sizeof dp);
         // 不要忘记初始化
         dp[0][0][0] = 1;
         for (int i = 1; i <= n + 1; ++i) {
