@@ -29,10 +29,12 @@ private:
         }
     }
 
-    void printFail(const char s[], const int s_len, const char p[], const int fail[], const int p_len) {
+    void kmp(const char s[], const int sl, const char p[], const int pl) {
+        int fail[pl];
+        buildFail(p, fail, pl);
         int si = 0;
         int pi = 0;
-        while (si < s_len) {
+        while (si < sl) {
             if (s[si] == p[pi]) {
                 ++si;
                 ++pi;
@@ -41,8 +43,8 @@ private:
             } else {
                 ++si;
             }
-            if (pi == p_len) {
-                printf("%d ", si - p_len);
+            if (pi == pl) {
+                printf("%d ", si - pl);
                 pi = fail[pi - 1];
             }
         }
@@ -50,17 +52,15 @@ private:
     }
 
     int main() {
-        int p_len;
-        scanf("%d", &p_len);
-        char p[p_len + 1];
+        int pl;
+        scanf("%d", &pl);
+        char p[pl + 1];
         scanf("%s", p);
-        int s_len;
-        scanf("%d", &s_len);
-        char s[s_len + 1];
+        int sl;
+        scanf("%d", &sl);
+        char s[sl + 1];
         scanf("%s", s);
-        int fail[p_len];
-        buildFail(p, fail, p_len);
-        printFail(s, s_len, p, fail, p_len);
+        kmp(s, sl, p, pl);
         return 0;
     }
 };
