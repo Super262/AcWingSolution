@@ -7,15 +7,16 @@
 
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
 class Problem0292 {
     // https://www.acwing.com/solution/content/12392/
-public:
-    int countOnes(const unsigned int s, const unsigned int N) {
+private:
+    int countOnes(const int s, const int n) {
         int result = 0;
-        for (unsigned int offset = 0; offset < N; ++offset) {
+        for (int offset = 0; offset < n; ++offset) {
             if ((s >> offset) & 1) {
                 ++result;
             }
@@ -23,35 +24,36 @@ public:
         return result;
     }
 
-    bool validState(const unsigned int s, const unsigned int N) {
+    bool validState(const int s, const int n) {
         // N < 3，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 2) 可以大于 (N - 1)
-        for (unsigned int i = 0; i < N; ++i) {
+        for (int i = 0; i < n; ++i) {
             if ((s >> i & 1) == 1 && ((s >> (i + 1) & 1) == 1 || (s >> (i + 2) & 1) == 1))
                 return false;
         }
         return true;
     }
 
-    int maxSolution(const vector<int> &graph, const int N, const int M) {
+    int maxSolution(const int graph[], const int n, const int m) {
         vector<int> states;
-        vector<int> onesNum;
-        for (int s = 0; s < (1 << M); ++s) {
-            if (!validState(s, M)) {
+        vector<int> ones_num;
+        for (int s = 0; s < (1 << m); ++s) {
+            if (!validState(s, m)) {
                 continue;
             }
             states.emplace_back(s);
-            onesNum.emplace_back(countOnes(s, M));
+            ones_num.emplace_back(countOnes(s, m));
         }
         // dp[i][j][k]表示当前已经处理完前i行，第i行状态为k， 第(i - 1)行状态为j
         // 第i行和第(i - 1)行受第(i - 2)行的影响，所以我们遍历第(i - 2)行的状态值
-        vector<vector<vector<int>>> dp(2, vector<vector<int>>(1 << M, vector<int>(1 << M, 0)));
-        for (int i = 1; i <= N + 2; ++i) {
-            for (int a = 0; a < states.size(); ++a) {
-                for (int b = 0; b < states.size(); ++b) {
+        int dp[2][1 << m][1 << m];
+        memset(dp, 0, sizeof dp);
+        for (int i = 1; i <= n + 2; ++i) {
+            for (int a = 0; a < (int) states.size(); ++a) {
+                for (int b = 0; b < (int) states.size(); ++b) {
                     if (graph[i - 1] & states[b]) {
                         continue;
                     }
-                    for (int c = 0; c < states.size(); ++c) {
+                    for (int c = 0; c < (int) states.size(); ++c) {
                         if (graph[i] & states[c]) {
                             continue;
                         }
@@ -59,22 +61,23 @@ public:
                             continue;
                         }
                         dp[i % 2][states[b]][states[c]] = max(dp[i % 2][states[b]][states[c]],
-                                                              dp[(i - 1) % 2][states[a]][states[b]] + onesNum[c]);
+                                                              dp[(i - 1) % 2][states[a]][states[b]] + ones_num[c]);
                     }
                 }
             }
         }
-        return dp[(N + 2) % 2][0][0];
+        return dp[(n + 2) % 2][0][0];
     }
 
     int main() {
-        int N, M;
-        scanf("%d%d", &N, &M);
-        vector<int> graph(N + 3, 0);
+        int n, m;
+        scanf("%d%d", &n, &m);
+        int graph[n + 3];
+        memset(graph, 0, sizeof graph);
         char t;
-        for (int i = 1; i <= N; ++i) {
+        for (int i = 1; i <= n; ++i) {
             scanf("%c", &t);
-            for (int j = 0; j < M; ++j) {
+            for (int j = 0; j < m; ++j) {
                 graph[i] *= 2;
                 scanf("%c", &t);
                 if (t == 'H') {
@@ -82,7 +85,7 @@ public:
                 }
             }
         }
-        printf("%d\n", maxSolution(graph, N, M));
+        printf("%d\n", maxSolution(graph, n, m));
         return 0;
     }
 };
