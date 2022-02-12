@@ -76,7 +76,7 @@ private:
                 }
             }
         }
-        return dp[n + 1][k][0];
+        return dp[n + 1][k][0];  // 巧妙的做法：用n+1位保存结果
     }
 
     int main() {
