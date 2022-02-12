@@ -45,9 +45,9 @@ private:
             }
         }
         int res = 0;
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < m; ++j) {
-                res = max(res, dfs(i, j, n, m));
+        for (int x = 0; x < n; ++x) {
+            for (int y = 0; y < m; ++y) {
+                res = max(res, dfs(x, y, n, m));
             }
         }
         printf("%d\n", res);
