@@ -14,14 +14,14 @@ using namespace std;
 class Problem0327 {
     // https://www.acwing.com/solution/content/17569/
 private:
-    bool noAdjacentOnes(const int s, const int N) {
+    bool hasAdjacentOnes(const int s, const int N) {
         // N < 2，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 1) 可以大于 (N - 1)
         for (int offset = 0; offset < N; ++offset) {
             if (((s >> offset) & 1) && ((s >> (offset + 1)) & 1)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     vector<vector<int>> getPossiblePrev(const vector<int> &states) {
@@ -41,28 +41,28 @@ private:
         const int MOD = 1e8;
         vector<int> states;
         for (int s = 0; s < (1 << n); ++s) {
-            if (noAdjacentOnes(s, n)) {
+            if (!hasAdjacentOnes(s, n)) {
                 states.emplace_back(s);
             }
         }
-        vector<vector<int>> prev_states = getPossiblePrev(states);
-
+        auto prev_states = getPossiblePrev(states);
         // dp[i][s] 表示前i行摆放完成、第i行摆放方案为s（0是空位，1是）的方案数
-        int dp[m + 2][1 << n];
+        int dp[2][1 << n];
         memset(dp, 0, sizeof dp);
-        dp[0][0] = 1;
-
+        dp[0][0] = 1;  // 初始值
         for (int i = 1; i <= m + 1; ++i) {
             for (int k = 0; k < (int) states.size(); ++k) {
+                dp[i % 2][states[k]] = 0;  // 滚动数组，不忘清零操作
                 if (states[k] & graph[i]) {
                     continue;
                 }
                 for (const auto &prev_idx: prev_states[k]) {
-                    dp[i][states[k]] = (int) (((long long) dp[i][states[k]] + dp[i - 1][states[prev_idx]]) % MOD);
+                    dp[i % 2][states[k]] = (int) (((long long) dp[i % 2][states[k]] +
+                                                   dp[(i - 1) % 2][states[prev_idx]]) % MOD);
                 }
             }
         }
-        return dp[m + 1][0];
+        return dp[(m + 1) % 2][0];
     }
 
     int main() {
