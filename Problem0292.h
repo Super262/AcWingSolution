@@ -24,7 +24,7 @@ private:
         return result;
     }
 
-    bool validState(const int s, const int n) {
+    bool isValid(const int s, const int n) {
         // N < 3，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 2) 可以大于 (N - 1)
         for (int i = 0; i < n; ++i) {
             if ((s >> i & 1) == 1 && ((s >> (i + 1) & 1) == 1 || (s >> (i + 2) & 1) == 1)) {
@@ -38,7 +38,7 @@ private:
         vector<int> states;
         vector<int> ones_num;
         for (int s = 0; s < (1 << m); ++s) {
-            if (!validState(s, m)) {
+            if (!isValid(s, m)) {
                 continue;
             }
             states.emplace_back(s);

@@ -14,7 +14,7 @@ using namespace std;
 class Problem0327 {
     // https://www.acwing.com/solution/content/17569/
 private:
-    bool hasAdjacentOnes(const int s, const int N) {
+    bool isValid(const int s, const int N) {
         // N < 2，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 1) 可以大于 (N - 1)
         for (int offset = 0; offset < N; ++offset) {
             if (((s >> offset) & 1) && ((s >> (offset + 1)) & 1)) {
@@ -41,7 +41,7 @@ private:
         const int MOD = 1e8;
         vector<int> states;
         for (int s = 0; s < (1 << n); ++s) {
-            if (!hasAdjacentOnes(s, n)) {
+            if (!isValid(s, n)) {
                 states.emplace_back(s);
             }
         }

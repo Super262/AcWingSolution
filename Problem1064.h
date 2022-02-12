@@ -23,7 +23,7 @@ private:
         return result;
     }
 
-    bool hasAdjacentOnes(const int s, const int n) {
+    bool isValid(const int s, const int n) {
         // N < 2，此函数应仍能正确计算出结果，而不是直接返回false：(offset + 1) 可以大于 (N - 1)
         for (int offset = 0; offset < n; ++offset) {
             if (((s >> offset) & 1) && ((s >> (offset + 1)) & 1)) {
@@ -37,7 +37,7 @@ private:
         vector<vector<int>> res(states.size(), vector<int>());
         for (int i = 0; i < (int) states.size(); ++i) {
             for (int j = 0; j < (int) states.size(); ++j) {
-                if ((states[i] & states[j]) || hasAdjacentOnes(states[i] | states[j], n)) {
+                if ((states[i] & states[j]) || isValid(states[i] | states[j], n)) {
                     continue;
                 }
                 res[i].emplace_back(j);
@@ -51,7 +51,7 @@ private:
         vector<int> ones_num;
         // 预处理出第i行所有可能的合法状态
         for (int s = 0; s < (1 << n); ++s) {
-            if (hasAdjacentOnes(s, n)) {
+            if (isValid(s, n)) {
                 continue;
             }
             states.emplace_back(s);
