@@ -14,7 +14,7 @@ class problem1082 {
     // https://www.acwing.com/solution/content/33446/
 private:
     static const int N = 10;
-    int dp[N + 1][10];
+    int dp[N + 1][10];  // dp[i][j]：共有i位，且最高位为j的不降数的个数
 
     void init() {
         for (int i = 0; i <= 9; ++i) {
