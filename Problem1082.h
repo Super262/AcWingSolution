@@ -10,7 +10,7 @@
 
 using namespace std;
 
-class problem1082 {
+class Problem1082 {
     // https://www.acwing.com/solution/content/33446/
 private:
     static const int N = 10;
@@ -39,16 +39,16 @@ private:
             a /= 10;
         }
         int result = 0;
-        int prev_max = 0;
+        int prev = 0;
         for (int i = (int) digits.size() - 1; i >= 0; --i) {
             int x = digits[i];
-            if (x < prev_max) {  // 当前位比前位小，无需后续处理
+            if (x < prev) {  // 当前位比前位小，无需后续处理
                 break;
             }
-            for (int j = prev_max; j < x; ++j) {  // 汇总当前位为j（j < x）的所有结果
+            for (int j = prev; j < x; ++j) {  // 汇总当前位为j（j < x）的所有结果
                 result += f[i + 1][j];
             }
-            prev_max = x;
+            prev = x;
             if (i == 0) {  // 说明a本身是不降数
                 ++result;  // 将输入值（a）也添加到结果集中
             }
