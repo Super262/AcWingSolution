@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0091 {
 private:
-    const int N = 20;
+    static const int N = 20;
     int graph[N][N];
 
     // dp[i][j]所有从0走到j，走过的点是i的所有路径中最短的路径的长度
@@ -40,7 +40,7 @@ private:
     }
 
     int main() {
-        memset(graph, 0x7f, sizeof graph);
+        memset(graph, 0x3f, sizeof graph);
         int n;
         scanf("%d", &n);
         for (int i = 0; i < n; ++i) {
