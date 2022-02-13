@@ -15,7 +15,7 @@ using namespace std;
 class Problem0524 {
     // https://www.acwing.com/solution/content/4028/
 private:
-    const int N = 20;
+    static const int N = 20;
     int path[N][N];
     int dp[1 << N];
     pair<double, double> points[N];
