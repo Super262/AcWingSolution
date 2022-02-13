@@ -14,22 +14,22 @@ class problem1082 {
     // https://www.acwing.com/solution/content/33446/
 private:
     static const int N = 10;
-    int dp[N + 1][10];  // dp[i][j]：共有i位，且最高位为j的不降数的个数
+    int f[N + 1][10];  // f[i][j]：共有i位，且最高位为j的不降数的个数
 
     void init() {
         for (int i = 0; i <= 9; ++i) {
-            dp[1][i] = 1;
+            f[1][i] = 1;
         }
         for (int length = 2; length <= N; ++length) {
             for (int i = 0; i <= 9; ++i) {
                 for (int j = i; j <= 9; ++j) {
-                    dp[length][i] += dp[length - 1][j];
+                    f[length][i] += f[length - 1][j];
                 }
             }
         }
     }
 
-    int helper(int a) {
+    int dp(int a) {
         if (a == 0) {
             return 1;  // 特殊情况！！
         }
@@ -46,7 +46,7 @@ private:
                 break;
             }
             for (int j = prev_max; j < x; ++j) {
-                result += dp[i + 1][j];
+                result += f[i + 1][j];
             }
             prev_max = x;
             if (i == 0) {
@@ -60,7 +60,7 @@ private:
         int a, b;
         init();
         while (scanf("%d%d", &a, &b) != -1) {
-            printf("%d\n", helper(b) - helper(a - 1));
+            printf("%d\n", dp(b) - dp(a - 1));
         }
         return 0;
     }
