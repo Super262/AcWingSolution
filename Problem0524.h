@@ -32,7 +32,7 @@ private:
     int stateCompress(const int n) {
         memset(dp, 0x3f, sizeof dp);
         memset(path, 0, sizeof path);
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {  // 预处理通过所有(x,y)的直线的状态信息
             path[i][i] = 1 << i;  // 不要忘记这步初始化操作
             for (int j = 0; j < n; ++j) {
                 auto x1 = points[i].first;
@@ -59,7 +59,7 @@ private:
             }
         }
         dp[0] = 0;
-        for (int s = 0; s < (1 << n) - 1; ++s) {
+        for (int s = 0; s < (1 << n) - 1; ++s) {  // 从小到大枚举每个状态（穿过点的情况）
             int x1 = 0;
             while (x1 < n && ((s >> x1) & 1) != 0) {
                 ++x1;
