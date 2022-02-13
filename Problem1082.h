@@ -10,11 +10,10 @@
 
 using namespace std;
 
-
 class problem1082 {
-// https://www.acwing.com/solution/content/33446/
-public:
-    const int N = 10;
+    // https://www.acwing.com/solution/content/33446/
+private:
+    static const int N = 10;
     int dp[N + 1][10];
 
     void init() {
@@ -34,22 +33,22 @@ public:
         if (a == 0) {
             return 1;  // 特殊情况！！
         }
-        vector<int> nums;
+        vector<int> digits;
         while (a) {
-            nums.emplace_back(a % 10);
+            digits.emplace_back(a % 10);
             a /= 10;
         }
         int result = 0;
-        int prevMax = 0;
-        for (int i = (int) nums.size() - 1; i >= 0; --i) {
-            int x = nums[i];
-            if (x < prevMax) {
+        int prev_max = 0;
+        for (int i = (int) digits.size() - 1; i >= 0; --i) {
+            int x = digits[i];
+            if (x < prev_max) {
                 break;
             }
-            for (int j = prevMax; j < x; ++j) {
+            for (int j = prev_max; j < x; ++j) {
                 result += dp[i + 1][j];
             }
-            prevMax = x;
+            prev_max = x;
             if (i == 0) {
                 ++result;  // 将输入值（a）也添加到结果集中
             }
