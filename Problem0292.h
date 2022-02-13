@@ -51,7 +51,7 @@ private:
         for (int i = 1; i <= n + 2; ++i) {
             for (int a = 0; a < (int) states.size(); ++a) {  // 枚举第i-2行状态
                 for (int b = 0; b < (int) states.size(); ++b) {  // 枚举第i-1行状态
-                    if (graph[i - 1] & states[b]) {
+                    if (graph[i - 1] & states[b]) {  // 注意：这里不需要检测graph[i-2]和states[a]
                         continue;
                     }
                     for (int c = 0; c < (int) states.size(); ++c) {  // 枚举第i行状态
@@ -67,7 +67,7 @@ private:
                 }
             }
         }
-        return dp[(n + 2) % 2][0][0];
+        return dp[(n + 2) % 2][0][0];  // 细节：n+2
     }
 
     int main() {
