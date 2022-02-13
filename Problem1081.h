@@ -13,6 +13,7 @@ using namespace std;
 class Problem1081 {
     // 将所有的分支看成一棵二叉树
     // https://www.acwing.com/solution/content/34003/
+    // https://www.acwing.com/solution/content/17032/
 private:
     vector<vector<int>> initCombinations(const int n) {
         vector<vector<int>> c(n + 1, vector<int>(n + 1, 0));
@@ -33,23 +34,23 @@ private:
             return 0; //如果上界n是0，直接就是0种
         }
 
-        vector<int> digits; //存放n在b进制下的每一位
-        while (n) { // 把n在b进制下的每一位单独拿出来
+        vector<int> digits;  // 存放n在b进制下的每位
+        while (n) {  // 把n在b进制下的每位单独拿出来
             digits.emplace_back(n % b);
             n /= b;
         }
 
-        int res = 0; //答案：[0,n]中共有多少个合法的数
+        int res = 0;  // 答案：[0,n]中共有多少个合法的数
 
-        // prefix在数位dp中存的是：右边分支往下走的时候保存前面的信息
+        // prefix在数位dp中存的是：右边分支往下走的时候，保存前面1的个数
         // 遍历当前位的时候，记录之前那些位已经占用多少个1，那么当前还能用的1的个数就是(k - prefix)
         int prefix = 0;
         for (auto i = (int) digits.size() - 1; i >= 0; --i) {  // 从最高位开始遍历
             auto x = digits[i]; //取当前位上的数
-            if (x > 0) { // 只有x>0的时候才可以讨论左、右分支
+            if (x > 0) {  // 只有x>0的时候才可以讨论左、右分支
 
                 // 当前位填0，从剩下的所有位（共有i位）中选(k - prefix)个数，对应于左分支中0的情况，合法
-                res += comb[i][k - prefix]; // i个数中选(K - prefix)个数的组合数是多少，选出来这些位填1，其他位填0
+                res += comb[i][k - prefix];  // i个数中选(k - prefix)个数的组合数是多少，选出来这些位填1，其他位填0
 
                 if (x > 1) {
                     // 当前位填1，从剩下的所有位（共有i位）中选(k - prefix - 1)个数，对应于左分支中填1的情况，合法
