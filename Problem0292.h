@@ -27,7 +27,8 @@ private:
     bool isValid(const int s, const int n) {
         // N < 3，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 2) 可以大于 (N - 1)
         for (int i = 0; i < n; ++i) {
-            if ((s >> i & 1) == 1 && ((s >> (i + 1) & 1) == 1 || (s >> (i + 2) & 1) == 1)) {
+            // 注意以下判断条件：S1 && (S2 || S3)
+            if (((s >> i) & 1) && (((s >> (i + 1)) & 1) || ((s >> (i + 2)) & 1))) {
                 return false;
             }
         }
@@ -78,7 +79,7 @@ private:
         memset(graph, 0, sizeof graph);
         char t;
         for (int i = 1; i <= n; ++i) {
-            scanf("%c", &t);
+            scanf("%c", &t);  // 吸收上一行的回车符
             for (int j = 0; j < m; ++j) {
                 graph[i] *= 2;
                 scanf("%c", &t);
