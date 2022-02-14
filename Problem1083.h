@@ -43,8 +43,8 @@ private:
             a /= 10;
         }
         int result = 0;
-        int prev = -2;  // 初始值，使0～9都能被选中
-        for (int i = (int) digits.size() - 1; i >= 0; --i) {  // 统计长度为digits.size()的Windy数，没有前导零
+        int prev = -2;  // 上个高位：初始值为-2，使0～9都能被选中（abs(x - prev) >= 2）
+        for (auto i = (int) digits.size() - 1; i >= 0; --i) {  // 统计长度为digits.size()的Windy数，没有前导零
             const auto &x = digits[i];
             for (int j = (i == (int) digits.size() - 1 ? 1 : 0); j < x; ++j) {  // 若是最高位，候选值j从1开始
                 if (abs(j - prev) < 2) {

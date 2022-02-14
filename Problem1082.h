@@ -22,7 +22,7 @@ private:
         }
         for (int length = 2; length <= N; ++length) {
             for (int i = 0; i <= 9; ++i) {
-                for (int j = i; j <= 9; ++j) {
+                for (auto j = i; j <= 9; ++j) {
                     f[length][i] += f[length - 1][j];
                 }
             }
@@ -39,13 +39,13 @@ private:
             a /= 10;
         }
         int result = 0;
-        int prev = 0;
-        for (int i = (int) digits.size() - 1; i >= 0; --i) {
+        int prev = 0;  // 上个高位
+        for (auto i = (int) digits.size() - 1; i >= 0; --i) {  // 统计所有长度为digits.size()的不减数（考虑前导零）
             int x = digits[i];
             if (x < prev) {  // 当前位比前位小，无需后续处理
                 break;
             }
-            for (int j = prev; j < x; ++j) {  // 汇总当前位为j（j < x）的所有结果
+            for (auto j = prev; j < x; ++j) {  // 汇总当前位为j（j < x）的所有结果
                 result += f[i + 1][j];
             }
             prev = x;
