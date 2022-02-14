@@ -12,8 +12,8 @@
 using namespace std;
 
 class Problem1083 {
-public:
-    const int N = 11;
+private:
+    static const int N = 11;
     int f[N + 1][10];
 
     void init() {
@@ -32,33 +32,33 @@ public:
         }
     }
 
-    int helper(int a) {
-        vector<int> nums;
+    int dp(int a) {
+        vector<int> digits;
         while (a) {
-            nums.emplace_back(a % 10);
+            digits.emplace_back(a % 10);
             a /= 10;
         }
         int result = 0;
-        int prevNum = -2;  // 初始值，使0～9都能被选中
-        for (int i = (int) nums.size() - 1; i >= 0; --i) {
-            int x = nums[i];
-            for (int j = (i == nums.size() - 1 ? 1 : 0); j < x; ++j) {
-                if (abs(j - prevNum) < 2) {
+        int prev = -2;  // 初始值，使0～9都能被选中
+        for (int i = (int) digits.size() - 1; i >= 0; --i) {
+            const auto &x = digits[i];
+            for (int j = (i == (int) digits.size() - 1 ? 1 : 0); j < x; ++j) {
+                if (abs(j - prev) < 2) {
                     continue;
                 }
                 result += f[i + 1][j];
             }
-            if (abs(x - prevNum) < 2) {
+            if (abs(x - prev) < 2) {
                 break;
             }
-            prevNum = x;
+            prev = x;
             if (i == 0) {
                 ++result;
             }
         }
 
         // 长度小于nums.size()的数字
-        for (int length = 1; length < nums.size(); ++length) {
+        for (int length = 1; length < (int) digits.size(); ++length) {
             for (int j = 1; j <= 9; ++j) {
                 result += f[length][j];
             }
@@ -70,7 +70,7 @@ public:
         init();
         int a, b;
         scanf("%d%d", &a, &b);
-        printf("%d\n", helper(b) - helper(a - 1));
+        printf("%d\n", dp(b) - dp(a - 1));
         return 0;
     }
 };
