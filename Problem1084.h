@@ -12,8 +12,8 @@
 using namespace std;
 
 class Problem1084 {
-public:
-    const int N = 11;
+private:
+    static const int N = 11;
     int f[N + 1][10][100];
     int P;
 
@@ -37,24 +37,24 @@ public:
         }
     }
 
-    int helper(int a) {
+    int dp(int a) {
         if (a == 0) {
             return 1;
         }
-        vector<int> nums;
+        vector<int> digits;
         while (a) {
-            nums.emplace_back(a % 10);
+            digits.emplace_back(a % 10);
             a /= 10;
         }
         int result = 0;
-        int prefixSum = 0;
-        for (int i = (int) nums.size() - 1; i >= 0; --i) {
-            int x = nums[i];
+        int prefix = 0;
+        for (int i = (int) digits.size() - 1; i >= 0; --i) {
+            int x = digits[i];
             for (int j = 0; j < x; ++j) {
-                result += f[i + 1][j][mod(-prefixSum, P)];
+                result += f[i + 1][j][mod(-prefix, P)];
             }
-            prefixSum += x;
-            if (i == 0 && prefixSum % P == 0) {
+            prefix += x;
+            if (i == 0 && prefix % P == 0) {
                 ++result;
             }
         }
@@ -65,7 +65,7 @@ public:
         int a, b;
         while (scanf("%d%d%d", &a, &b, &P) != -1) {
             init();
-            printf("%d\n", helper(b) - helper(a - 1));
+            printf("%d\n", dp(b) - dp(a - 1));
         }
         return 0;
     }
