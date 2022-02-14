@@ -14,7 +14,7 @@ using namespace std;
 class Problem1084 {
 private:
     static const int N = 11;
-    int f[N + 1][10][100];
+    int f[N + 1][10][100];  // f[i][j][k]：i位数、最高位为j，模P为k的所有数的个数
     int P;
 
     int mod(const int x, const int m) {
