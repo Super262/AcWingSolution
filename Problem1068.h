@@ -28,8 +28,10 @@ private:
             for (int st = 1; st + l - 1 <= 2 * n; ++st) {
                 auto ed = st + l - 1;
                 for (int mid = st; mid < ed; ++mid) {
-                    dp_max[st][ed] = max(dp_max[st][ed], dp_max[st][mid] + dp_max[mid + 1][ed] + items[ed] - items[st - 1]);
-                    dp_min[st][ed] = min(dp_min[st][ed], dp_min[st][mid] + dp_min[mid + 1][ed] + items[ed] - items[st - 1]);
+                    dp_max[st][ed] = max(dp_max[st][ed],
+                                         dp_max[st][mid] + dp_max[mid + 1][ed] + items[ed] - items[st - 1]);
+                    dp_min[st][ed] = min(dp_min[st][ed],
+                                         dp_min[st][mid] + dp_min[mid + 1][ed] + items[ed] - items[st - 1]);
                 }
             }
         }
