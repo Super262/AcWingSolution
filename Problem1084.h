@@ -5,7 +5,6 @@
 #ifndef ACWINGSOLUTION_PROBLEM1084_H
 #define ACWINGSOLUTION_PROBLEM1084_H
 
-#include <vector>
 #include <cstring>
 #include <iostream>
 
@@ -13,9 +12,9 @@ using namespace std;
 
 class Problem1084 {
 private:
-    static const int N = 11;
-    int f[N + 1][10][100];  // f[i][j][k]：i位数、最高位为j，模P为k的所有数的个数
-    int P;
+    static const int N = 12, M = 10, P = 100;
+    int f[N][M][P];  // f[i][j][k]：i位数、最高位为j，模P为k的所有数的个数
+    int p;
 
     int mod(const int x, const int m) {
         return (x % m + m) % m;
@@ -23,14 +22,14 @@ private:
 
     void init() {
         memset(f, 0, sizeof f);
-        for (int i = 0; i <= 9; ++i) {
-            ++f[1][i][mod(i, P)];
+        for (int i = 0; i < M; ++i) {
+            ++f[1][i][mod(i, p)];
         }
-        for (int length = 2; length <= N; ++length) {
-            for (int i = 0; i <= 9; ++i) {
-                for (int k = 0; k < P; ++k) {
-                    for (int j = 0; j <= 9; ++j) {
-                        f[length][i][k] += f[length - 1][j][mod(k - i, P)];
+        for (int length = 2; length < N; ++length) {
+            for (int i = 0; i < M; ++i) {
+                for (int k = 0; k < p; ++k) {
+                    for (int j = 0; j < M; ++j) {
+                        f[length][i][k] += f[length - 1][j][mod(k - i, p)];
                     }
                 }
             }
@@ -38,23 +37,25 @@ private:
     }
 
     int dp(int a) {
-        if (a == 0) {
+        if (!a) {
             return 1;
         }
-        vector<int> digits;
+        int digits[N];
+        int n = 0;
         while (a) {
-            digits.emplace_back(a % 10);
-            a /= 10;
+            digits[n] = a % M;
+            a /= M;
+            ++n;
         }
         int result = 0;
         int prefix = 0;
-        for (int i = (int) digits.size() - 1; i >= 0; --i) {
+        for (int i = n - 1; i >= 0; --i) {
             int x = digits[i];
             for (int j = 0; j < x; ++j) {
-                result += f[i + 1][j][mod(-prefix, P)];
+                result += f[i + 1][j][mod(-prefix, p)];
             }
             prefix += x;
-            if (i == 0 && prefix % P == 0) {
+            if (!i && !(prefix % p)) {
                 ++result;
             }
         }
@@ -63,7 +64,7 @@ private:
 
     int main() {
         int a, b;
-        while (scanf("%d%d%d", &a, &b, &P) != -1) {
+        while (scanf("%d%d%d", &a, &b, &p) != -1) {
             init();
             printf("%d\n", dp(b) - dp(a - 1));
         }
