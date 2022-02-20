@@ -14,33 +14,33 @@ class Problem1068 {
     // https://www.acwing.com/solution/content/15641/
     // 化环为链，大大降低复杂度
 private:
-    void rangeModel(int items[], const int &n) {
-        int dpMax[2 * n + 1][2 * n + 1];
-        int dpMin[2 * n + 1][2 * n + 1];
-        memset(dpMax, -0x3f, sizeof dpMax);
-        memset(dpMin, 0x3f, sizeof dpMin);
+    void rangeModel(int items[], const int n) {
+        int dp_max[2 * n + 1][2 * n + 1];
+        int dp_min[2 * n + 1][2 * n + 1];
+        memset(dp_max, -0x3f, sizeof dp_max);
+        memset(dp_min, 0x3f, sizeof dp_min);
         for (int i = 1; i <= 2 * n; ++i) {
             items[i] += items[i - 1];
-            dpMin[i][i] = 0;
-            dpMax[i][i] = 0;
+            dp_min[i][i] = 0;
+            dp_max[i][i] = 0;
         }
-        for (int length = 2; length <= n; ++length) {
-            for (int st = 1; st + length - 1 <= 2 * n; ++st) {
-                auto ed = st + length - 1;
+        for (int l = 2; l <= n; ++l) {
+            for (int st = 1; st + l - 1 <= 2 * n; ++st) {
+                auto ed = st + l - 1;
                 for (int mid = st; mid < ed; ++mid) {
-                    dpMax[st][ed] = max(dpMax[st][ed], dpMax[st][mid] + dpMax[mid + 1][ed] + items[ed] - items[st - 1]);
-                    dpMin[st][ed] = min(dpMin[st][ed], dpMin[st][mid] + dpMin[mid + 1][ed] + items[ed] - items[st - 1]);
+                    dp_max[st][ed] = max(dp_max[st][ed], dp_max[st][mid] + dp_max[mid + 1][ed] + items[ed] - items[st - 1]);
+                    dp_min[st][ed] = min(dp_min[st][ed], dp_min[st][mid] + dp_min[mid + 1][ed] + items[ed] - items[st - 1]);
                 }
             }
         }
-        int resMin = 0x3f3f3f3f;
-        int resMax = -0x3f3f3f3f;
+        int minimal = 0x3f3f3f3f;
+        int maximal = -0x3f3f3f3f;
         for (int st = 1; st + n - 1 <= 2 * n; ++st) {
-            resMin = min(resMin, dpMin[st][st + n - 1]);
-            resMax = max(resMax, dpMax[st][st + n - 1]);
+            minimal = min(minimal, dp_min[st][st + n - 1]);
+            maximal = max(maximal, dp_max[st][st + n - 1]);
         }
-        printf("%d\n", resMin);
-        printf("%d\n", resMax);
+        printf("%d\n", minimal);
+        printf("%d\n", maximal);
     }
 
     int main() {
