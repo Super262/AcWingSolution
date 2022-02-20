@@ -12,22 +12,22 @@ using namespace std;
 
 class Problem0320 {
 private:
-    int rangeModel(const int items[], const int &n) {
+    int rangeModel(const int items[], const int n) {
         int dp[2 * n + 1][2 * n + 1];
         memset(dp, 0, sizeof dp);
-        for (int length = 3; length <= n + 1; ++length) {  // 注意length的起点和终点
-            for (int st = 0; st + length - 1 <= 2 * n; ++st) {
-                auto ed = st + length - 1;
+        for (int l = 3; l <= n + 1; ++l) {  // 注意length的起点和终点
+            for (int st = 0; st + l - 1 <= 2 * n; ++st) {
+                auto ed = st + l - 1;
                 for (auto mid = st + 1; mid + 1 <= ed; ++mid) {
                     dp[st][ed] = max(dp[st][ed], dp[st][mid] + dp[mid][ed] + items[st] * items[mid] * items[ed]);
                 }
             }
         }
-        int result = 0;
+        int res = 0;
         for (int st = 1; st + n <= 2 * n; ++st) {
-            result = max(result, dp[st][st + n]);
+            res = max(res, dp[st][st + n]);
         }
-        return result;
+        return res;
     }
 
     int main() {
