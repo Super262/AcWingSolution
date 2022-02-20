@@ -12,18 +12,18 @@ using namespace std;
 
 class Problem0282 {
 private:
-    const int N = 310;
-    int prefixSum[N];
+    static const int N = 310;
+    int prefix[N];
     int dp[N][N];
 
     int moveStones(const int n) {
-        for (int length = 2; length <= n; ++length) {
-            for (int start = 1; start <= n - length + 1; ++start) {
-                const int end = start + length - 1;
-                dp[start][end] = 0x7f7f7f7f;
-                for (int mid = start + 1; mid <= end; ++mid) {
-                    dp[start][end] = min(dp[start][end],
-                                         dp[start][mid - 1] + dp[mid][end] + prefixSum[end] - prefixSum[start - 1]);
+        for (int l = 2; l <= n; ++l) {
+            for (int st = 1; st <= n - l + 1; ++st) {
+                const auto ed = st + l - 1;
+                dp[st][ed] = 0x7f7f7f7f;
+                for (auto mid = st + 1; mid <= ed; ++mid) {
+                    dp[st][ed] = min(dp[st][ed],
+                                     dp[st][mid - 1] + dp[mid][ed] + prefix[ed] - prefix[st - 1]);
                 }
             }
         }
@@ -34,8 +34,8 @@ private:
         int n;
         scanf("%d", &n);
         for (int i = 1; i <= n; ++i) {
-            scanf("%d", &prefixSum[i]);
-            prefixSum[i] += prefixSum[i - 1];
+            scanf("%d", &prefix[i]);
+            prefix[i] += prefix[i - 1];
         }
         printf("%d\n", moveStones(n));
         return 0;
