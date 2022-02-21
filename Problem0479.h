@@ -12,35 +12,35 @@ using namespace std;
 
 class Problem0479 {
 private:
-    const int N = 31;
+    static const int N = 31;
     int dp[N][N];
-    int rootValue[N][N];
+    int root_value[N][N];
     int scores[N];
 
-    void preOrder(const int start, const int end) {
-        if (start > end) {
+    void preOrder(const int st, const int ed) {
+        if (st > ed) {
             return;
         }
-        printf("%d ", rootValue[start][end]);
-        preOrder(start, rootValue[start][end] - 1);
-        preOrder(rootValue[start][end] + 1, end);
+        printf("%d ", root_value[st][ed]);
+        preOrder(st, root_value[st][ed] - 1);
+        preOrder(root_value[st][ed] + 1, ed);
     }
 
     int rangeModel(const int n) {
         for (int length = 1; length <= n; ++length) {
             for (int left = 1; left + length - 1 <= n; ++left) {
                 int right = left + length - 1;
-                for (int rootIdx = left; rootIdx <= right; ++rootIdx) {
-                    int leftS = rootIdx == left ? 1 : dp[left][rootIdx - 1];
-                    int rightS = rootIdx == right ? 1 : dp[rootIdx + 1][right];
+                for (auto r_idx = left; r_idx <= right; ++r_idx) {
+                    int left_s = r_idx == left ? 1 : dp[left][r_idx - 1];
+                    int right_s = r_idx == right ? 1 : dp[r_idx + 1][right];
                     int temp = 0;
                     if (left != right) {
-                        temp = leftS * rightS;
+                        temp = left_s * right_s;
                     }
-                    temp += scores[rootIdx];
+                    temp += scores[r_idx];
                     if (temp > dp[left][right]) {
                         dp[left][right] = temp;
-                        rootValue[left][right] = rootIdx;
+                        root_value[left][right] = r_idx;
                     }
                 }
             }
