@@ -30,7 +30,7 @@ private:
         for (int l = 1; l <= n; ++l) {
             for (int st = 1; st + l - 1 <= n; ++st) {
                 auto ed = st + l - 1;
-                for (auto r_idx = st; r_idx <= ed; ++r_idx) {
+                for (auto r_idx = st; r_idx <= ed; ++r_idx) {  // 从前向后选择根结点，保证前序字典序最小
                     int left_s = r_idx == st ? 1 : dp[st][r_idx - 1];
                     int right_s = r_idx == ed ? 1 : dp[r_idx + 1][ed];
                     int temp = 0;
