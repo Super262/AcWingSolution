@@ -27,20 +27,20 @@ private:
     }
 
     int rangeModel(const int n) {
-        for (int length = 1; length <= n; ++length) {
-            for (int left = 1; left + length - 1 <= n; ++left) {
-                int right = left + length - 1;
-                for (auto r_idx = left; r_idx <= right; ++r_idx) {
-                    int left_s = r_idx == left ? 1 : dp[left][r_idx - 1];
-                    int right_s = r_idx == right ? 1 : dp[r_idx + 1][right];
+        for (int l = 1; l <= n; ++l) {
+            for (int st = 1; st + l - 1 <= n; ++st) {
+                auto ed = st + l - 1;
+                for (auto r_idx = st; r_idx <= ed; ++r_idx) {
+                    int left_s = r_idx == st ? 1 : dp[st][r_idx - 1];
+                    int right_s = r_idx == ed ? 1 : dp[r_idx + 1][ed];
                     int temp = 0;
-                    if (left != right) {
+                    if (st != ed) {
                         temp = left_s * right_s;
                     }
                     temp += scores[r_idx];
-                    if (temp > dp[left][right]) {
-                        dp[left][right] = temp;
-                        root_value[left][right] = r_idx;
+                    if (temp > dp[st][ed]) {
+                        dp[st][ed] = temp;
+                        root_value[st][ed] = r_idx;
                     }
                 }
             }
