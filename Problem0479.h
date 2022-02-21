@@ -14,16 +14,16 @@ class Problem0479 {
 private:
     static const int N = 31;
     int dp[N][N];
-    int root_value[N][N];
+    int root[N][N];
     int scores[N];
 
     void preOrder(const int st, const int ed) {
         if (st > ed) {
             return;
         }
-        printf("%d ", root_value[st][ed]);
-        preOrder(st, root_value[st][ed] - 1);
-        preOrder(root_value[st][ed] + 1, ed);
+        printf("%d ", root[st][ed]);
+        preOrder(st, root[st][ed] - 1);
+        preOrder(root[st][ed] + 1, ed);
     }
 
     int rangeModel(const int n) {
@@ -40,7 +40,7 @@ private:
                     temp += scores[r_idx];
                     if (temp > dp[st][ed]) {
                         dp[st][ed] = temp;
-                        root_value[st][ed] = r_idx;
+                        root[st][ed] = r_idx;
                     }
                 }
             }
