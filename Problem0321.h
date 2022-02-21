@@ -14,15 +14,15 @@ using namespace std;
 class Problem0321 {
     // https://www.acwing.com/solution/content/62836/
 public:
-    const int N = 8;
-    const int M = 15;
+    static const int N = 8;
+    static const int M = 15;
     double dp[N + 1][N + 1][N + 1][N + 1][M];
-    double prefixSum[N + 1][N + 1];
-    double X = 0;
+    double prefix[N + 1][N + 1];
+    double xa = 0;
 
     double subSum(const int x1, const int y1, const int x2, const int y2) {
-        auto sum = prefixSum[x2][y2] - prefixSum[x2][y1 - 1] - prefixSum[x1 - 1][y2] + prefixSum[x1 - 1][y1 - 1];
-        sum -= X;
+        auto sum = prefix[x2][y2] - prefix[x2][y1 - 1] - prefix[x1 - 1][y2] + prefix[x1 - 1][y1 - 1];
+        sum -= xa;
         return sum * sum;
     }
 
@@ -51,11 +51,11 @@ public:
         scanf("%d", &k);
         for (int i = 1; i <= N; ++i) {
             for (int j = 1; j <= N; ++j) {
-                scanf("%lf", &prefixSum[i][j]);
-                prefixSum[i][j] += prefixSum[i][j - 1] + prefixSum[i - 1][j] - prefixSum[i - 1][j - 1];
+                scanf("%lf", &prefix[i][j]);
+                prefix[i][j] += prefix[i][j - 1] + prefix[i - 1][j] - prefix[i - 1][j - 1];
             }
         }
-        X = prefixSum[N][N] / k;
+        xa = prefix[N][N] / k;
         memset(dp, -1, sizeof dp);
         printf("%.3lf\n", sqrt(dfs(1, 1, N, N, k) / k));
         return 0;
