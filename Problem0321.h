@@ -27,23 +27,24 @@ public:
     }
 
     double dfs(const int x1, const int y1, const int x2, const int y2, const int k) {
-        if (dp[x1][y1][x2][y2][k] >= 0) {
-            return dp[x1][y1][x2][y2][k];
+        double &cur = dp[x1][y1][x2][y2][k];
+        if (cur >= 0) {
+            return cur;
         }
         if (k == 1) {
-            dp[x1][y1][x2][y2][k] = subSum(x1, y1, x2, y2);
-            return dp[x1][y1][x2][y2][k];
+            cur = subSum(x1, y1, x2, y2);
+            return cur;
         }
-        dp[x1][y1][x2][y2][k] = 0x7f7f7f7f;
+        cur = 0x3f3f3f3f;
         for (int i = x1; i < x2; ++i) {
-            dp[x1][y1][x2][y2][k] = min(dp[x1][y1][x2][y2][k], dfs(x1, y1, i, y2, k - 1) + subSum(i + 1, y1, x2, y2));
-            dp[x1][y1][x2][y2][k] = min(dp[x1][y1][x2][y2][k], subSum(x1, y1, i, y2) + dfs(i + 1, y1, x2, y2, k - 1));
+            cur = min(cur, dfs(x1, y1, i, y2, k - 1) + subSum(i + 1, y1, x2, y2));
+            cur = min(cur, subSum(x1, y1, i, y2) + dfs(i + 1, y1, x2, y2, k - 1));
         }
         for (int i = y1; i < y2; ++i) {
-            dp[x1][y1][x2][y2][k] = min(dp[x1][y1][x2][y2][k], dfs(x1, y1, x2, i, k - 1) + subSum(x1, i + 1, x2, y2));
-            dp[x1][y1][x2][y2][k] = min(dp[x1][y1][x2][y2][k], subSum(x1, y1, x2, i) + dfs(x1, i + 1, x2, y2, k - 1));
+            cur = min(cur, dfs(x1, y1, x2, i, k - 1) + subSum(x1, i + 1, x2, y2));
+            cur = min(cur, subSum(x1, y1, x2, i) + dfs(x1, i + 1, x2, y2, k - 1));
         }
-        return dp[x1][y1][x2][y2][k];
+        return cur;
     }
 
     int main() {
