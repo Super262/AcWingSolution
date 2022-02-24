@@ -12,12 +12,13 @@ using namespace std;
 
 class Problem1027 {
     static const int N = 10;
-    // dp[s][x1][x2] 表示从(1, 1)走到(n, n)的两条路径的长度和的最大值，s == x1 + y1 == x2 + y2
-    int dp[2 * N + 1][N + 1][N + 1];
+// dp[s][x1][x2] 表示从(1, 1)走到(n, n)的两条路径的长度和的最大值，s == x1 + y1 == x2 + y2
+    int dp[2][N + 1][N + 1];
     int graph[N + 1][N + 1];
 
     int maxPathsPair(const int n) {
         for (int s = 2; s <= 2 * n; ++s) {
+            memset(dp[s % 2], 0, sizeof dp[s % 2]);
             for (int x1 = 1; x1 <= s - 1 && x1 <= n; ++x1) {
                 for (int x2 = 1; x2 <= s - 1 && x2 <= n; ++x2) {
                     auto y1 = s - x1;
@@ -26,14 +27,14 @@ class Problem1027 {
                     if (x1 != x2 && y1 != y2) {
                         w += graph[x2][y2];
                     }
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1 - 1][x2 - 1] + w);
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1][x2 - 1] + w);
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1 - 1][x2] + w);
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1][x2] + w);
+                    dp[s % 2][x1][x2] = max(dp[s % 2][x1][x2], dp[(s - 1) % 2][x1][x2] + w);
+                    dp[s % 2][x1][x2] = max(dp[s % 2][x1][x2], dp[(s - 1) % 2][x1][x2 - 1] + w);
+                    dp[s % 2][x1][x2] = max(dp[s % 2][x1][x2], dp[(s - 1) % 2][x1 - 1][x2] + w);
+                    dp[s % 2][x1][x2] = max(dp[s % 2][x1][x2], dp[(s - 1) % 2][x1 - 1][x2 - 1] + w);
                 }
             }
         }
-        return dp[2 * n][n][n];
+        return dp[(2 * n) % 2][n][n];
     }
 
     int main() {
