@@ -11,6 +11,7 @@
 using namespace std;
 
 class Problem1075 {
+    // 求森林中的最大直径
     // https://www.acwing.com/solution/content/8015/
 private:
     int downMax(int root, int father, int &answer, const vector<vector<int>> &graph, vector<bool> &visited) {
@@ -54,7 +55,7 @@ private:
         }
         int answer = 0;
         vector<bool> visited(n + 1, false);
-        for (int i = 1; i <= n; ++i) {
+        for (int i = 1; i <= n; ++i) {  // 本题可能包含多棵树，因此需要尝试以每个点为根的树
             if (graph[i].empty() || visited[i]) {
                 continue;
             }
