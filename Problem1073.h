@@ -67,7 +67,7 @@ private:
         vector<int> u1(n + 1, 0);
         vector<int> d1_nxt(n + 1, 0);
         for (int i = 0; i < n - 1; ++i) {
-            int a, b, w;
+            int a, b, w;  // 注意：这里需要访问父节点，所以要求双向边
             scanf("%d%d%d", &a, &b, &w);
             graph[b].push_back({a, w});
             graph[a].push_back({b, w});
