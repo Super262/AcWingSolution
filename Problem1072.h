@@ -37,7 +37,7 @@ private:
         scanf("%d", &n);
         vector<vector<pair<int, int>>> graph(n + 1, vector<pair<int, int>>());
         for (int i = 0; i < n - 1; ++i) {
-            int a, b, w;
+            int a, b, w;  // 注意，这里需使用双向边
             scanf("%d%d%d", &a, &b, &w);
             graph[a].push_back({b, w});
             graph[b].push_back({a, w});
