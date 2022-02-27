@@ -35,22 +35,22 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        vector<int> divsSum(n + 1, 0);
+        vector<int> divs_sum(n + 1, 0);
         for (int a = 1; a <= n; ++a) {  // 时间复杂度：O(nlogn)
             // 避免溢出，不使用“a * b <= n”
             // b不从1开始，避免累加自身（n）到因子和中
             for (int b = 2; b <= n / a; ++b) {
-                divsSum[a * b] += a;
+                divs_sum[a * b] += a;
             }
         }
         vector<vector<int>> graph(n + 1, vector<int>());
         for (int i = 1; i <= n; ++i) {
-            if (i < divsSum[i]) {
+            if (i < divs_sum[i]) {
                 continue;
             }
             // 添加双向边
-            graph[i].push_back(divsSum[i]);
-            graph[divsSum[i]].push_back(i);
+            graph[i].push_back(divs_sum[i]);
+            graph[divs_sum[i]].push_back(i);
         }
         int answer = 0;
         vector<bool> visited(n + 1, false);
