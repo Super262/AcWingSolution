@@ -21,16 +21,16 @@ private:
                 const vector<vector<pair<int, int>>> &graph,
                 vector<int> &d1,
                 vector<int> &d2,
-                vector<int> &d1Next) {
+                vector<int> &d1_nxt) {
         for (const auto &t: graph[root]) {
             if (t.first == father) {
                 continue;
             }
-            auto d = dfsDown(t.first, root, graph, d1, d2, d1Next) + t.second;
+            auto d = dfsDown(t.first, root, graph, d1, d2, d1_nxt) + t.second;
             if (d >= d1[root]) {
                 d2[root] = d1[root];
                 d1[root] = d;
-                d1Next[root] = t.first;
+                d1_nxt[root] = t.first;
             } else if (d > d2[root]) {
                 d2[root] = d;
             }
@@ -44,17 +44,17 @@ private:
                vector<int> &d1,
                vector<int> &d2,
                vector<int> &u1,
-               vector<int> &d1Next) {
+               vector<int> &d1_nxt) {
         for (const auto &t: graph[root]) {
             if (t.first == father) {
                 continue;
             }
-            if (d1Next[root] == t.first) {
+            if (d1_nxt[root] == t.first) {
                 u1[t.first] = max(u1[root], d2[root]) + t.second;
             } else {
                 u1[t.first] = max(u1[root], d1[root]) + t.second;
             }
-            dfsUp(t.first, root, graph, d1, d2, u1, d1Next);
+            dfsUp(t.first, root, graph, d1, d2, u1, d1_nxt);
         }
     }
 
@@ -65,15 +65,15 @@ private:
         vector<int> d1(n + 1, 0);
         vector<int> d2(n + 1, 0);
         vector<int> u1(n + 1, 0);
-        vector<int> d1Next(n + 1, 0);
+        vector<int> d1_nxt(n + 1, 0);
         for (int i = 0; i < n - 1; ++i) {
             int a, b, w;
             scanf("%d%d%d", &a, &b, &w);
             graph[b].push_back({a, w});
             graph[a].push_back({b, w});
         }
-        dfsDown(n, -1, graph, d1, d2, d1Next);
-        dfsUp(n, -1, graph, d1, d2, u1, d1Next);
+        dfsDown(n, -1, graph, d1, d2, d1_nxt);
+        dfsUp(n, -1, graph, d1, d2, u1, d1_nxt);
         int result = 0x7f7f7f7f;
         for (int i = 1; i <= n; ++i) {
             result = min(result, max(u1[i], d1[i]));
