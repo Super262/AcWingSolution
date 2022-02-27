@@ -15,17 +15,18 @@ class Problem1072 {
     // 找到距离u最远的点v；u和v间的距离即为直径
 private:
     int treeModel(const int root, const int father, const vector<vector<pair<int, int>>> &graph, int &answer) {
-        int d1 = 0, d2 = 0;
+        int d1 = 0;
+        int d2 = 0;
         for (auto t: graph[root]) {
             if (t.first == father) {
                 continue;
             }
-            int childD1 = treeModel(t.first, root, graph, answer) + t.second;
-            if (childD1 >= d1) {
+            auto child_d1 = treeModel(t.first, root, graph, answer) + t.second;
+            if (child_d1 >= d1) {
                 d2 = d1;
-                d1 = childD1;
-            } else if (childD1 > d2) {
-                d2 = childD1;
+                d1 = child_d1;
+            } else if (child_d1 > d2) {
+                d2 = child_d1;
             }
         }
         answer = max(answer, d1 + d2);
