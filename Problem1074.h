@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem1074 {
-    // https://www.acwing.com/solution/content/10714/
+    // 分组背包 + 树形DP：https://www.acwing.com/solution/content/10714/
 private:
     void dfs(int u, int p, int m, const vector<vector<pair<int, int>>> &graph, vector<vector<int>> &dp) {
         for (const auto &t: graph[u]) {
