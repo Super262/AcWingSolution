@@ -13,16 +13,17 @@ using namespace std;
 class Problem1074 {
     // https://www.acwing.com/solution/content/10714/
 private:
-    void dfs(int root, int father, int m, const vector<vector<pair<int, int>>> &graph, vector<vector<int>> &dp) {
-        for (const auto &t: graph[root]) {
-            if (t.first == father) {
+    void dfs(int u, int p, int m, const vector<vector<pair<int, int>>> &graph, vector<vector<int>> &dp) {
+        for (const auto &t: graph[u]) {
+            auto v = t.first;
+            if (v == p) {
                 continue;
             }
-            dfs(t.first, root, m, graph, dp);
+            dfs(v, u, m, graph, dp);
             for (int j = m; j >= 0; --j) {  // 循环体积
                 for (int k = 0; k < j; ++k) {  // 循环决策（这里k不能等于j！）
                     // 不要忘记是j - k - 1，不是j - k
-                    dp[root][j] = max(dp[root][j], dp[root][j - k - 1] + t.second + dp[t.first][k]);
+                    dp[u][j] = max(dp[u][j], dp[u][j - k - 1] + t.second + dp[v][k]);
                 }
             }
         }
