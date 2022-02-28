@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem1074 {
     // 分组背包 + 树形DP：https://www.acwing.com/solution/content/10714/
+    // f[i][m]：以i为根，保留m个树枝时的最多苹果
 private:
     void dfs(int u, int p, int m, const vector<vector<pair<int, int>>> &graph, vector<vector<int>> &dp) {
         for (const auto &t: graph[u]) {
