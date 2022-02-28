@@ -14,7 +14,7 @@ class Problem1089 {
     // https://www.acwing.com/solution/content/27813/
     // dp[i]表示1～i满足要求且第i个被点燃
 private:
-    const int N = 200002;
+    static const int N = 200002;
     int q[N];
     int dp[N];
     int cost[N];
