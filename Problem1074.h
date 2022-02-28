@@ -22,7 +22,7 @@ private:
             dfs(v, u, m, graph, dp);
             for (int j = m; j >= 0; --j) {  // 循环体积
                 for (int k = 0; k < j; ++k) {  // 循环决策（这里k不能等于j！）
-                    // 不要忘记是j - k - 1，不是j - k
+                    // 不要忘记是j - k - 1，不是j - k，要减去到子结点的边（树枝）
                     dp[u][j] = max(dp[u][j], dp[u][j - k - 1] + t.second + dp[v][k]);
                 }
             }
