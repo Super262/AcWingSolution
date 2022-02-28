@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0135 {
 private:
-    const int N = 300010;
+    static const int N = 300010;
     int dq[N];
     int a[N];
 
