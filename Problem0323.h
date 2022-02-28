@@ -26,7 +26,7 @@ private:
 
     int main() {
         int n;
-        while (cin >> n) {
+        while (scanf("%d", &n) != -1) {
             vector<vector<int>> g(n + 1, vector<int>());
             vector<bool> has_father(n + 1, false);
             for (int i = 0; i < n; ++i) {
