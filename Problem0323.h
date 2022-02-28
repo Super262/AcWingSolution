@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem0323 {
-    // 保证所有边至少有1个顶点被选择：f[u][0]表示不在u放置士兵，f[u][1]表示在u放置士兵
+    // u是子树的根结点，f[u][0]表示不在u放置士兵，f[u][1]表示在u放置士兵，f[u][1,0]是子树需要的士兵数
     // https://www.acwing.com/solution/content/66365/
 private:
     void dfs(const int u, const vector<vector<int>> &g, vector<vector<int>> &f) {
