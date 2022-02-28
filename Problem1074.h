@@ -37,7 +37,7 @@ private:
         for (int i = 0; i < n - 1; ++i) {
             int a, b, w;
             scanf("%d%d%d", &a, &b, &w);
-            graph[a].push_back({b, w});
+            graph[a].push_back({b, w});  // 由于我们并不清楚树的形状，所以这里使用双向边
             graph[b].push_back({a, w});
         }
         dfs(1, -1, q, graph, dp);
