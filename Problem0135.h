@@ -6,43 +6,40 @@
 #define ACWINGSOLUTION_PROBLEM0135_H
 
 #include <iostream>
-#include <cstring>
+#include <deque>
 
 using namespace std;
 
 class Problem0135 {
 private:
-    static const int N = 300010;
-    int dq[N];
-    int a[N];
-
-    int maxSeq(int n, int m) {
-        int result = -0x7f7f7f7f;
-        int hh = 0, tt = -1;
-        for (int i = 0; i <= n; ++i) {  // 从0开始遍历！！
-            // 根据题意：窗口长度为(m + 1)
-            while (hh <= tt && i - dq[hh] + 1 > m + 1) {
-                ++hh;
+    int maxSeq(int nums[], int n, int m) {
+        int res = -0x3f3f3f3f;
+        deque<int> q;
+        for (int i = 0; i < n; ++i) {
+            while (!q.empty() && i - q.front() + 1 > m) {
+                q.pop_front();
             }
-            if (hh <= tt) {
-                result = max(result, a[i] - a[dq[hh]]);
+            if (!q.empty()) {
+                res = max(res, nums[i] - nums[q.front()]);
             }
-            while (hh <= tt && a[i] <= a[dq[tt]]) {
-                --tt;
+            while (!q.empty() && nums[q.back()] >= nums[i]) {
+                q.pop_back();
             }
-            dq[++tt] = i;
+            q.push_back(i);
         }
-        return result;
+        return res;
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
+        int nums[n + 1];
+        nums[0] = 0;
         for (int i = 1; i <= n; ++i) {
-            scanf("%d", &a[i]);
-            a[i] += a[i - 1];
+            scanf("%d", &nums[i]);
+            nums[i] += nums[i - 1];
         }
-        printf("%d\n", maxSeq(n, m));
+        printf("%d\n", maxSeq(nums, n + 1, m + 1));
         return 0;
     }
 };
