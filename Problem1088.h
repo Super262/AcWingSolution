@@ -13,7 +13,7 @@ using namespace std;
 class Problem1088 {
     // https://www.acwing.com/solution/content/34005/
 private:
-    const int N = 3000010;
+    static const int N = 3000010;
     int oil[N], cost[N];
     bool visited[N];
     long long dq[N];
