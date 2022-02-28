@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
@@ -14,29 +15,31 @@ class Problem1075 {
     // 求森林中的最大直径
     // https://www.acwing.com/solution/content/8015/
 private:
-    int downMax(int root, int father, int &answer, const vector<vector<int>> &graph, vector<bool> &visited) {
-        visited[root] = true;
-        int d1 = 0, d2 = 0;
-        for (const auto &t: graph[root]) {
-            if (t == father) {
+    int dfs(int u, int p, const vector<vector<int>> &g, bool visited[], int &ans) {
+        visited[u] = true;
+        int d1 = 0;
+        int d2 = 0;
+        for (const auto &v: g[u]) {
+            if (v == p) {
                 continue;
             }
-            auto d = downMax(t, root, answer, graph, visited) + 1;
-            if (d >= d1) {
+            auto n1 = dfs(v, u, g, visited, ans) + 1;
+            if (n1 >= d1) {
                 d2 = d1;
-                d1 = d;
-            } else if (d > d2) {
-                d2 = d;
+                d1 = n1;
+            } else if (n1 > d2) {
+                d2 = n1;
             }
         }
-        answer = max(answer, d1 + d2);
+        ans = max(ans, d1 + d2);
         return d1;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        vector<int> divs_sum(n + 1, 0);
+        int divs_sum[n + 1];
+        memset(divs_sum, 0, sizeof divs_sum);
         for (int a = 1; a <= n; ++a) {  // 时间复杂度：O(nlogn)
             // 避免溢出，不使用“a * b <= n”
             // b不从1开始，避免累加自身（n）到因子和中
@@ -44,26 +47,23 @@ private:
                 divs_sum[a * b] += a;
             }
         }
-        vector<vector<int>> graph(n + 1, vector<int>());
+        vector<vector<int>> g(n + 1);
         for (int i = 1; i <= n; ++i) {
-            if (i < divs_sum[i]) {
+            if (divs_sum[i] >= i) {
                 continue;
             }
-            // 添加双向边
-            graph[i].push_back(divs_sum[i]);
-            graph[divs_sum[i]].push_back(i);
+            g[divs_sum[i]].push_back(i);  // 添加单向边！
         }
-        int answer = 0;
-        vector<bool> visited(n + 1, false);
-        for (int i = 1; i <= n; ++i) {  // 本题可能包含多棵树，因此需要尝试以每个点为根的树
-            if (graph[i].empty() || visited[i]) {
+        bool visited[n + 1];
+        int ans = 0;
+        memset(visited, 0, sizeof visited);
+        for (int u = 1; u <= n; ++u) {  // 本题可能包含多棵树，因此需要尝试以每个点为根的树
+            if (visited[u] || g[u].empty()) {
                 continue;
             }
-            // 遍历所有可能的根结点（数、因数和）
-            // 不要忘记传入visited！
-            downMax(i, -1, answer, graph, visited);
+            dfs(u, -1, g, visited, ans);
         }
-        printf("%d\n", answer);
+        printf("%d\n", ans);
         return 0;
     }
 };
