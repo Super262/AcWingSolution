@@ -9,7 +9,7 @@
 
 class Problem0154 {
 private:
-    const int N = 1000010;
+    static const int N = 1000010;
     int a[N];
     int dq[N];
 
