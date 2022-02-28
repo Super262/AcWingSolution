@@ -12,7 +12,7 @@ using namespace std;
 class Problem1091 {
     // https://www.acwing.com/solution/content/12800/
 private:
-    const int N = 1010;
+    static const int N = 1010;
     int q[N];
     int matrix[N][N];
 
@@ -47,27 +47,27 @@ private:
     }
 
     int minSquare(const int a, const int b, const int k) {
-        int rowWinMaxs[a + 1][b + 1];
-        int rowWinMins[a + 1][b + 1];
+        int row_win_maxs[a + 1][b + 1];
+        int row_win_mins[a + 1][b + 1];
         for (int i = 1; i <= a; ++i) {
-            getMaxInRow(matrix[i], rowWinMaxs[i], b, k);
-            getMinInRow(matrix[i], rowWinMins[i], b, k);
+            getMaxInRow(matrix[i], row_win_maxs[i], b, k);
+            getMinInRow(matrix[i], row_win_mins[i], b, k);
         }
-        int colWinMaxs[a + 1];
-        int colWinMins[a + 1];
+        int col_win_maxs[a + 1];
+        int col_win_mins[a + 1];
         int temp[a + 1];
         int result = 0x7f7f7f7f;
         for (int j = k; j <= b; ++j) {
             for (int i = 1; i <= a; ++i) {
-                temp[i] = rowWinMaxs[i][j];
+                temp[i] = row_win_maxs[i][j];
             }
-            getMaxInRow(temp, colWinMaxs, a, k);
+            getMaxInRow(temp, col_win_maxs, a, k);
             for (int i = 1; i <= a; ++i) {
-                temp[i] = rowWinMins[i][j];
+                temp[i] = row_win_mins[i][j];
             }
-            getMinInRow(temp, colWinMins, a, k);
+            getMinInRow(temp, col_win_mins, a, k);
             for (int i = k; i <= a; ++i) {
-                result = min(result, colWinMaxs[i] - colWinMins[i]);
+                result = min(result, col_win_maxs[i] - col_win_mins[i]);
             }
         }
         return result;
