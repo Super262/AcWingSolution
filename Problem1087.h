@@ -12,12 +12,12 @@ using namespace std;
 class Problem1087 {
 // https://www.acwing.com/solution/content/27326/
 private:
-    const int N = 100005;
+    static const int N = 100005;
     long long s[N];
     long long q[N];
     long long dp[N];
 
-    long long gFunc(int i) {
+    long long gFunc(long long i) {
         if (i < 1) {
             return 0;
         }
@@ -44,7 +44,7 @@ private:
         int n, k;
         scanf("%d%d", &n, &k);
         for (int i = 1; i <= n; ++i) {
-            scanf("%d", &s[i]);
+            scanf("%lld", &s[i]);
             s[i] += s[i - 1];
         }
         printf("%lld\n", maxSeq(n, k));
