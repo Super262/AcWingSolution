@@ -22,9 +22,9 @@ class Problem1123 {
 private:
     int main() {
         long x1, y1, x2, y2;  // 防止溢出发生（dx * dx）
-        cin >> x1 >> y1;
+        scanf("%ld%ld", &x1, &x2);
         long double length = 0;
-        while (cin >> x1 >> y1 >> x2 >> y2) {
+        while (scanf("%ld%ld%ld%ld", &x1, &y1, &x2, &y2) != -1) {
             auto dx = x2 - x1;
             auto dy = y2 - y1;
             length += sqrt(dx * dx + dy * dy) * 2;  // 不要忘记乘2：双向道路
