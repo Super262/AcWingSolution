@@ -14,43 +14,43 @@ private:
     // 线段树解法
     struct Node {
         int l, r;
-        long long sumOfKids;  // 子节点和
-        long long incrementForKids;  // "懒"标记：未来操作前，应对子节点施加的增量值
+        long long sum_of_kids;  // 子节点和
+        long long inc_for_kids;  // "懒"标记：未来操作前，应对子节点施加的增量值
     };
 
-    const int N = 100010;
+    static const int N = 100010;
     Node nodes[N * 4];
     int items[N];
 
     void pushUp(const int idx) {
-        nodes[idx].sumOfKids = nodes[idx << 1].sumOfKids + nodes[idx << 1 | 1].sumOfKids;
+        nodes[idx].sum_of_kids = nodes[idx << 1].sum_of_kids + nodes[idx << 1 | 1].sum_of_kids;
     }
 
     void pushDown(const int idx) {
         auto &root = nodes[idx];
-        if (root.incrementForKids == 0) {
+        if (root.inc_for_kids == 0) {
             return;
         }
         auto &lc = nodes[idx << 1];
         auto &rc = nodes[idx << 1 | 1];
 
-        lc.incrementForKids += root.incrementForKids;
-        rc.incrementForKids += root.incrementForKids;
+        lc.inc_for_kids += root.inc_for_kids;
+        rc.inc_for_kids += root.inc_for_kids;
 
         // 不要忘记这里的类型转换
-        lc.sumOfKids += (long long) (lc.r - lc.l + 1) * root.incrementForKids;
-        rc.sumOfKids += (long long) (rc.r - rc.l + 1) * root.incrementForKids;
+        lc.sum_of_kids += (long long) (lc.r - lc.l + 1) * root.inc_for_kids;
+        rc.sum_of_kids += (long long) (rc.r - rc.l + 1) * root.inc_for_kids;
 
         // 注意：pushDown操作不会修改root的sum值，只会传递增量到子节点并清除根结点的增量；pushUp负责修改根节点
-        root.incrementForKids = 0;
+        root.inc_for_kids = 0;
     }
 
     void buildTree(const int idx, const int l, const int r) {
         nodes[idx].l = l;
         nodes[idx].r = r;
         if (l == r) {
-            nodes[idx].sumOfKids = items[r];
-            nodes[idx].incrementForKids = 0;
+            nodes[idx].sum_of_kids = items[r];
+            nodes[idx].inc_for_kids = 0;
             return;
         }
         auto mid = l + ((r - l) >> 1);
@@ -62,8 +62,8 @@ private:
     void increaseRange(const int idx, const int l, const int r, const int val) {
         if (nodes[idx].l >= l && nodes[idx].r <= r) {
             // 注意：这时需要修改sumOfKids，而不是等待pushUp
-            nodes[idx].sumOfKids += (long long) (nodes[idx].r - nodes[idx].l + 1) * val;
-            nodes[idx].incrementForKids += val;
+            nodes[idx].sum_of_kids += (long long) (nodes[idx].r - nodes[idx].l + 1) * val;
+            nodes[idx].inc_for_kids += val;
             return;
         }
         // 先向下应用当前标记，在做其它处理
@@ -80,7 +80,7 @@ private:
 
     long long queryRange(const int idx, const int l, const int r) {
         if (nodes[idx].l >= l && nodes[idx].r <= r) {
-            return nodes[idx].sumOfKids;
+            return nodes[idx].sum_of_kids;
         }
         pushDown(idx);
         auto mid = nodes[idx].l + ((nodes[idx].r - nodes[idx].l) >> 1);
