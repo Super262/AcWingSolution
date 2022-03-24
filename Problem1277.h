@@ -17,7 +17,7 @@ private:
         int add, mul;
     };
 
-    const int N = 100005;
+    static const int N = 100005;
     Node nodes[4 * N];
     int items[N];
 
