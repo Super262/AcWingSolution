@@ -13,7 +13,7 @@
 using namespace std;
 
 class Problem1124 {
-    // 邻接矩阵上的欧拉路径，并要求字典需最小
+    // 邻接矩阵上的欧拉路径，并要求字典序最小
 private:
     const int N = 500;
 
