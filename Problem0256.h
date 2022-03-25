@@ -10,6 +10,7 @@
 using namespace std;
 
 class Problem0256 {
+    // 对于每个单词，无论是插入、查询，都是从尾部向头部迭代
 private:
     static const int K = 23;
 
