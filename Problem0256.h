@@ -62,17 +62,17 @@ private:
         root[0] = new Node();
         insert(0, s, nullptr, root[0]);
 
-        int x;
-        for (int i = 1; i <= n; ++i) {
+        for (int i = 1, x; i <= n; ++i) {
             scanf("%d", &x);
             root[i] = new Node();
             s[i] = s[i - 1] ^ x;
             insert(i, s, root[i - 1], root[i]);
         }
 
-        char op[2];
-        int l, r;
+
         while (m--) {
+            char op[2];
+            int x, l, r;
             scanf("%s", op);
             if (op[0] == 'A') {
                 scanf("%d", &x);
