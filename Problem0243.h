@@ -10,8 +10,8 @@
 using namespace std;
 
 class Problem0243 {
-private:
     // 线段树解法
+private:
     struct Node {
         int l, r;
         long long sum_of_kids;  // 子节点和
@@ -22,17 +22,17 @@ private:
     Node nodes[N * 4];
     int items[N];
 
-    void pushUp(const int idx) {
-        nodes[idx].sum_of_kids = nodes[idx << 1].sum_of_kids + nodes[idx << 1 | 1].sum_of_kids;
+    void pushUp(const int u) {
+        nodes[u].sum_of_kids = nodes[u << 1].sum_of_kids + nodes[u << 1 | 1].sum_of_kids;
     }
 
-    void pushDown(const int idx) {
-        auto &root = nodes[idx];
+    void pushDown(const int u) {
+        auto &root = nodes[u];
         if (root.inc_for_kids == 0) {
             return;
         }
-        auto &lc = nodes[idx << 1];
-        auto &rc = nodes[idx << 1 | 1];
+        auto &lc = nodes[u << 1];
+        auto &rc = nodes[u << 1 | 1];
 
         lc.inc_for_kids += root.inc_for_kids;
         rc.inc_for_kids += root.inc_for_kids;
@@ -45,51 +45,51 @@ private:
         root.inc_for_kids = 0;
     }
 
-    void buildTree(const int idx, const int l, const int r) {
-        nodes[idx].l = l;
-        nodes[idx].r = r;
+    void buildTree(const int u, const int l, const int r) {
+        nodes[u].l = l;
+        nodes[u].r = r;
         if (l == r) {
-            nodes[idx].sum_of_kids = items[r];
-            nodes[idx].inc_for_kids = 0;
+            nodes[u].sum_of_kids = items[r];
+            nodes[u].inc_for_kids = 0;
             return;
         }
         auto mid = l + ((r - l) >> 1);
-        buildTree(idx << 1, l, mid);
-        buildTree(idx << 1 | 1, mid + 1, r);
-        pushUp(idx);
+        buildTree(u << 1, l, mid);
+        buildTree(u << 1 | 1, mid + 1, r);
+        pushUp(u);
     }
 
-    void increaseRange(const int idx, const int l, const int r, const int val) {
-        if (nodes[idx].l >= l && nodes[idx].r <= r) {
+    void increaseRange(const int u, const int l, const int r, const int val) {
+        if (nodes[u].l >= l && nodes[u].r <= r) {
             // 注意：这时需要修改sumOfKids，而不是等待pushUp
-            nodes[idx].sum_of_kids += (long long) (nodes[idx].r - nodes[idx].l + 1) * val;
-            nodes[idx].inc_for_kids += val;
+            nodes[u].sum_of_kids += (long long) (nodes[u].r - nodes[u].l + 1) * val;
+            nodes[u].inc_for_kids += val;
             return;
         }
         // 先向下应用当前标记，在做其它处理
-        pushDown(idx);
-        auto mid = nodes[idx].l + ((nodes[idx].r - nodes[idx].l) >> 1);
+        pushDown(u);
+        auto mid = nodes[u].l + ((nodes[u].r - nodes[u].l) >> 1);
         if (l <= mid) {
-            increaseRange(idx << 1, l, r, val);
+            increaseRange(u << 1, l, r, val);
         }
         if (r > mid) {
-            increaseRange(idx << 1 | 1, l, r, val);
+            increaseRange(u << 1 | 1, l, r, val);
         }
-        pushUp(idx);
+        pushUp(u);
     }
 
-    long long queryRange(const int idx, const int l, const int r) {
-        if (nodes[idx].l >= l && nodes[idx].r <= r) {
-            return nodes[idx].sum_of_kids;
+    long long queryRange(const int u, const int l, const int r) {
+        if (nodes[u].l >= l && nodes[u].r <= r) {
+            return nodes[u].sum_of_kids;
         }
-        pushDown(idx);
-        auto mid = nodes[idx].l + ((nodes[idx].r - nodes[idx].l) >> 1);
+        pushDown(u);
+        auto mid = nodes[u].l + ((nodes[u].r - nodes[u].l) >> 1);
         long long result = 0;
         if (l <= mid) {
-            result += queryRange(idx << 1, l, r);
+            result += queryRange(u << 1, l, r);
         }
         if (r > mid) {
-            result += queryRange(idx << 1 | 1, l, r);
+            result += queryRange(u << 1 | 1, l, r);
         }
         return result;
     }
