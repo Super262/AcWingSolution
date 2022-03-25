@@ -6,79 +6,85 @@
 #define ACWINGSOLUTION_PROBLEM0256_H
 
 #include <iostream>
-#include <cstring>
 
 using namespace std;
 
 class Problem0256 {
 private:
-    static const int N = 600010;
-    static const int K = 25;
-    static const int M = K * N;
+    static const int K = 23;
 
-    int s[N];  // s[i] = a[0] ^ a[1] ^ ... a[i]
-    int tree[M][2];  // Trie某个节点的索引号
-    int max_ver[M];  // max_id[i]：索引号为i的节点的Trie中的最大版本
-    int root[N];  // root[i]：版本为i的Trie指向的节点编号
-    int idx;
+    struct Node {
+        int max_ver;
+        Node *kids[2]{};
 
-    void insert(int k, int prev, int cur) {
-        max_ver[cur] = k;
-        for (auto i = K - 2; i >= 0; --i) {  // 由低位向高位插入
+        Node() {
+            max_ver = -1;
+            for (auto &item: kids) {
+                item = nullptr;
+            }
+        }
+    };
+
+    void insert(const int &k, const int s[], Node *prev, Node *cur) {
+        cur->max_ver = k;
+        for (auto i = K; i >= 0; --i) {
             auto j = (s[k] >> i) & 1;
             if (prev) {
-                tree[cur][j ^ 1] = tree[prev][j ^ 1];  // 链接旧版本
+                cur->kids[j ^ 1] = prev->kids[j ^ 1];
+                prev = prev->kids[j];
             }
-            tree[cur][j] = ++idx;
-            max_ver[tree[cur][j]] = k;
-            cur = tree[cur][j];
-            prev = tree[prev][j];
+            cur->kids[j] = new Node();
+            cur->kids[j]->max_ver = k;
+            cur = cur->kids[j];
         }
     }
 
-    int query(int u, int l, int c) {  // 从s[l]开始查询目标值
-        for (int i = K - 2; i >= 0; --i) {
-            auto j = (c >> i) & 1;
-            if (max_ver[tree[u][j ^ 1]] >= l) {
-                u = tree[u][j ^ 1];
+    int query(Node *root, const int &st, const int &val, const int s[]) {
+        for (auto i = K; i >= 0; --i) {
+            auto j = (val >> i) & 1;
+            if (root->kids[j ^ 1] && root->kids[j ^ 1]->max_ver >= st) {
+                root = root->kids[j ^ 1];
             } else {
-                u = tree[u][j];
+                root = root->kids[j];
             }
         }
-        return c ^ s[max_ver[u]];
+        return val ^ s[root->max_ver];
     }
 
     int main() {
-        idx = 0;
         int n, m;
         scanf("%d%d", &n, &m);
+        int s[n + m + 1];
+        Node *root[n + m + 1];
+
         s[0] = 0;
-        max_ver[0] = -1;
-        root[0] = ++idx;
-        insert(0, 0, root[0]);
+        root[0] = new Node();
+        insert(0, s, nullptr, root[0]);
+
+        int x;
         for (int i = 1; i <= n; ++i) {
-            int x;
             scanf("%d", &x);
-            root[i] = ++idx;
+            root[i] = new Node();
             s[i] = s[i - 1] ^ x;
-            insert(i, root[i - 1], root[i]);
+            insert(i, s, root[i - 1], root[i]);
         }
+
+        char op[2];
+        int l, r;
         while (m--) {
-            char op[2];
             scanf("%s", op);
             if (op[0] == 'A') {
-                int x;
                 scanf("%d", &x);
                 ++n;
-                root[n] = ++idx;
+                root[n] = new Node();
                 s[n] = s[n - 1] ^ x;
-                insert(n, root[n - 1], root[n]);
+                insert(n, s, root[n - 1], root[n]);
             } else {
-                int l, r, x;
                 scanf("%d%d%d", &l, &r, &x);
-                printf("%d\n", query(root[r - 1], l - 1, s[n] ^ x));
+                printf("%d\n", query(root[r - 1], l - 1, s[n] ^ x, s));
             }
         }
+
         return 0;
     }
 };
