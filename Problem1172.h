@@ -13,6 +13,8 @@ using namespace std;
 
 class Problem1172 {
     // https://www.acwing.com/solution/content/20554/
+    // f[i][j]：节点i开始向上走 2^j 步所能走到的节点（0 <= j <= logN）
+    // depth[i]：编号为i的节点的深度
 private:
     const int H = 15;
     const int N = 40000;
@@ -79,14 +81,14 @@ private:
             graph[a].emplace_back(b);
             graph[b].emplace_back(a);
         }
-        vector<vector<int>> dp(N + 1, vector<int>(H + 1, 0));
-        auto depth = bfs(root, graph, dp);
+        vector<vector<int>> f(N + 1, vector<int>(H + 1, 0));
+        auto depth = bfs(root, graph, f);
         int m;
         scanf("%d", &m);
         while (m--) {
             int x, y;
             scanf("%d%d", &x, &y);
-            auto r = Lca(x, y, depth, dp);
+            auto r = Lca(x, y, depth, f);
             int ans = -1;
             if (r == x) {
                 ans = 1;
