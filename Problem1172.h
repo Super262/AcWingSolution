@@ -17,7 +17,7 @@ private:
     const int H = 15;
     const int N = 40000;
 
-    vector<int> Bfs(const int root, const vector<vector<int>> &graph, vector<vector<int>> &dp) {  // 宽搜不容易爆栈
+    vector<int> bfs(const int root, const vector<vector<int>> &graph, vector<vector<int>> &f) {  // 宽搜不容易爆栈
         queue<int> q;
         vector<int> depth(N + 1, 0x3f3f3f3f);
         depth[0] = 0;  // 哨兵，无效节点
@@ -31,37 +31,37 @@ private:
                     continue;
                 }
                 depth[nv] = depth[x] + 1;
-                dp[nv][0] = x;
+                f[nv][0] = x;
                 q.emplace(nv);
                 for (int k = 1; k <= H; ++k) {  // 从小到大
-                    dp[nv][k] = dp[dp[nv][k - 1]][k - 1];
+                    f[nv][k] = f[f[nv][k - 1]][k - 1];
                 }
             }
         }
         return depth;
     }
 
-    int Lca(int a, int b, const vector<int> &depth, const vector<vector<int>> &dp) {
+    int Lca(int a, int b, const vector<int> &depth, const vector<vector<int>> &f) {
         if (depth[a] < depth[b]) {  // 保证a在b之下
             swap(a, b);
         }
-        for (int k = H; k >= 0; --k) {  // 从大到小，找到a、b的同层祖先节点
-            if (depth[dp[a][k]] < depth[b]) {
+        for (auto k = H; k >= 0; --k) {  // 从大到小，找到a、b的同层祖先节点
+            if (depth[f[a][k]] < depth[b]) {
                 continue;
             }
-            a = dp[a][k];
+            a = f[a][k];
         }
         if (a == b) {
             return a;
         }
-        for (int k = H; k >= 0; --k) {  // 从大到小，找到a、b祖先的下层
-            if (dp[a][k] == dp[b][k]) {
+        for (auto k = H; k >= 0; --k) {  // 从大到小，找到a、b祖先的下层
+            if (f[a][k] == f[b][k]) {
                 continue;
             }
-            a = dp[a][k];
-            b = dp[b][k];
+            a = f[a][k];
+            b = f[b][k];
         }
-        return dp[a][0];
+        return f[a][0];
     }
 
     int main() {
@@ -80,22 +80,22 @@ private:
             graph[b].emplace_back(a);
         }
         vector<vector<int>> dp(N + 1, vector<int>(H + 1, 0));
-        auto depth = Bfs(root, graph, dp);
+        auto depth = bfs(root, graph, dp);
         int m;
         scanf("%d", &m);
         while (m--) {
             int x, y;
             scanf("%d%d", &x, &y);
             auto r = Lca(x, y, depth, dp);
-            int result = -1;
+            int ans = -1;
             if (r == x) {
-                result = 1;
+                ans = 1;
             } else if (r == y) {
-                result = 2;
+                ans = 2;
             } else {
-                result = 0;
+                ans = 0;
             }
-            printf("%d\n", result);
+            printf("%d\n", ans);
         }
         return 0;
     }
