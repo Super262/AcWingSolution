@@ -43,7 +43,7 @@ private:
         return depth;
     }
 
-    int Lca(int a, int b, const vector<int> &depth, const vector<vector<int>> &f) {
+    int lca(int a, int b, const vector<int> &depth, const vector<vector<int>> &f) {
         if (depth[a] < depth[b]) {  // 保证a在b之下
             swap(a, b);
         }
@@ -88,7 +88,7 @@ private:
         while (m--) {
             int x, y;
             scanf("%d%d", &x, &y);
-            auto r = Lca(x, y, depth, f);
+            auto r = lca(x, y, depth, f);
             int ans = -1;
             if (r == x) {
                 ans = 1;
