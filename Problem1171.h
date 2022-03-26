@@ -14,7 +14,7 @@ using namespace std;
 class Problem1171 {
     // https://www.acwing.com/solution/content/9034/
 private:
-    vector<int> Bfs(const int root, const vector<vector<pair<int, int>>> &graph) {
+    vector<int> bfs(const int root, const vector<vector<pair<int, int>>> &graph) {
         vector<int> dist(graph.size(), 0x3f3f3f3f);
         queue<int> q;
         q.emplace(root);
@@ -35,14 +35,14 @@ private:
         return dist;
     }
 
-    int FindRoot(const int x, vector<int> &parent) {
+    int findRoot(const int x, vector<int> &parent) {
         if (x != parent[x]) {
-            parent[x] = FindRoot(parent[x], parent);
+            parent[x] = findRoot(parent[x], parent);
         }
         return parent[x];
     }
 
-    void Tarjan(const int u,
+    void tarjan(const int u,
                 const vector<vector<pair<int, int>>> &graph,
                 vector<int> &parent,
                 const vector<int> &dist,
@@ -55,7 +55,7 @@ private:
             if (status[nv]) {
                 continue;
             }
-            Tarjan(nv, graph, parent, dist, status, queries, result);
+            tarjan(nv, graph, parent, dist, status, queries, result);
             parent[nv] = u;
         }
         for (const auto &q: queries[u]) {
@@ -64,7 +64,7 @@ private:
             if (status[v] != 2) {
                 continue;
             }
-            auto ancestor = FindRoot(v, parent);
+            auto ancestor = findRoot(v, parent);
             result[idx] = dist[u] + dist[v] - 2 * dist[ancestor];
         }
         status[u] = 2;
@@ -90,14 +90,14 @@ private:
             queries[x].emplace_back(y, idx);
             queries[y].emplace_back(x, idx);
         }
-        auto dist = Bfs(1, graph);
+        auto dist = bfs(1, graph);
         vector<int> parent(n + 1, 0);
         for (int i = 0; i <= n; ++i) {
             parent[i] = i;
         }
         vector<int> result(m, 0);
         vector<int> status(n + 1, 0);
-        Tarjan(1, graph, parent, dist, status, queries, result);
+        tarjan(1, graph, parent, dist, status, queries, result);
         for (const auto &x: result) {
             printf("%d\n", x);
         }
