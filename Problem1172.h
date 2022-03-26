@@ -22,7 +22,7 @@ private:
     vector<int> bfs(const int root, const vector<vector<int>> &graph, vector<vector<int>> &f) {  // 宽搜不容易爆栈
         queue<int> q;
         vector<int> depth(N + 1, 0x3f3f3f3f);
-        depth[0] = 0;  // 哨兵，无效节点
+        depth[0] = 0;  // 哨兵，无效节点，对应f[i]的初始值
         depth[root] = 1;
         q.emplace(root);
         while (!q.empty()) {
