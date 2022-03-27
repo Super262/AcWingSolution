@@ -13,7 +13,7 @@
 using namespace std;
 
 class Problem0352 {
-    // LCA + 树上差分：https://www.acwing.com/solution/content/4090/
+    // LCA + 树上差分：https://www.acwing.com/solution/content/1280/
 private:
     static const int H = 16;
 
@@ -82,6 +82,7 @@ private:
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
+
         vector<int> graph[n + 1];
         for (int i = 0; i < n - 1; ++i) {
             int a, b;
@@ -89,12 +90,14 @@ private:
             graph[a].emplace_back(b);
             graph[b].emplace_back(a);
         }
+
         int depth[n + 1];
         int father[n + 1][H + 1];
         int diff[n + 1];
         memset(depth, 0x3f, sizeof depth);
         memset(father, 0, sizeof father);
         memset(diff, 0, sizeof diff);
+
         bfs(graph, depth, father);
         for (int i = 0; i < m; ++i) {
             int x, y;
@@ -103,9 +106,11 @@ private:
             ++diff[y];
             diff[lca(x, y, graph, depth, father)] -= 2;
         }
+
         int answer = 0;
         dfs(1, -1, m, graph, diff, answer);
         printf("%d\n", answer);
+
         return 0;
     }
 };
