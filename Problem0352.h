@@ -17,7 +17,7 @@ class Problem0352 {
 private:
     static const int H = 16;
 
-    void Bfs(const vector<int> graph[], int depth[], int father[][H + 1]) {
+    void bfs(const vector<int> graph[], int depth[], int father[][H + 1]) {
         queue<int> q;
         depth[0] = 0;
         depth[1] = 1;
@@ -39,7 +39,7 @@ private:
         }
     }
 
-    int Lca(int a, int b, const vector<int> graph[], const int depth[], int father[][H + 1]) {
+    int lca(int a, int b, const vector<int> graph[], const int depth[], int father[][H + 1]) {
         if (depth[a] < depth[b]) {
             swap(a, b);
         }
@@ -62,13 +62,13 @@ private:
         return father[a][0];
     }
 
-    int Dfs(const int u, const int p, const int m, const vector<int> graph[], const int diff[], int &answer) {
+    int dfs(const int u, const int p, const int m, const vector<int> graph[], const int diff[], int &answer) {
         int res = diff[u];
         for (const int &v: graph[u]) {
             if (v == p) {
                 continue;
             }
-            auto s = Dfs(v, u, m, graph, diff, answer);
+            auto s = dfs(v, u, m, graph, diff, answer);
             if (s == 1) {
                 ++answer;
             } else if (s == 0) {
@@ -95,16 +95,16 @@ private:
         memset(depth, 0x3f, sizeof depth);
         memset(father, 0, sizeof father);
         memset(diff, 0, sizeof diff);
-        Bfs(graph, depth, father);
+        bfs(graph, depth, father);
         for (int i = 0; i < m; ++i) {
             int x, y;
             scanf("%d%d", &x, &y);
             ++diff[x];
             ++diff[y];
-            diff[Lca(x, y, graph, depth, father)] -= 2;
+            diff[lca(x, y, graph, depth, father)] -= 2;
         }
         int answer = 0;
-        Dfs(1, -1, m, graph, diff, answer);
+        dfs(1, -1, m, graph, diff, answer);
         printf("%d\n", answer);
         return 0;
     }
