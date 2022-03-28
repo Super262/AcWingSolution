@@ -17,6 +17,7 @@ class Problem0301 {
     // 对于f[j] - st[i] * sc[j] - S * sc[j]，令f[j] = y(j), sc[j] = x(j), k = S + st[i]
     // 则f[i] = st[i] * sc[i] + S * sc[N] + min{y - k * x}，即f[i] = st[i] * sc[i] + S * sc[N] + min{b}
     // 因此，求一个点(x, y)，使当前斜率为k的直线在y轴上的截距b最小
+    // 由于本题凸包边缘的斜率单调递增、新加入的点的横坐标也一定单调递增，所以我们应使用滑动窗口优化搜索
 private:
     long long minCost(const long long st[], const long long sc[], const int n, const int s) {
         int q[n + 1];
