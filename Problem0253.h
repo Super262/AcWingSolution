@@ -175,9 +175,9 @@ private:
             } else if (opt == 2) {
                 erase(root, x, tree);
             } else if (opt == 3) {
-                printf("%d\n", getRankByKey(root, x, tree) - 1);
+                printf("%d\n", getRankByKey(root, x, tree) - 1);  // 消除"哨兵"的影响
             } else if (opt == 4) {
-                printf("%d\n", getKeyByRank(root, x + 1, tree));
+                printf("%d\n", getKeyByRank(root, x + 1, tree));  // 消除"哨兵"的影响
             } else if (opt == 5) {
                 printf("%d\n", getPrev(root, x, tree));
             } else {
