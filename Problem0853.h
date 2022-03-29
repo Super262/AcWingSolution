@@ -6,7 +6,6 @@
 #define ACWINGSOLUTION_PROBLEM0853_H
 
 #include <cstring>
-#include <vector>
 #include <iostream>
 
 using namespace std;
@@ -17,32 +16,31 @@ private:
         int st, ed, w;
     };
 
-    int bellman_ford(int st, int ed, int n, int k, const vector<Edge> &edges) {
-        int dist[n + 1];
-        int temp[n + 1];
-        memset(dist, 0x3f, sizeof dist);
-        memset(temp, 0x3f, sizeof temp);
-        dist[st] = 0;
-        while (k--) {
-            memcpy(temp, dist, sizeof dist);
-            for (const auto &e: edges) {
-                if (temp[e.st] == 0x3f3f3f3f) {
+    int bellman_ford(int st, int ed, int n, int k, const Edge edges[], int m) {
+        int dist[2][n + 1];
+        memset(dist[0], 0x3f, sizeof dist[0]);
+        dist[0][st] = 0;
+        for (int i = 1; i <= k; ++i) {
+            memcpy(dist[i % 2], dist[(i - 1) % 2], sizeof dist[(i - 1) % 2]);
+            for (int j = 0; j < m; ++j) {
+                const auto &e = edges[j];
+                if (dist[(i - 1) % 2][e.st] == 0x3f3f3f3f) {
                     continue;
                 }
-                dist[e.ed] = min(dist[e.ed], temp[e.st] + e.w);
+                dist[i % 2][e.ed] = min(dist[i % 2][e.ed], dist[(i - 1) % 2][e.st] + e.w);
             }
         }
-        return dist[ed];
+        return dist[k % 2][ed];
     }
 
     int main() {
         int n, m, k;
         scanf("%d%d%d", &n, &m, &k);
-        vector<Edge> edges(m);
+        Edge edges[m];
         for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &edges[i].st, &edges[i].ed, &edges[i].w);
         }
-        auto res = bellman_ford(1, n, n, k, edges);
+        auto res = bellman_ford(1, n, n, k, edges, m);
         if (res == 0x3f3f3f3f) {
             printf("impossible");
         } else {
