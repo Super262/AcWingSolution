@@ -13,6 +13,7 @@ using namespace std;
 
 class Problem1282 {
     // https://www.acwing.com/solution/content/18275/
+    // 动态内存版本：LeetCode 1032
 private:
     static const int N = 10010, S = 55, M = 1000010, K = 26;
     int tree[N * S][K], counter[N * S], fail[N * S];
