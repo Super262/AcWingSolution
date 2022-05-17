@@ -12,37 +12,56 @@ using namespace std;
 
 class Problem0836 {
 private:
-    int rootIdx[100010];
-
-    int findRoot(const int x) {
-        if (rootIdx[x] != x) {
-            rootIdx[x] = findRoot(rootIdx[x]);
+    int findRoot(int x, int parent[]) {
+        auto root = x;
+        while (parent[root] != root) {
+            root = parent[root];
         }
-        return rootIdx[x];
+        while (x != root) {
+            auto prev = parent[x];
+            parent[x] = root;
+            x = prev;
+        }
+        return root;
     }
 
-    void mergeSets(const int a, const int b) {
-        rootIdx[findRoot(a)] = rootIdx[findRoot(b)];
+    int mergeSets(int a, int b, int parent[], int set_size[]) {
+        if (a == b) {
+            return -1;
+        }
+        if (set_size[a] > set_size[b]) {
+            parent[b] = a;
+            set_size[a] += set_size[b];
+            return a;
+        }
+        parent[a] = b;
+        set_size[b] += set_size[a];
+        return b;
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
+        int parent[n + 1];
+        int set_size[n + 1];
         for (int i = 1; i <= n; ++i) {
-            rootIdx[i] = i;
+            parent[i] = i;
+            set_size[i] = 1;
         }
         char op[2];
         int a, b;
         for (int i = 0; i < m; ++i) {
             scanf("%s%d%d", op, &a, &b);
             if (op[0] == 'M') {
-                mergeSets(a, b);
+                a = findRoot(a, parent);
+                b = findRoot(b, parent);
+                mergeSets(a, b, parent, set_size);
+                continue;
+            }
+            if (findRoot(a, parent) == findRoot(b, parent)) {
+                printf("Yes\n");
             } else {
-                if (findRoot(a) == findRoot(b)) {
-                    printf("Yes\n");
-                } else {
-                    printf("No\n");
-                }
+                printf("No\n");
             }
         }
         return 0;
