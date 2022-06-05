@@ -11,11 +11,11 @@
 using namespace std;
 
 struct Range {
-    int l;
-    int r;
+    int left;
+    int right;
 
     bool operator<(const Range &b) const {
-        return r < b.r;
+        return right < b.right;
     }
 };
 
@@ -25,16 +25,16 @@ class Problem0905 {
 public:
     int minConnection(Range *ranges, const int N) {
         sort(ranges, ranges + N);
-        int result = 0;
-        int rightEnd = -0x7f7f7f7f;
+        int ans = 0;
+        int end = -0x7f7f7f7f;
         for (int i = 0; i < N; ++i) {
-            if (ranges[i].left <= rightEnd) {
+            if (ranges[i].left <= end) {
                 continue;
             }
-            ++result;
-            rightEnd = ranges[i].right;
+            ++ans;
+            end = ranges[i].right;
         }
-        return result;
+        return ans;
     }
 
     int main() {
