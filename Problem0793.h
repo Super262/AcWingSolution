@@ -11,6 +11,7 @@
 using namespace std;
 
 class Problem0793 {
+    // 类比LeetCode 43（字符串相乘：延迟进位）
 private:
     string MulBigInts(string &a, int b) {
         reverse(a.begin(), a.end());
