@@ -12,7 +12,7 @@ using namespace std;
 class Problem0827 {
 public:
 
-    const int N = 100010;
+    static const int N = 100010;
     int e[N], l[N], r[N], idx = 0;
 
     void insertL(int x) {
