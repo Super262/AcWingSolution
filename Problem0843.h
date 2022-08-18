@@ -12,7 +12,7 @@ using namespace std;
 class Problem0843 {
     // 以截距为对角线编号
 private:
-    const int N = 9;
+    static const int N = 9;
     char graph[N][N];
     bool colUsed[N];
     bool dgUsed[2 * N];
