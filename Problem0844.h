@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0844 {
 private:
-    const int N = 100;
+    static const int N = 100;
     int matrix[N][N];
     bool visited[N][N];
     pair<int, int> q[N * N + 10];
