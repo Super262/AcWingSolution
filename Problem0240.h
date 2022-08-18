@@ -12,22 +12,18 @@ using namespace std;
 class Problem0240 {
     // https://www.acwing.com/solution/content/24842/
 private:
-    const int N = 50005;
-    int parent[N];
-    int dist[N];  // 当前节点到根结点的距离
-
-    int findRoot(const int x) {
+    int findRoot(const int x, int parent[], int dist[]) {
         if (x != parent[x]) {
-            auto root = findRoot(parent[x]);
+            auto root = findRoot(parent[x], parent, dist);
             dist[x] += dist[parent[x]];
             parent[x] = root;
         }
         return parent[x];
     }
 
-    bool mergeSets(const int x, const int y, const int rel) {
-        auto px = findRoot(x);
-        auto py = findRoot(y);
+    bool mergeSets(const int x, const int y, const int rel, int parent[], int dist[]) {
+        auto px = findRoot(x, parent, dist);
+        auto py = findRoot(y, parent, dist);
         if (rel == 1 && px == py && (dist[x] - dist[y]) % 3) {
             return false;
         }
@@ -49,22 +45,25 @@ private:
     int main() {
         int n, k;
         scanf("%d%d", &n, &k);
+        int parent[n + 1];
+        int dist[n + 1];  // 当前节点到根结点的距离
         for (int i = 1; i <= n; ++i) {
             parent[i] = i;
+            dist[i] = 0;
         }
-        int result = 0;
+        int ans = 0;
         int op, x, y;
         while (k--) {
             scanf("%d%d%d", &op, &x, &y);
             if (x > n || y > n) {
-                ++result;
+                ++ans;
                 continue;
             }
-            if (!mergeSets(x, y, op)) {
-                ++result;
+            if (!mergeSets(x, y, op, parent, dist)) {
+                ++ans;
             }
         }
-        printf("%d\n", result);
+        printf("%d\n", ans);
         return 0;
     }
 };
