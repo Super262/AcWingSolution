@@ -9,36 +9,43 @@
 
 using namespace std;
 
-
 class Problem0837 {
 private:
-    int rootIdx[100010];
-    int clusterSize[100010];
-
-    int findRoot(const int x) {
-        if (x != rootIdx[x]) {
-            rootIdx[x] = findRoot(rootIdx[x]);
+    int findRoot(int x, int parent[]) {
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return rootIdx[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return parent[x];
     }
 
-    void mergeSets(const int a, const int b) {
-        auto rootA = findRoot(a);
-        auto rootB = findRoot(b);
-        if (rootA == rootB) {
-            return;
+    int mergeSets(const int pa, const int pb, int parent[], int set_size[]) {
+        if (pa == pb) {
+            return -1;
         }
-        auto nextSize = clusterSize[rootA] + clusterSize[rootB];
-        rootIdx[rootA] = rootB;
-        clusterSize[rootB] = nextSize;
+        if (set_size[pa] > set_size[pb]) {
+            set_size[pa] += set_size[pb];
+            parent[pb] = pa;
+            return pa;
+        }
+        set_size[pb] += set_size[pa];
+        parent[pa] = pb;
+        return pb;
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
+        int parent[n + 1];
+        int set_size[n + 1];
         for (int i = 1; i <= n; ++i) {
-            rootIdx[i] = i;
-            clusterSize[i] = 1;
+            parent[i] = i;
+            set_size[i] = 1;
         }
         char op[3];
         int a, b;
@@ -46,17 +53,19 @@ private:
             scanf("%s", op);
             if (op[0] == 'C') {
                 scanf("%d%d", &a, &b);
-                mergeSets(a, b);
+                auto pa = findRoot(a, parent);
+                auto pb = findRoot(b, parent);
+                mergeSets(pa, pb, parent, set_size);
             } else if (op[1] == '1') {
                 scanf("%d%d", &a, &b);
-                if (findRoot(a) == findRoot(b)) {
+                if (findRoot(a, parent) == findRoot(b, parent)) {
                     printf("Yes\n");
                 } else {
                     printf("No\n");
                 }
             } else {
                 scanf("%d", &a);
-                printf("%d\n", clusterSize[findRoot(a)]);
+                printf("%d\n", set_size[findRoot(a, parent)]);
             }
         }
         return 0;
