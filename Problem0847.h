@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0847 {
 private:
-    const int N = 100010;
+    static const int N = 100010;
     int headIndex[N];
     int nextIndex[2 * N];
     int vertexValue[2 * N];
