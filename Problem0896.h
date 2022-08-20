@@ -15,10 +15,11 @@ private:
     int longestIS(const int arr[], const int n) {
         int lis_tail[n + 1];  // lis_tail[i]表示长度为i的LIS中最小的末尾元素
         memset(lis_tail, 0x7f, sizeof lis_tail);
-        int res = 0;
+        int ans = 0;
         for (int i = 0; i < n; ++i) {
             int t = arr[i];
-            int l = 0, r = res;
+            int l = 0;
+            auto r = ans;
             while (l < r) {
                 auto mid = l + (r - l + 1) / 2;  // 靠右端点，查找长度上界（即最大的i，使lisTail[i] < t）
                 if (lis_tail[mid] >= t) {
@@ -27,10 +28,10 @@ private:
                     l = mid;
                 }
             }
-            lis_tail[r + 1] = min(t, lis_tail[r + 1]);
-            res = max(res, r + 1);
+            lis_tail[l + 1] = min(t, lis_tail[l + 1]);
+            ans = max(ans, l + 1);
         }
-        return res;
+        return ans;
     }
 
     int main() {
