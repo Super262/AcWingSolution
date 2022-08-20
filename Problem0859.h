@@ -6,8 +6,6 @@
 #define ACWINGSOLUTION_PROBLEM0859_H
 
 #include <iostream>
-#include <cstring>
-#include <vector>
 #include <algorithm>
 
 using namespace std;
@@ -26,47 +24,71 @@ private:
         }
     };
 
-    int find_root(int x, vector<int> &parent) {
-        if (x != parent[x]) {
-            parent[x] = find_root(parent[x], parent);
+    int findRoot(int x, int parent[]) {
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
-    int kruskal(const int n, vector<Edge> &edges, vector<int> &parent) {
-        sort(edges.begin(), edges.end());
-        int res = 0;
+    int mergeSets(int pa, int pb, int parent[], int set_size[]) {
+        if (pa == pb) {
+            return -1;
+        }
+        if (set_size[pa] > set_size[pb]) {
+            set_size[pa] += set_size[pb];
+            parent[pb] = pa;
+            return pa;
+        }
+        set_size[pb] += set_size[pa];
+        parent[pa] = pb;
+        return pb;
+    }
+
+    int kruskal(const int n, const int m, Edge edges[], int parent[], int set_size[]) {
+        sort(edges, edges + m);
+        int ans = 0;
         int cnt = 0;
-        for (const auto &e: edges) {
-            if (find_root(e.u, parent) == find_root(e.v, parent)) {
+        for (int i = 0; i < m; ++i) {
+            auto pa = findRoot(edges[i].u, parent);
+            auto pb = findRoot(edges[i].v, parent);
+            if (pa == pb) {
                 continue;
             }
-            parent[find_root(e.u, parent)] = find_root(e.v, parent);
+            mergeSets(pa, pb, parent, set_size);
             ++cnt;
-            res += e.w;
+            ans += edges[i].w;
         }
         if (cnt != n - 1) {  // MST边数应为n-1
             return INF;
         }
-        return res;
+        return ans;
     }
 
     int main() {
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<int> parent(n + 1);
+        int parent[n + 1];
+        int set_size[n + 1];
         for (int i = 1; i <= n; ++i) {
             parent[i] = i;
+            set_size[i] = 1;
         }
-        vector<Edge> edges(m);
+        Edge edges[m];
         for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &edges[i].u, &edges[i].v, &edges[i].w);
         }
-        auto res = kruskal(n, edges, parent);
-        if (res == INF) {
+        auto ans = kruskal(n, m, edges, parent, set_size);
+        if (ans == INF) {
             printf("impossible\n");
         } else {
-            printf("%d\n", res);
+            printf("%d\n", ans);
         }
         return 0;
     }
