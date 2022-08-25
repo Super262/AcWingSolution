@@ -16,6 +16,7 @@ class Problem2715 {
     // 第j个后缀：首字符为s[j]的后缀；sa[i]：排名为i的后缀的编号j；rk[j]：第j个后缀的排名；height[i]：sa[i-1]和sa[i]的最长公共前缀
     // 双关键字排序：先按照第2关键字排序，再按照第1关键字排序
     // https://www.acwing.com/solution/content/58924/
+    // 参考题目：AcWing 140，模拟后缀数组
 private:
     static const int N = 1000010;
     int x[2 * N + 1];  // x[i]表示第1个关键字离散化后的值
