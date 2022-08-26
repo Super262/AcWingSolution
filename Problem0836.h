@@ -29,14 +29,12 @@ private:
         if (a == b) {
             return -1;
         }
-        if (set_size[a] > set_size[b]) {
-            parent[b] = a;
-            set_size[a] += set_size[b];
-            return a;
+        if (set_size[b] > set_size[a]) {
+            swap(a, b);
         }
-        parent[a] = b;
-        set_size[b] += set_size[a];
-        return b;
+        parent[b] = a;
+        set_size[a] += set_size[b];
+        return a;
     }
 
     int main() {
