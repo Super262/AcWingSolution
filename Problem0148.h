@@ -33,12 +33,11 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        auto items = new int[n];
+        int items[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &items[i]);
         }
         printf("%d\n", huffmanTree(items, n));
-        delete[] items;
         return 0;
     }
 };
