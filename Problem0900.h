@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem0900 {
-public:
+private:
     int combinationsOfSum(const int sum) {
         int dp[sum + 1];
         memset(dp, 0, sizeof dp);
