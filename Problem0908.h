@@ -21,7 +21,8 @@ struct Range {
 
 class Problem0908 {
 public:
-    unsigned int minConnection(const Range *ranges, const unsigned int n) {
+    unsigned int minConnection(Range *ranges, const unsigned int n) {
+        sort(ranges, ranges + n);
         unsigned int result = 0;
         int rightEnd = -1e9 - 1;
         for (unsigned int i = 0; i < n; ++i) {
@@ -41,7 +42,6 @@ public:
         for (unsigned int i = 0; i < n; ++i) {
             scanf("%d%d", &ranges[i].l, &ranges[i].r);
         }
-        sort(ranges, ranges + n);
         printf("%d\n", minConnection(ranges, n));
         delete[] ranges;
         return 0;
