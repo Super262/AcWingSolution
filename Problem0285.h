@@ -15,7 +15,6 @@ class Problem0285 {
 private:
     // dp[u][0]：所有从以u为根的子树中选择，但不选择u的方案
     // dp[u][1]：所有从以u为根的子树中选择，选择u的方案
-
     void dfs(const int u, const vector<vector<int>> &graph, vector<vector<int>> &dp, const int happiness[]) {
         dp[u][1] = happiness[u];
         for (auto v: graph[u]) {
@@ -38,7 +37,7 @@ private:
         for (int i = 0; i < n - 1; ++i) {
             int a, b;
             scanf("%d%d", &a, &b);
-            graph[b].emplace_back(a);
+            graph[b].emplace_back(a);  // 单向边：上司->职员
             has_father[a] = true;
         }
         int root = 1;
