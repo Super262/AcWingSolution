@@ -16,9 +16,9 @@ public:
         int dp[sum + 1];
         memset(dp, 0, sizeof dp);
         dp[0] = 1;  // 不要忘记初始化！
-        for (int s = 1; s <= sum; ++s) {
-            for (int num = s; num <= sum; ++num) {
-                dp[num] = (dp[num] + dp[num - s]) % 1000000007;
+        for (int a = 1; a <= sum; ++a) {
+            for (auto b = a; b <= sum; ++b) {
+                dp[b] = (dp[b] + dp[b - a]) % 1000000007;
             }
         }
         return dp[sum];
