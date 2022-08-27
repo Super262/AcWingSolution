@@ -48,12 +48,11 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        auto ranges = new Range[n];
+        Range ranges[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
         printf("%d\n", minPartition(ranges, n));
-        delete[] ranges;
         return 0;
     }
 };
