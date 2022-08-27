@@ -22,8 +22,7 @@ private:
                 const auto ed = st + l - 1;
                 dp[st][ed] = 0x7f7f7f7f;
                 for (auto mid = st + 1; mid <= ed; ++mid) {
-                    dp[st][ed] = min(dp[st][ed],
-                                     dp[st][mid - 1] + dp[mid][ed] + prefix[ed] - prefix[st - 1]);
+                    dp[st][ed] = min(dp[st][ed], dp[st][mid - 1] + dp[mid][ed] + prefix[ed] - prefix[st - 1]);
                 }
             }
         }
