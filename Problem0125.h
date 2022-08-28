@@ -10,17 +10,17 @@
 
 using namespace std;
 
-struct WSPair {
-    int weight;
-    int strength;
-
-    bool operator<(const WSPair &b) const {
-        return weight + strength < b.weight + b.strength;
-    }
-};
-
 class Problem0125 {
-public:
+private:
+    struct WSPair {
+        int weight;
+        int strength;
+
+        bool operator<(const WSPair &b) const {
+            return weight + strength < b.weight + b.strength;
+        }
+    };
+
     int minRisk(WSPair *cows, const unsigned int n) {
         if (!cows || n == 0) {
             return 0;
@@ -38,12 +38,11 @@ public:
     int main() {
         unsigned int n;
         scanf("%d", &n);
-        auto cows = new WSPair[n];
+        WSPair cows[n];
         for (unsigned int i = 0; i < n; ++i) {
             scanf("%d%d", &cows[i].weight, &cows[i].strength);
         }
         printf("%d\n", minRisk(cows, n));
-        delete[] cows;
         return 0;
     }
 };
