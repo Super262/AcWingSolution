@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem1015 {
 private:
-    const int N = 101;
+    static const int N = 101;
     int graph[N][N];
 
     int maxValue(const int r, const int c) {
