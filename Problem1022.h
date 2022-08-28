@@ -41,7 +41,7 @@ private:
         int result = knapsack(k, n, m);
         // 牢记以下求解过程
         int min_cost = m - 1;
-        while (min_cost > 0 && dp[n][min_cost - 1] == result) {
+        while (min_cost - 1 >= 0 && dp[n][min_cost - 1] == result) {
             --min_cost;
         }
         printf("%d %d\n", result, m - min_cost);
