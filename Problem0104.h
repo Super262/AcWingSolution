@@ -25,12 +25,11 @@ public:
     int main() {
         int n;
         scanf("%d", &n);
-        int *coordinates = new int[n];
+        int coordinates[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &coordinates[i]);
         }
         printf("%ld\n", minDistance(coordinates, n));
-        delete[] coordinates;
         return 0;
     }
 };
