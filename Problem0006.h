@@ -19,7 +19,7 @@ private:
 
     int knapsack(Item items[], const int m, const int n) {
         int dp[2][m + 1];
-        int q[m + 1];
+        int q[m + 1];  // 单调递减队列
         memset(dp, 0, sizeof dp);
         for (int i = 0; i < n; ++i) {
             auto v = items[i].v;
