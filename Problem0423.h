@@ -37,6 +37,6 @@ private:
         printf("%d\n", knapsack(n, packVolume));
         return 0;
     }
-}
+};
 
 #endif //ACWINGSOLUTION_PROBLEM0423_H
