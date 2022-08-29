@@ -12,6 +12,7 @@
 using namespace std;
 
 class Problem1064 {
+    // https://www.acwing.com/solution/content/56348/
 private:
     int countOnes(const int s, const int n) {
         int result = 0;
