@@ -23,7 +23,7 @@ private:
         return result;
     }
 
-    bool isValid(const int s, const int n) {
+    bool isInvalid(const int s, const int n) {  // 检测状态s是否非法
         // N < 2，此函数应仍能正确计算出结果，而不是直接返回false：(offset + 1) 可以大于 (N - 1)
         for (int offset = 0; offset < n; ++offset) {
             if (((s >> offset) & 1) && ((s >> (offset + 1)) & 1)) {
@@ -33,11 +33,11 @@ private:
         return false;
     }
 
-    vector<vector<int>> getPossiblePrevIdxes(const vector<int> &states, const int n) {
+    vector<vector<int>> getPreStateIdx(const vector<int> &states, const int n) {
         vector<vector<int>> res(states.size(), vector<int>());
         for (int i = 0; i < (int) states.size(); ++i) {
             for (int j = 0; j < (int) states.size(); ++j) {
-                if ((states[i] & states[j]) || isValid(states[i] | states[j], n)) {
+                if ((states[i] & states[j]) || isInvalid(states[i] | states[j], n)) {
                     continue;
                 }
                 res[i].emplace_back(j);
@@ -51,14 +51,14 @@ private:
         vector<int> ones_num;
         // 预处理出第i行所有可能的合法状态
         for (int s = 0; s < (1 << n); ++s) {
-            if (isValid(s, n)) {
+            if (isInvalid(s, n)) {
                 continue;
             }
             states.emplace_back(s);
             ones_num.emplace_back(countOnes(s, n));
         }
         // 获取第(i-1)行的所有可能状态
-        auto prev_state = getPossiblePrevIdxes(states, n);
+        const auto prev_state_idx = getPreStateIdx(states, n);
         // dp[i][k][s] 表示前i行共摆放了k个国王、第i行摆放方案为s（1表示摆放，0表示空白）的方案数量
         long long dp[2][k + 1][1 << n];
         memset(dp, 0, sizeof dp);
@@ -67,7 +67,7 @@ private:
             for (int j = 0; j <= k; ++j) {
                 memset(dp[i % 2][j], 0, sizeof dp[i % 2][j]);  // 滚动数组，不忘清零
                 for (int cur = 0; cur < (int) states.size(); ++cur) {
-                    for (int prev: prev_state[cur]) {
+                    for (int prev: prev_state_idx[cur]) {
                         if (ones_num[cur] + ones_num[prev] > j) {
                             continue;
                         }
