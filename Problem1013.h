@@ -12,6 +12,7 @@
 using namespace std;
 
 class Problem1013 {
+    // 求具体方案时，要使用原始的二维数组
 private:
     struct Item {
         int v;
