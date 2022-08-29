@@ -14,7 +14,7 @@ using namespace std;
 class Problem0327 {
     // https://www.acwing.com/solution/content/17569/
 private:
-    bool isValid(const int s, const int N) {
+    bool isInvalid(const int s, const int N) {
         // N < 2，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 1) 可以大于 (N - 1)
         for (int offset = 0; offset < N; ++offset) {
             if (((s >> offset) & 1) && ((s >> (offset + 1)) & 1)) {
@@ -24,7 +24,7 @@ private:
         return false;
     }
 
-    vector<vector<int>> getPossiblePrev(const vector<int> &states) {
+    vector<vector<int>> getPrevStateIdx(const vector<int> &states) {
         vector<vector<int>> prev_states(states.size(), vector<int>());
         for (int i = 0; i < states.size(); ++i) {
             for (int j = 0; j < states.size(); ++j) {
@@ -41,11 +41,12 @@ private:
         const int MOD = 1e8;
         vector<int> states;
         for (int s = 0; s < (1 << n); ++s) {
-            if (!isValid(s, n)) {
-                states.emplace_back(s);
+            if (isInvalid(s, n)) {
+                continue;
             }
+            states.emplace_back(s);
         }
-        auto prev_states = getPossiblePrev(states);
+        const auto prev_state_idx = getPrevStateIdx(states);
         // dp[i][s] 表示前i行摆放完成、第i行摆放方案为s（0是空位，1是）的方案数
         int dp[2][1 << n];
         memset(dp, 0, sizeof dp);
@@ -56,7 +57,7 @@ private:
                 if (states[k] & graph[i]) {
                     continue;
                 }
-                for (const auto &prev_idx: prev_states[k]) {
+                for (const auto &prev_idx: prev_state_idx[k]) {
                     dp[i % 2][states[k]] = (int) (((long long) dp[i % 2][states[k]] +
                                                    dp[(i - 1) % 2][states[prev_idx]]) % MOD);
                 }
