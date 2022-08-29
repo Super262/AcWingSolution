@@ -46,7 +46,7 @@ private:
         }
         long result = 0;
         auto maximal = dp[m];
-        for (int i = 0; i <= m; ++i) {
+        for (int i = 0; i <= m; ++i) {  //  可能有多个dp[j]可行，我们要遍历所有终态
             if (maximal != dp[i]) {
                 continue;
             }
