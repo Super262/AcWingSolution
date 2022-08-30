@@ -16,7 +16,7 @@ class Problem0524 {
     // https://www.acwing.com/solution/content/4028/
 private:
     static const int N = 20;
-    int path[N][N];
+    int line[N][N];
     int dp[1 << N];
     pair<double, double> points[N];
 
@@ -31,9 +31,9 @@ private:
 
     int stateCompress(const int n) {
         memset(dp, 0x3f, sizeof dp);
-        memset(path, 0, sizeof path);
-        for (int i = 0; i < n; ++i) {  // 预处理通过所有(x,y)的直线的状态信息
-            path[i][i] = 1 << i;  // 不要忘记这步初始化操作
+        memset(line, 0, sizeof line);
+        for (int i = 0; i < n; ++i) {  // 预处理，计算穿过任意2点points[i]、points[j]的直线line[i][j]所穿过的点
+            line[i][i] = 1 << i;  // 不要忘记这步初始化操作
             for (int j = 0; j < n; ++j) {
                 auto x1 = points[i].first;
                 auto y1 = points[i].second;
@@ -55,7 +55,7 @@ private:
                         s += 1 << k;
                     }
                 }
-                path[i][j] = s;
+                line[i][j] = s;
             }
         }
         dp[0] = 0;
@@ -65,7 +65,7 @@ private:
                 ++x1;
             }
             for (int x2 = 0; x2 < n; ++x2) {
-                dp[s | path[x1][x2]] = min(dp[s | path[x1][x2]], dp[s] + 1);
+                dp[s | line[x1][x2]] = min(dp[s | line[x1][x2]], dp[s] + 1);
             }
         }
         return dp[(1 << n) - 1];
