@@ -24,7 +24,7 @@ private:
         return result;
     }
 
-    bool isValid(const int s, const int n) {
+    bool isInvalid(const int s, const int n) {
         // N < 3，此函数应仍能正确计算出结果，而不是直接返回true：(offset + 2) 可以大于 (N - 1)
         for (int i = 0; i < n; ++i) {
             // 注意以下判断条件：S1 && (S2 || S3)
@@ -39,7 +39,7 @@ private:
         vector<int> states;
         vector<int> ones_num;
         for (int s = 0; s < (1 << m); ++s) {
-            if (!isValid(s, m)) {
+            if (!isInvalid(s, m)) {
                 continue;
             }
             states.emplace_back(s);
@@ -53,7 +53,7 @@ private:
         for (int i = 1; i <= n + 2; ++i) {
             for (int a = 0; a < (int) states.size(); ++a) {  // 枚举第i-2行状态
                 for (int b = 0; b < (int) states.size(); ++b) {  // 枚举第i-1行状态
-                    if (graph[i - 1] & states[b]) {  // 注意：这里不需要检测graph[i-2]和states[a]
+                    if (graph[i - 1] & states[b]) {  // 注意：这里不需要检测graph[i-2]和states[a]（它们在上次循环已经被检测）
                         continue;
                     }
                     for (int c = 0; c < (int) states.size(); ++c) {  // 枚举第i行状态
