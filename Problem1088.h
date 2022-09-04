@@ -11,8 +11,8 @@
 using namespace std;
 
 class Problem1088 {
-    // https://www.acwing.com/solution/content/34005/
     // 转化：判断长度为n的区间内的最小值是否大于或等于0
+    // https://www.acwing.com/solution/content/12796/
 private:
     static const int N = 3000010;
     int oil[N], cost[N];
