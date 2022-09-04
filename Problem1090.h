@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem1090 {
 private:
-    const int N = 50010;
+    static const int N = 50010;
     int q[N];
     int cost[N];
     int dp[N];
