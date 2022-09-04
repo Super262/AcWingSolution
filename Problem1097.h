@@ -12,8 +12,8 @@
 using namespace std;
 
 class Problem1097 {
-public:
-    const int N = 1000;
+private:
+    static const int N = 1000;
     char graph[N + 1][N + 1];
     bool visited[N + 1][N + 1];
     pair<int, int> q[N * N + 1];
