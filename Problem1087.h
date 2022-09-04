@@ -15,13 +15,13 @@ private:
     static const int N = 100005;
     long long s[N];
     long long q[N];
-    long long dp[N];
+    long long f[N];
 
     long long gFunc(long long i) {
         if (i < 1) {
             return 0;
         }
-        return dp[i - 1] - s[i];
+        return f[i - 1] - s[i];
     }
 
     long long maxSeq(int n, int k) {
@@ -31,13 +31,13 @@ private:
             while (hh <= tt && i - q[hh] + 1 > k + 1) {
                 ++hh;
             }
-            dp[i] = max(dp[i - 1], gFunc(q[hh]) + s[i]);
+            f[i] = max(f[i - 1], gFunc(q[hh]) + s[i]);
             while (hh <= tt && gFunc(q[tt]) <= gFunc(i)) {
                 --tt;
             }
             q[++tt] = i;
         }
-        return dp[n];
+        return f[n];
     }
 
     int main() {
