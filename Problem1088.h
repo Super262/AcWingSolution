@@ -12,6 +12,7 @@ using namespace std;
 
 class Problem1088 {
     // https://www.acwing.com/solution/content/34005/
+    // 转化：判断长度为n的区间内的最小值是否大于或等于0
 private:
     static const int N = 3000010;
     int oil[N], cost[N];
@@ -54,25 +55,30 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
+
         for (int i = 1; i <= n; ++i) {
             scanf("%d%d", &oil[i], &cost[i]);
         }
         for (int i = 1; i <= n; ++i) {
-            prefix[i] = prefix[i + n] = oil[i] - cost[i];
+            prefix[i] = oil[i] - cost[i];
+            prefix[i + n] = prefix[i];
         }
         for (int i = 1; i <= 2 * n; ++i) {
             prefix[i] += prefix[i - 1];
         }
         helper1(n);
+
         memset(prefix, 0, sizeof prefix);
         cost[0] = cost[n];
         for (int i = 1; i <= n; ++i) {
-            prefix[i] = prefix[i + n] = oil[i] - cost[i - 1];
+            prefix[i] = oil[i] - cost[i - 1];
+            prefix[i + n] = prefix[i];
         }
         for (int i = 2 * n; i >= 1; --i) {
             prefix[i] += prefix[i + 1];
         }
         helper2(n);
+
         for (int i = 1; i <= n; ++i) {
             if (visited[i]) {
                 printf("TAK\n");
@@ -80,6 +86,7 @@ private:
                 printf("NIE\n");
             }
         }
+
         return 0;
     }
 };
