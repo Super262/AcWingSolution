@@ -14,7 +14,7 @@ using namespace std;
 class Problem1098 {
     // https://www.acwing.com/solution/content/7771/
 public:
-    const int N = 50;
+    static const int N = 50;
     bool visited[N][N];
     int graph[N][N];
     pair<int, int> q[N * N + 1];
