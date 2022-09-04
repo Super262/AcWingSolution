@@ -15,8 +15,8 @@ using namespace std;
 class Problem0178 {
     // https://www.acwing.com/solution/content/21233/
 private:
-    const int N = 1000;
-    const int M = 100000;
+    static const int N = 1000;
+    static const int M = 100000;
     int headIdx[N + 10], rgHeadIdx[N + 10];
     int verVal[2 * M + 10], nextIdx[2 * M + 10], edgeWeight[2 * M + 10];
     int dis2End[N + 10];
