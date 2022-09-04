@@ -13,8 +13,8 @@ using namespace std;
 
 class Problem0188 {
     // https://www.acwing.com/solution/content/6027/
-public:
-    const int N = 150;
+private:
+    static const int N = 150;
     char graph[N][N];
     int dist[N][N];
     pair<int, int> q[N * N + 1];
