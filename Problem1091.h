@@ -32,7 +32,7 @@ private:
     }
 
     void getMinInRow(const int row[], int mins[], const int n, const int k) {
-        // mins[i]是以row[i]结尾的窗口中的最大值
+        // mins[i]是以row[i]结尾的窗口中的最小值
         int hh = 0, tt = -1;
         for (int i = 1; i <= n; ++i) {
             while (hh <= tt && i - q[hh] + 1 > k) {
