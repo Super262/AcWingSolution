@@ -15,7 +15,7 @@ class Problem0173 {
     // https://www.acwing.com/solution/content/18754/
     // 注意：输入的一串整数没有被空格隔开，会被%d解析为一个整数
 private:
-    const int N = 1000;
+    static const int N = 1000;
     pair<int, int> q[N * N + 1];
     int dist[N][N];
     char graph[N][N];
