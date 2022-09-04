@@ -15,8 +15,8 @@ using namespace std;
 class Problem0175 {
     // https://www.acwing.com/solution/content/26973/
     // 边权为0/1，找最短路径：双端队列BFS
-public:
-    const int MAX_N = 510;
+private:
+    static const int MAX_N = 510;
     char graph[MAX_N + 1][MAX_N + 1];
     int dist[MAX_N + 1][MAX_N + 1];
     bool isSelected[MAX_N + 1][MAX_N + 1];
