@@ -18,8 +18,8 @@ public:
     bool visited[N][N];
     int graph[N][N];
     pair<int, int> q[N * N + 1];
-    const int dx[] = {0, -1, 0, 1};
-    const int dy[] = {-1, 0, 1, 0};
+    const int dx[4] = {0, -1, 0, 1};
+    const int dy[4] = {-1, 0, 1, 0};
 
     int bfs(const int x, const int y, const int n, const int m) {
         int hh = 0, tt = -1;
