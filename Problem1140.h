@@ -30,6 +30,9 @@ private:
                     close_v = v;
                 }
             }
+            if (close_v == -1) {
+                return result;
+            }
             selected[close_v] = true;
             if (k > 1) {
                 result += dist[close_v];
@@ -48,6 +51,7 @@ private:
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 scanf("%d", &graph[i][j]);
+                graph[j][i] = graph[i][j];
             }
         }
         printf("%d\n", Prim(graph));
