@@ -66,6 +66,7 @@ private:
                 int t;
                 scanf("%d", &t);
                 graph[i][j] = t;
+                graph[j][i] = t;
             }
         }
         printf("%d", Prim(graph));
