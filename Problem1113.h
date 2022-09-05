@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem1113 {
-public:
+private:
     char graph[30][30];
     bool isSelected[30][30];
     const int dx[4] = {0, 0, -1, 1}, dy[4] = {-1, 1, 0, 0};
