@@ -47,7 +47,7 @@ private:
             char ch;
             int level;
 
-            bool operator<(Node &node) const {
+            bool operator<(const Node &node) const {
                 return level < node.level;
             }
         };
