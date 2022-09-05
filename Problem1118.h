@@ -12,7 +12,7 @@ using namespace std;
 class Problem1118 {
     // https://www.acwing.com/solution/content/56339/
 private:
-    const int N = 10;
+    static const int N = 10;
     int groups[N][N];
     int nums[N];
     bool selected[N];
