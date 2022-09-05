@@ -17,7 +17,7 @@ private:
     };
 
     unordered_map<int, int> dataTable;
-    const int N = 100010;
+    static const int N = 100010;
     Query queries[N];
     int parent[2 * N];
     int pTop = 0;
