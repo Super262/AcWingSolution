@@ -12,10 +12,11 @@ using namespace std;
 
 class Problem1117 {
 private:
-    const int N = 20;
+    static const int N = 20;
     string word[N];
     int visitCount[N];
     int minCommonLen[N][N];
+
     void findConnection(const int n) {
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
