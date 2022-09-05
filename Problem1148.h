@@ -25,11 +25,17 @@ private:
         }
     };
 
-    int FindRoot(const int x, vector<int> &parent) {
-        if (x != parent[x]) {
-            parent[x] = FindRoot(parent[x], parent);
+    int FindRoot(int x, vector<int> &parent) {
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     pair<long long, vector<vector<pair<int, int>>>> Kruskal(vector<Edge> &edges, const int n, vector<int> &parent) {
