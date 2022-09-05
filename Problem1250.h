@@ -11,14 +11,20 @@ using namespace std;
 
 class Problem1250 {
 private:
-    const int N = 200;
+    static const int N = 200;
     int parent[N * N];
 
-    int findRoot(const int x) {
-        if (x != parent[x]) {
-            parent[x] = findRoot(parent[x]);
+    int findRoot(int x) {
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     bool addEdge(const int x, const int y, const int n, const char direction) {
