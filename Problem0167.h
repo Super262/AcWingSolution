@@ -19,7 +19,7 @@ class Problem0167 {
     // 3. 第1根木棍失败，当前组合一定失败；
     // 4. 最后1根失败，当前组合一定失败。
 private:
-    const int N = 64;
+    static const int N = 64;
     int parts[N];
     bool isSelected[N];
 
