@@ -5,18 +5,28 @@
 #ifndef ACWINGSOLUTION_PROBLEM1252_H
 #define ACWINGSOLUTION_PROBLEM1252_H
 
+#include <iostream>
+
+using namespace std;
+
 class Problem1252 {
 private:
-    const int N = 10010;
+    static const int N = 10010;
     int dp[N];
     int value[N], price[N];
     int parent[N];
 
-    int findRoot(const int x) {
-        if (x != parent[x]) {
-            parent[x] = findRoot(parent[x]);
+    int findRoot(int x) {
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     void mergeSets(const int a, const int b) {
