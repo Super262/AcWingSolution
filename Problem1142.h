@@ -21,11 +21,17 @@ private:
         }
     };
 
-    int FindRoot(const int x, int parent[]) {
-        if (x != parent[x]) {
-            parent[x] = FindRoot(parent[x], parent);
+    int FindRoot(int x, int parent[]) {
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     pair<int, int> Kruskal(int parent[], Edge edges[], int k) {
