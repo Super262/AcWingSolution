@@ -18,16 +18,22 @@ private:
     struct Edge {
         int u, v, w;
 
-        bool operator<(Edge &e) const {
+        bool operator<(const Edge &e) const {
             return w < e.w;
         }
     };
 
     int FindRoot(int x, int parent[]) {
-        if (x != parent[x]) {
-            parent[x] = FindRoot(parent[x], parent);
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     int Kruskal(vector<Edge> &edges, int parent[]) {
