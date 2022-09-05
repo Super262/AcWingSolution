@@ -14,18 +14,22 @@ class Problem0239 {
     // https://www.acwing.com/solution/content/29308/
     // 异或运算自己是自己的逆运算
 private:
-    const int N = 20010;
+    static const int N = 20010;
     int parent[N], dist[N];
     unordered_map<int, int> dataTable;
     int pTop = 0;
 
-    int findRoot(const int x) {
-        if (x != parent[x]) {
-            auto root = findRoot(parent[x]);
-            dist[x] ^= dist[parent[x]];
-            parent[x] = root;
+    int findRoot(int x) {
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     int getIdx(const int a) {
