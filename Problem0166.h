@@ -14,7 +14,7 @@ using namespace std;
 class Problem0166 {
     // https://www.acwing.com/solution/content/31873/
 private:
-    const int N = 9, M = 1 << N;
+    static const int N = 9, M = 1 << N;
     int numOfOnes[M], idxOfOne[M];
     int rowState[N], columnState[N], cellState[3][3];  // 整数二进制的9位对应当前整数是否可以被填入（0不可用，1可用）
     char str[100];
