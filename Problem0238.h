@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0238 {
 private:
-    const int N = 30010;
+    static const int N = 30010;
     int clsSize[N], dist[N], parent[N];
 
     int findRoot(int x) {
