@@ -13,7 +13,7 @@ using namespace std;
 class Problem0168 {
     // https://www.acwing.com/solution/content/31876/
 private:
-    const int M = 20;
+    static const int M = 20;
     int minS[M + 2], minV[M + 2];
     int R[M + 2], H[M + 2];
     const int INF = 0x3f3f3f3f;
