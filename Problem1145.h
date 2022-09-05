@@ -25,15 +25,21 @@ private:
     };
 
     int FindRoot(int x, int parent[]) {
-        if (x != parent[x]) {
-            parent[x] = FindRoot(parent[x], parent);
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
-    double GetDistance(int i, int j, pair<int, int> points[]) {
-        auto dx = points[i].first - points[j].first;
-        auto dy = points[i].second - points[j].second;
+    double GetDistance(const pair<int, int> &a, const pair<int, int> &b) {
+        auto dx = a.first - b.first;
+        auto dy = a.second - b.second;
         return sqrt(dx * dx + dy * dy);
     }
 
@@ -42,6 +48,9 @@ private:
         auto counter = n;  // 当前剩余连通块的数量
         double result = 0;
         for (const auto &e: edges) {
+            if (counter <= k) {
+                break;
+            }
             auto pa = FindRoot(e.a, parent);
             auto pb = FindRoot(e.b, parent);
             if (pa == pb) {
@@ -50,9 +59,6 @@ private:
             parent[pa] = pb;
             result = e.w;
             --counter;
-            if (counter <= k) {
-                break;
-            }
         }
         return result;
     }
@@ -69,7 +75,7 @@ private:
         vector<Edge> edges;
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < i; ++j) {  // 避免加入重复边
-                edges.push_back({i, j, GetDistance(i, j, temp)});
+                edges.push_back({i, j, GetDistance(temp[i], temp[j])});
             }
         }
         printf("%.2lf\n", Kruskal(n, edges, k, parent));
