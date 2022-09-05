@@ -12,10 +12,10 @@ using namespace std;
 
 class Problem1112 {
 private:
-    const int N = 110;
+    static const int N = 110;
     char graph[N][N];
     bool visited[N][N];
-    int dx[] = {0, 0, 1, -1}, dy[] = {1, -1, 0, 0};
+    const int dx[4] = {0, 0, 1, -1}, dy[4] = {1, -1, 0, 0};
 
     bool dfs(const int sX, const int sY, const int eX, const int eY, const int n) {
         visited[sX][sY] = true;
