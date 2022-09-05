@@ -18,7 +18,12 @@ private:
     bool selected[N];
 
     int gcd(int a, int b) {
-        return b == 0 ? a : gcd(b, a % b);
+        while (b) {
+            auto t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
     }
 
     bool groupCompatible(const int a, const int gIdx, const int gTop) {
@@ -66,7 +71,6 @@ private:
         printf("%d\n", answer);
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM1118_H
