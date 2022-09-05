@@ -12,7 +12,7 @@
 using namespace std;
 
 class Problem0344 {
-    // https://www.acwing.com/solution/content/9256/
+    // https://www.acwing.com/solution/content/26131/
 private:
     const int INF = 0x3f3f3f3f;
 
