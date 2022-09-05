@@ -32,7 +32,8 @@ private:
         int x, y, w;
         for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &x, &y, &w);
-            dist[x][y] = dist[y][x] = w;
+            dist[x][y] = w;
+            dist[y][x] = w;
         }
         floyd(n, dist);
         int result = -1;
