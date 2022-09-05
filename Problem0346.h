@@ -22,10 +22,16 @@ private:
     };
 
     int FindRoot(int x, int parent[]) {
-        if (x != parent[x]) {
-            parent[x] = FindRoot(parent[x], parent);
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     long long Kruskal(int n, int parent[], int cluster_size[], Edge edges[], int m) {
