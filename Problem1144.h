@@ -17,10 +17,16 @@ private:
     };
 
     int FindRoot(int x, vector<int> &parent) {
-        if (x != parent[x]) {
-            parent[x] = FindRoot(parent[x], parent);
+        auto u = x;
+        while (u != parent[u]) {
+            u = parent[u];
         }
-        return parent[x];
+        while (x != u) {
+            auto p = parent[x];
+            parent[x] = u;
+            x = p;
+        }
+        return u;
     }
 
     vector<Edge> GetEdges(const int n, const int m, const vector<vector<int>> &ids) {
