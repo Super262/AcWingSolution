@@ -12,10 +12,10 @@ using namespace std;
 
 class Problem1116 {
 private:
-    const int N = 10;
+    static const int N = 10;
     bool visited[N][N];
-    const int dx[] = {-1, -1, -2, -2, 1, 1, 2, 2};
-    const int dy[] = {2, -2, 1, -1, -2, 2, -1, 1};
+    const int dx[8] = {-1, -1, -2, -2, 1, 1, 2, 2};
+    const int dy[8] = {2, -2, 1, -1, -2, 2, -1, 1};
 
     void dfs(int sx, int sy, int n, int m, int curCount, int &answer) {
         if (curCount == n * m) {
