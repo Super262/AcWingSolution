@@ -14,7 +14,7 @@ class Problem1113 {
 public:
     char graph[30][30];
     bool isSelected[30][30];
-    int dx[] = {0, 0, -1, 1}, dy[] = {-1, 1, 0, 0};
+    const int dx[4] = {0, 0, -1, 1}, dy[4] = {-1, 1, 0, 0};
 
     int dfs(const int startX, const int startY, const int H, const int W) {
         int result = 1;
