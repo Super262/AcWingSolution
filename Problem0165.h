@@ -13,7 +13,7 @@ using namespace std;
 class Problem0165 {
     // https://www.acwing.com/solution/content/951/
 private:
-    const int N = 18;
+    static const int N = 18;
     int catW[N];
     int wSum[N];
 
