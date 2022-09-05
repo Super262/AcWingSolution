@@ -30,8 +30,8 @@ private:
                 continue;
             }
             dfs(nx, ny, n, m, curCount + 1, answer);
-            visited[nx][ny] = false;
         }
+        visited[sx][sy] = false;
     }
 
     int main() {
