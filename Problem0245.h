@@ -22,7 +22,7 @@ private:
         int subMax;
     };
 
-    const int N = 500005;
+    static const int N = 500005;
     Node nodes[N * 4];
     int items[N];
 
