@@ -43,20 +43,19 @@ private:
             scanf("%d", &arr[i]);
         }
         for (int i = n; i > 0; --i) {
-            int left = 1, right = n;
-            while (left < right) {  // 二分查找：靠左搜索的模版
-                int mid = left + (right - left) / 2;
+            int l = 1;
+            auto r = n;
+            while (l < r) {  // 二分查找：靠左搜索的模版
+                int mid = l + (r - l) / 2;
                 int t = prefixSum(mid);
                 if (t < arr[i] + 1) {
-                    left = mid + 1;
-                } else if (t == arr[i] + 1) {
-                    right = mid;
+                    l = mid + 1;
                 } else {
-                    right = mid - 1;
+                    r = mid;
                 }
             }
-            arr[i] = right;
-            updateItem(right, -1, n);
+            arr[i] = r;
+            updateItem(r, -1, n);
         }
         for (int i = 1; i <= n; ++i) {
             printf("%d\n", arr[i]);
