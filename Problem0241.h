@@ -15,7 +15,7 @@ class Problem0241 {
     // https://halfrost.com/binary_indexed_tree/
     // 输入序列中的最大值（树状数组索引的上限） <= 输入序列的长度（n）
 private:
-    const int N = 200010;
+    static const int N = 200010;
     int height[N];
     int fenwickTable[N];  // 树状数组的索引从1开始
     int leftGre[N], leftLess[N], rightGre[N], rightLess[N];
