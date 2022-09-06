@@ -21,7 +21,7 @@ private:
             }
             for (int j = 0; primes[j] <= n / f; ++j) {
                 filtered[primes[j] * f] = true;
-                if (primes[j] % f == 0) {
+                if (f % primes[j] == 0) {
                     break;
                 }
             }
