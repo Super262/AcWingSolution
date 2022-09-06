@@ -12,7 +12,7 @@ using namespace std;
 class Problem0244 {
     // https://www.acwing.com/solution/content/1012/
 private:
-    const int N = 100000;
+    static const int N = 100000;
     int arr[N], ft[N];
 
     int lowBit(const int x) {
