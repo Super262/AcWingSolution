@@ -13,7 +13,7 @@ class Problem0242 {
     // 差分数组（树状数组）
     // https://www.acwing.com/solution/content/1429/
 private:
-    const int N = 100010;
+    static const int N = 100010;
     int fenwickTable[N];
 
     int lowBit(const int x) {
