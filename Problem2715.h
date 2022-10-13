@@ -27,7 +27,7 @@ private:
     int rk[2 * N + 1];
     int height[2 * N + 1];
 
-    void get_sa(const char str[], int n, int m) {
+    void getSA(const char str[], int n, int m) {
         // 第1轮排序（按照首字母）
         for (int i = 1; i <= n; ++i) {  // 初始时，由于str[i]较小，我们设置x[i]=str[i]
             x[i] = (unsigned char) str[i];
@@ -87,7 +87,7 @@ private:
         }
     }
 
-    void get_height_and_rk(const char str[], int n) {
+    void getHeightAndRk(const char str[], int n) {
         for (int i = 1; i <= n; ++i) {
             rk[sa[i]] = i;
         }
@@ -111,13 +111,13 @@ private:
         scanf("%s", str + 1);  // 从索引1开始保存
         const auto &n = (int) strlen(str + 1);
 
-        get_sa(str, n, 'z');
+        getSA(str, n, 'z');
         for (int i = 1; i <= n; ++i) {
             printf("%d ", sa[i]);
         }
         printf("\n");
 
-        get_height_and_rk(str, n);
+        getHeightAndRk(str, n);
         for (int i = 1; i <= n; ++i) {
             printf("%d ", height[i]);
         }
