@@ -13,7 +13,7 @@ using namespace std;
 
 class Problem2715 {
     // 后缀数组，索引从1开始，可将字符串s的所有后缀按照字典序排序，时间复杂度为O(N*logN)（倍增法）
-    // 第j个后缀：首字符为s[j]的后缀；sa[i]：排名为i的后缀的编号j；rk[j]：第j个后缀的排名；height[i]：sa[i-1]和sa[i]的最长公共前缀
+    // 第j个后缀：首字符为s[j]的后缀；sa[i]：排名为i的后缀的编号j；rank[j]：第j个后缀的排名；height[i]：sa[i-1]和sa[i]的最长公共前缀
     // 双关键字排序：先按照第2关键字排序，再按照第1关键字排序
     // https://www.acwing.com/solution/content/58924/
     // 参考题目：AcWing 140，模拟后缀数组
@@ -24,7 +24,7 @@ private:
     int cnt[2 * N + 1];  // 关键字频率，用于radix sort
 
     int sa[2 * N + 1];
-    int rk[2 * N + 1];
+    int rank[2 * N + 1];
     int height[2 * N + 1];
 
     void getSA(const char str[], int n, int m) {
@@ -36,7 +36,7 @@ private:
         for (int i = 2; i <= m; ++i) {
             cnt[i] += cnt[i - 1];
         }
-        for (int i = n; i > 0; --i) {
+        for (auto i = n; i > 0; --i) {
             sa[cnt[x[i]]] = i;
             --cnt[x[i]];
         }
@@ -63,7 +63,7 @@ private:
             for (int i = 2; i <= m; ++i) {
                 cnt[i] += cnt[i - 1];
             }
-            for (int i = n; i > 0; --i) {
+            for (auto i = n; i > 0; --i) {
                 sa[cnt[x[y[i]]]] = y[i];
                 --cnt[x[y[i]]];
                 y[i] = 0;
@@ -87,22 +87,22 @@ private:
         }
     }
 
-    void getHeightAndRk(const char str[], int n) {
+    void getHeightAndRank(const char str[], int n) {
         for (int i = 1; i <= n; ++i) {
-            rk[sa[i]] = i;
+            rank[sa[i]] = i;
         }
         for (int i = 1, k = 0; i <= n; ++i) {
-            if (rk[i] == 1) {  // 跳过排名为1的后缀（height[1]=0）
+            if (rank[i] == 1) {  // 跳过排名为1的后缀（height[1]=0）
                 continue;
             }
             if (k) {
                 --k;
             }
-            auto j = sa[rk[i] - 1];
+            auto j = sa[rank[i] - 1];
             while (i + k <= n && str[i + k] == str[j + k]) {
                 ++k;
             }
-            height[rk[i]] = k;
+            height[rank[i]] = k;
         }
     }
 
@@ -117,7 +117,7 @@ private:
         }
         printf("\n");
 
-        getHeightAndRk(str, n);
+        getHeightAndRank(str, n);
         for (int i = 1; i <= n; ++i) {
             printf("%d ", height[i]);
         }
