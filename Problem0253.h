@@ -11,177 +11,289 @@ using namespace std;
 
 class Problem0253 {
 private:
-    struct Node {
-        int l;
-        int r;
-        int key;  // 用于BST
-        int val;  // 用于大根堆
-        int cnt;  // 重复数字的频率
-        int size; // 当前子树包含的数字个数
+    static const int INF = 0x3f3f3f3f;
+    static const bool RED = true;
+    static const bool BLACK = false;
 
-        Node() {
-            l = 0;
-            r = 0;
-            key = 0;
-            val = 0;
-            cnt = 0;
-            size = 0;
+    struct Node {
+        int key;
+        Node *left;
+        Node *right;
+        bool color;  // true: red; false: black
+        int rank;
+        int cnt;
+
+        explicit Node(int key) {
+            this->key = key;
+            left = nullptr;
+            right = nullptr;
+            color = RED;
+            rank = 1;
+            cnt = 1;
         }
     };
 
-    const int INF = 0x3f3f3f3f;
-
-    int createNode(int key, Node tr[], int &idx) {
-        ++idx;
-        tr[idx].key = key;
-        tr[idx].val = (int) random();
-        tr[idx].cnt = 1;
-        tr[idx].size = 1;
-        return idx;
-    }
-
-    void pushUp(int p, Node tr[]) {
-        tr[p].size = tr[tr[p].l].size + tr[tr[p].r].size + tr[p].cnt;
-    }
-
-    int buildTree(Node tr[], int &idx) {
-        auto root = createNode(-INF, tr, idx);  // 两个"哨兵"：INF和-INF
-        tr[root].r = createNode(INF, tr, idx);
-        pushUp(root, tr);
-        return root;
-    }
-
-    void zig(int &p, Node tr[]) {  // 右旋
-        auto q = tr[p].l;
-        tr[p].l = tr[q].r;
-        tr[q].r = p;
-        p = q;
-        pushUp(tr[p].r, tr);
-        pushUp(p, tr);
-    }
-
-    void zag(int &p, Node tr[]) {  // 左旋
-        auto q = tr[p].r;
-        tr[p].r = tr[q].l;
-        tr[q].l = p;
-        p = q;
-        pushUp(tr[p].l, tr);
-        pushUp(p, tr);
-    }
-
-    void insert(int &p, int key, Node tr[], int &idx) {
-        if (!p) {
-            p = createNode(key, tr, idx);
-        } else if (tr[p].key == key) {
-            ++tr[p].cnt;
-        } else if (tr[p].key > key) {
-            insert(tr[p].l, key, tr, idx);
-            if (tr[tr[p].l].val > tr[p].val) {
-                zig(p, tr);
-            }
-        } else {
-            insert(tr[p].r, key, tr, idx);
-            if (tr[tr[p].r].val > tr[p].val) {
-                zag(p, tr);
-            }
+    class RBTree {
+    public:
+        RBTree() {
+            root = nullptr;
         }
-        pushUp(p, tr);
-    }
 
-    void erase(int &p, int key, Node tr[]) {
-        if (!p) {
-            return;
+        void insertKey(int key) {
+            root = insertKey(root, key);
+            root->color = BLACK;
+            reRank(root);
         }
-        if (tr[p].key == key) {
-            if (tr[p].cnt > 1) {
-                --tr[p].cnt;
-            } else if (tr[p].l || tr[p].r) {
-                if (!tr[p].r || tr[tr[p].l].val > tr[tr[p].r].val) {
-                    zig(p, tr);
-                    erase(tr[p].r, key, tr);
-                } else {
-                    zag(p, tr);
-                    erase(tr[p].l, key, tr);
-                }
+
+        void removeKey(int key) {
+            auto node = getNode(root, key);
+            if (!node) {
+                return;
+            }
+            root = removeKey(root, key);
+            if (!root) {
+                return;
+            }
+            reRank(root);
+        }
+
+        int getRankByKey(int key) {
+            return getRankByKey(root, key);
+        }
+
+        int getKeyByRank(int rank) {
+            return getKeyByRank(root, rank);
+        }
+
+        int getPreKey(int key) {
+            return getPreKey(root, key);
+        }
+
+        int getNextKey(int key) {
+            return getNextKey(root, key);
+        }
+
+    private:
+        Node *root;
+
+        static int getRank(Node *node) {
+            if (!node) {
+                return 0;
+            }
+            return node->rank;
+        }
+
+        static int calRank(Node *node) {
+            return getRank(node->left) + getRank(node->right) + node->cnt;
+        }
+
+        static void reRank(Node *node) {
+            if (!node) {
+                return;
+            }
+            node->rank = calRank(node);
+        }
+
+        static bool isRed(Node *node) {
+            if (!node) {
+                return BLACK;
+            }
+            return node->color;
+        }
+
+        static Node *leftRotate(Node *node) {
+            auto x = node->right;
+            node->right = x->left;
+            x->left = node;
+            x->color = node->color;
+            node->color = RED;
+            reRank(node);
+            reRank(x);
+            return x;
+        }
+
+        static Node *rightRotate(Node *node) {
+            auto x = node->left;
+            node->left = x->right;
+            x->right = node;
+            x->color = node->color;
+            node->color = RED;
+            reRank(node);
+            reRank(x);
+            return x;
+        }
+
+        static void setAsRed(Node *node) {
+            node->color = RED;
+            node->left->color = BLACK;
+            node->right->color = BLACK;
+        }
+
+        static Node *getNode(Node *node, int key) {
+            if (!node || key == node->key) {
+                return node;
+            }
+            if (key < node->key) {
+                return getNode(node->left, key);
+            }
+            return getNode(node->right, key);
+        }
+
+        static Node *getMinNode(Node *node) {
+            if (!node || !node->left) {
+                return node;
+            }
+            return getMinNode(node->left);
+        }
+
+        static Node *removeMinNode(Node *node) {
+            if (!node->left) {
+                auto x = node->right;
+                node->right = nullptr;
+                reRank(x);
+                return x;
+            }
+            node->left = removeMinNode(node->left);
+            reRank(node);
+            return node;
+        }
+
+        static Node *insertKey(Node *node, int key) {
+            if (!node) {
+                return new Node(key);
+            }
+            if (key < node->key) {
+                node->left = insertKey(node->left, key);
+            } else if (key > node->key) {
+                node->right = insertKey(node->right, key);
             } else {
-                p = 0;
+                ++node->cnt;
+                reRank(node);
+                return node;
             }
-        } else if (tr[p].key > key) {
-            erase(tr[p].l, key, tr);
-        } else {
-            erase(tr[p].r, key, tr);
+            if (!isRed(node->left) && isRed(node->right)) {
+                node = leftRotate(node);
+            }
+            if (isRed(node->left) && isRed(node->left->left)) {
+                node = rightRotate(node);
+            }
+            if (isRed(node->left) && isRed(node->right)) {
+                setAsRed(node);
+            }
+            reRank(node);
+            return node;
         }
-        pushUp(p, tr);
-    }
 
-    int getRankByKey(int p, int key, Node tr[]) {
-        if (!p) {
-            return 0;
+        static Node *removeKey(Node *node, int key) {
+            if (!node) {
+                return nullptr;
+            }
+            if (key < node->key) {
+                node->left = removeKey(node->left, key);
+                reRank(node);
+                return node;
+            }
+            if (key > node->key) {
+                node->right = removeKey(node->right, key);
+                reRank(node);
+                return node;
+            }
+            if (node->cnt > 1) {
+                --node->cnt;
+                reRank(node);
+                return node;
+            }
+            if (!node->left) {
+                auto x = node->right;
+                node->right = nullptr;
+                reRank(x);
+                return x;
+            }
+            if (!node->right) {
+                auto x = node->left;
+                node->left = nullptr;
+                reRank(x);
+                return x;
+            }
+            auto successor = getMinNode(node->right);
+            successor->right = removeMinNode(node->right);
+            reRank(successor->right);
+            successor->left = node->left;
+            node->left = nullptr;
+            node->right = nullptr;
+            reRank(successor);
+            return successor;
         }
-        if (tr[p].key == key) {
-            return tr[tr[p].l].size + 1;
-        }
-        if (tr[p].key > key) {
-            return getRankByKey(tr[p].l, key, tr);
-        }
-        return tr[tr[p].l].size + tr[p].cnt + getRankByKey(tr[p].r, key, tr);
-    }
 
-    int getKeyByRank(int p, int rank, Node tr[]) {
-        if (!p) {
-            return INF;
+        static int getRankByKey(Node *node, int key) {
+            if (!node) {
+                return 0;
+            }
+            if (key > node->key) {
+                return getRank(node->left) + node->cnt + getRankByKey(node->right, key);
+            }
+            if (key < node->key) {
+                return getRankByKey(node->left, key);
+            }
+            return getRank(node->left) + 1;
         }
-        if (tr[tr[p].l].size >= rank) {
-            return getKeyByRank(tr[p].l, rank, tr);
-        }
-        if (tr[tr[p].l].size + tr[p].cnt >= rank) {
-            return tr[p].key;
-        }
-        return getKeyByRank(tr[p].r, rank - tr[tr[p].l].size - tr[p].cnt, tr);
-    }
 
-    int getPrev(int p, int key, Node tr[]) {
-        if (!p) {
-            return -INF;
+        static int getKeyByRank(Node *node, int rank) {
+            if (!node) {
+                return INF;
+            }
+            if (rank <= getRank(node->left)) {
+                return getKeyByRank(node->left, rank);
+            }
+            if (rank <= getRank(node->left) + node->cnt) {
+                return node->key;
+            }
+            return getKeyByRank(node->right, rank - getRank(node->left) - node->cnt);
         }
-        if (tr[p].key >= key) {
-            return getPrev(tr[p].l, key, tr);
-        }
-        return max(tr[p].key, getPrev(tr[p].r, key, tr));
-    }
 
-    int getNext(int p, int key, Node tr[]) {
-        if (!p) {
-            return INF;
+        static int getPreKey(Node *node, int key) {
+            if (!node) {
+                return -INF;
+            }
+            if (key <= node->key) {
+                return getPreKey(node->left, key);
+            }
+            return max(node->key, getPreKey(node->right, key));
         }
-        if (tr[p].key <= key) {
-            return getNext(tr[p].r, key, tr);
+
+        static int getNextKey(Node *node, int key) {
+            if (!node) {
+                return INF;
+            }
+            if (key >= node->key) {
+                return getNextKey(node->right, key);
+            }
+            return min(node->key, getNextKey(node->left, key));
         }
-        return min(tr[p].key, getNext(tr[p].l, key, tr));
-    }
+    };
 
     int main() {
-        int n = 0;
+        int n;
         scanf("%d", &n);
-        Node tree[n + 1];
-        int idx = 0;
-        auto root = buildTree(tree, idx);
+        RBTree rbTree;
+        rbTree.insertKey(-INF);
+        rbTree.insertKey(INF);
         while (n--) {
-            int opt;
-            int x;
-            scanf("%d%d", &opt, &x);
-            if (opt == 1) {
-                insert(root, x, tree, idx);
-            } else if (opt == 2) {
-                erase(root, x, tree);
-            } else if (opt == 3) {
-                printf("%d\n", getRankByKey(root, x, tree) - 1);  // 消除"哨兵"的影响
-            } else if (opt == 4) {
-                printf("%d\n", getKeyByRank(root, x + 1, tree));  // 消除"哨兵"的影响
-            } else if (opt == 5) {
-                printf("%d\n", getPrev(root, x, tree));
+            int op;
+            int val;
+            scanf("%d%d", &op, &val);
+            if (op == 1) {
+                rbTree.insertKey(val);
+            } else if (op == 2) {
+                rbTree.removeKey(val);
+            } else if (op == 3) {
+                printf("%d\n", rbTree.getRankByKey(val) - 1);
+            } else if (op == 4) {
+                printf("%d\n", rbTree.getKeyByRank(val + 1));
+            } else if (op == 5) {
+                printf("%d\n", rbTree.getPreKey(val));
             } else {
-                printf("%d\n", getNext(root, x, tree));
+                printf("%d\n", rbTree.getNextKey(val));
             }
         }
         return 0;
