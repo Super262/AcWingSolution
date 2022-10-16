@@ -130,20 +130,24 @@ private:
         }
 
         static Node *getNode(Node *node, int key) {
-            if (!node || key == node->key) {
-                return node;
+            while (node && key != node->key) {
+                if (key < node->key) {
+                    node = node->left;
+                } else {
+                    node = node->right;
+                }
             }
-            if (key < node->key) {
-                return getNode(node->left, key);
-            }
-            return getNode(node->right, key);
+            return node;
         }
 
         static Node *getMinNode(Node *node) {
-            if (!node || !node->left) {
-                return node;
+            if (!node) {
+                return nullptr;
             }
-            return getMinNode(node->left);
+            while (node->left) {
+                node = node->left;
+            }
+            return node;
         }
 
         static Node *removeMinNode(Node *node) {
@@ -242,13 +246,14 @@ private:
             if (!node) {
                 return INF;
             }
-            if (rank <= getRank(node->left)) {
+            auto leftRank = getRank(node->left);
+            if (rank <= leftRank) {
                 return getKeyByRank(node->left, rank);
             }
-            if (rank <= getRank(node->left) + node->cnt) {
+            if (rank <= leftRank + node->cnt) {
                 return node->key;
             }
-            return getKeyByRank(node->right, rank - getRank(node->left) - node->cnt);
+            return getKeyByRank(node->right, rank - leftRank - node->cnt);
         }
 
         static int getPreKey(Node *node, int key) {
