@@ -10,6 +10,7 @@
 using namespace std;
 
 class Problem0253 {
+    // 红黑树
 private:
     static const int INF = 0x3f3f3f3f;
     static const bool RED = true;
