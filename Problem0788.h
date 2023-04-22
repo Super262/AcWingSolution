@@ -14,12 +14,12 @@ class Problem0788 {
     // 注意为避免溢出，使用long long
     // 为便于改造，拆分归并过程和统计逆序对的过程
 private:
-    long long MergeSort(int nums[], int st, int ed, int temp[]) {
+    long long mergeSort(int nums[], int st, int ed, int temp[]) {
         if (st >= ed) {
             return 0;
         }
         const auto mid = st + (ed - st) / 2;
-        auto result = MergeSort(nums, st, mid, temp) + MergeSort(nums, mid + 1, ed, temp);
+        auto result = mergeSort(nums, st, mid, temp) + mergeSort(nums, mid + 1, ed, temp);
         auto l = st;
         auto r = mid + 1;
         while (r <= ed) {  // 统计逆序对
@@ -64,7 +64,7 @@ private:
         for (int i = 0; i < n; ++i) {
             scanf("%d", &nums[i]);
         }
-        printf("%lld\n", MergeSort(nums, 0, n - 1, temp));
+        printf("%lld\n", mergeSort(nums, 0, n - 1, temp));
         return 0;
     }
 };
