@@ -11,9 +11,9 @@ using namespace std;
 
 class Problem0789 {
 private:
-    void QueryRange(const int nums[], const int n, const int t) {
+    void queryRange(const int nums[], const int n, const int t) {
         int l = 0;
-        int r = n - 1;
+        auto r = n - 1;
         while (l < r) {
             auto mid = l + (r - l) / 2;
             if (nums[mid] >= t) {
@@ -55,7 +55,7 @@ private:
         int t;
         for (int i = 0; i < k; ++i) {
             scanf("%d", &t);
-            QueryRange(nums, n, t);
+            queryRange(nums, n, t);
         }
         return 0;
     }
