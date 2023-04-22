@@ -16,12 +16,12 @@ private:
         if (st >= ed) {
             return;
         }
+        auto l = st;
         auto mid = st + (ed - st) / 2;
+        auto r = mid + 1;
         mergeSort(nums, st, mid, temp);
-        mergeSort(nums, mid + 1, ed, temp);
-        int t = st;
-        int l = st;
-        int r = mid + 1;
+        mergeSort(nums, r, ed, temp);
+        auto t = st;
         while (l <= mid && r <= ed) {
             if (nums[l] <= nums[r]) {
                 temp[t] = nums[l];
@@ -42,7 +42,7 @@ private:
             ++r;
             ++t;
         }
-        for (int i = st; i <= ed; ++i) {
+        for (auto i = st; i <= ed; ++i) {
             nums[i] = temp[i];
         }
     }
@@ -50,8 +50,8 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        vector<int> nums(n);
-        vector<int> temp(n);
+        vector<int> nums(n, 0);
+        vector<int> temp(n, 0);
         for (int i = 0; i < n; ++i) {
             scanf("%d", &nums[i]);
         }
@@ -59,8 +59,9 @@ private:
         for (int i = 0; i < n; ++i) {
             printf("%d ", nums[i]);
         }
+        printf("\n");
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0787_H
+#endif // ACWINGSOLUTION_PROBLEM0787_H
