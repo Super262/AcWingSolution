@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0795 {
 public:
-    vector<int> GetPrefixSum(const vector<int> &a) {
+    vector<int> getPrefixSum(const vector<int> &a) {
         vector<int> result(a.size() + 1, 0);
         for (unsigned long i = 1; i < result.size(); ++i) {
             result[i] = result[i - 1] + a[i - 1];
@@ -27,7 +27,7 @@ public:
         for (int i = 0; i < n; ++i) {
             scanf("%d", &arr[i]);
         }
-        vector<int> prefixSum = GetPrefixSum(arr);
+        vector<int> prefixSum = getPrefixSum(arr);
         int l, r;
         for (int i = 0; i < m; ++i) {
             scanf("%d%d", &l, &r);
