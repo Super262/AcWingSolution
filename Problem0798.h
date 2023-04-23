@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0798 {
 private:
-    void increase(vector<vector<int>> &diff, const int x1, const int y1, const int x2, const int y2, const int v) {
+    void matrixIncrease(vector<vector<int>> &diff, const int x1, const int y1, const int x2, const int y2, const int v) {
         diff[x1][y1] += v;
         diff[x2 + 1][y1] -= v;
         diff[x1][y2 + 1] -= v;
@@ -29,13 +29,13 @@ private:
             for (int j = 1; j <= m; ++j) {
                 int t;
                 scanf("%d", &t);
-                increase(matrix, i, j, i, j, t);
+                matrixIncrease(matrix, i, j, i, j, t);
             }
         }
         for (int i = 0; i < q; ++i) {
             int x1, y1, x2, y2, t;
             scanf("%d%d%d%d%d", &x1, &y1, &x2, &y2, &t);
-            increase(matrix, x1, y1, x2, y2, t);
+            matrixIncrease(matrix, x1, y1, x2, y2, t);
         }
         for (int i = 1; i <= n; ++i) {
             for (int j = 1; j <= m; ++j) {
