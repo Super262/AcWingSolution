@@ -14,7 +14,7 @@ using namespace std;
 class Problem0799 {
 private:
     int longestUnique(const vector<int> &nums) {
-        const int n = (int) nums.size();
+        const auto n = (int) nums.size();
         unordered_map<int, int> counter;
         int result = 0;
         for (int l = 0, r = 0; r < n; ++r) {
