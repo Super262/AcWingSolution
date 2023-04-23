@@ -13,7 +13,7 @@ using namespace std;
 
 class Problem0796 {
 public:
-    vector<vector<int>> GetPrefixSum(const vector<vector<int>> &matrix) {
+    vector<vector<int>> getPrefixSum(const vector<vector<int>> &matrix) {
         vector<vector<int>> res(matrix.size() + 1, vector<int>(matrix[0].size() + 1, 0));
         for (unsigned long i = 1; i < res.size(); ++i) {
             for (unsigned long j = 1; j < res[0].size(); ++j) {
@@ -32,7 +32,7 @@ public:
                 scanf("%d", &matrix[i][j]);
             }
         }
-        vector<vector<int>> prefix = GetPrefixSum(matrix);
+        vector<vector<int>> prefix = getPrefixSum(matrix);
         int x1, y1, x2, y2;
         for (int i = 0; i < q; ++i) {
             scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
