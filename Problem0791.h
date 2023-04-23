@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0791 {
 private:
-    string AddBigInt(string a, string b) {
+    string addBigInt(string a, string b) {
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
         string result;
@@ -39,7 +39,7 @@ private:
     int main() {
         string a, b;
         cin >> a >> b;
-        cout << AddBigInt(a, b) << endl;
+        cout << addBigInt(a, b) << endl;
         return 0;
     }
 };
