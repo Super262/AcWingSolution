@@ -13,7 +13,7 @@ using namespace std;
 
 class Problem0802 {
 private:
-    int GetIdx(int idx, const vector<int> &indices) {
+    int getIdx(int idx, const vector<int> &indices) {
         return (int) (lower_bound(indices.begin(), indices.end(), idx) - indices.begin() + 1);  // 索引从1开始
     }
 
@@ -43,14 +43,14 @@ private:
 
         vector<int> data(indices.size() + 1, 0);  // 离散化后的索引从1开始，别忘记加1
         for (const auto &p: add_reqs) {
-            data[GetIdx(p.first, indices)] += p.second;
+            data[getIdx(p.first, indices)] += p.second;
         }
         for (int i = 1; i < data.size(); ++i) {
             data[i] += data[i - 1];
         }
         for (const auto &p: query_reqs) {
-            auto a = GetIdx(p.first, indices);
-            auto b = GetIdx(p.second, indices);
+            auto a = getIdx(p.first, indices);
+            auto b = getIdx(p.second, indices);
             printf("%d\n", data[b] - data[a - 1]);
         }
         return 0;
