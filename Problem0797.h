@@ -13,7 +13,7 @@ using namespace std;
 
 class Problem0797 {
 private:
-    void Increase(vector<int> &arr, const int left, const int right, int v) {
+    void sequenceIncrease(vector<int> &arr, const int left, const int right, int v) {
         arr[left] += v;
         arr[right + 1] -= v;
     }
@@ -26,12 +26,12 @@ private:
         // 初始化：区间起点和终点相同
         for (int i = 1; i <= n; ++i) {
             scanf("%d", &t);
-            Increase(arr, i, i, t);
+            sequenceIncrease(arr, i, i, t);
         }
         int l, r, c;
         for (int i = 0; i < m; ++i) {
             scanf("%d%d%d", &l, &r, &c);
-            Increase(arr, l, r, c);
+            sequenceIncrease(arr, l, r, c);
         }
         for (int i = 1; i <= n; ++i) {
             arr[i] += arr[i - 1];
