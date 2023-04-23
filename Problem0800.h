@@ -13,8 +13,8 @@ using namespace std;
 class Problem0800 {
 private:
     pair<int, int> targetSum(const vector<int> &nums1, const vector<int> &nums2, int t) {
-        const int n = (int) nums1.size();
-        const int m = (int) nums2.size();
+        const auto n = (int) nums1.size();
+        const auto m = (int) nums2.size();
         int i = 0;
         int j = m - 1;
         while (i < n && j >= 0) {
