@@ -12,12 +12,12 @@ using namespace std;
 
 class Problem0790 {
 public:
-    long double GetCubicRoot(const long double x) {
+    long double getCubicRoot(const long double x) {
         auto l = min(x, -1.0l);  // 牢记左、右起点的临界值
         auto r = max(x, 1.0l);
         while (l < r) {
             auto mid = l + (r - l) / 2;
-            if (fabs(mid * mid * mid - x) < 1e-8) {
+            if (fabs(mid * mid * mid - x) < 1e-10) {
                 return mid;
             } else if (mid * mid * mid > x) {
                 r = mid;
@@ -31,7 +31,7 @@ public:
     int main() {
         long double x;
         scanf("%Lf", &x);
-        printf("%.6Lf\n", GetCubicRoot(x));
+        printf("%.6Lf\n", getCubicRoot(x));
         return 0;
     }
 };
