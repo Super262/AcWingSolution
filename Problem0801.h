@@ -11,14 +11,14 @@ using namespace std;
 
 class Problem0801 {
 private:
-    int LowBit(const int x) {
+    int lowBit(const int x) {
         return x & (-x);
     }
 
-    int CountOnes(int x) {
+    int countOnes(int x) {
         int result = 0;
         while (x > 0) {
-            x -= LowBit(x);
+            x -= lowBit(x);
             ++result;
         }
         return result;
@@ -30,7 +30,7 @@ private:
         for (int i = 1; i <= n; ++i) {
             int x;
             scanf("%d", &x);
-            printf("%d ", CountOnes(x));
+            printf("%d ", countOnes(x));
         }
         return 0;
     }
