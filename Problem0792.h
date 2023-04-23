@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0792 {
 private:
-    int CmpBigInts(const string &a, const string &b) {
+    int cmpBigInts(const string &a, const string &b) {
         if (a.size() > b.size()) {
             return 1;
         }
@@ -22,7 +22,7 @@ private:
         return a.compare(b);
     }
 
-    string SubtractBigInt(string a, string b) {  // 前提：a >= b
+    string subtractBigInt(string a, string b) {  // 前提：a >= b
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
         string result;
@@ -49,13 +49,13 @@ private:
     int main() {
         string a, b;
         cin >> a >> b;
-        auto dis = CmpBigInts(a, b);
+        auto dis = cmpBigInts(a, b);
         if (dis == 0) {
             cout << 0 << endl;
         } else if (dis > 0) {
-            cout << SubtractBigInt(a, b) << endl;
+            cout << subtractBigInt(a, b) << endl;
         } else {
-            cout << "-" << SubtractBigInt(b, a) << endl;
+            cout << "-" << subtractBigInt(b, a) << endl;
         }
         return 0;
     }
