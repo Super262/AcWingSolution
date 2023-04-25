@@ -14,12 +14,12 @@ using namespace std;
 class Problem0803 {
     // 贪心算法：左端点排序
 private:
-    vector<pair<int, int>> MergeSegments(vector<pair<int, int>> &segs) {
+    vector<pair<int, int>> mergeSegments(vector<pair<int, int>> &segs) {
         sort(segs.begin(), segs.end());
         const int invalid_value = -2e9;
         vector<pair<int, int>> result;
-        int start = invalid_value;
-        int end = invalid_value;
+        auto start = invalid_value;
+        auto end = invalid_value;
         for (auto &s: segs) {
             if (s.first > end) {
                 if (end != invalid_value) {
@@ -44,7 +44,7 @@ private:
         for (int i = 0; i < n; ++i) {
             scanf("%d%d", &segs[i].first, &segs[i].second);
         }
-        auto result = MergeSegments(segs);
+        auto result = mergeSegments(segs);
         printf("%ld", result.size());
         return 0;
     }
