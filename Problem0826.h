@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0826 {
 private:
-    const int N = 100010;
+    static const int N = 100010;
     int idx = 0, headIdx = 0, nodeValue[N], nextIdx[N];
 
     void add_head(int x) {
