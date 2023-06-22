@@ -12,7 +12,7 @@ private:
     void printMax(int n, int k, int *a, int *dq) {
         int hh = 0, tt = -1;
         for (int i = 0; i < n; ++i) {
-            while (hh <= tt && i - k + 1 > dq[hh]) {
+            while (hh <= tt && i - dq[hh] + 1 > k) {
                 ++hh;
             }
             while (hh <= tt && a[i] >= a[dq[tt]]) {
@@ -29,7 +29,7 @@ private:
     void printMin(int n, int k, int *a, int *dq) {
         int hh = 0, tt = -1;
         for (int i = 0; i < n; ++i) {
-            while (hh <= tt && i - k + 1 > dq[hh]) {
+            while (hh <= tt && i - dq[hh] + 1 > k) {
                 ++hh;
             }
             while (hh <= tt && a[i] <= a[dq[tt]]) {
