@@ -30,7 +30,7 @@ public:
     int main() {
         unsigned long m;
         cin >> m;
-        int *data = new int[m];
+        int data[m];
         unsigned long top = 0;
         string op;
         int value;
