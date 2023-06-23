@@ -21,7 +21,7 @@ private:
             parent[x] = u;
             x = p;
         }
-        return parent[x];
+        return u;
     }
 
     int mergeSets(const int pa, const int pb, int parent[], int set_size[]) {
