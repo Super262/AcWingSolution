@@ -25,10 +25,11 @@ private:
     void insertStr(Node *root, const char str[]) {
         auto current = root;
         for (int i = 0; str[i]; ++i) {
-            if (!current->children[str[i] - 'a']) {
-                current->children[str[i] - 'a'] = new Node();
+            auto idx = str[i] - 'a';
+            if (!current->children[idx]) {
+                current->children[idx] = new Node();
             }
-            current = current->children[str[i] - 'a'];
+            current = current->children[idx];
         }
         ++current->cnt;
     }
@@ -36,10 +37,11 @@ private:
     int queryStr(Node *root, const char str[]) {
         auto current = root;
         for (int i = 0; str[i]; ++i) {
-            if (!current->children[str[i] - 'a']) {
+            auto idx = str[i] - 'a';
+            if (!current->children[idx]) {
                 return 0;
             }
-            current = current->children[str[i] - 'a'];
+            current = current->children[idx];
         }
         return current->cnt;
     }
