@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 class Problem0831 {
 private:
     void buildFail(const char p[], int fail[], const int n) {
