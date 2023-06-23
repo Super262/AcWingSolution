@@ -14,7 +14,7 @@ class Problem0240 {
 private:
     int findRoot(const int x, int parent[], int dist[]) {
         if (x != parent[x]) {
-            auto root = findRoot(parent[x], parent, dist);
+            auto root = findRoot(parent[x], parent, dist);  // 递归：按从根到底的顺序更新dist[i]
             dist[x] += dist[parent[x]];
             parent[x] = root;
         }
