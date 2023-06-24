@@ -16,9 +16,9 @@ public:
                     const vector<unsigned int> &headIdx,
                     const vector<unsigned int> &nextIdx,
                     const vector<int> &storage) {
-        const int N = (int) headIdx.size();
-        const int r = (target % N + N) % N;  // 消除负数的影响
-        for (unsigned int idx = headIdx[r]; idx != 0; idx = nextIdx[idx]) {
+        const auto N = (int) headIdx.size();
+        const auto r = (target % N + N) % N;  // 消除负数的影响
+        for (auto idx = headIdx[r]; idx != 0; idx = nextIdx[idx]) {
             if (storage[idx] == target) {
                 return true;
             }
@@ -34,8 +34,8 @@ public:
         if (queryValue(target, headIdx, nextIdx, storage)) {
             return;
         }
-        const int N = (int) headIdx.size();
-        const int r = (target % N + N) % N;  // 消除负数的影响
+        const auto N = (int) headIdx.size();
+        const auto r = (target % N + N) % N;  // 消除负数的影响
         ++idx;
         while (idx >= nextIdx.size()) {
             nextIdx.emplace_back(0);
