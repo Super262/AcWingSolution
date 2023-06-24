@@ -11,22 +11,21 @@ using namespace std;
 
 class Problem0829 {
 public:
-    void pop(unsigned long &front, unsigned long m) {
+    void pop(unsigned long &front) {
         ++front;
-        front %= m;
     }
 
     void push(const int value, int data[], unsigned long &end, unsigned long m) {
-        data[end++] = value;
-        end %= m;
+        data[end % m] = value;
+        ++end;
     }
 
     bool empty(const unsigned long front, const unsigned long end) {
         return front == end;
     }
 
-    int peek(const int data[], const unsigned long front) {
-        return data[front];
+    int peek(const int data[], const unsigned long front, unsigned long m) {
+        return data[front % m];
     }
 
     int main() {
@@ -43,11 +42,11 @@ public:
                 cin >> value;
                 push(value, data, end, m);
             } else if (op == "query") {
-                cout << peek(data, front) << endl;
+                cout << peek(data, front, m) << endl;
             } else if (op == "empty") {
                 cout << (empty(front, end) ? "YES" : "NO") << endl;
             } else {
-                pop(front, m);
+                pop(front);
             }
         }
         return 0;
