@@ -24,18 +24,16 @@ private:
         return u;
     }
 
-    int mergeSets(const int pa, const int pb, int parent[], int set_size[]) {
+    int mergeSets(int pa, int pb, int parent[], int set_size[]) {
         if (pa == pb) {
             return -1;
         }
         if (set_size[pa] > set_size[pb]) {
-            set_size[pa] += set_size[pb];
-            parent[pb] = pa;
-            return pa;
+            swap(pa, pb);
         }
-        set_size[pb] += set_size[pa];
-        parent[pa] = pb;
-        return pb;
+        set_size[pa] += set_size[pb];
+        parent[pb] = pa;
+        return pa;
     }
 
     int main() {
