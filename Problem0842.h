@@ -34,12 +34,10 @@ private:
     int main() {
         int n;
         scanf("%d", &n);
-        auto path = new int[n + 1];
-        auto visited = new bool[n + 1];
+        int path[n + 1];
+        bool visited[n + 1];
         memset(visited, 0, sizeof(bool) * (n + 1));
         dfs(1, n, path, visited);
-        delete[] visited;
-        delete[] path;
         return 0;
     }
 };
