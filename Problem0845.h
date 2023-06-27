@@ -27,11 +27,11 @@ private:
                 return dist[node];
             }
             q.pop();
-            int tagPos = (int) node.find('x');
-            int currentDis = dist[node];
+            auto tagPos = (int) node.find('x');
+            auto currentDis = dist[node];
             for (int i = 0; i < 4; ++i) {
-                int nextX = tagPos / 3 + dx[i];
-                int nextY = tagPos % 3 + dy[i];
+                auto nextX = tagPos / 3 + dx[i];
+                auto nextY = tagPos % 3 + dy[i];
                 if (nextX < 0 || nextX >= 3 || nextY < 0 || nextY >= 3) {
                     continue;
                 }
@@ -55,7 +55,6 @@ private:
         printf("%d\n", bfs(start, end));
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0845_H
