@@ -21,8 +21,8 @@ private:
                 continue;
             }
             auto child_size = dfs(nv, n, graph, visited, answer);
-            nodes_count += child_size;
             max_component = max(max_component, child_size);
+            nodes_count += child_size;
         }
         max_component = max(max_component, n - nodes_count);
         answer = min(answer, max_component);
