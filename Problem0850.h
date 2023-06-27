@@ -30,7 +30,6 @@ private:
                 continue;
             }
             selected[rv] = true;
-            auto rd = t.first;
             for (const auto &nt: graph[rv]) {
                 auto nv = nt.second;
                 auto nd = nt.first;
