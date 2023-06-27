@@ -13,7 +13,7 @@ using namespace std;
 class Problem0838 {
 public:
     void downNode(vector<int> &heap, unsigned long long rootIndex) {
-        unsigned long long minimalIndex = rootIndex;
+        auto minimalIndex = rootIndex;
         while (true) {
             if (rootIndex * 2 < heap.size() && heap[rootIndex * 2] < heap[minimalIndex]) {
                 minimalIndex = 2 * rootIndex;
