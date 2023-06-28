@@ -41,14 +41,12 @@ private:
         if (pa == pb) {
             return -1;
         }
-        if (set_size[pa] > set_size[pb]) {
-            set_size[pa] += set_size[pb];
-            parent[pb] = pa;
-            return pa;
+        if (set_size[pb] > set_size[pa]) {
+            swap(pa, pb);
         }
-        set_size[pb] += set_size[pa];
-        parent[pa] = pb;
-        return pb;
+        set_size[pa] += set_size[pb];
+        parent[pb] = pa;
+        return pa;
     }
 
     int kruskal(const int n, const int m, Edge edges[], int parent[], int set_size[]) {
