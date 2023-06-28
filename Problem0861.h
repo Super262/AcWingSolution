@@ -13,14 +13,14 @@ using namespace std;
 
 class Problem0861 {
 private:
-    bool has_matched(int root, const vector<vector<int>> &graph, vector<int> &left_friends, bool visited[]) {
-        for (const auto nv: graph[root]) {
-            if (visited[nv]) {
+    bool has_matched(int u, const vector<vector<int>> &graph, vector<int> &left_friends, bool visited[]) {
+        for (const auto v: graph[u]) {
+            if (visited[v]) {
                 continue;
             }
-            visited[nv] = true;
-            if (left_friends[nv] == 0 || has_matched(left_friends[nv], graph, left_friends, visited)) {
-                left_friends[nv] = root;
+            visited[v] = true;
+            if (left_friends[v] == 0 || has_matched(left_friends[v], graph, left_friends, visited)) {
+                left_friends[v] = u;
                 return true;
             }
         }
@@ -39,9 +39,9 @@ private:
         vector<int> left_friends(n2 + 1, 0);
         bool visited[n2 + 1];
         int result = 0;
-        for (int v = 1; v <= n1; ++v) {
+        for (int u = 1; u <= n1; ++u) {
             memset(visited, 0, sizeof visited);
-            if (has_matched(v, graph, left_friends, visited)) {
+            if (has_matched(u, graph, left_friends, visited)) {
                 ++result;
             }
         }
