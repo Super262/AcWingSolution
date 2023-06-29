@@ -16,11 +16,11 @@ private:
         visited[root] = true;
         int nodes_count = 1;
         int max_component = 0;
-        for (const auto &nv: graph[root]) {
-            if (visited[nv]) {
+        for (const auto &v: graph[root]) {
+            if (visited[v]) {
                 continue;
             }
-            auto child_size = dfs(nv, n, graph, visited, answer);
+            auto child_size = dfs(v, n, graph, visited, answer);
             max_component = max(max_component, child_size);
             nodes_count += child_size;
         }
@@ -39,7 +39,7 @@ private:
             graph[a].emplace_back(b);
             graph[b].emplace_back(a);
         }
-        int answer = n;
+        auto answer = n;
         vector<bool> visited(n + 1, false);
         dfs(1, n, graph, visited, answer);
         printf("%d\n", answer);
