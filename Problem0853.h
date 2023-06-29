@@ -17,20 +17,22 @@ private:
     };
 
     int bellman_ford(int st, int ed, int n, int k, const Edge edges[], int m) {
-        int dist[2][n + 1];
-        memset(dist[0], 0x3f, sizeof dist[0]);
-        dist[0][st] = 0;
+        int dist[n + 1];
+        int temp[n + 1];
+        memset(dist, 0x3f, sizeof dist);
+        memset(temp, 0x3f, sizeof temp);
+        dist[st] = 0;
         for (int i = 1; i <= k; ++i) {
-            memcpy(dist[i % 2], dist[(i - 1) % 2], sizeof dist[(i - 1) % 2]);
+            memcpy(temp, dist, sizeof temp);
             for (int j = 0; j < m; ++j) {
                 const auto &e = edges[j];
-                if (dist[(i - 1) % 2][e.st] == 0x3f3f3f3f) {
+                if (temp[e.st] == 0x3f3f3f3f) {
                     continue;
                 }
-                dist[i % 2][e.ed] = min(dist[i % 2][e.ed], dist[(i - 1) % 2][e.st] + e.w);
+                dist[e.ed] = min(dist[e.ed], temp[e.st] + e.w);
             }
         }
-        return dist[k % 2][ed];
+        return dist[ed];
     }
 
     int main() {
