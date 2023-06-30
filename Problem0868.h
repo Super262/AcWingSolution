@@ -18,7 +18,6 @@ private:
         int primes[n + 1];
         int p_cnt = 0;
         memset(filtered, 0, sizeof filtered);
-        memset(primes, 0, sizeof primes);
         for (int f = 2; f <= n; ++f) {
             if (!filtered[f]) {
                 primes[p_cnt++] = f;
