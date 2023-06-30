@@ -23,7 +23,7 @@ private:
             if (!filtered[f]) {
                 primes[p_cnt++] = f;
             }
-            for (int j = 0; primes[j] <= n / f; ++j) {
+            for (int j = 0; primes[j] <= n / f && j < p_cnt; ++j) {
                 filtered[primes[j] * f] = true;
                 if (f % primes[j] == 0) {
                     break;
