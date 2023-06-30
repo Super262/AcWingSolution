@@ -10,7 +10,6 @@
 
 using namespace std;
 
-
 class Problem0885 {
 private:
     int main() {
