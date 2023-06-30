@@ -11,6 +11,7 @@
 using namespace std;
 
 class Problem0870 {
+    // https://www.acwing.com/solution/content/4969/
 public:
     void GetFactorsCount(int n, unordered_map<int, int> &prime_count) {
         for (int f = 2; f <= n / f; ++f) {
