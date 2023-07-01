@@ -10,6 +10,7 @@
 using namespace std;
 
 class Problem0886 {
+    // https://www.acwing.com/solution/content/16482/
 private:
     int QuickPower(int a, int x, const int m) {
         int result = 1;
