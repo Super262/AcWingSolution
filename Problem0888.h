@@ -16,30 +16,29 @@ class Problem0888 {
     // https://www.acwing.com/solution/content/26559/
 public:
     void collectPrimesFromOneToN(int n, int *primes, int &count) {
-        bool *isFiltered = new bool[n + 1];
+        bool filtered[n + 1];
         count = 0;
-        memset(isFiltered, 0, sizeof(bool));
+        memset(filtered, 0, sizeof(bool) * (n + 1));
         for (int num = 2; num <= n; ++num) {
-            if (!isFiltered[num]) {
+            if (!filtered[num]) {
                 primes[count++] = num;
             }
-            for (int j = 0; primes[j] <= n / num; ++j) {
-                isFiltered[primes[j] * num] = true;
+            for (int j = 0; j < count && primes[j] <= n / num; ++j) {
+                filtered[primes[j] * num] = true;
                 if (num % primes[j] == 0) {
                     break;
                 }
             }
         }
-        delete[] isFiltered;
     }
 
-    int countOccurrenceInFactorialN(int n, int prime) {
-        int frequency = 0;
+    int countOccurrence(int n, int factor) {
+        int answer = 0;
         while (n) {
-            frequency += n / prime;
-            n /= prime;
+            answer += n / factor;
+            n /= factor;
         }
-        return frequency;
+        return answer;
     }
 
     vector<int> multiplyBigInt(const vector<int> &a, int b) {
@@ -58,26 +57,23 @@ public:
     }
 
     vector<int> combinatorialNumber(int a, int b) {
-        int *primeFactorOfA = new int[a + 1];
-        int *factorFrequencyOfResult = new int[a + 1];
-        int factorsCount = 0;
-        memset(factorFrequencyOfResult, 0, sizeof(int));
-        memset(primeFactorOfA, 0, sizeof(int));
-        collectPrimesFromOneToN(a, primeFactorOfA, factorsCount);
-        for (int i = 0; i < factorsCount; ++i) {
-            factorFrequencyOfResult[i] = countOccurrenceInFactorialN(a, primeFactorOfA[i]) -
-                                         countOccurrenceInFactorialN(b, primeFactorOfA[i]) -
-                                         countOccurrenceInFactorialN(a - b, primeFactorOfA[i]);
+        int primeFactors[a + 1];
+        int factorFrequency[a + 1];
+        int numOfFactors = 0;
+        memset(factorFrequency, 0, sizeof(int) * (a + 1));
+        collectPrimesFromOneToN(a, primeFactors, numOfFactors);
+        for (int i = 0; i < numOfFactors; ++i) {
+            factorFrequency[i] = countOccurrence(a, primeFactors[i]) -
+                                         countOccurrence(b, primeFactors[i]) -
+                                         countOccurrence(a - b, primeFactors[i]);
         }
         vector<int> result(1, 1);
-        for (int i = 0; i < factorsCount; ++i) {
-            for (int f = 0; f < factorFrequencyOfResult[i]; ++f) {
-                result = multiplyBigInt(result, primeFactorOfA[i]);
+        for (int i = 0; i < numOfFactors; ++i) {
+            for (int f = 0; f < factorFrequency[i]; ++f) {
+                result = multiplyBigInt(result, primeFactors[i]);
             }
         }
         reverse(result.begin(), result.end());
-        delete[] primeFactorOfA;
-        delete[] factorFrequencyOfResult;
         return result;
     }
 
