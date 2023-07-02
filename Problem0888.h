@@ -13,6 +13,7 @@
 using namespace std;
 
 class Problem0888 {
+    // https://www.acwing.com/solution/content/26559/
 public:
     void collectPrimesFromOneToN(int n, int *primes, int &count) {
         bool *isFiltered = new bool[n + 1];
