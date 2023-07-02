@@ -15,9 +15,9 @@ using namespace std;
 class Problem0888 {
     // https://www.acwing.com/solution/content/26559/
 public:
-    void collectPrimesFromOneToN(int n, int *primes, int &count) {
+    int collectPrimesFromOneToN(int n, int *primes) {
         bool filtered[n + 1];
-        count = 0;
+        int count = 0;
         memset(filtered, 0, sizeof(bool) * (n + 1));
         for (int num = 2; num <= n; ++num) {
             if (!filtered[num]) {
@@ -30,6 +30,7 @@ public:
                 }
             }
         }
+        return count;
     }
 
     int countOccurrence(int n, int factor) {
@@ -57,11 +58,11 @@ public:
     }
 
     vector<int> combinatorialNumber(int a, int b) {
-        int primeFactors[a + 1];
-        int factorFrequency[a + 1];
-        int numOfFactors = 0;
+        auto numOfFactors = max(a, b) + 1;
+        int primeFactors[numOfFactors];
+        int factorFrequency[numOfFactors];
         memset(factorFrequency, 0, sizeof(int) * (a + 1));
-        collectPrimesFromOneToN(a, primeFactors, numOfFactors);
+        numOfFactors = collectPrimesFromOneToN(a, primeFactors);
         for (int i = 0; i < numOfFactors; ++i) {
             factorFrequency[i] = countOccurrence(a, primeFactors[i]) -
                                          countOccurrence(b, primeFactors[i]) -
