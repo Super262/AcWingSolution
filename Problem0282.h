@@ -18,7 +18,7 @@ private:
 
     int moveStones(const int n) {
         for (int l = 2; l <= n; ++l) {
-            for (int st = 1; st <= n - l + 1; ++st) {
+            for (int st = 1; st + l - 1 <= n; ++st) {
                 const auto ed = st + l - 1;
                 dp[st][ed] = 0x7f7f7f7f;
                 for (auto mid = st + 1; mid <= ed; ++mid) {
