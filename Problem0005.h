@@ -26,13 +26,13 @@ private:
             auto w = items[i].w;
             auto s = items[i].s;
             for (int factor = 1; factor <= s; factor *= 2) {
-                for (int j = m; j >= factor * v; --j) {
+                for (auto j = m; j >= factor * v; --j) {
                     dp[j] = max(dp[j], dp[j - factor * v] + factor * w);
                 }
                 s -= factor;
             }
             if (s > 0) {
-                for (int j = m; j >= s * v; --j) {
+                for (auto j = m; j >= s * v; --j) {
                     dp[j] = max(dp[j], dp[j - s * v] + s * w);
                 }
             }
