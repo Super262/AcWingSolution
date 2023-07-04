@@ -11,6 +11,7 @@
 using namespace std;
 
 class Problem0900 {
+    // 类似“完全背包”问题
 private:
     int combinationsOfSum(const int sum) {
         int dp[sum + 1];
