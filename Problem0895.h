@@ -12,7 +12,7 @@ using namespace std;
 class Problem0895 {
 public:
     int longestAscendingSubsequence(const int *arr, const int n) {
-        auto dp = new int[n];
+        int dp[n];
         for (int i = 0; i < n; ++i) {
             dp[i] = 1;
             for (int j = 0; j < i; ++j) {
@@ -26,14 +26,13 @@ public:
         for (int i = 0; i < n; ++i) {
             result = max(result, dp[i]);
         }
-        delete[] dp;
         return result;
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        auto arr = new int[n];
+        int arr[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &arr[i]);
         }
