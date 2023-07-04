@@ -23,7 +23,7 @@ private:
 
     int knapsackMaxValue(const int n, const int v) {
         for (int i = 0; i < n; ++i) {
-            for (int j = v; j >= items[i].size; --j) {
+            for (auto j = v; j >= items[i].size; --j) {
                 dp[j] = max(dp[j], dp[j - items[i].size] + items[i].value);
             }
         }
