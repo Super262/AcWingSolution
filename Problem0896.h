@@ -17,7 +17,7 @@ private:
         memset(lis_tail, 0x7f, sizeof lis_tail);
         int ans = 0;
         for (int i = 0; i < n; ++i) {
-            int t = arr[i];
+            auto t = arr[i];
             int l = 0;
             auto r = ans;
             while (l < r) {
