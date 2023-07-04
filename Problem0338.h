@@ -39,8 +39,8 @@ private:
     }
 
     int dp(int n, const int u) {
-        if (!n) {
-            return u ? 0 : 1;
+        if (n < 10) {
+            return n >= u ? 1 : 0;
         }
         int digits[N];
         int counter = 0;
