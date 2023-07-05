@@ -23,7 +23,7 @@ private:
         memset(dp, 0x3f, sizeof dp);
         const int LAST_STATE = (1 << n) - 1;
         dp[1][0] = 0;
-        for (int p = 0; p <= LAST_STATE; ++p) {
+        for (int p = 1; p <= LAST_STATE; ++p) {
             for (int s1 = 0; s1 < n; ++s1) {
                 if (!((p >> s1) & 1)) {
                     continue;
