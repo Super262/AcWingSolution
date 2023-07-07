@@ -28,8 +28,8 @@ private:
         sort(ranges, ranges + n);
         int result = 0;
         for (int i = 0; i < n; ++i) {
-            int maxRight = start - 1;
-            int j = i;
+            auto maxRight = start - 1;
+            auto j = i;
             while (j < n && ranges[j].left <= start) {
                 maxRight = max(maxRight, ranges[j].right);
                 ++j;
