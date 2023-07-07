@@ -26,8 +26,8 @@ private:
             return 0;
         }
         sort(cows, cows + n);
-        int result = -cows[0].strength;  // 注意result的初始值！
-        int weightSum = cows[0].weight;
+        auto result = -cows[0].strength;  // 注意result的初始值！
+        auto weightSum = cows[0].weight;
         for (unsigned int i = 1; i < n; ++i) {
             result = max(result, weightSum - cows[i].strength);
             weightSum += cows[i].weight;
