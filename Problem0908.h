@@ -10,17 +10,17 @@
 
 using namespace std;
 
-struct Range {
-    int l;
-    int r;
-
-    bool operator<(const Range &b) const {
-        return r < b.r;
-    }
-};
-
 class Problem0908 {
-public:
+private:
+    struct Range {
+        int l;
+        int r;
+
+        bool operator<(const Range &b) const {
+            return r < b.r;
+        }
+    };
+
     unsigned int minConnection(Range *ranges, const unsigned int n) {
         sort(ranges, ranges + n);
         unsigned int result = 0;
@@ -38,12 +38,11 @@ public:
     int main() {
         unsigned int n;
         scanf("%d", &n);
-        auto ranges = new Range[n];
+        Range ranges[n];
         for (unsigned int i = 0; i < n; ++i) {
             scanf("%d%d", &ranges[i].l, &ranges[i].r);
         }
         printf("%d\n", minConnection(ranges, n));
-        delete[] ranges;
         return 0;
     }
 };
