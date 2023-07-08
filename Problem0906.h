@@ -34,7 +34,7 @@ private:
                 continue;
             }
             if (pq.top() >= ranges[i].left) {
-                // 不存在这样的组
+                // 不存在这样的组，创建新组
                 pq.emplace(ranges[i].right);
             } else {
                 // 存在这样的组，更新最小值
