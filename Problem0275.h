@@ -17,23 +17,23 @@ private:
     int graph[N + 1][N + 1];
 
     int maxValue(const int m, const int n) {
-        int dp[m + n + 1][m + 1][m + 1];
+        int dp[m + 1][m + 1];
         memset(dp, 0, sizeof dp);
         for (int s = 2; s <= n + m; ++s) {
-            for (int x1 = 1; x1 <= s - 1 && x1 <= m; ++x1) {
-                for (int x2 = 1; x2 <= s - 1 && x2 <= m; ++x2) {
+            for (auto x1 = min(m, s - 1); x1 >= 1; --x1) {
+                for (auto x2 = min(m, s - 1); x2 >= 1; --x2) {
                     int v = graph[x1][s - x1];
                     if (x1 != x2) {
                         v += graph[x2][s - x2];
                     }
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1][x2] + v);
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1 - 1][x2] + v);
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1][x2 - 1] + v);
-                    dp[s][x1][x2] = max(dp[s][x1][x2], dp[s - 1][x1 - 1][x2 - 1] + v);
+                    dp[x1][x2] = max(dp[x1][x2], dp[x1][x2] + v);
+                    dp[x1][x2] = max(dp[x1][x2], dp[x1 - 1][x2] + v);
+                    dp[x1][x2] = max(dp[x1][x2], dp[x1][x2 - 1] + v);
+                    dp[x1][x2] = max(dp[x1][x2], dp[x1 - 1][x2 - 1] + v);
                 }
             }
         }
-        return dp[m + n][m][m];
+        return dp[m][m];
     }
 
     int main() {
