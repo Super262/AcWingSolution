@@ -11,7 +11,7 @@
 using namespace std;
 
 class Problem1027 {
-    // dp[s][x1][x2] 表示从(1, 1)走到(n, n)的两条路径的长度和的最大值，s == x1 + y1 == x2 + y2
+    // dp[s][x1][x2] 表示从(1, 1)走到(x1, s - x1)和从(1, 1)走到(x2, s - x2)的两条路径的长度和的最大值
 private:
     static const int N = 10;
     int dp[2][N + 1][N + 1];
@@ -24,7 +24,7 @@ private:
                 for (int x2 = 1; x2 <= s - 1 && x2 <= n; ++x2) {
                     auto y1 = s - x1;
                     auto y2 = s - x2;
-                    int w = graph[x1][y1];
+                    auto w = graph[x1][y1];
                     if (x1 != x2 && y1 != y2) {
                         w += graph[x2][y2];
                     }
