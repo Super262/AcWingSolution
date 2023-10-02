@@ -6,21 +6,21 @@
 #define ACWINGSOLUTION_PROBLEM0787_H
 
 #include <iostream>
-#include <vector>
+#include <cstring>
 
 using namespace std;
 
 class Problem0787 {
 private:
-    void mergeSort(vector<int> &nums, int st, int ed, vector<int> &temp) {
+    void mergeSort(int nums[], int st, int ed, int temp[]) {
         if (st >= ed) {
             return;
         }
-        auto l = st;
         auto mid = st + (ed - st) / 2;
-        auto r = mid + 1;
         mergeSort(nums, st, mid, temp);
-        mergeSort(nums, r, ed, temp);
+        mergeSort(nums, mid + 1, ed, temp);
+        auto l = st;
+        auto r = mid + 1;
         auto t = st;
         while (l <= mid && r <= ed) {
             if (nums[l] <= nums[r]) {
@@ -42,16 +42,14 @@ private:
             ++r;
             ++t;
         }
-        for (auto i = st; i <= ed; ++i) {
-            nums[i] = temp[i];
-        }
+        memcpy(nums + st, temp + st, (ed - st + 1) * sizeof(int));
     }
 
     int main() {
         int n;
         scanf("%d", &n);
-        vector<int> nums(n, 0);
-        vector<int> temp(n, 0);
+        int nums[n];
+        int temp[n];
         for (int i = 0; i < n; ++i) {
             scanf("%d", &nums[i]);
         }
