@@ -17,9 +17,10 @@ public:
         auto r = max(x, 1.0l);
         while (l < r) {
             auto mid = l + (r - l) / 2;
-            if (fabs(mid * mid * mid - x) < 1e-10) {
+            auto t = mid * mid * mid;
+            if (fabs(t - x) < 1e-10) {
                 return mid;
-            } else if (mid * mid * mid > x) {
+            } else if (t > x) {
                 r = mid;
             } else {
                 l = mid;
