@@ -23,10 +23,7 @@ private:
             }
             ++j;
         }
-        if (i == n) {
-            return true;
-        }
-        return false;
+        return i == n;
     }
 
     int main() {
