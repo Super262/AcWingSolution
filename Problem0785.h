@@ -16,10 +16,10 @@ private:
         if (st >= ed) {
             return;
         }
-        auto l = st - 1;
-        auto r = ed + 1;
         // auto p = nums[st + (ed - st) / 2];  // 选择偏左的中点
         auto p = nums[st + (ed - st + 1) / 2];  // 选择偏右的中点
+        auto l = st - 1;
+        auto r = ed + 1;
         while (l < r) {
             while (nums[++l] < p);  // 注意：循环条件不包含 l < r
             while (nums[--r] > p);
