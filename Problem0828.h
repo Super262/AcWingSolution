@@ -10,7 +10,7 @@
 using namespace std;
 
 class Problem0828 {
-public:
+private:
     void pop(unsigned long &top) {
         --top;
     }
@@ -49,7 +49,6 @@ public:
         }
         return 0;
     }
-
 };
 
 #endif //ACWINGSOLUTION_PROBLEM0828_H
