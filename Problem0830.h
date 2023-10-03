@@ -10,9 +10,8 @@
 
 using namespace std;
 
-
 class Problem0830 {
-public:
+private:
     int closestSmaller(stack<int> &s, const int num) {
         while (!s.empty() && s.top() >= num) {
             s.pop();
