@@ -10,22 +10,24 @@
 using namespace std;
 
 class Problem0829 {
-public:
+private:
     void pop(unsigned long &front) {
         ++front;
     }
 
     void push(const int value, int data[], unsigned long &end, unsigned long m) {
-        data[end % m] = value;
+        data[end] = value;
         ++end;
+        end %= m;
     }
 
     bool empty(const unsigned long front, const unsigned long end) {
         return front == end;
     }
 
-    int peek(const int data[], const unsigned long front, unsigned long m) {
-        return data[front % m];
+    int peek(const int data[], unsigned long &front, unsigned long m) {
+        front %= m;
+        return data[front];
     }
 
     int main() {
