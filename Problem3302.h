@@ -44,10 +44,10 @@ private:
             nums.pop();
             nums.emplace(doOperation(a, b, temp));
         }
-        if (operators.empty() || preferenceOut[operators.top()] != preferenceIn[op]) {
-            operators.emplace(op);
-        } else {
+        if (!operators.empty() && operators.top() == '(' && op == ')') {
             operators.pop();
+        } else {
+            operators.emplace(op);
         }
     }
 
@@ -68,12 +68,12 @@ private:
         preferenceOut['/'] = 5;
         preferenceOut['('] = 1;
         preferenceOut[')'] = 6;
-        bool waitingNum = true;
+        bool waitingNextNum = true;
         for (const char ch: s) {
             if (ch >= '0' && ch <= '9') {
-                if (waitingNum) {
+                if (waitingNextNum) {
                     nums.emplace(ch - '0');
-                    waitingNum = false;
+                    waitingNextNum = false;
                 } else {
                     auto t = nums.top();
                     nums.pop();
@@ -81,7 +81,7 @@ private:
                     nums.emplace(t);
                 }
             } else {
-                waitingNum = true;
+                waitingNextNum = true;
                 dealOperators(ch, preferenceIn, preferenceOut, nums, operators);
             }
         }
