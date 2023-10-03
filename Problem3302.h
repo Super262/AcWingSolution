@@ -12,7 +12,7 @@
 using namespace std;
 
 class Problem3302 {
-public:
+private:
     int doOperation(const int a, const int b, const char op) {
         if (op == '+') {
             return a + b;
