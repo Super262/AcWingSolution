@@ -10,9 +10,9 @@
 class Problem0831 {
 private:
     void buildFail(const char p[], int fail[], const int n) {
+        fail[0] = 0;
         int l = 0;
-        fail[l] = 0;
-        auto r = l + 1;
+        int r = 1;
         while (r < n) {
             if (p[l] == p[r]) {
                 ++l;
