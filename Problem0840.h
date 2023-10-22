@@ -37,10 +37,10 @@ public:
         const auto N = (int) headIdx.size();
         const auto r = (target % N + N) % N;  // 消除负数的影响
         ++idx;
-        while (idx >= nextIdx.size()) {
+        if (idx >= nextIdx.size()) {
             nextIdx.emplace_back(0);
         }
-        while (idx >= storage.size()) {
+        if (idx >= storage.size()) {
             storage.emplace_back(0);
         }
         nextIdx[idx] = headIdx[r];
@@ -51,8 +51,8 @@ public:
     int main() {
         const int N = 10001;
         vector<unsigned int> headIdx(N + 1, 0);
-        vector<unsigned int> nextIdx;
-        vector<int> storage;
+        vector<unsigned int> nextIdx(1 ,0);
+        vector<int> storage(1);
         unsigned int idx = 0;
         unsigned int n;
         scanf("%d", &n);
