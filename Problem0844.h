@@ -24,7 +24,7 @@ private:
         visited[n - 1][m - 1] = true;
         int result = 0;
         while (hh <= tt) {
-            int curL = tt - hh + 1;
+            auto curL = tt - hh + 1;
             while (curL--) {
                 auto root = q[hh++];
                 if (root.first == 0 && root.second == 0) {
