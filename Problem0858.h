@@ -16,7 +16,7 @@ class Problem0858
 private:
     static const int INF = 0x3f3f3f3f;
 
-    int prim(const int n, const vector<vector<int>> &graph)
+    int prim(const int &n, const vector<vector<int>> &graph)
     {
         int result = 0;
         int dist[n + 1];
@@ -63,14 +63,13 @@ private:
         int n, m;
         scanf("%d%d", &n, &m);
         vector<vector<int>> graph(n + 1, vector<int>(n + 1, INF));
-        int u, v, w;
-        for (int i = 0; i < m; ++i)
+        for (int i = 0, u, v, w; i < m; ++i)
         {
             scanf("%d%d%d", &u, &v, &w);
             graph[u][v] = min(graph[u][v], w);
             graph[v][u] = min(graph[v][u], w);
         }
-        int result = prim(n, graph);
+        const auto &result = prim(n, graph);
         if (result == INF)
         {
             printf("impossible\n");
