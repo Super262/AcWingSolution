@@ -27,7 +27,7 @@ private:
         }
     };
 
-    int findRoot(int x, int *parent)
+    int find_root(int x, int *parent)
     {
         auto u = x;
         while (u != parent[u])
@@ -43,7 +43,7 @@ private:
         return u;
     }
 
-    int mergeSets(int pa, int pb, int *parent, int *set_size)
+    int merge_sets(int pa, int pb, int *parent, int *set_size)
     {
         if (pa == pb)
         {
@@ -65,13 +65,13 @@ private:
         int cnt = 0;
         for (int i = 0; i < m; ++i)
         {
-            auto pa = findRoot(edges[i].u, parent);
-            auto pb = findRoot(edges[i].v, parent);
+            auto pa = find_root(edges[i].u, parent);
+            auto pb = find_root(edges[i].v, parent);
             if (pa == pb)
             {
                 continue;
             }
-            mergeSets(pa, pb, parent, set_size);
+            merge_sets(pa, pb, parent, set_size);
             ++cnt;
             ans += edges[i].w;
         }
