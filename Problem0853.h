@@ -16,7 +16,7 @@ private:
         int st, ed, w;
     };
 
-    int bellman_ford(int st, int ed, int n, int k, const Edge edges[], int m) {
+    int bellman_ford(int st, int ed, int n, int k, const Edge *edges, int m) {
         int dist[n + 1];
         int temp[n + 1];
         memset(dist, 0x3f, sizeof dist);
