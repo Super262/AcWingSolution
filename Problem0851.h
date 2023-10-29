@@ -12,9 +12,11 @@
 
 using namespace std;
 
-class Problem0851 {
+class Problem0851
+{
 private:
-    int Spfa(int st, int ed, int n, const vector<vector<pair<int, int>>> &graph) {
+    int spfa(int st, int ed, int n, const vector<vector<pair<int, int>>> &graph)
+    {
         int dist[n + 1];
         bool is_in_queue[n + 1];
         queue<int> q;
@@ -23,18 +25,22 @@ private:
         dist[st] = 0;
         q.emplace(st);
         is_in_queue[st] = true;
-        while (!q.empty()) {
+        while (!q.empty())
+        {
             auto root = q.front();
             q.pop();
             is_in_queue[root] = false;
-            for (const auto &e: graph[root]) {
+            for (const auto &e : graph[root])
+            {
                 auto nv = e.second;
                 auto nd = e.first;
-                if (dist[nv] < dist[root] + nd) {
+                if (dist[nv] < dist[root] + nd)
+                {
                     continue;
                 }
                 dist[nv] = dist[root] + nd;
-                if (is_in_queue[nv]) {
+                if (is_in_queue[nv])
+                {
                     continue;
                 }
                 q.emplace(nv);
@@ -44,23 +50,27 @@ private:
         return dist[ed];
     }
 
-    int main() {
+    int main()
+    {
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<vector<pair<int, int>>> graph(n + 1, vector<pair<int, int>>());
-        int x, y, z;
-        for (int i = 0; i < m; ++i) {
+        vector<vector<pair<int, int>>> graph(n + 1);
+        for (int i = 0, x, y, z; i < m; ++i)
+        {
             scanf("%d%d%d", &x, &y, &z);
             graph[x].push_back({z, y});
         }
-        auto res = Spfa(1, n, n, graph);
-        if (res == 0x3f3f3f3f) {
+        auto ans = spfa(1, n, n, graph);
+        if (ans == 0x3f3f3f3f)
+        {
             printf("impossible\n");
-        } else {
-            printf("%d\n", res);
+        }
+        else
+        {
+            printf("%d\n", ans);
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0851_H
+#endif // ACWINGSOLUTION_PROBLEM0851_H
