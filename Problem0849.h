@@ -21,21 +21,18 @@ private:
         memset(selected, 0, sizeof selected);
         dist[st] = 0;
         for (int k = 1; k <= n; ++k) {
-            int closestV = -1;
+            int closest_v = -1;
             for (int v = 1; v <= n; ++v) {
                 if (selected[v]) {
                     continue;
                 }
-                if (closestV == -1 || dist[closestV] > dist[v]) {
-                    closestV = v;
+                if (closest_v == -1 || dist[closest_v] > dist[v]) {
+                    closest_v = v;
                 }
             }
-            if (dist[closestV] == 0x3f3f3f3f) {
-                return -1;
-            }
-            selected[closestV] = true;
+            selected[closest_v] = true;
             for (int v = 1; v <= n; ++v) {
-                dist[v] = min(dist[v], dist[closestV] + graph[closestV][v]);
+                dist[v] = min(dist[v], dist[closest_v] + graph[closest_v][v]);
             }
         }
         if (dist[ed] == 0x3f3f3f3f) {
@@ -48,8 +45,7 @@ private:
         int n, m;
         scanf("%d%d", &n, &m);
         vector<vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
-        int u, v, w;
-        for (int i = 0; i < m; ++i) {
+        for (int i = 0, u, v, w; i < m; ++i) {
             scanf("%d%d%d", &u, &v, &w);
             graph[u][v] = min(graph[u][v], w);
         }
