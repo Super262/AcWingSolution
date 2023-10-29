@@ -23,7 +23,6 @@ private:
         bool in_queue[n + 1];
         int edges_cnt[n + 1];
         queue<int> q;
-        memset(dist, 0x3f, sizeof dist);
         memset(in_queue, 0, sizeof in_queue);
         memset(edges_cnt, 0, sizeof edges_cnt);
         for (int v = 1; v <= n; ++v)
