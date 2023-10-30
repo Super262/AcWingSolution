@@ -16,7 +16,7 @@ class Problem0861
 private:
     bool has_matched(int u, const vector<vector<int>> &graph, vector<int> &friend_from_left, bool *right_visited)
     {
-        for (const auto v : graph[u])
+        for (const auto &v : graph[u])
         {
             if (right_visited[v])
             {
