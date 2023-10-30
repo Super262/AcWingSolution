@@ -6,14 +6,13 @@
 #define ACWINGSOLUTION_PROBLEM0785_H
 
 #include <iostream>
-#include <cstring>
 
 using namespace std;
 
 class Problem0785
 {
 private:
-    void quick_sort(int *nums, int st, int ed)
+    void quick_sort(int *nums, const int &st, const int &ed)
     {
         if (st >= ed)
         {
