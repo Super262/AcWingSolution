@@ -13,7 +13,7 @@ using namespace std;
 class Problem0787
 {
 private:
-    void merge_sort(int *nums, int st, int ed, int *temp)
+    void merge_sort(int *nums, const int &st, const int &ed, int *temp)
     {
         if (st >= ed)
         {
