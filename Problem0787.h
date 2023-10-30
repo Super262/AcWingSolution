@@ -19,7 +19,7 @@ private:
         {
             return;
         }
-        auto mid = st + (ed - st) / 2;
+        const auto &mid = st + (ed - st) / 2;
         merge_sort(nums, st, mid, temp);
         merge_sort(nums, mid + 1, ed, temp);
         auto l = st;
