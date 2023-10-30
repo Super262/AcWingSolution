@@ -12,7 +12,7 @@ using namespace std;
 class Problem0786
 {
 private:
-    void quick_select(int *nums, int st, int ed, int k)
+    void quick_select(int *nums, const int &st, const int & ed, const int &k)
     {
         if (st >= ed)
         {
