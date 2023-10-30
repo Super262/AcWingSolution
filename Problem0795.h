@@ -10,31 +10,36 @@
 
 using namespace std;
 
-class Problem0795 {
-public:
-    vector<int> getPrefixSum(const vector<int> &a) {
-        vector<int> result(a.size() + 1, 0);
-        for (unsigned long i = 1; i < result.size(); ++i) {
-            result[i] = result[i - 1] + a[i - 1];
+class Problem0795
+{
+private:
+    vector<int> get_prefix_sum(const vector<int> &arr)
+    {
+        vector<int> result(arr.size() + 1, 0);
+        for (int i = 1; i < result.size(); ++i)
+        {
+            result[i] = result[i - 1] + arr[i - 1];
         }
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<int> arr(n, 0);
-        for (int i = 0; i < n; ++i) {
+        vector<int> arr(n);
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &arr[i]);
         }
-        vector<int> prefixSum = getPrefixSum(arr);
-        int l, r;
-        for (int i = 0; i < m; ++i) {
+        const auto &arr_prefix_sum = get_prefix_sum(arr);
+        for (int i = 0, l, r; i < m; ++i)
+        {
             scanf("%d%d", &l, &r);
-            printf("%d\n", prefixSum[r] - prefixSum[l - 1]);
+            printf("%d\n", arr_prefix_sum[r] - arr_prefix_sum[l - 1]);
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0795_H
+#endif // ACWINGSOLUTION_PROBLEM0795_H
