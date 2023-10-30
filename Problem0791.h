@@ -10,38 +10,45 @@
 
 using namespace std;
 
-class Problem0791 {
+class Problem0791
+{
 private:
-    string addBigInt(string a, string b) {
+    string add_big_int(string a, string b)
+    {
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
         string result;
         int carry = 0;
-        for (int i = 0; i < a.size() || i < b.size(); ++i) {
-            if (i < a.size()) {
+        for (int i = 0; i < a.size() || i < b.size(); ++i)
+        {
+            if (i < a.size())
+            {
                 carry += a[i] - '0';
             }
-            if (i < b.size()) {
+            if (i < b.size())
+            {
                 carry += b[i] - '0';
             }
-            result.push_back((char) ('0' + carry % 10));
+            result.push_back((char)('0' + carry % 10));
             carry /= 10;
         }
 
         // 千万别忘记最后的进位！
-        if (carry) {
-            result.push_back((char) ('0' + carry));
+        if (carry)
+        {
+            result.push_back((char)('0' + carry));
         }
         reverse(result.begin(), result.end());
         return result;
     }
 
-    int main() {
+    int main()
+    {
         string a, b;
         cin >> a >> b;
-        cout << addBigInt(a, b) << endl;
+        cout << add_big_int(a, b) << endl;
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0791_H
+#endif // ACWINGSOLUTION_PROBLEM0791_H

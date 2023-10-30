@@ -10,26 +10,35 @@
 
 using namespace std;
 
-class Problem0790 {
+class Problem0790
+{
 private:
-    long double cubic_root(const long double &x) {
-        auto l = min(x, -1.0l);  // 牢记左、右起点的临界值
+    long double cubic_root(const long double &x)
+    {
+        auto l = min(x, -1.0l); // 牢记左、右起点的临界值
         auto r = max(x, 1.0l);
-        while (l < r) {
+        while (l < r)
+        {
             auto mid = l + (r - l) / 2;
             auto t = mid * mid * mid;
-            if (fabs(t - x) < 1e-10) {
+            if (fabs(t - x) < 1e-10)
+            {
                 return mid;
-            } else if (t > x) {
+            }
+            else if (t > x)
+            {
                 r = mid;
-            } else {
+            }
+            else
+            {
                 l = mid;
             }
         }
         return r;
     }
 
-    int main() {
+    int main()
+    {
         long double x;
         scanf("%Lf", &x);
         printf("%.6Lf\n", cubic_root(x));
@@ -37,4 +46,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0790_H
+#endif // ACWINGSOLUTION_PROBLEM0790_H

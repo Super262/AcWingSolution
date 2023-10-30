@@ -46,7 +46,7 @@ public:
         return result;
     }
 
-    string mulBigInts(string a, const long long b) {
+    string mul_big_int(string a, const long long b) {
         reverse(a.begin(), a.end());
         string result;
         unsigned long long i = 0;
@@ -74,8 +74,8 @@ public:
                 int right = left + length - 1;
                 dp[left][right] = string(450, '9');
                 for (int mid = left + 1; mid < right; ++mid) {
-                    string temp = mulBigInts(to_string(weights[left]), weights[mid]);
-                    temp = mulBigInts(temp, weights[right]);
+                    string temp = mul_big_int(to_string(weights[left]), weights[mid]);
+                    temp = mul_big_int(temp, weights[right]);
                     temp = addBigInts(temp, dp[left][mid]);
                     temp = addBigInts(temp, dp[mid][right]);
                     if (compareBigInts(dp[left][right], temp) > 0) {

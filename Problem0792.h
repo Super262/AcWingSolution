@@ -10,55 +10,71 @@
 
 using namespace std;
 
-class Problem0792 {
+class Problem0792
+{
 private:
-    int cmpBigInts(const string &a, const string &b) {
-        if (a.size() > b.size()) {
+    int cmp_big_int(const string &a, const string &b)
+    {
+        if (a.size() > b.size())
+        {
             return 1;
         }
-        if (a.size() < b.size()) {
+        if (a.size() < b.size())
+        {
             return -1;
         }
         return a.compare(b);
     }
 
-    string subtractBigInt(string a, string b) {  // 前提：a >= b
+    string subtract_big_int(string a, string b)
+    { // 前提：a >= b
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
         string result;
-        int num = 0;
-        for (int i = 0; i < a.size(); ++i) {
+        for (int i = 0, num = 0; i < a.size(); ++i)
+        {
             num = (a[i] - '0') - num;
-            if (i < b.size()) {
+            if (i < b.size())
+            {
                 num -= b[i] - '0';
             }
-            result.push_back((char) ('0' + (num + 10) % 10));
-            if (num < 0) {
+            result.push_back((char)('0' + (num + 10) % 10));
+            if (num < 0)
+            {
                 num = 1;
-            } else {
+            }
+            else
+            {
                 num = 0;
             }
         }
-        while (result.size() > 1 && result.back() == '0') {  // 注意：result最小长度为1，result最小值为0
+        while (result.size() > 1 && result.back() == '0')
+        { // 注意：result最小长度为1，result最小值为0
             result.pop_back();
         }
         reverse(result.begin(), result.end());
         return result;
     }
 
-    int main() {
+    int main()
+    {
         string a, b;
         cin >> a >> b;
-        auto dis = cmpBigInts(a, b);
-        if (dis == 0) {
+        auto dis = cmp_big_int(a, b);
+        if (dis == 0)
+        {
             cout << 0 << endl;
-        } else if (dis > 0) {
-            cout << subtractBigInt(a, b) << endl;
-        } else {
-            cout << "-" << subtractBigInt(b, a) << endl;
+        }
+        else if (dis > 0)
+        {
+            cout << subtract_big_int(a, b) << endl;
+        }
+        else
+        {
+            cout << "-" << subtract_big_int(b, a) << endl;
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0792_H
+#endif // ACWINGSOLUTION_PROBLEM0792_H
