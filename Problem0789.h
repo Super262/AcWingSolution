@@ -9,56 +9,70 @@
 
 using namespace std;
 
-class Problem0789 {
+class Problem0789
+{
 private:
-    void queryRange(const int nums[], const int n, const int t) {
+    void query_range(const int *nums, const int &n, const int &t)
+    {
         int l = 0;
         auto r = n - 1;
-        while (l < r) {
+        while (l < r)
+        {
             auto mid = l + (r - l) / 2;
-            if (nums[mid] >= t) {
+            if (nums[mid] >= t)
+            {
                 r = mid;
-            } else {
+            }
+            else
+            {
                 l = mid + 1;
             }
         }
-        if (nums[r] != t) {
+        if (nums[r] != t)
+        {
             printf("-1 -1\n");
             return;
         }
         printf("%d ", r);
         l = 0;
         r = n - 1;
-        while (l < r) {
+        while (l < r)
+        {
             auto mid = l + (r - l + 1) / 2;
-            if (nums[mid] <= t) {
+            if (nums[mid] <= t)
+            {
                 l = mid;
-            } else {
+            }
+            else
+            {
                 r = mid - 1;
             }
         }
-        if (nums[l] != t) {
+        if (nums[l] != t)
+        {
             printf("-1 -1\n");
             return;
         }
         printf("%d\n", l);
     }
 
-    int main() {
+    int main()
+    {
         int n;
         int k;
         scanf("%d%d", &n, &k);
         int nums[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &nums[i]);
         }
-        int t;
-        for (int i = 0; i < k; ++i) {
+        for (int i = 0, t; i < k; ++i)
+        {
             scanf("%d", &t);
-            queryRange(nums, n, t);
+            query_range(nums, n, t);
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0789_H
+#endif // ACWINGSOLUTION_PROBLEM0789_H
