@@ -14,7 +14,7 @@ using namespace std;
 class Problem0861
 {
 private:
-    bool has_matched(int u, const vector<vector<int>> &graph, vector<int> &friend_from_left, bool *right_visited)
+    bool has_matched(int u, const vector<vector<int>> &graph, int *friend_from_left, bool *right_visited)
     {
         for (const auto &v : graph[u])
         {
@@ -42,9 +42,10 @@ private:
             scanf("%d%d", &u, &v);
             graph[u].emplace_back(v); // 这里我们只建立单向边
         }
-        vector<int> friend_from_left(n2 + 1, 0);
+        int friend_from_left[n2 + 1];
         bool right_visited[n2 + 1];
         int result = 0;
+        memset(friend_from_left, 0, sizeof friend_from_left);
         for (int u = 1; u <= n1; ++u)
         {
             memset(right_visited, 0, sizeof right_visited);
