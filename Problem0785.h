@@ -25,10 +25,8 @@ private:
         auto r = ed + 1;
         while (l < r)
         {
-            while (nums[++l] < p)
-                ; // 注意：循环条件不包含 l < r
-            while (nums[--r] > p)
-                ;
+            while (nums[++l] < p); // 注意：循环条件不包含 l < r
+            while (nums[--r] > p);
             if (l < r)
             {
                 swap(nums[l], nums[r]);
