@@ -10,20 +10,25 @@
 
 using namespace std;
 
-class Problem0788 {
+class Problem0788
+{
     // 注意为避免溢出，使用long long
     // 为便于改造，拆分归并过程和统计逆序对的过程
 private:
-    long long mergeSort(int nums[], int st, int ed, int temp[]) {
-        if (st >= ed) {
+    long long merge_sort(int *nums, int st, int ed, int *temp)
+    {
+        if (st >= ed)
+        {
             return 0;
         }
         const auto mid = st + (ed - st) / 2;
-        auto result = mergeSort(nums, st, mid, temp) + mergeSort(nums, mid + 1, ed, temp);
+        auto result = merge_sort(nums, st, mid, temp) + merge_sort(nums, mid + 1, ed, temp);
         auto l = st;
         auto r = mid + 1;
-        while (r <= ed) {  // 统计逆序对
-            while (l <= mid && nums[l] <= nums[r]) {
+        while (r <= ed)
+        { // 统计逆序对
+            while (l <= mid && nums[l] <= nums[r])
+            {
                 ++l;
             }
             result += mid - l + 1;
@@ -32,22 +37,28 @@ private:
         l = st;
         r = mid + 1;
         auto t = st;
-        while (l <= mid && r <= ed) {
-            if (nums[l] <= nums[r]) {
+        while (l <= mid && r <= ed)
+        {
+            if (nums[l] <= nums[r])
+            {
                 temp[t] = nums[l];
                 ++l;
-            } else {
+            }
+            else
+            {
                 temp[t] = nums[r];
                 ++r;
             }
             ++t;
         }
-        while (l <= mid) {
+        while (l <= mid)
+        {
             temp[t] = nums[l];
             ++l;
             ++t;
         }
-        while (r <= ed) {
+        while (r <= ed)
+        {
             temp[t] = nums[r];
             ++r;
             ++t;
@@ -56,17 +67,19 @@ private:
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int nums[n];
         int temp[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &nums[i]);
         }
-        printf("%lld\n", mergeSort(nums, 0, n - 1, temp));
+        printf("%lld\n", merge_sort(nums, 0, n - 1, temp));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0788_H
+#endif // ACWINGSOLUTION_PROBLEM0788_H
