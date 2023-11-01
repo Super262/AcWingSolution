@@ -12,7 +12,7 @@ using namespace std;
 
 class Problem0800 {
 private:
-    pair<int, int> targetSum(const vector<int> &nums1, const vector<int> &nums2, int t) {
+    pair<int, int> target_sum(const vector<int> &nums1, const vector<int> &nums2, int t) {
         const auto n = (int) nums1.size();
         const auto m = (int) nums2.size();
         int i = 0;
@@ -42,7 +42,7 @@ private:
         for (int i = 0; i < m; ++i) {
             scanf("%d", &nums2[i]);
         }
-        auto res = targetSum(nums1, nums2, t);
+        auto res = target_sum(nums1, nums2, t);
         printf("%d %d\n", res.first, res.second);
         return 0;
     }
