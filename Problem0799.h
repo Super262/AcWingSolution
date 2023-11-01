@@ -11,15 +11,19 @@
 
 using namespace std;
 
-class Problem0799 {
+class Problem0799
+{
 private:
-    int longestUnique(const vector<int> &nums) {
-        const auto n = (int) nums.size();
+    int longestUnique(const vector<int> &nums)
+    {
+        const auto n = (int)nums.size();
         unordered_map<int, int> counter;
         int result = 0;
-        for (int l = 0, r = 0; r < n; ++r) {
+        for (int l = 0, r = 0; r < n; ++r)
+        {
             ++counter[nums[r]];
-            while (l < r && counter[nums[r]] > 1) {
+            while (l < r && counter[nums[r]] > 1)
+            {
                 --counter[nums[l]];
                 ++l;
             }
@@ -28,11 +32,13 @@ private:
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         vector<int> nums(n);
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &nums[i]);
         }
         printf("%d\n", longestUnique(nums));
@@ -40,4 +46,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0799_H
+#endif // ACWINGSOLUTION_PROBLEM0799_H
