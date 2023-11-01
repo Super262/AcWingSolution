@@ -10,36 +10,47 @@
 
 using namespace std;
 
-class Problem0800 {
+class Problem0800
+{
 private:
-    pair<int, int> target_sum(const vector<int> &nums1, const vector<int> &nums2, int t) {
-        const auto n = (int) nums1.size();
-        const auto m = (int) nums2.size();
+    pair<int, int> target_sum(const vector<int> &nums1, const vector<int> &nums2, int t)
+    {
+        const auto n = (int)nums1.size();
+        const auto m = (int)nums2.size();
         int i = 0;
         int j = m - 1;
-        while (i < n && j >= 0) {
-            if (nums1[i] + nums2[j] == t) {
+        while (i < n && j >= 0)
+        {
+            if (nums1[i] + nums2[j] == t)
+            {
                 return {i, j};
-            } else if (nums1[i] + nums2[j] > t) {
+            }
+            else if (nums1[i] + nums2[j] > t)
+            {
                 --j;
-            } else {
+            }
+            else
+            {
                 ++i;
             }
         }
         return {-1, -1};
     }
 
-    int main() {
+    int main()
+    {
         int n;
         int m;
         int t;
         scanf("%d%d%d", &n, &m, &t);
         vector<int> nums1(n);
         vector<int> nums2(m);
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &nums1[i]);
         }
-        for (int i = 0; i < m; ++i) {
+        for (int i = 0; i < m; ++i)
+        {
             scanf("%d", &nums2[i]);
         }
         auto res = target_sum(nums1, nums2, t);
@@ -48,4 +59,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0800_H
+#endif // ACWINGSOLUTION_PROBLEM0800_H
