@@ -20,19 +20,19 @@ private:
     int fenwickTable[N];  // 树状数组的索引从1开始
     int leftGre[N], leftLess[N], rightGre[N], rightLess[N];
 
-    int lowBit(const int x) {
+    int low_bit(const int x) {
         return x & -x;
     }
 
     void updateItem(const int idx, const int val, const int n) {
-        for (int i = idx; i <= n; i += lowBit(i)) {
+        for (int i = idx; i <= n; i += low_bit(i)) {
             fenwickTable[i] += val;
         }
     }
 
     int prefixSum(const int idx) {
         int result = 0;
-        for (int i = idx; i > 0; i -= lowBit(i)) {
+        for (int i = idx; i > 0; i -= low_bit(i)) {
             result += fenwickTable[i];
         }
         return result;

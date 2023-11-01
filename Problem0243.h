@@ -119,19 +119,19 @@ private:
 //    const int N = 100010;
 //    long long ft1[N], ft2[N], nums[N];
 //
-//    int lowBit(const int x) {
+//    int low_bit(const int x) {
 //        return x & -x;
 //    }
 //
 //    void updateItem(long long ft[], const int idx, const long long val, const int n) {
-//        for (auto i = idx; i <= n; i += lowBit(i)) {
+//        for (auto i = idx; i <= n; i += low_bit(i)) {
 //            ft[i] += val;
 //        }
 //    }
 //
 //    long long prefixSum(const long long ft[], const int idx) {
 //        long long res = 0;
-//        for (auto i = idx; i > 0; i -= lowBit(i)) {
+//        for (auto i = idx; i > 0; i -= low_bit(i)) {
 //            res += ft[i];
 //        }
 //        return res;

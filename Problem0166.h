@@ -19,7 +19,7 @@ private:
     int rowState[N], columnState[N], cellState[3][3];  // 整数二进制的9位对应当前整数是否可以被填入（0不可用，1可用）
     char str[100];
 
-    int lowBit(const int x) {
+    int low_bit(const int x) {
         return x & (-x);
     }
 
@@ -79,8 +79,8 @@ private:
                 }
             }
         }
-        for (int s = pointState(x, y); s > 0; s -= lowBit(s)) {
-            int value = idxOfOne[lowBit(s)] + 1;
+        for (int s = pointState(x, y); s > 0; s -= low_bit(s)) {
+            int value = idxOfOne[low_bit(s)] + 1;
             modifyValue(x, y, value, true);
             if (dfs(cnt - 1)) {
                 return true;
@@ -95,7 +95,7 @@ private:
             idxOfOne[1 << i] = i;
         }
         for (int i = 0; i < M; ++i) {
-            for (int j = i; j > 0; j -= lowBit(j)) {
+            for (int j = i; j > 0; j -= low_bit(j)) {
                 ++numOfOnes[i];
             }
         }

@@ -15,19 +15,19 @@ private:
     static const int N = 100000;
     int arr[N], ft[N];
 
-    int lowBit(const int x) {
+    int low_bit(const int x) {
         return x & -x;
     }
 
     void updateItem(const int idx, const int val, const int n) {
-        for (int i = idx; i <= n; i += lowBit(i)) {
+        for (int i = idx; i <= n; i += low_bit(i)) {
             ft[i] += val;
         }
     }
 
     int prefixSum(const int idx) {
         int res = 0;
-        for (int i = idx; i > 0; i -= lowBit(i)) {
+        for (int i = idx; i > 0; i -= low_bit(i)) {
             res += ft[i];
         }
         return res;

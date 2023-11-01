@@ -14,7 +14,7 @@ using namespace std;
 class Problem1064 {
     // https://www.acwing.com/solution/content/56348/
 private:
-    int countOnes(const int s, const int n) {
+    int count_ones(const int s, const int n) {
         int result = 0;
         for (int offset = 0; offset < n; ++offset) {
             if ((s >> offset) & 1) {
@@ -56,7 +56,7 @@ private:
                 continue;
             }
             states.emplace_back(s);
-            ones_num.emplace_back(countOnes(s, n));
+            ones_num.emplace_back(count_ones(s, n));
         }
         // 获取第(i-1)行的所有可能状态
         const auto prev_state_idx = getPreStateIdx(states, n);

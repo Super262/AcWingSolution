@@ -14,7 +14,7 @@ using namespace std;
 class Problem0292 {
     // https://www.acwing.com/solution/content/12392/
 private:
-    int countOnes(const int s, const int n) {
+    int count_ones(const int s, const int n) {
         int result = 0;
         for (int offset = 0; offset < n; ++offset) {
             if ((s >> offset) & 1) {
@@ -43,7 +43,7 @@ private:
                 continue;
             }
             states.emplace_back(s);
-            ones_num.emplace_back(countOnes(s, m));
+            ones_num.emplace_back(count_ones(s, m));
         }
         // dp[i][j][k]表示当前已经处理完前i行，第i行状态为k， 第(i - 1)行状态为j
         // 第i行和第(i - 1)行受第(i - 2)行的影响，所以我们遍历第(i - 2)行的状态值

@@ -9,31 +9,36 @@
 
 using namespace std;
 
-class Problem0801 {
+class Problem0801
+{
 private:
-    int lowBit(const int x) {
+    int low_bit(const int x)
+    {
         return x & (-x);
     }
 
-    int countOnes(int x) {
+    int count_ones(int x)
+    {
         int result = 0;
-        while (x > 0) {
-            x -= lowBit(x);
+        while (x > 0)
+        {
+            x -= low_bit(x);
             ++result;
         }
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
-        for (int i = 1; i <= n; ++i) {
-            int x;
+        for (int i = 1, x; i <= n; ++i)
+        {
             scanf("%d", &x);
-            printf("%d ", countOnes(x));
+            printf("%d ", count_ones(x));
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0801_H
+#endif // ACWINGSOLUTION_PROBLEM0801_H
