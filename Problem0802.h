@@ -11,27 +11,30 @@
 
 using namespace std;
 
-class Problem0802 {
+class Problem0802
+{
 private:
-    int getIdx(int idx, const vector<int> &indices) {
-        return (int) (lower_bound(indices.begin(), indices.end(), idx) - indices.begin() + 1);  // 索引从1开始
+    int get_idx(const int &idx, const vector<int> &indices)
+    {
+        return (int)(lower_bound(indices.begin(), indices.end(), idx) - indices.begin() + 1); // 索引从1开始
     }
 
-    int main() {
+    int main()
+    {
         int n;
         int m;
         scanf("%d%d", &n, &m);
         vector<int> indices;
         vector<pair<int, int>> add_reqs(n);
         vector<pair<int, int>> query_reqs(m);
-        for (int i = 0; i < n; ++i) {
-            int x, c;
+        for (int i = 0, x, c; i < n; ++i)
+        {
             scanf("%d%d", &x, &c);
             indices.emplace_back(x);
             add_reqs[i] = {x, c};
         }
-        for (int i = 0; i < m; ++i) {
-            int l, r;
+        for (int i = 0, l, r; i < m; ++i)
+        {
             scanf("%d%d", &l, &r);
             indices.emplace_back(l);
             indices.emplace_back(r);
@@ -41,20 +44,21 @@ private:
         sort(indices.begin(), indices.end());
         indices.erase(unique(indices.begin(), indices.end()), indices.end());
 
-        vector<int> data(indices.size() + 1, 0);  // 离散化后的索引从1开始，别忘记加1
-        for (const auto &p: add_reqs) {
-            data[getIdx(p.first, indices)] += p.second;
+        vector<int> data(indices.size() + 1, 0); // 离散化后的索引从1开始，别忘记加1
+        for (const auto &p : add_reqs)
+        {
+            data[get_idx(p.first, indices)] += p.second;
         }
-        for (int i = 1; i < data.size(); ++i) {
+        for (int i = 1; i < data.size(); ++i)
+        {
             data[i] += data[i - 1];
         }
-        for (const auto &p: query_reqs) {
-            auto a = getIdx(p.first, indices);
-            auto b = getIdx(p.second, indices);
-            printf("%d\n", data[b] - data[a - 1]);
+        for (const auto &p : query_reqs)
+        {
+            printf("%d\n", data[get_idx(p.second, indices)] - data[get_idx(p.first, indices) - 1]);
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0802_H
+#endif // ACWINGSOLUTION_PROBLEM0802_H
