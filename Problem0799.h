@@ -14,7 +14,7 @@ using namespace std;
 class Problem0799
 {
 private:
-    int longestUnique(const vector<int> &nums)
+    int longest_unique(const vector<int> &nums)
     {
         const auto n = (int)nums.size();
         unordered_map<int, int> counter;
@@ -41,7 +41,7 @@ private:
         {
             scanf("%d", &nums[i]);
         }
-        printf("%d\n", longestUnique(nums));
+        printf("%d\n", longest_unique(nums));
         return 0;
     }
 };
