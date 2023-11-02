@@ -10,34 +10,41 @@
 
 using namespace std;
 
-class Problem0830 {
+class Problem0830
+{
 private:
-    int closestSmaller(stack<int> &s, const int num) {
-        while (!s.empty() && s.top() >= num) {
+    int closest_smaller(stack<int> &s, const int &num)
+    {
+        while (!s.empty() && s.top() >= num)
+        {
             s.pop();
         }
         int result;
-        if (s.empty()) {
+        if (s.empty())
+        {
             result = -1;
-        } else {
+        }
+        else
+        {
             result = s.top();
         }
         s.emplace(num);
         return result;
     }
 
-    int main() {
-        unsigned int n;
+    int main()
+    {
+        int n;
         scanf("%d", &n);
-        int num;
         stack<int> s;
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0, num; i < n; ++i)
+        {
             scanf("%d", &num);
-            printf("%d ", closestSmaller(s, num));
+            printf("%d ", closest_smaller(s, num));
         }
         printf("\n");
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0830_H
+#endif // ACWINGSOLUTION_PROBLEM0830_H
