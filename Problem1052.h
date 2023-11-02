@@ -14,7 +14,7 @@ class Problem1052 {
     // dp[i][j]代表的方案：构造长度为i的密码，后缀与模式串匹配的最大长度为j
     // https://www.acwing.com/solution/content/55449/
 private:
-    void buildFail(const char s[], const int n, int fail[]) {
+    void build_fail(const char s[], const int n, int fail[]) {
         int l = 0;
         int r = 1;
         fail[l] = 0;
@@ -40,7 +40,7 @@ private:
         int next_matched_length[m + 1][26];
         memset(f, 0, sizeof f);
         memset(next_matched_length, 0, sizeof next_matched_length);
-        buildFail(str, m, fail);
+        build_fail(str, m, fail);
         f[0][0] = 1;
         for (int i = 0; i < m; ++i) {  // 预计算状态转移路径
             for (char ch = 'a'; ch <= 'z'; ++ch) {

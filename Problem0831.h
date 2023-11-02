@@ -7,41 +7,57 @@
 
 #include <iostream>
 
-class Problem0831 {
+class Problem0831
+{
 private:
-    void buildFail(const char p[], int fail[], const int n) {
+    void build_fail(const char *p, int *fail, const int &n)
+    {
         fail[0] = 0;
         int l = 0;
         int r = 1;
-        while (r < n) {
-            if (p[l] == p[r]) {
+        while (r < n)
+        {
+            if (p[l] == p[r])
+            {
                 ++l;
                 fail[r] = l;
                 ++r;
-            } else if (l) {
+            }
+            else if (l)
+            {
                 l = fail[l - 1];
-            } else {
+            }
+            else
+            {
                 fail[r] = 0;
                 ++r;
             }
         }
     }
 
-    void kmp(const char s[], const int sl, const char p[], const int pl) {
+    void kmp(const char *s, const int sl, const char *p, const int pl)
+    {
         int fail[pl];
-        buildFail(p, fail, pl);
+        build_fail(p, fail, pl);
         int si = 0;
         int pi = 0;
-        while (si < sl) {
-            if (s[si] == p[pi]) {
+        while (si < sl)
+        {
+            if (s[si] == p[pi])
+            {
                 ++si;
                 ++pi;
-            } else if (pi) {
+            }
+            else if (pi)
+            {
                 pi = fail[pi - 1];
-            } else {
+            }
+            else
+            {
                 ++si;
             }
-            if (pi == pl) {
+            if (pi == pl)
+            {
                 printf("%d ", si - pl);
                 pi = fail[pi - 1];
             }
@@ -49,7 +65,8 @@ private:
         printf("\n");
     }
 
-    int main() {
+    int main()
+    {
         int pl;
         scanf("%d", &pl);
         char p[pl + 1];
@@ -63,4 +80,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0831_H
+#endif // ACWINGSOLUTION_PROBLEM0831_H
