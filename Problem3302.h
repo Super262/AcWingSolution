@@ -11,87 +11,112 @@
 
 using namespace std;
 
-class Problem3302 {
+class Problem3302
+{
 private:
-    int doOperation(const int a, const int b, const char op) {
-        if (op == '+') {
+    int do_operation(const int &a, const int &b, const char &op)
+    {
+        if (op == '+')
+        {
             return a + b;
-        } else if (op == '-') {
+        }
+        else if (op == '-')
+        {
             return a - b;
-        } else if (op == '*') {
+        }
+        else if (op == '*')
+        {
             return a * b;
-        } else if (op == '/') {
+        }
+        else if (op == '/')
+        {
             return a / b;
         }
         return 0;
     }
 
-    void dealOperators(const char op,
-                       unordered_map<char, char> &preferenceIn,
-                       unordered_map<char, char> &preferenceOut,
-                       stack<int> &nums,
-                       stack<char> &operators) {
-        if (operators.empty() || preferenceOut[operators.top()] < preferenceIn[op]) {
+    void handle_operators(const char &op,
+                          unordered_map<char, char> &preference_in,
+                          unordered_map<char, char> &preference_out,
+                          stack<int> &nums,
+                          stack<char> &operators)
+    {
+        if (operators.empty() || preference_out[operators.top()] < preference_in[op])
+        {
             operators.emplace(op);
             return;
         }
-        while (!operators.empty() && preferenceOut[operators.top()] > preferenceIn[op]) {
-            char temp = operators.top();
+        while (!operators.empty() && preference_out[operators.top()] > preference_in[op])
+        {
+            auto temp = operators.top();
             operators.pop();
-            int b = nums.top();
+            auto b = nums.top();
             nums.pop();
-            int a = nums.top();
+            auto a = nums.top();
             nums.pop();
-            nums.emplace(doOperation(a, b, temp));
+            nums.emplace(do_operation(a, b, temp));
         }
-        if (!operators.empty() && operators.top() == '(' && op == ')') {
+        if (!operators.empty() && operators.top() == '(' && op == ')')
+        {
             operators.pop();
-        } else {
+        }
+        else
+        {
             operators.emplace(op);
         }
     }
 
-    int calculate(const string &s) {
-        unordered_map<char, char> preferenceIn;
-        unordered_map<char, char> preferenceOut;
+    int calculate(const string &s)
+    {
+        unordered_map<char, char> preference_in;
+        unordered_map<char, char> preference_out;
         stack<int> nums;
         stack<char> operators;
-        preferenceIn['+'] = 2;
-        preferenceIn['-'] = 2;
-        preferenceIn['*'] = 4;
-        preferenceIn['/'] = 4;
-        preferenceIn['('] = 6;
-        preferenceIn[')'] = 1;
-        preferenceOut['+'] = 3;
-        preferenceOut['-'] = 3;
-        preferenceOut['*'] = 5;
-        preferenceOut['/'] = 5;
-        preferenceOut['('] = 1;
-        preferenceOut[')'] = 6;
-        bool waitingNextNum = true;
-        for (const char ch: s) {
-            if (ch >= '0' && ch <= '9') {
-                if (waitingNextNum) {
+        preference_in['+'] = 2;
+        preference_in['-'] = 2;
+        preference_in['*'] = 4;
+        preference_in['/'] = 4;
+        preference_in['('] = 6;
+        preference_in[')'] = 1;
+        preference_out['+'] = 3;
+        preference_out['-'] = 3;
+        preference_out['*'] = 5;
+        preference_out['/'] = 5;
+        preference_out['('] = 1;
+        preference_out[')'] = 6;
+        bool waiting_next_num = true;
+        for (const char &ch : s)
+        {
+            if (ch >= '0' && ch <= '9')
+            {
+                if (waiting_next_num)
+                {
                     nums.emplace(ch - '0');
-                    waitingNextNum = false;
-                } else {
+                    waiting_next_num = false;
+                }
+                else
+                {
                     auto t = nums.top();
                     nums.pop();
                     t = t * 10 + (ch - '0');
                     nums.emplace(t);
                 }
-            } else {
-                waitingNextNum = true;
-                dealOperators(ch, preferenceIn, preferenceOut, nums, operators);
+            }
+            else
+            {
+                waiting_next_num = true;
+                handle_operators(ch, preference_in, preference_out, nums, operators);
             }
         }
-        if (!nums.empty()) {
+        if (!nums.empty())
+        {
             return nums.top();
         }
         return 0;
     }
 
-    int main() {
+    int main()
+    {
         string s;
         cin >> s;
         cout << calculate("(" + s + ")") << endl;
@@ -99,4 +124,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM3302_H
+#endif // ACWINGSOLUTION_PROBLEM3302_H
