@@ -7,54 +7,67 @@
 
 #include <iostream>
 
-class Problem0154 {
+class Problem0154
+{
 private:
-    void printMax(int n, int k, int *a, int *dq) {
+    void print_max(const int &n, const int &k, const int *a, int *dq)
+    {
         int hh = 0, tt = -1;
-        for (int i = 0; i < n; ++i) {
-            while (hh <= tt && i - dq[hh] + 1 > k) {
+        for (int i = 0; i < n; ++i)
+        {
+            while (hh <= tt && i - dq[hh] + 1 > k)
+            {
                 ++hh;
             }
-            while (hh <= tt && a[i] >= a[dq[tt]]) {
+            while (hh <= tt && a[i] >= a[dq[tt]])
+            {
                 --tt;
             }
             dq[++tt] = i;
-            if (i + 1 >= k) {
+            if (i + 1 >= k)
+            {
                 printf("%d ", a[dq[hh]]);
             }
         }
         printf("\n");
     }
 
-    void printMin(int n, int k, int *a, int *dq) {
+    void print_min(const int &n, const int &k, const int *a, int *dq)
+    {
         int hh = 0, tt = -1;
-        for (int i = 0; i < n; ++i) {
-            while (hh <= tt && i - dq[hh] + 1 > k) {
+        for (int i = 0; i < n; ++i)
+        {
+            while (hh <= tt && i - dq[hh] + 1 > k)
+            {
                 ++hh;
             }
-            while (hh <= tt && a[i] <= a[dq[tt]]) {
+            while (hh <= tt && a[i] <= a[dq[tt]])
+            {
                 --tt;
             }
             dq[++tt] = i;
-            if (i + 1 >= k) {
+            if (i + 1 >= k)
+            {
                 printf("%d ", a[dq[hh]]);
             }
         }
         printf("\n");
     }
 
-    int main() {
+    int main()
+    {
         int n, k;
         scanf("%d%d", &n, &k);
         int a[n];
         int dq[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &a[i]);
         }
-        printMin(n, k, a, dq);
-        printMax(n, k, a, dq);
+        print_min(n, k, a, dq);
+        print_max(n, k, a, dq);
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0154_H
+#endif // ACWINGSOLUTION_PROBLEM0154_H
