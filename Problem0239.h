@@ -19,7 +19,7 @@ private:
     unordered_map<int, int> dataTable;
     int pTop = 0;
 
-    int findRoot(int x) {
+    int find_root(int x) {
         auto u = x;
         while (u != parent[u]) {
             u = parent[u];
@@ -40,13 +40,13 @@ private:
         return dataTable[a];
     }
 
-    bool mergeSets(const int a, const int b, const string &type) {
+    bool merge_sets(const int a, const int b, const string &type) {
         int t = 0;
         if (type == "odd") {
             t = 1;
         }
-        auto pa = findRoot(a);
-        auto pb = findRoot(b);
+        auto pa = find_root(a);
+        auto pb = find_root(b);
         if (pa == pb) {
             return dist[a] ^ dist[b] == t;
         }
@@ -67,7 +67,7 @@ private:
         for (int i = 1; i <= m; ++i) {
             cin >> a >> b >> type;
             a = a - 1;
-            if (!mergeSets(getIdx(a), getIdx(b), type)) {
+            if (!merge_sets(getIdx(a), getIdx(b), type)) {
                 result = i - 1;
                 break;
             }

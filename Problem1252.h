@@ -16,7 +16,7 @@ private:
     int value[N], price[N];
     int parent[N];
 
-    int findRoot(int x) {
+    int find_root(int x) {
         auto u = x;
         while (u != parent[u]) {
             u = parent[u];
@@ -29,9 +29,9 @@ private:
         return u;
     }
 
-    void mergeSets(const int a, const int b) {
-        auto pa = findRoot(a);
-        auto pb = findRoot(b);
+    void merge_sets(const int a, const int b) {
+        auto pa = find_root(a);
+        auto pb = find_root(b);
         if (pa == pb) {
             return;
         }
@@ -64,7 +64,7 @@ private:
         int a, b;
         for (int i = 0; i < m; ++i) {
             scanf("%d%d", &a, &b);
-            mergeSets(a, b);
+            merge_sets(a, b);
         }
         printf("%d\n", knapsack(n, w));
         return 0;

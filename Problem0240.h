@@ -12,18 +12,18 @@ using namespace std;
 class Problem0240 {
     // https://www.acwing.com/solution/content/24842/
 private:
-    int findRoot(const int x, int parent[], int dist[]) {
+    int find_root(const int x, int parent[], int dist[]) {
         if (x != parent[x]) {
-            auto root = findRoot(parent[x], parent, dist);  // 递归：按从根到底的顺序更新dist[i]
+            auto root = find_root(parent[x], parent, dist);  // 递归：按从根到底的顺序更新dist[i]
             dist[x] += dist[parent[x]];
             parent[x] = root;
         }
         return parent[x];
     }
 
-    bool mergeSets(const int x, const int y, const int rel, int parent[], int dist[]) {
-        auto px = findRoot(x, parent, dist);
-        auto py = findRoot(y, parent, dist);
+    bool merge_sets(const int x, const int y, const int rel, int parent[], int dist[]) {
+        auto px = find_root(x, parent, dist);
+        auto py = find_root(y, parent, dist);
         if (rel == 1 && px == py && (dist[x] - dist[y]) % 3) {
             return false;
         }
@@ -59,7 +59,7 @@ private:
                 ++ans;
                 continue;
             }
-            if (!mergeSets(x, y, op, parent, dist)) {
+            if (!merge_sets(x, y, op, parent, dist)) {
                 ++ans;
             }
         }

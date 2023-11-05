@@ -15,18 +15,18 @@ private:
     static const int N = 30010;
     int clsSize[N], dist[N], parent[N];
 
-    int findRoot(int x) {
+    int find_root(int x) {
         if (x != parent[x]) {
-            int root = findRoot(parent[x]);
+            int root = find_root(parent[x]);
             dist[x] += dist[parent[x]];
             parent[x] = root;
         }
         return parent[x];
     }
 
-    void mergeSets(int a, int b) {
-        auto pa = findRoot(a);
-        auto pb = findRoot(b);
+    void merge_sets(int a, int b) {
+        auto pa = find_root(a);
+        auto pb = find_root(b);
         if (pa == pb) {
             return;
         }
@@ -36,8 +36,8 @@ private:
     }
 
     int querySets(int a, int b) {
-        auto pa = findRoot(a);
-        auto pb = findRoot(b);
+        auto pa = find_root(a);
+        auto pb = find_root(b);
         if (pa == pb) {
             return max(abs(dist[a] - dist[b]) - 1, 0);
         }
@@ -56,7 +56,7 @@ private:
         for (int i = 0; i < n; ++i) {
             scanf("%s%d%d", op, &a, &b);
             if (op[0] == 'M') {
-                mergeSets(a, b);
+                merge_sets(a, b);
             } else {
                 printf("%d\n", querySets(a, b));
             }

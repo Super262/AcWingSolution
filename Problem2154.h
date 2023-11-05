@@ -29,7 +29,7 @@ private:
         ++idx;
     }
 
-    void mergeSets(int &px, int &py) { // 所以映射的本质是将颜色x看成颜色y，颜色y看成颜色x
+    void merge_sets(int &px, int &py) { // 所以映射的本质是将颜色x看成颜色y，颜色y看成颜色x
         if (px == py) {
             return;
         }
@@ -80,7 +80,7 @@ private:
             scanf("%d", &op);
             if (op == 1) {
                 scanf("%d%d", &x, &y);
-                mergeSets(parent[x], parent[y]);
+                merge_sets(parent[x], parent[y]);
             } else {
                 printf("%d\n", segsCnt);
             }

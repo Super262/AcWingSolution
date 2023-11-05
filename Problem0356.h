@@ -30,9 +30,9 @@ private:
         }
     };
 
-    int findRoot(const int x, int parent[]) {
+    int find_root(const int x, int parent[]) {
         if (x != parent[x]) {
-            parent[x] = findRoot(parent[x], parent);
+            parent[x] = find_root(parent[x], parent);
         }
         return parent[x];
     }
@@ -46,8 +46,8 @@ private:
         long long result = 0;
         for (int i = 0; i < m; ++i) {
             auto &e = edges[i];
-            auto pu = findRoot(e.u, parent);
-            auto pv = findRoot(e.v, parent);
+            auto pu = find_root(e.u, parent);
+            auto pv = find_root(e.v, parent);
             if (pu == pv) {
                 continue;
             }

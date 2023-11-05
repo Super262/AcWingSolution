@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0837 {
 private:
-    int findRoot(int x, int parent[]) {
+    int find_root(int x, int parent[]) {
         auto u = x;
         while (u != parent[u]) {
             u = parent[u];
@@ -24,7 +24,7 @@ private:
         return u;
     }
 
-    int mergeSets(int pa, int pb, int parent[], int set_size[]) {
+    int merge_sets(int pa, int pb, int parent[], int set_size[]) {
         if (pa == pb) {
             return -1;
         }
@@ -51,19 +51,19 @@ private:
             scanf("%s", op);
             if (op[0] == 'C') {
                 scanf("%d%d", &a, &b);
-                auto pa = findRoot(a, parent);
-                auto pb = findRoot(b, parent);
-                mergeSets(pa, pb, parent, set_size);
+                auto pa = find_root(a, parent);
+                auto pb = find_root(b, parent);
+                merge_sets(pa, pb, parent, set_size);
             } else if (op[1] == '1') {
                 scanf("%d%d", &a, &b);
-                if (findRoot(a, parent) == findRoot(b, parent)) {
+                if (find_root(a, parent) == find_root(b, parent)) {
                     printf("Yes\n");
                 } else {
                     printf("No\n");
                 }
             } else {
                 scanf("%d", &a);
-                printf("%d\n", set_size[findRoot(a, parent)]);
+                printf("%d\n", set_size[find_root(a, parent)]);
             }
         }
         return 0;

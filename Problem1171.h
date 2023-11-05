@@ -35,9 +35,9 @@ private:
         return dist;
     }
 
-    int findRoot(const int x, vector<int> &parent) {
+    int find_root(const int x, vector<int> &parent) {
         if (x != parent[x]) {
-            parent[x] = findRoot(parent[x], parent);
+            parent[x] = find_root(parent[x], parent);
         }
         return parent[x];
     }
@@ -64,7 +64,7 @@ private:
             if (status[v] != 2) {
                 continue;
             }
-            auto ancestor = findRoot(v, parent);
+            auto ancestor = find_root(v, parent);
             result[idx] = dist[u] + dist[v] - 2 * dist[ancestor];
         }
         status[u] = 2;

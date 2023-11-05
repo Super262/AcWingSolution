@@ -14,7 +14,7 @@ private:
     static const int N = 200;
     int parent[N * N];
 
-    int findRoot(int x) {
+    int find_root(int x) {
         auto u = x;
         while (u != parent[u]) {
             u = parent[u];
@@ -35,8 +35,8 @@ private:
         } else {
             b = x * n + (y + 1);
         }
-        auto pa = findRoot(a);
-        auto pb = findRoot(b);
+        auto pa = find_root(a);
+        auto pb = find_root(b);
         if (pa == pb) {  // a和b在同一个连通块中，直接返回
             return true;
         }

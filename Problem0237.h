@@ -22,9 +22,9 @@ private:
     int parent[2 * N];
     int pTop = 0;
 
-    int findRoot(int x) {
+    int find_root(int x) {
         if (x != parent[x]) {
-            parent[x] = findRoot(parent[x]);
+            parent[x] = find_root(parent[x]);
         }
         return parent[x];
     }
@@ -39,8 +39,8 @@ private:
     }
 
     bool checkConstraint(int a, int b, int e) {
-        auto pa = findRoot(getIdx(a));
-        auto pb = findRoot(getIdx(b));
+        auto pa = find_root(getIdx(a));
+        auto pb = find_root(getIdx(b));
         if (e) {
             parent[pa] = pb;
             return true;
