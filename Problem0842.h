@@ -10,18 +10,24 @@
 
 using namespace std;
 
-class Problem0842 {
+class Problem0842
+{
 private:
-    void dfs(const int k, const int n, int path[], bool visited[]) {
-        if (k > n) {
-            for (int i = 1; i <= n; ++i) {
+    void dfs(const int k, const int n, int *path, bool *visited)
+    {
+        if (k > n)
+        {
+            for (int i = 1; i <= n; ++i)
+            {
                 printf("%d ", path[i]);
             }
             printf("\n");
             return;
         }
-        for (int i = 1; i <= n; ++i) {
-            if (visited[i]) {
+        for (int i = 1; i <= n; ++i)
+        {
+            if (visited[i])
+            {
                 continue;
             }
             visited[i] = true;
@@ -31,7 +37,8 @@ private:
         }
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int path[n + 1];
@@ -42,4 +49,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0842_H
+#endif // ACWINGSOLUTION_PROBLEM0842_H
