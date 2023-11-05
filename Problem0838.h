@@ -15,9 +15,9 @@ class Problem0838
 private:
     void down_node(vector<int> &heap, unsigned long long root_index)
     {
-        auto minimal_index = root_index;
         while (true)
         {
+            auto minimal_index = root_index;
             if (root_index * 2 < heap.size() && heap[root_index * 2] < heap[minimal_index])
             {
                 minimal_index = 2 * root_index;
