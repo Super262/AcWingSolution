@@ -5,73 +5,79 @@
 #ifndef ACWINGSOLUTION_PROBLEM0840_H
 #define ACWINGSOLUTION_PROBLEM0840_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-class Problem0840 {
-public:
-    bool queryValue(const int target,
-                    const vector<unsigned int> &headIdx,
-                    const vector<unsigned int> &nextIdx,
-                    const vector<int> &storage) {
-        const auto N = (int) headIdx.size();
-        const auto r = (target % N + N) % N;  // 消除负数的影响
-        for (auto idx = headIdx[r]; idx != 0; idx = nextIdx[idx]) {
-            if (storage[idx] == target) {
+class Problem0840
+{
+private:
+    bool query_value(const int &value, const vector<int> &head_idx,
+                     const vector<int> &next_idx, const vector<int> &storage)
+    {
+        const auto &n = (int)head_idx.size();
+        const auto r = (value % n + n) % n; // 消除负数的影响
+        for (auto idx = head_idx[r]; idx; idx = next_idx[idx])
+        {
+            if (storage[idx] == value)
+            {
                 return true;
             }
         }
         return false;
     }
 
-    void insertValue(const int target,
-                     vector<unsigned int> &headIdx,
-                     vector<unsigned int> &nextIdx,
-                     vector<int> &storage,
-                     unsigned int &idx) {
-        if (queryValue(target, headIdx, nextIdx, storage)) {
+    void insert_value(const int &value, vector<int> &head_idx,
+                      vector<int> &next_idx, vector<int> &storage, int &idx)
+    {
+        if (query_value(value, head_idx, next_idx, storage))
+        {
             return;
         }
-        const auto N = (int) headIdx.size();
-        const auto r = (target % N + N) % N;  // 消除负数的影响
-        ++idx;
-        if (idx >= nextIdx.size()) {
-            nextIdx.emplace_back(0);
+        const auto &n = (int)head_idx.size();
+        const auto r = (value % n + n) % n; // 消除负数的影响
+        if (idx + 1 >= next_idx.size())
+        {
+            next_idx.emplace_back(0);
         }
-        if (idx >= storage.size()) {
+        if (idx + 1 >= storage.size())
+        {
             storage.emplace_back(0);
         }
-        nextIdx[idx] = headIdx[r];
-        headIdx[r] = idx;
-        storage[idx] = target;
+        ++idx;
+        next_idx[idx] = head_idx[r];
+        head_idx[r] = idx;
+        storage[idx] = value;
     }
 
-    int main() {
-        const int N = 10001;
-        vector<unsigned int> headIdx(N + 1, 0);
-        vector<unsigned int> nextIdx(1 ,0);
+    int main()
+    {
+        vector<int> head_idx(10002, 0);
+        vector<int> next_idx(1, 0);
         vector<int> storage(1);
-        unsigned int idx = 0;
-        unsigned int n;
+        int n, idx = 0;
         scanf("%d", &n);
         char op[2];
-        int value;
-        for (unsigned int i = 0; i < n; ++i) {
+        for (int i = 0, value; i < n; ++i)
+        {
             scanf("%s%d", op, &value);
-            if (op[0] == 'I') {
-                insertValue(value, headIdx, nextIdx, storage, idx);
-            } else {
-                if (queryValue(value, headIdx, nextIdx, storage)) {
-                    printf("Yes\n");
-                } else {
-                    printf("No\n");
-                }
+            if (op[0] == 'I')
+            {
+                insert_value(value, head_idx, next_idx, storage, idx);
+                continue;
+            }
+            if (query_value(value, head_idx, next_idx, storage))
+            {
+                printf("Yes\n");
+            }
+            else
+            {
+                printf("No\n");
             }
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0840_H
+#endif // ACWINGSOLUTION_PROBLEM0840_H
