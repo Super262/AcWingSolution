@@ -9,59 +9,76 @@
 
 using namespace std;
 
-class Problem0837 {
+class Problem0837
+{
 private:
-    int find_root(int x, int parent[]) {
-        auto u = x;
-        while (u != parent[u]) {
-            u = parent[u];
+    int find_root(int x, int *parent)
+    {
+        auto root = x;
+        while (parent[root] != root)
+        {
+            root = parent[root];
         }
-        while (x != u) {
-            auto p = parent[x];
-            parent[x] = u;
-            x = p;
+        while (x != root)
+        {
+            auto prev = parent[x];
+            parent[x] = root;
+            x = prev;
         }
-        return u;
+        return root;
     }
 
-    int merge_sets(int pa, int pb, int parent[], int set_size[]) {
-        if (pa == pb) {
+    int merge_sets(int a, int b, int *parent, int *set_size)
+    {
+        if (a == b)
+        {
             return -1;
         }
-        if (set_size[pa] > set_size[pb]) {
-            swap(pa, pb);
+        if (set_size[b] > set_size[a])
+        {
+            swap(a, b);
         }
-        set_size[pa] += set_size[pb];
-        parent[pb] = pa;
-        return pa;
+        parent[b] = a;
+        set_size[a] += set_size[b];
+        return a;
     }
 
-    int main() {
+    int main()
+    {
         int n, m;
         scanf("%d%d", &n, &m);
         int parent[n + 1];
         int set_size[n + 1];
-        for (int i = 1; i <= n; ++i) {
+        for (int i = 1; i <= n; ++i)
+        {
             parent[i] = i;
             set_size[i] = 1;
         }
         char op[3];
-        int a, b;
-        for (int i = 0; i < m; ++i) {
+        for (int i = 0, a, b; i < m; ++i)
+        {
             scanf("%s", op);
-            if (op[0] == 'C') {
+            if (op[0] == 'C')
+            {
                 scanf("%d%d", &a, &b);
-                auto pa = find_root(a, parent);
-                auto pb = find_root(b, parent);
-                merge_sets(pa, pb, parent, set_size);
-            } else if (op[1] == '1') {
+                a = find_root(a, parent);
+                b = find_root(b, parent);
+                merge_sets(a, b, parent, set_size);
+            }
+            else if (op[1] == '1')
+            {
                 scanf("%d%d", &a, &b);
-                if (find_root(a, parent) == find_root(b, parent)) {
+                if (find_root(a, parent) == find_root(b, parent))
+                {
                     printf("Yes\n");
-                } else {
+                }
+                else
+                {
                     printf("No\n");
                 }
-            } else {
+            }
+            else
+            {
                 scanf("%d", &a);
                 printf("%d\n", set_size[find_root(a, parent)]);
             }
@@ -70,4 +87,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0837_H
+#endif // ACWINGSOLUTION_PROBLEM0837_H
