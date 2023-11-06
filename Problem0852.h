@@ -17,7 +17,7 @@ class Problem0852
     // 1. 虚拟源点
     // 2. 最短路径经过的边数大于等于n，有负环
 private:
-    bool spfa(const int n, const vector<vector<pair<int, int>>> &graph)
+    bool spfa(const int &n, const vector<vector<pair<int, int>>> &graph)
     {
         int dist[n + 1];
         bool in_queue[n + 1];
