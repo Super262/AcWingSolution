@@ -15,7 +15,7 @@ using namespace std;
 class Problem0851
 {
 private:
-    int spfa(int st, int ed, int n, const vector<vector<pair<int, int>>> &graph)
+    int spfa(const int &st, const int &ed, const int &n, const vector<vector<pair<int, int>>> &graph)
     {
         int dist[n + 1];
         bool is_in_queue[n + 1];
