@@ -16,7 +16,7 @@ class Problem0854
 private:
     static const int INF = 0x3f3f3f3f;
 
-    vector<vector<int>> floyd(const int n, const vector<vector<int>> &graph)
+    vector<vector<int>> floyd(const int &n, const vector<vector<int>> &graph)
     {
         vector<vector<int>> dist(graph);
         for (int i = 1; i <= n; ++i)
