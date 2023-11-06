@@ -14,7 +14,7 @@ using namespace std;
 class Problem0861
 {
 private:
-    bool has_matched(int u, const vector<vector<int>> &graph, int *friend_from_left, bool *right_visited)
+    bool has_matched(const int &u, const vector<vector<int>> &graph, int *friend_from_left, bool *right_visited)
     {
         for (const auto &v : graph[u])
         {
