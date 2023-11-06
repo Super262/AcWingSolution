@@ -15,7 +15,7 @@ using namespace std;
 class Problem0848
 {
 private:
-    vector<int> bfs(const int n, const vector<vector<int>> &graph, int *in_degree)
+    vector<int> bfs(const int &n, const vector<vector<int>> &graph, int *in_degree)
     {
         queue<int> q;
         vector<int> ans;
