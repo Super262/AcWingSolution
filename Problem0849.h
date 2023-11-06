@@ -42,7 +42,7 @@ private:
                 dist[v] = min(dist[v], dist[closest_v] + graph[closest_v][v]);
             }
         }
-        if (dist[ed] == 0x3f3f3f3f)
+        if (dist[ed] >= 0x3f3f3f3f)
         {
             return -1;
         }

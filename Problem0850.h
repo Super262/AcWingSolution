@@ -15,7 +15,7 @@ using namespace std;
 class Problem0850
 {
 private:
-    int dijkstra(const int st, const int ed, const int n, const vector<vector<pair<int, int>>> &graph)
+    int dijkstra(const int &st, const int &ed, const int &n, const vector<vector<pair<int, int>>> &graph)
     {
         int dist[n + 1];
         bool selected[n + 1];
@@ -46,7 +46,7 @@ private:
                 heap.push({dist[nv], nv});
             }
         }
-        if (dist[ed] == 0x3f3f3f3f)
+        if (dist[ed] >= 0x3f3f3f3f)
         {
             return -1;
         }
