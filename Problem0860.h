@@ -14,7 +14,7 @@ using namespace std;
 class Problem0860
 {
 private:
-    bool dfs(int u, int val, vector<int> &color, const vector<vector<int>> &graph)
+    bool dfs(const int &u, const int &val, int *color, const vector<vector<int>> &graph)
     {
         color[u] = val;
         for (const auto &v : graph[u])
@@ -36,13 +36,14 @@ private:
         int n, m;
         scanf("%d%d", &n, &m);
         vector<vector<int>> graph(n + 1);
-        vector<int> color(n + 1, 0);
         for (int i = 0, u, v; i < m; ++i)
         {
             scanf("%d%d", &u, &v);
             graph[u].emplace_back(v);
             graph[v].emplace_back(u);
         }
+        int color[n + 1];
+        memset(color, 0, sizeof color);
         for (int i = 1; i <= n; ++i)
         {
             if (color[i])
