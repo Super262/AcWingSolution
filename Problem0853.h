@@ -18,7 +18,8 @@ private:
         int st, ed, w;
     };
 
-    int bellman_ford(int st, int ed, int n, int k, const Edge *edges, int m)
+    int bellman_ford(const int &st, const int &ed, const int &n, const int &k,
+                     const Edge *edges, const int &m)
     {
         int dist[n + 1];
         int temp[n + 1];
