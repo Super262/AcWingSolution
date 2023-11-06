@@ -15,7 +15,7 @@ using namespace std;
 class Problem0847
 {
 private:
-    int bfs(const int root, const int target, const vector<vector<int>> &graph)
+    int bfs(const int &root, const int &target, const vector<vector<int>> &graph)
     {
         queue<int> q;
         int dist[graph.size()];
@@ -28,11 +28,11 @@ private:
             while (current_level_size--)
             {
                 auto node = q.front();
-                q.pop();
                 if (node == target)
                 {
                     return dist[node];
                 }
+                q.pop();
                 for (const auto &next_v : graph[node])
                 {
                     if (dist[next_v] != -1)
