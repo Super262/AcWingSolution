@@ -9,14 +9,19 @@
 
 using namespace std;
 
-class Problem0866 {
-public:
-    bool IsPrime(const int &num) {
-        if (num < 2) {
+class Problem0866
+{
+private:
+    bool is_prime(const int &num)
+    {
+        if (num < 2)
+        {
             return false;
         }
-        for (int i = 2; i <= num / i; ++i) {
-            if (num % i) {
+        for (int i = 2; i <= num / i; ++i)
+        {
+            if (num % i)
+            {
                 continue;
             }
             return false;
@@ -24,15 +29,20 @@ public:
         return true;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int num;
-        while (n--) {
+        while (n--)
+        {
             scanf("%d", &num);
-            if (IsPrime(num)) {
+            if (is_prime(num))
+            {
                 puts("Yes");
-            } else {
+            }
+            else
+            {
                 puts("No");
             }
         }
@@ -40,4 +50,4 @@ public:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0866_H
+#endif // ACWINGSOLUTION_PROBLEM0866_H
