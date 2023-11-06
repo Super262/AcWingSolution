@@ -23,7 +23,6 @@ private:
         int dist[n + 1];
         int temp[n + 1];
         memset(dist, 0x3f, sizeof dist);
-        memset(temp, 0x3f, sizeof temp);
         dist[st] = 0;
         for (int i = 1; i <= k; ++i)
         {
