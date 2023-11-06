@@ -15,7 +15,7 @@ using namespace std;
 class Problem0849
 {
 private:
-    int dijkstra(int st, int ed, const int n, const vector<vector<int>> &graph)
+    int dijkstra(const int &st, const int &ed, const int &n, const vector<vector<int>> &graph)
     {
         int dist[n + 1];
         bool selected[n + 1];
