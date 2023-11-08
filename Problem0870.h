@@ -10,38 +10,46 @@
 
 using namespace std;
 
-class Problem0870 {
+class Problem0870
+{
     // https://www.acwing.com/solution/content/4969/
-public:
-    void GetFactorsCount(int n, unordered_map<int, int> &prime_count) {
-        for (int f = 2; f <= n / f; ++f) {
-            while (n % f == 0) {
+private:
+    void count_prime_factors(int n, unordered_map<int, int> &prime_count)
+    {
+        for (int f = 2; f <= n / f; ++f)
+        {
+            while (n % f == 0)
+            {
                 n /= f;
                 ++prime_count[f];
             }
         }
-        if (n > 1) {
+        if (n > 1)
+        {
             ++prime_count[n];
         }
     }
 
-    int main() {
+    int main()
+    {
         int m;
         scanf("%d", &m);
         int n;
         unordered_map<int, int> prime_count;
-        while (m--) {
+        while (m--)
+        {
             scanf("%d", &n);
-            GetFactorsCount(n, prime_count);
+            count_prime_factors(n, prime_count);
         }
         int result = 1;
         const int MOD = 1e9 + 7;
-        for (const auto &p: prime_count) {
-            result = (int) ((long long) result * (p.second + 1) % MOD);
+        for (const auto &p : prime_count)
+        {
+            result = (int)((long long)result * (p.second + 1) % MOD);
         }
         printf("%d\n", result);
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0870_H
+#endif // ACWINGSOLUTION_PROBLEM0870_H
