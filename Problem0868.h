@@ -10,21 +10,27 @@
 
 using namespace std;
 
-class Problem0868 {
+class Problem0868
+{
 private:
     // 时间复杂度：O(n)
-    int PrimesCount(const int n) {
+    int count_primes(const int &n)
+    {
         bool filtered[n + 1];
         int primes[n + 1];
         int p_cnt = 0;
         memset(filtered, 0, sizeof filtered);
-        for (int f = 2; f <= n; ++f) {
-            if (!filtered[f]) {
+        for (int f = 2; f <= n; ++f)
+        {
+            if (!filtered[f])
+            {
                 primes[p_cnt++] = f;
             }
-            for (int j = 0; primes[j] <= n / f && j < p_cnt; ++j) {
+            for (int j = 0; j < p_cnt && primes[j] <= n / f; ++j)
+            {
                 filtered[primes[j] * f] = true;
-                if (f % primes[j] == 0) {
+                if (f % primes[j] == 0)
+                {
                     break;
                 }
             }
@@ -32,12 +38,13 @@ private:
         return p_cnt;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
-        printf("%d\n", PrimesCount(n));
+        printf("%d\n", count_primes(n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0868_H
+#endif // ACWINGSOLUTION_PROBLEM0868_H
