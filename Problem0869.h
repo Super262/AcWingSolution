@@ -10,32 +10,40 @@
 
 using namespace std;
 
-class Problem0869 {
+class Problem0869
+{
 private:
-    int GetDivisors(const int n, int divisors[]) {
+    int get_divisors(const int &n, int *divisors)
+    {
         int count = 0;
-        for (int f = 1; f <= n / f; ++f) {
-            if (n % f) {
+        for (int f = 1; f <= n / f; ++f)
+        {
+            if (n % f)
+            {
                 continue;
             }
             divisors[count++] = f;
-            if (f != n / f) {
+            if (f != n / f)
+            {
                 divisors[count++] = n / f;
             }
         }
-        sort(divisors, divisors + count);
         return count;
     }
 
-    int main() {
+    int main()
+    {
         int m;
         scanf("%d", &m);
         int n;
         int divisors[20000];
-        while (m--) {
+        while (m--)
+        {
             scanf("%d", &n);
-            auto count = GetDivisors(n, divisors);
-            for (int i = 0; i < count; ++i) {
+            auto count = get_divisors(n, divisors);
+            sort(divisors, divisors + count);
+            for (int i = 0; i < count; ++i)
+            {
                 printf("%d ", divisors[i]);
             }
             printf("\n");
@@ -44,4 +52,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0869_H
+#endif // ACWINGSOLUTION_PROBLEM0869_H
