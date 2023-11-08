@@ -9,35 +9,43 @@
 
 using namespace std;
 
-class Problem0867 {
-public:
-    void PrimeFactorizations(int n) {
-        for (int f = 2; f <= n / f; ++f) {
-            if (n % f == 0) {
+class Problem0867
+{
+private:
+    void get_prime_factors(int n)
+    {
+        for (int f = 2; f <= n / f; ++f)
+        {
+            if (n % f == 0)
+            {
                 int s = 0;
-                while (n % f == 0) {
+                while (n % f == 0)
+                {
                     n /= f;
                     ++s;
                 }
                 printf("%d %d\n", f, s);
             }
         }
-        if (n > 1) {
+        if (n > 1)
+        {
             printf("%d %d\n", n, 1);
         }
         printf("\n");
     }
 
-    int main() {
+    int main()
+    {
         int m;
         scanf("%d", &m);
         int n;
-        while (m--) {
+        while (m--)
+        {
             scanf("%d", &n);
-            PrimeFactorizations(n);
+            get_prime_factors(n);
         }
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0867_H
+#endif // ACWINGSOLUTION_PROBLEM0867_H
