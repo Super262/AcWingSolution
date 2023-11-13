@@ -13,7 +13,7 @@ using namespace std;
 class Problem0871 {
     // 牢记模版：https://www.acwing.com/solution/content/16981/
 private:
-    void GetFactors(int n, unordered_map<int, int> &factor) {
+    void get_factors(int n, unordered_map<int, int> &factor) {
         for (int f = 2; f <= n / f; ++f) {
             while (n % f == 0) {
                 n /= f;
@@ -32,7 +32,7 @@ private:
         int n;
         while (m--) {
             scanf("%d", &n);
-            GetFactors(n, factors);
+            get_factors(n, factors);
         }
         const int MOD = 1e9 + 7;
         int result = 1;
