@@ -12,17 +12,17 @@ using namespace std;
 class Problem0875
 {
 private:
-    int quick_power(int b, int p, const int &m)
+    int quick_power(int a, int b, const int &p)
     {
         int result = 1;
-        while (p)
+        while (b)
         {
-            if (p & 1)
+            if (b & 1)
             {
-                result = (int)((long long)result * b % m);
+                result = (int)((long long)result * a % p);
             }
-            p >>= 1;
-            b = (int)((long long)b * b % m);
+            b >>= 1;
+            a = (int)((long long)a * a % p);
         }
         return result;
     }
@@ -31,11 +31,11 @@ private:
     {
         int n;
         scanf("%d", &n);
-        int b, p, m;
+        int a, b, p;
         while (n--)
         {
-            scanf("%d%d%d", &b, &p, &m);
-            printf("%d\n", quick_power(b, p, m));
+            scanf("%d%d%d", &a, &b, &p);
+            printf("%d\n", quick_power(a, b, p));
         }
         return 0;
     }
