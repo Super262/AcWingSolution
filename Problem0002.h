@@ -6,39 +6,52 @@
 #define ACWINGSOLUTION_PROBLEM0002_H
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
-class Problem0002 {
+class Problem0002
+{
 private:
-    struct Item {
+    struct Item
+    {
         int value;
         int size;
+
+        Item()
+        {
+            value = 0;
+            size = 0;
+        }
     };
 
-    static const int N = 1010;
-    static const int V = 1010;
-    int dp[V];
-    Item items[N];
-
-    int knapsackMaxValue(const int n, const int v) {
-        for (int i = 0; i < n; ++i) {
-            for (auto j = v; j >= items[i].size; --j) {
+    int knapsack_max_value(const int &n, const int &v, Item *items)
+    {
+        int dp[v];
+        memset(dp, 0, sizeof dp);
+        for (int i = 0; i < n; ++i)
+        {
+            for (auto j = v; j >= items[i].size; --j)
+            {
                 dp[j] = max(dp[j], dp[j - items[i].size] + items[i].value);
             }
         }
         return dp[v];
     }
 
-    int main() {
+    int main()
+    {
         int n, v;
         scanf("%d%d", &n, &v);
-        for (int i = 0; i < n; ++i) {
+        auto items = new Item[n];
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d%d", &items[i].size, &items[i].value);
         }
-        printf("%d\n", knapsackMaxValue(n, v));
+        printf("%d\n", knapsack_max_value(n, v, items));
+        delete[] items;
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0002_H
+#endif // ACWINGSOLUTION_PROBLEM0002_H
