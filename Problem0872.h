@@ -9,11 +9,14 @@
 
 using namespace std;
 
-class Problem0872 {
-public:
-    int gcd(int a, int b) {
+class Problem0872
+{
+private:
+    int gcd(int a, int b)
+    {
         int t;
-        while (b) {
+        while (b)
+        {
             t = b;
             b = a % b;
             a = t;
@@ -21,11 +24,13 @@ public:
         return a;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int a, b;
-        while (n--) {
+        while (n--)
+        {
             scanf("%d%d", &a, &b);
             printf("%d\n", gcd(a, b));
         }
@@ -33,4 +38,4 @@ public:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0872_H
+#endif // ACWINGSOLUTION_PROBLEM0872_H
