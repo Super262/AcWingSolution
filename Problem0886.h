@@ -12,7 +12,7 @@ using namespace std;
 class Problem0886 {
     // https://www.acwing.com/solution/content/16482/
 private:
-    int QuickPower(int a, int x, const int m) {
+    int quick_power(int a, int x, const int m) {
         int result = 1;
         while (x) {
             if (x & 1) {
@@ -33,7 +33,7 @@ private:
         for (int i = 1; i <= N; ++i) {
             fact[i] = (int) ((long long) fact[i - 1] * i % M);
             // 求解阶乘的乘法逆元
-            in_fact[i] = (int) ((long long) in_fact[i - 1] * QuickPower(i, M - 2, M) % M);
+            in_fact[i] = (int) ((long long) in_fact[i - 1] * quick_power(i, M - 2, M) % M);
         }
         int n, a, b;
         scanf("%d", &n);

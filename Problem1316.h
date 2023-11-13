@@ -29,7 +29,7 @@ private:
         return cnt;
     }
 
-    int QuickPower(int a, int x, int m) {
+    int quick_power(int a, int x, int m) {
         int res = 1;
         while (x) {
             if (x & 1) {
@@ -58,7 +58,7 @@ private:
         for (int i = 0; i < p_cnt; ++i) {
             auto p = primes[i];
             auto s = GetPower(a, p) - GetPower(a - b, p) - GetPower(b, p);
-            res = (int) ((long long) res * QuickPower(p, s, m) % m);
+            res = (int) ((long long) res * quick_power(p, s, m) % m);
         }
         return res;
     }

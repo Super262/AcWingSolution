@@ -16,7 +16,7 @@ private:
     const int MOD = 100003;  // 是质数，可以使用费马定理
     const int N = 2010;
 
-    int QuickPower(int a, int x) {
+    int quick_power(int a, int x) {
         int res = 1;
         while (x) {
             if (x & 1) {
@@ -33,7 +33,7 @@ private:
         in_fact[0] = 1;
         for (int i = 1; i < N; ++i) {
             fact[i] = (int) ((long long) fact[i - 1] * i % MOD);
-            in_fact[i] = (int) ((long long) in_fact[i - 1] * QuickPower(i, MOD - 2) % MOD);
+            in_fact[i] = (int) ((long long) in_fact[i - 1] * quick_power(i, MOD - 2) % MOD);
         }
     }
 

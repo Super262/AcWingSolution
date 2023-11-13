@@ -14,7 +14,7 @@ class Problem1312 {
 private:
     const int MOD = 1000003;
 
-    int QuickPower(int a, int x) {
+    int quick_power(int a, int x) {
         int res = 1;
         while (x) {
             if (x & 1) {
@@ -35,7 +35,7 @@ private:
             up = (int) ((long long) up * i % MOD);
             down = (int) ((long long) down * j % MOD);
         }
-        return (int) ((long long) up * QuickPower(down, MOD - 2) % MOD);
+        return (int) ((long long) up * quick_power(down, MOD - 2) % MOD);
     }
 
     int Lucas(int n, int m) {

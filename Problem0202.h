@@ -50,7 +50,7 @@ private:
         return res;
     }
 
-    long long QuickPower(long long a, long long p, const long long m) {
+    long long quick_power(long long a, long long p, const long long m) {
         long long res = 1;
         while (p) {
             if (p & 1) {
@@ -81,10 +81,10 @@ private:
                     if (phi % f) {
                         continue;
                     }
-                    if (QuickPower(10, f, c) == 1) {
+                    if (quick_power(10, f, c) == 1) {
                         res = min(res, f);
                     }
-                    if (QuickPower(10, phi / f, c) == 1) {
+                    if (quick_power(10, phi / f, c) == 1) {
                         res = min(res, phi / f);
                     }
                 }

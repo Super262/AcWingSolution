@@ -12,7 +12,7 @@ using namespace std;
 class Problem0887 {
     // 卢卡斯定理：https://www.acwing.com/solution/content/26553/
 private:
-    int QuickPower(int a, int x, const int &m) {
+    int quick_power(int a, int x, const int &m) {
         int result = 1;
         while (x) {
             if (x & 1) {
@@ -28,7 +28,7 @@ private:
         int result = 1;
         for (int i = 1, j = n; i <= m; ++i, --j) {
             result = (int) ((long long) result * j % p);
-            result = (int) ((long long) result * QuickPower(i, p - 2, p) % p);
+            result = (int) ((long long) result * quick_power(i, p - 2, p) % p);
         }
         return result;
     }

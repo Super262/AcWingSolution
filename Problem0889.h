@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0889 {
 private:
-    int QuickPower(int a, int x, const int mod) {
+    int quick_power(int a, int x, const int mod) {
         int result = 1;
         while (x) {
             if (x & 1) {
@@ -32,9 +32,9 @@ private:
             result = (int) ((long long) result * i % mod);
         }
         for (int i = 1; i <= n; ++i) {
-            result = (int) ((long long) result * QuickPower(i, mod - 2, mod) % mod);
+            result = (int) ((long long) result * quick_power(i, mod - 2, mod) % mod);
         }
-        result = (int) ((long long) result * QuickPower(n + 1, mod - 2, mod) % mod);
+        result = (int) ((long long) result * quick_power(n + 1, mod - 2, mod) % mod);
         return result;
     }
 

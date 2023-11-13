@@ -11,7 +11,7 @@ using namespace std;
 
 class Problem0876 {
 private:
-    int QuickPower(int b, int p, const int m) {
+    int quick_power(int b, int p, const int m) {
         int result = 1;
         while (p) {
             if (p & 1) {
@@ -30,7 +30,7 @@ private:
         while (n--) {
             scanf("%d%d", &a, &p);
             if (a % p) {
-                printf("%d\n", QuickPower(a, p - 2, p));
+                printf("%d\n", quick_power(a, p - 2, p));
             } else {
                 puts("impossible");
             }

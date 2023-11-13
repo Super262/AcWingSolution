@@ -46,7 +46,7 @@ private:
         memcpy(res, temp, sizeof temp);
     }
 
-    void QuickPower(int f[][M], int a[][M], int m, int p, int mod) {
+    void quick_power(int f[][M], int a[][M], int m, int p, int mod) {
         while (p) {
             if (p & 1) {
                 Multiply(f, f, a, m, mod);
@@ -80,7 +80,7 @@ private:
             }
         }
         int f0[M][M] = {1};
-        QuickPower(f0, a, m, n, mod);
+        quick_power(f0, a, m, n, mod);
         int res = 0;
         for (int i = 0; i < m; ++i) {
             res = (int) (((long long) res + f0[0][i]) % mod);

@@ -12,7 +12,7 @@ using namespace std;
 class Problem0214 {
     // https://www.acwing.com/solution/content/25966/
 private:
-    long long QuickPower(long long a, long long p, const long long m) {
+    long long quick_power(long long a, long long p, const long long m) {
         long long res = 1;
         while (p) {
             if (p & 1) {
@@ -47,7 +47,7 @@ private:
         for (long long i = 1; i <= n - 1; ++i) {
             inverse_denominator = i * inverse_denominator % MOD;
         }
-        inverse_denominator = QuickPower(inverse_denominator, MOD - 2, MOD);
+        inverse_denominator = quick_power(inverse_denominator, MOD - 2, MOD);
         long long res = 0;
         for (int s = 0; s < (1 << n); ++s) {
             auto a = m + n - 1;

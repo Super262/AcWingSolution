@@ -13,7 +13,7 @@ using namespace std;
 class Problem1308 {
     // https://www.acwing.com/solution/content/48085/
 private:
-    int QuickPower(int a, int x, int m) {
+    int quick_power(int a, int x, int m) {
         int res = 1;
         while (x) {
             if (x & 1) {
@@ -38,7 +38,7 @@ private:
         const int l = 150;
         int k, x;
         scanf("%d%d", &k, &x);
-        auto n = QuickPower(x, x, m);
+        auto n = quick_power(x, x, m);
         int c[n][k][l];  // 最大值为C(1000,100) = 10^143
         memset(c, 0, sizeof c);
         c[0][0][0] = 1;
