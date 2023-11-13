@@ -9,29 +9,38 @@
 
 using namespace std;
 
-class Problem0876 {
+class Problem0876
+{
 private:
-    int quick_power(int b, int p, const int m) {
+    int quick_power(int a, int p, const int &m)
+    {
         int result = 1;
-        while (p) {
-            if (p & 1) {
-                result = (int) ((long long) result * b % m);
+        while (p)
+        {
+            if (p & 1)
+            {
+                result = (int)((long long)result * a % m);
             }
             p >>= 1;
-            b = (int) ((long long) b * b % m);
+            a = (int)((long long)a * a % m);
         }
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int a, p;
-        while (n--) {
+        while (n--)
+        {
             scanf("%d%d", &a, &p);
-            if (a % p) {
+            if (a % p)
+            {
                 printf("%d\n", quick_power(a, p - 2, p));
-            } else {
+            }
+            else
+            {
                 puts("impossible");
             }
         }
@@ -39,4 +48,4 @@ private:
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0876_H
+#endif // ACWINGSOLUTION_PROBLEM0876_H
