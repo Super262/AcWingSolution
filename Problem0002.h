@@ -25,9 +25,9 @@ private:
         }
     };
 
-    int knapsack_max_value(const int &n, const int &v, Item *items)
+    int knapsack_max_value(const int &n, const int &v, const Item *items)
     {
-        int dp[v];
+        int dp[v + 1];
         memset(dp, 0, sizeof dp);
         for (int i = 0; i < n; ++i)
         {
@@ -43,13 +43,12 @@ private:
     {
         int n, v;
         scanf("%d%d", &n, &v);
-        auto items = new Item[n];
+        Item items[n];
         for (int i = 0; i < n; ++i)
         {
             scanf("%d%d", &items[i].size, &items[i].value);
         }
         printf("%d\n", knapsack_max_value(n, v, items));
-        delete[] items;
         return 0;
     }
 };
