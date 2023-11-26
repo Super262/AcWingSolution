@@ -10,46 +10,63 @@
 
 using namespace std;
 
-class Problem0005 {
+class Problem0005
+{
 private:
-    struct Item {
+    struct Item
+    {
         int v;
         int w;
         int s;
+
+        Item()
+        {
+            v = 0;
+            w = 0;
+            s = 0;
+        }
     };
 
-    int knapsack(Item items[], const int &n, const int &m) {
-        int dp[m + 1];
+    int knapsack_max_value(const int &n, const int &v, const Item *items)
+    {
+        int dp[v + 1];
         memset(dp, 0, sizeof dp);
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             auto v = items[i].v;
             auto w = items[i].w;
             auto s = items[i].s;
-            for (int factor = 1; factor <= s; factor *= 2) {
-                for (auto j = m; j >= factor * v; --j) {
+            for (int factor = 1; factor <= s; factor *= 2)
+            {
+                for (auto j = v; j >= factor * v; --j)
+                {
                     dp[j] = max(dp[j], dp[j - factor * v] + factor * w);
                 }
                 s -= factor;
             }
-            if (s > 0) {
-                for (auto j = m; j >= s * v; --j) {
+            if (s > 0)
+            {
+                for (auto j = v; j >= s * v; --j)
+                {
                     dp[j] = max(dp[j], dp[j - s * v] + s * w);
                 }
             }
         }
-        return dp[m];
+        return dp[v];
     }
 
-    int main() {
-        int n, m;
-        scanf("%d%d", &n, &m);
+    int main()
+    {
+        int n, v;
+        scanf("%d%d", &n, &v);
         Item items[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d%d%d", &items[i].v, &items[i].w, &items[i].s);
         }
-        printf("%d\n", knapsack(items, n, m));
+        printf("%d\n", knapsack_max_value(n, v, items));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0005_H
+#endif // ACWINGSOLUTION_PROBLEM0005_H
