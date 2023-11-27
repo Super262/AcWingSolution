@@ -5,8 +5,8 @@
 #ifndef ACWINGSOLUTION_PROBLEM0009_H
 #define ACWINGSOLUTION_PROBLEM0009_H
 
-#include <iostream>
 #include <cstring>
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -34,15 +34,15 @@ private:
         memset(dp, 0, sizeof dp);
         for (int i = 0; i < n; ++i)
         {
-            for (int j = v; j >= 0; --j)
+            for (auto j = v; j >= 0; --j)
             {
-                for (int k = 0; k < items[i].size(); ++k)
+                for (const auto &item : items[i])
                 {
-                    if (j < items[i][k].size)
+                    if (j < item.size)
                     {
                         continue;
                     }
-                    dp[j] = max(dp[j], dp[j - items[i][k].size] + items[i][k].value);
+                    dp[j] = max(dp[j], dp[j - item.size] + item.value);
                 }
             }
         }
@@ -58,9 +58,9 @@ private:
         {
             scanf("%d", &k);
             items[i].resize(k);
-            for (int j = 0; j < k; ++j)
+            for (const auto &item : items[i])
             {
-                scanf("%d%d", &items[i][j].size, &items[i][j].value);
+                scanf("%d%d", &item.size, &item.value);
             }
         }
         printf("%d\n", knapsack_max_value(n, v, items));
