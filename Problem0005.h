@@ -27,18 +27,18 @@ private:
         }
     };
 
-    int knapsack_max_value(const int &n, const int &v, const Item *items)
+    int knapsack_max_value(const int &n, const int &m, const Item *items)
     {
-        int dp[v + 1];
+        int dp[m + 1];
         memset(dp, 0, sizeof dp);
-        for (int i = 0; i < n; ++i)
+        for (int i = 0, v, w, s; i < n; ++i)
         {
-            auto v = items[i].v;
-            auto w = items[i].w;
-            auto s = items[i].s;
+            v = items[i].v;
+            w = items[i].w;
+            s = items[i].s;
             for (int factor = 1; factor <= s; factor *= 2)
             {
-                for (auto j = v; j >= factor * v; --j)
+                for (auto j = m; j >= factor * v; --j)
                 {
                     dp[j] = max(dp[j], dp[j - factor * v] + factor * w);
                 }
@@ -46,13 +46,13 @@ private:
             }
             if (s > 0)
             {
-                for (auto j = v; j >= s * v; --j)
+                for (auto j = m; j >= s * v; --j)
                 {
                     dp[j] = max(dp[j], dp[j - s * v] + s * w);
                 }
             }
         }
-        return dp[v];
+        return dp[m];
     }
 
     int main()
