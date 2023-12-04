@@ -15,7 +15,7 @@ class Problem0897
 private:
     int longest_common_sequence(const char *s1, const int &l1, const char *s2, const int &l2)
     {
-        vector<vector<int>> dp(l1 + 1, vector<int>(l2 + 1));
+        vector<vector<int>> dp(l1 + 1, vector<int>(l2 + 1, 0));
         for (int i = 1; i <= l1; ++i)
         {
             for (int j = 1; j <= l2; ++j)
