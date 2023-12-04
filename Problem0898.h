@@ -6,42 +6,48 @@
 #define ACWINGSOLUTION_PROBLEM0898_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 
 using namespace std;
 
-class Problem0898 {
+class Problem0898
+{
 private:
-    static const int N = 510;
-    int dp[2][N];
-    int matrix[N][N];
-
-    int maxPath(const int n) {
-        memset(dp, -0x3f, sizeof dp);
+    int max_path(const vector<vector<int>> &matrix, const int &n)
+    {
+        const int MIN_VALUE = -0x3f3f3f3f;
+        vector<vector<int>> dp(2, vector<int>(n + 1, MIN_VALUE));
         dp[1][1] = matrix[1][1];
-        for (int i = 2; i <= n; ++i) {
-            for (int j = 1; j <= i; ++j) {
+        for (int i = 2; i <= n; ++i)
+        {
+            for (int j = 1; j <= i; ++j)
+            {
                 dp[i % 2][j] = max(dp[(i - 1) % 2][j], dp[(i - 1) % 2][j - 1]) + matrix[i][j];
             }
         }
-        int result = -0x3f3f3f3f;
-        for (int i = 1; i <= n; ++i) {
+        auto result = MIN_VALUE;
+        for (int i = 1; i <= n; ++i)
+        {
             result = max(result, dp[n % 2][i]);
         }
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
-        for (int i = 1; i <= n; ++i) {
-            for (int j = 1; j <= i; ++j) {
+        vector<vector<int>> matrix(n + 1, vector<int>(n + 1));
+        for (int i = 1; i <= n; ++i)
+        {
+            for (int j = 1; j <= i; ++j)
+            {
                 scanf("%d", &matrix[i][j]);
             }
         }
-        printf("%d\n", maxPath(n));
+        printf("%d\n", max_path(matrix, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0898_H
+#endif // ACWINGSOLUTION_PROBLEM0898_H
