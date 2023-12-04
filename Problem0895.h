@@ -12,7 +12,7 @@ using namespace std;
 class Problem0895
 {
 private:
-    int longest_ascending_subsequence(const int *arr, const int n)
+    int longest_ascending_subsequence(const int *arr, const int &n)
     {
         int dp[n];
         for (int i = 0; i < n; ++i)
