@@ -10,21 +10,28 @@
 
 using namespace std;
 
-class Problem0896 {
+class Problem0896
+{
 private:
-    int longestIS(const int arr[], const int n) {
-        int lis_tail[n + 1];  // lis_tail[i]表示长度为i的LIS中最小的末尾元素
+    int longest_ascending_subsequence(const int *arr, const int &n)
+    {
+        int lis_tail[n + 1]; // lis_tail[i]表示长度为i的LIS中最小的末尾元素
         memset(lis_tail, 0x7f, sizeof lis_tail);
         int ans = 0;
-        for (int i = 0; i < n; ++i) {
-            auto t = arr[i];
-            int l = 0;
-            auto r = ans;
-            while (l < r) {
-                auto mid = l + (r - l + 1) / 2;  // 靠右端点，查找长度上界（即最大的i，使lisTail[i] < t）
-                if (lis_tail[mid] >= t) {
+        for (int i = 0, t, l, r, mid; i < n; ++i)
+        {
+            t = arr[i];
+            l = 0;
+            r = ans;
+            while (l < r)
+            {
+                mid = l + (r - l + 1) / 2; // 靠右端点，查找长度上界（即最大的i，使lisTail[i] < t）
+                if (lis_tail[mid] >= t)
+                {
                     r = mid - 1;
-                } else {
+                }
+                else
+                {
                     l = mid;
                 }
             }
@@ -34,16 +41,18 @@ private:
         return ans;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int arr[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &arr[i]);
         }
-        printf("%d\n", longestIS(arr, n));
+        printf("%d\n", longest_ascending_subsequence(arr, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0896_H
+#endif // ACWINGSOLUTION_PROBLEM0896_H
