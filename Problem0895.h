@@ -14,23 +14,23 @@ class Problem0895
 private:
     int longest_ascending_subsequence(const int *arr, const int &n)
     {
-        int dp[n];
+        int f[n];
         for (int i = 0; i < n; ++i)
         {
-            dp[i] = 1;
+            f[i] = 1;
             for (int j = 0; j < i; ++j)
             {
                 if (arr[j] >= arr[i])
                 {
                     continue;
                 }
-                dp[i] = max(dp[i], dp[j] + 1);
+                f[i] = max(f[i], f[j] + 1);
             }
         }
         int result = 0;
         for (int i = 0; i < n; ++i)
         {
-            result = max(result, dp[i]);
+            result = max(result, f[i]);
         }
         return result;
     }

@@ -16,19 +16,19 @@ private:
     int max_path(const vector<vector<int>> &matrix, const int &n)
     {
         const int MIN_VALUE = -0x3f3f3f3f;
-        vector<vector<int>> dp(2, vector<int>(n + 1, MIN_VALUE));
-        dp[1][1] = matrix[1][1];
+        vector<vector<int>> f(2, vector<int>(n + 1, MIN_VALUE));
+        f[1][1] = matrix[1][1];
         for (int i = 2; i <= n; ++i)
         {
             for (int j = 1; j <= i; ++j)
             {
-                dp[i % 2][j] = max(dp[(i - 1) % 2][j], dp[(i - 1) % 2][j - 1]) + matrix[i][j];
+                f[i % 2][j] = max(f[(i - 1) % 2][j], f[(i - 1) % 2][j - 1]) + matrix[i][j];
             }
         }
         auto result = MIN_VALUE;
         for (int i = 1; i <= n; ++i)
         {
-            result = max(result, dp[n % 2][i]);
+            result = max(result, f[n % 2][i]);
         }
         return result;
     }

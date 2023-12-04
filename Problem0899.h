@@ -18,7 +18,7 @@ private:
     char strs[N][M];
     char temp[M];
 
-    int editDistance(const char s1[], const int l1, const char s2[], const int l2) {
+    int edit_distance(const char s1[], const int l1, const char s2[], const int l2) {
         for (int i = 0; i <= l1; ++i) {
             dp[i][0] = i;
         }
@@ -51,7 +51,7 @@ private:
             int maxStep;
             scanf("%s%d", temp + 1, &maxStep);
             for (int j = 0; j < n; ++j) {
-                if (editDistance(strs[j], (int) strlen(strs[j] + 1), temp, (int) strlen(temp + 1)) <= maxStep) {
+                if (edit_distance(strs[j], (int) strlen(strs[j] + 1), temp, (int) strlen(temp + 1)) <= maxStep) {
                     ++result;
                 }
             }
