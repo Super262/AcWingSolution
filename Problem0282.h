@@ -21,9 +21,9 @@ private:
             for (int st = 1, ed = st + l - 1; ed <= n; ++st, ++ed)
             {
                 f[st][ed] = 0x7f7f7f7f;
-                for (auto mid = st + 1; mid <= ed; ++mid)
+                for (auto mid = st + 1, all_sum = prefix[ed] - prefix[st - 1]; mid <= ed; ++mid)
                 {
-                    f[st][ed] = min(f[st][ed], f[st][mid - 1] + f[mid][ed] + prefix[ed] - prefix[st - 1]);
+                    f[st][ed] = min(f[st][ed], f[st][mid - 1] + f[mid][ed] + all_sum);
                 }
             }
         }
