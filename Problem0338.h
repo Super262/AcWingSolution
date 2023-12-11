@@ -35,7 +35,7 @@ private:
                 {
                     if (u == j)
                     {
-                        f[l][j][u] += (int)pow(10, l - 1);
+                        f[l][j][u] += (int)pow(M, l - 1);
                     }
                     for (int k = 0; k < M; ++k)
                     {
@@ -48,28 +48,28 @@ private:
 
     int dp(int n, const int &u)
     {
-        if (n < 10)
+        if (n < M)
         {
             return n >= u ? 1 : 0;
         }
         int digits[N];
-        int counter = 0;
+        int length = 0;
         while (n)
         {
-            digits[counter] = n % 10;
-            n /= 10;
-            ++counter;
+            digits[length] = n % M;
+            n /= M;
+            ++length;
         }
         int ans = 0;
         int prefix = 0;
-        for (auto i = counter - 1; i >= 0; --i)
-        { // 统计合法所有n位数的数量
+        for (auto i = length - 1; i >= 0; --i)
+        { // 统计小于n的“length位数“含u的个数
             auto x = digits[i];
-            for (int j = (i == counter - 1 ? 1 : 0); j < x; ++j)
+            for (int j = (i == length - 1 ? 1 : 0); j < x; ++j)
             { // 统计x及后面部分含u的情况，最高位忽略前导0
                 ans += f[i + 1][j][u];
             }
-            ans += prefix * x * (int)pow(10, i); // 统计x前面部分含u的情况
+            ans += prefix * x * (int)pow(M, i); // 统计x前面部分含u的情况
             if (x == u)
             {
                 ++prefix;
@@ -79,8 +79,8 @@ private:
                 ans += prefix;
             }
         }
-        for (int l = 1; l < counter; ++l)
-        {
+        for (int l = 1; l < length; ++l)
+        { // 统计小于n的“非length位数“含u的个数
             for (int j = (l != 1 ? 1 : 0); j < M; ++j)
             { // 最高位忽略前导0
                 ans += f[l][j][u];
