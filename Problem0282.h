@@ -6,39 +6,44 @@
 #define ACWINGSOLUTION_PROBLEM0282_H
 
 #include <iostream>
-#include <cstring>
+#include <vector>
 
 using namespace std;
 
-class Problem0282 {
+class Problem0282
+{
 private:
-    static const int N = 310;
-    int prefix[N];
-    int dp[N][N];
-
-    int moveStones(const int n) {
-        for (int l = 2; l <= n; ++l) {
-            for (int st = 1; st + l - 1 <= n; ++st) {
-                const auto ed = st + l - 1;
-                dp[st][ed] = 0x7f7f7f7f;
-                for (auto mid = st + 1; mid <= ed; ++mid) {
-                    dp[st][ed] = min(dp[st][ed], dp[st][mid - 1] + dp[mid][ed] + prefix[ed] - prefix[st - 1]);
+    int move_stones(const int *prefix, const int &n)
+    {
+        vector<vector<int>> f(n + 1, vector<int>(n + 1, 0));
+        for (int l = 2; l <= n; ++l)
+        {
+            for (int st = 1, ed = st + l - 1; ed <= n; ++st, ++ed)
+            {
+                f[st][ed] = 0x7f7f7f7f;
+                for (auto mid = st + 1; mid <= ed; ++mid)
+                {
+                    f[st][ed] = min(f[st][ed], f[st][mid - 1] + f[mid][ed] + prefix[ed] - prefix[st - 1]);
                 }
             }
         }
-        return dp[1][n];
+        return f[1][n];
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
-        for (int i = 1; i <= n; ++i) {
+        int prefix[n + 1];
+        prefix[0] = 0;
+        for (int i = 1; i <= n; ++i)
+        {
             scanf("%d", &prefix[i]);
             prefix[i] += prefix[i - 1];
         }
-        printf("%d\n", moveStones(n));
+        printf("%d\n", move_stones(prefix, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0282_H
+#endif // ACWINGSOLUTION_PROBLEM0282_H
