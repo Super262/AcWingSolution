@@ -39,9 +39,8 @@ private:
         vector<vector<int>> graph(n + 1);
         bool has_father[n + 1];
         memset(has_father, 0, sizeof has_father);
-        for (int i = 0; i < n - 1; ++i)
+        for (int i = 0, a, b; i < n - 1; ++i)
         {
-            int a, b;
             scanf("%d%d", &a, &b);
             graph[b].emplace_back(a); // 单向边：上司->职员
             has_father[a] = true;
