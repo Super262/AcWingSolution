@@ -19,7 +19,7 @@ private:
     void dfs(const int &u, const vector<vector<int>> &graph, vector<vector<int>> &f, const int *happiness)
     {
         f[u][1] = happiness[u];
-        for (auto v : graph[u])
+        for (const auto &v : graph[u])
         {
             dfs(v, graph, f, happiness);
             f[u][1] += f[v][0];
