@@ -16,7 +16,7 @@ class Problem0285
 private:
     // f[u][0]：所有从以u为根的子树中选择，但不选择u的方案
     // f[u][1]：所有从以u为根的子树中选择，选择u的方案
-    void dfs(const int u, const vector<vector<int>> &graph, vector<vector<int>> &f, const int happiness[])
+    void dfs(const int &u, const vector<vector<int>> &graph, vector<vector<int>> &f, const int *happiness)
     {
         f[u][1] = happiness[u];
         for (auto v : graph[u])
