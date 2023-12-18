@@ -10,41 +10,49 @@
 
 using namespace std;
 
-class Problem0908 {
+class Problem0908
+{
 private:
-    struct Range {
-        int l;
-        int r;
+    struct Range
+    {
+        int left;
+        int right;
 
-        bool operator<(const Range &b) const {
-            return r < b.r;
+        bool operator<(const Range &b) const
+        {
+            return right < b.right;
         }
     };
 
-    unsigned int minConnection(Range *ranges, const unsigned int n) {
+    int min_connection(Range *ranges, const int &n)
+    {
+        int ans = 0;
+        int end = -0x7f7f7f7f;
         sort(ranges, ranges + n);
-        unsigned int result = 0;
-        int rightEnd = -1e9 - 1;
-        for (unsigned int i = 0; i < n; ++i) {
-            if (ranges[i].l <= rightEnd) {
+        for (int i = 0; i < n; ++i)
+        {
+            if (ranges[i].left <= end)
+            {
                 continue;
             }
-            rightEnd = ranges[i].r;
-            ++result;
+            ++ans;
+            end = ranges[i].right;
         }
-        return result;
+        return ans;
     }
 
-    int main() {
-        unsigned int n;
+    int main()
+    {
+        int n;
         scanf("%d", &n);
         Range ranges[n];
-        for (unsigned int i = 0; i < n; ++i) {
-            scanf("%d%d", &ranges[i].l, &ranges[i].r);
+        for (int i = 0; i < n; ++i)
+        {
+            scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
-        printf("%d\n", minConnection(ranges, n));
+        printf("%d\n", min_connection(ranges, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0908_H
+#endif // ACWINGSOLUTION_PROBLEM0908_H
