@@ -10,55 +10,62 @@
 
 using namespace std;
 
-class Problem0907 {
+class Problem0907
+{
     // 1. 将所有区间按左端点从小到大排序
     // 2. 从前向后依次枚举每个区间，在所有能覆盖start的区间中，选择右端点最大的区间
     // 3. 将start更新成右端点最大值
 private:
-    struct Range {
+    struct Range
+    {
         int left;
         int right;
 
-        bool operator<(const Range &b) const {
+        bool operator<(const Range &b) const
+        {
             return left < b.left;
         }
     };
 
-    int minCoverage(int start, const int end, Range ranges[], const int n) {
+    int min_coverage(int start, const int &end, Range *ranges, const int &n)
+    {
         sort(ranges, ranges + n);
-        int result = 0;
-        for (int i = 0; i < n; ++i) {
-            auto maxRight = start - 1;
-            auto j = i;
-            while (j < n && ranges[j].left <= start) {
-                maxRight = max(maxRight, ranges[j].right);
-                ++j;
+        for (int i = 0, max_right, result = 0; i < n;)
+        {
+            max_right = start - 1;
+            while (i < n && ranges[i].left <= start)
+            {
+                max_right = max(max_right, ranges[i].right);
+                ++i;
             }
-            if (maxRight < start) {
+            if (max_right < start)
+            {
                 return -1;
             }
             ++result;
-            if (maxRight >= end) {
+            if (max_right >= end)
+            {
                 return result;
             }
-            start = maxRight;
-            i = j - 1;
+            start = max_right;
         }
         return -1;
     }
 
-    int main() {
+    int main()
+    {
         int s, t;
         scanf("%d%d", &s, &t);
         int n;
         scanf("%d", &n);
         Range ranges[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d%d", &ranges[i].left, &ranges[i].right);
         }
-        printf("%d\n", minCoverage(s, t, ranges, n));
+        printf("%d\n", min_coverage(s, t, ranges, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0907_H
+#endif // ACWINGSOLUTION_PROBLEM0907_H
