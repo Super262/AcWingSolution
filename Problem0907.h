@@ -30,26 +30,29 @@ private:
     int min_coverage(int start, const int &end, Range *ranges, const int &n)
     {
         sort(ranges, ranges + n);
-        for (int i = 0, max_right, result = 0; i < n;)
+        int result = 0;
+        auto max_right = start - 1;
+        for (int i = 0; i < n; ++i)
         {
-            max_right = start - 1;
-            while (i < n && ranges[i].left <= start)
+            if (ranges[i].left <= start)
             {
                 max_right = max(max_right, ranges[i].right);
-                ++i;
+                continue;
             }
             if (max_right < start)
             {
                 return -1;
             }
-            ++result;
             if (max_right >= end)
             {
-                return result;
+                return result + 1;
             }
             start = max_right;
+            max_right = start - 1;
+            --i;
+            ++result;
         }
-        return -1;
+        return max_right >= end ? result + 1 : -1;
     }
 
     int main()
