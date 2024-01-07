@@ -10,16 +10,20 @@
 
 using namespace std;
 
-class Problem0148 {
+class Problem0148
+{
     // 霍夫曼树，不要误认为是"石子合并问题"（AcWing0282）
 private:
-    int huffmanTree(const int items[], const int n) {
+    int huffman_tree(const int *items, const int &n)
+    {
         priority_queue<int, vector<int>, greater<int>> pq;
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             pq.emplace(items[i]);
         }
         int result = 0;
-        while (pq.size() > 1) {
+        while (pq.size() > 1)
+        {
             auto a = pq.top();
             pq.pop();
             auto b = pq.top();
@@ -30,16 +34,18 @@ private:
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int items[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &items[i]);
         }
-        printf("%d\n", huffmanTree(items, n));
+        printf("%d\n", huffman_tree(items, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0148_H
+#endif // ACWINGSOLUTION_PROBLEM0148_H
