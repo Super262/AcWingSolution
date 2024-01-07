@@ -10,27 +10,32 @@
 
 using namespace std;
 
-class Problem0913 {
+class Problem0913
+{
 private:
-    long minWaitingTime(int *arr, const int N) {
-        sort(arr, arr + N);
+    long min_waiting_time(int *arr, const int &n)
+    {
+        sort(arr, arr + n);
         long result = 0;
-        for (int i = 0; i < N; ++i) {
-            result += (long) arr[i] * (N - i - 1);
+        for (int i = 0; i < n; ++i)
+        {
+            result += (long)arr[i] * (n - i - 1);
         }
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int arr[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &arr[i]);
         }
-        printf("%ld\n", minWaitingTime(arr, n));
+        printf("%ld\n", min_waiting_time(arr, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0913_H
+#endif // ACWINGSOLUTION_PROBLEM0913_H
