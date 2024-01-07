@@ -10,28 +10,33 @@
 
 using namespace std;
 
-class Problem0104 {
-public:
-    long minDistance(int *coordinates, const int N) {
+class Problem0104
+{
+private:
+    long min_distance(int *coordinates, const int &n)
+    {
+        sort(coordinates, coordinates + n);
+        const int mid = n >> 1; // 无论mid偏左或偏右（长度为偶数），结果都是正确的
         long result = 0;
-        sort(coordinates, coordinates + N);
-        const int mid = N >> 1;  // 无论mid偏左或偏右（长度为偶数），结果都是正确的
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             result += abs(coordinates[i] - coordinates[mid]);
         }
         return result;
     }
 
-    int main() {
+    int main()
+    {
         int n;
         scanf("%d", &n);
         int coordinates[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             scanf("%d", &coordinates[i]);
         }
-        printf("%ld\n", minDistance(coordinates, n));
+        printf("%ld\n", min_distance(coordinates, n));
         return 0;
     }
 };
 
-#endif //ACWINGSOLUTION_PROBLEM0104_H
+#endif // ACWINGSOLUTION_PROBLEM0104_H
