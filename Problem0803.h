@@ -54,7 +54,7 @@ private:
         {
             scanf("%d%d", &segs[i].first, &segs[i].second);
         }
-        printf("%ld", merge_segments(segs).size());
+        printf("%d\n", (int)merge_segments(segs).size());
         return 0;
     }
 };
