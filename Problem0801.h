@@ -12,7 +12,7 @@ using namespace std;
 class Problem0801
 {
 private:
-    int low_bit(const int x)
+    int low_bit(const int &x)
     {
         return x & (-x);
     }
