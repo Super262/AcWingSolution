@@ -13,12 +13,12 @@ using namespace std;
 class Problem0800
 {
 private:
-    pair<int, int> target_sum(const vector<int> &nums1, const vector<int> &nums2, int t)
+    pair<int, int> target_sum(const vector<int> &nums1, const vector<int> &nums2, const int &t)
     {
         const auto n = (int)nums1.size();
         const auto m = (int)nums2.size();
         int i = 0;
-        int j = m - 1;
+        auto j = m - 1;
         while (i < n && j >= 0)
         {
             if (nums1[i] + nums2[j] == t)
