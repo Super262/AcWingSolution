@@ -17,17 +17,17 @@ private:
         --top;
     }
 
-    void push(const int value, int data[], unsigned long &top)
+    void push(const int &value, int *data, unsigned long &top)
     {
         data[++top] = value;
     }
 
-    bool empty(const unsigned long top)
+    bool empty(const unsigned long &top)
     {
         return top == 0;
     }
 
-    int peek(const int data[], const unsigned long top)
+    int peek(const int *data, const unsigned long &top)
     {
         return data[top];
     }
