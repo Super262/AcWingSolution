@@ -35,7 +35,7 @@ private:
         }
     }
 
-    void kmp(const char *s, const int sl, const char *p, const int pl)
+    void kmp(const char *s, const int &sl, const char *p, const int &pl)
     {
         int fail[pl];
         build_fail(p, fail, pl);
