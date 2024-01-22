@@ -13,7 +13,7 @@ using namespace std;
 class Problem0842
 {
 private:
-    void dfs(const int k, const int n, int *path, bool *visited)
+    void dfs(const int &k, const int &n, int *path, bool *visited)
     {
         if (k > n)
         {
