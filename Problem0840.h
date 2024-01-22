@@ -17,7 +17,7 @@ private:
                      const vector<int> &next_idx, const vector<int> &storage)
     {
         const auto &n = (int)head_idx.size();
-        const auto r = (value % n + n) % n; // 消除负数的影响
+        const auto &r = (value % n + n) % n; // 消除负数的影响
         for (auto idx = head_idx[r]; idx; idx = next_idx[idx])
         {
             if (storage[idx] == value)
@@ -36,7 +36,7 @@ private:
             return;
         }
         const auto &n = (int)head_idx.size();
-        const auto r = (value % n + n) % n; // 消除负数的影响
+        const auto &r = (value % n + n) % n; // 消除负数的影响
         if (idx + 1 >= next_idx.size())
         {
             next_idx.emplace_back(0);
