@@ -34,7 +34,7 @@ private:
             {
                 auto nv = e.second;
                 auto nd = e.first;
-                if (dist[nv] < dist[root] + nd)
+                if (dist[nv] <= dist[root] + nd)
                 {
                     continue;
                 }
