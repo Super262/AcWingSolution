@@ -33,22 +33,24 @@ private:
         memset(dp, 0, sizeof dp);
         for (int i = 0, v, w, s; i < n; ++i)
         {
-            v = items[i].v;
-            w = items[i].w;
             s = items[i].s;
             for (int factor = 1; factor <= s; factor *= 2)
             {
-                for (auto j = m; j >= factor * v; --j)
+                v = items[i].v * factor;
+                w = items[i].w * factor;
+                for (auto j = m; j >= v; --j)
                 {
-                    dp[j] = max(dp[j], dp[j - factor * v] + factor * w);
+                    dp[j] = max(dp[j], dp[j - v] + w);
                 }
                 s -= factor;
             }
             if (s > 0)
             {
-                for (auto j = m; j >= s * v; --j)
+                v = items[i].v * s;
+                w = items[i].w * s;
+                for (auto j = m; j >= v; --j)
                 {
-                    dp[j] = max(dp[j], dp[j - s * v] + s * w);
+                    dp[j] = max(dp[j], dp[j - v] + w);
                 }
             }
         }
