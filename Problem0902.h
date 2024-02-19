@@ -15,7 +15,7 @@ class Problem0902
 private:
     int edit_distance(const char *s1, const int &l1, const char *s2, const int &l2)
     {
-        vector<vector<int>> f(l1 + 1, vector<int>(l2 + 1, 0));
+        vector<vector<int>> f(l1 + 1, vector<int>(l2 + 1, l1 + l2 + 1));
         // 不要忘记初始化操作
         for (int i = 0; i <= l2; ++i)
         {
@@ -29,7 +29,6 @@ private:
         {
             for (int j = 1; j <= l2; ++j)
             {
-                f[i][j] = l1 + l2 + 1;
                 if (s1[i] == s2[j])
                 {
                     f[i][j] = min(f[i][j], f[i - 1][j - 1]);
