@@ -19,7 +19,7 @@ private:
     char strs[N][M];
     char temp[M];
 
-    int edit_distance(const char s1[], const int l1, const char s2[], const int l2)
+    int edit_distance(const char *s1, const int &l1, const char *s2, const int &l2)
     {
         for (int i = 0; i <= l1; ++i)
         {
