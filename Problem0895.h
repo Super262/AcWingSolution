@@ -15,6 +15,7 @@ private:
     int longest_ascending_subsequence(const int *arr, const int &n)
     {
         int f[n];
+        int result = 0;
         for (int i = 0; i < n; ++i)
         {
             f[i] = 1;
@@ -26,10 +27,6 @@ private:
                 }
                 f[i] = max(f[i], f[j] + 1);
             }
-        }
-        int result = 0;
-        for (int i = 0; i < n; ++i)
-        {
             result = max(result, f[i]);
         }
         return result;
