@@ -17,7 +17,7 @@ class Problem0338
     // f[i][j][u]：长度为i、最高位为j的数拥有u的个数
     // 同时掌握记忆化搜索的方式，将前缀信息记录在状态转移的参数中：https://www.acwing.com/solution/content/6570/
 private:
-    static const int N = 11; // 输入数字的最大长度
+    static const int N = 11; // 输入数字的最大长度为N-1
     static const int M = 10; // 输入数字每位最大值为M-1
     int f[N][M][M];
 
@@ -63,13 +63,13 @@ private:
         int ans = 0;
         int prefix = 0;
         for (auto i = length - 1; i >= 0; --i)
-        { // 统计小于n的“length位数“含u的个数
+        { // 统计小于和等于n的“length位数“含u的个数
             auto x = digits[i];
             for (int j = (i == length - 1 ? 1 : 0); j < x; ++j)
-            { // 统计x及后面部分含u的情况，最高位忽略前导0
+            { // 统计x及后面（右侧低位）部分含u的情况，最高位忽略前导0
                 ans += f[i + 1][j][u];
             }
-            ans += prefix * x * (int)pow(M, i); // 统计x前面部分含u的情况
+            ans += prefix * x * (int)pow(M, i); // 统计x前面（左侧高位）部分含u的情况
             if (x == u)
             {
                 ++prefix;
