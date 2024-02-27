@@ -16,7 +16,8 @@ private:
     static const int N = 11;
     static const int M = 11;
     bool has_odd_zeroes[1 << N];
-    long long f[2][1 << N]; // f[c][s]表示当前第c列（c >= 1）"横条"的摆放情况是s并在空白处填充"纵条"后的方案数
+    // f[c][s]表示当前第c列（c >= 1）"横条"的摆放（向外突出）情况是s并在空白处填充"纵条"后的方案数
+    long long f[2][1 << N];
 
     void check_zeroes(const int &n)
     {
