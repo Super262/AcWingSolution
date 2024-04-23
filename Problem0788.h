@@ -15,14 +15,14 @@ class Problem0788
     // 注意为避免溢出，使用long long
     // 为便于改造，拆分归并过程和统计逆序对的过程
 private:
-    long long merge_sort(int *nums, const int &st, const int &ed, int *temp)
+    long long MergeSort(int *nums, const int &st, const int &ed, int *temp)
     {
         if (st >= ed)
         {
             return 0;
         }
         const auto &mid = st + (ed - st) / 2;
-        auto result = merge_sort(nums, st, mid, temp) + merge_sort(nums, mid + 1, ed, temp);
+        auto result = MergeSort(nums, st, mid, temp) + MergeSort(nums, mid + 1, ed, temp);
         auto l = st;
         auto r = mid + 1;
         while (r <= ed)
@@ -77,7 +77,7 @@ private:
         {
             scanf("%d", &nums[i]);
         }
-        printf("%lld\n", merge_sort(nums, 0, n - 1, temp));
+        printf("%lld\n", MergeSort(nums, 0, n - 1, temp));
         return 0;
     }
 };

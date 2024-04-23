@@ -12,7 +12,7 @@ using namespace std;
 class Problem0786
 {
 private:
-    void quick_select(int *nums, const int &st, const int & ed, const int &k)
+    void QuickSelect(int *nums, const int &st, const int & ed, const int &k)
     {
         if (st >= ed)
         {
@@ -32,11 +32,11 @@ private:
         }
         if (k <= r - st + 1)
         {
-            quick_select(nums, st, r, k);
+            QuickSelect(nums, st, r, k);
         }
         else
         {
-            quick_select(nums, r + 1, ed, k - (r - st + 1));
+            QuickSelect(nums, r + 1, ed, k - (r - st + 1));
         }
     }
 
@@ -50,7 +50,7 @@ private:
         {
             scanf("%d", &nums[i]);
         }
-        quick_select(nums, 0, n - 1, k);
+        QuickSelect(nums, 0, n - 1, k);
         printf("%d\n", nums[k - 1]);
         return 0;
     }

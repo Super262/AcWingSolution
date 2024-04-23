@@ -12,7 +12,7 @@ using namespace std;
 class Problem0785
 {
 private:
-    void quick_sort(int *nums, const int &st, const int &ed)
+    void QuickSort(int *nums, const int &st, const int &ed)
     {
         if (st >= ed)
         {
@@ -32,12 +32,12 @@ private:
             }
         }
         // 对应偏左的中点
-        // quick_sort(nums, st, r);
-        // quick_sort(nums, r + 1, ed);
+        // QuickSort(nums, st, r);
+        // QuickSort(nums, r + 1, ed);
 
         // 对应偏右的中点
-        quick_sort(nums, st, l - 1);
-        quick_sort(nums, l, ed);
+        QuickSort(nums, st, l - 1);
+        QuickSort(nums, l, ed);
     }
 
     int main()
@@ -49,7 +49,7 @@ private:
         {
             scanf("%d", &nums[i]);
         }
-        quick_sort(nums, 0, n - 1);
+        QuickSort(nums, 0, n - 1);
         for (int i = 0; i < n; ++i)
         {
             printf("%d ", nums[i]);

@@ -12,7 +12,7 @@ using namespace std;
 class Problem0789
 {
 private:
-    void query_range(const int *nums, const int &n, const int &t)
+    void QueryRange(const int *nums, const int &n, const int &t)
     {
         int l = 0;
         auto r = n - 1;
@@ -69,7 +69,7 @@ private:
         for (int i = 0, t; i < k; ++i)
         {
             scanf("%d", &t);
-            query_range(nums, n, t);
+            QueryRange(nums, n, t);
         }
         return 0;
     }

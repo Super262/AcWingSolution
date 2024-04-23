@@ -13,7 +13,7 @@ using namespace std;
 class Problem0790
 {
 private:
-    long double cubic_root(const long double &x)
+    long double CubicRoot(const long double &x)
     {
         auto l = min(x, -1.0l); // 牢记左、右起点的临界值
         auto r = max(x, 1.0l);
@@ -41,7 +41,7 @@ private:
     {
         long double x;
         scanf("%Lf", &x);
-        printf("%.6Lf\n", cubic_root(x));
+        printf("%.6Lf\n", CubicRoot(x));
         return 0;
     }
 };
