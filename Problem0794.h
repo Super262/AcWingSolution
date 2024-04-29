@@ -13,7 +13,7 @@ using namespace std;
 class Problem0794
 {
 private:
-    string div_big_int(const string &a, int b, int &r)
+    string DivBigInt(const string &a, int b, int &r)
     {
         r = 0;
         string result;
@@ -38,7 +38,7 @@ private:
         int b;
         int r;
         cin >> a >> b;
-        cout << div_big_int(a, b, r) << endl;
+        cout << DivBigInt(a, b, r) << endl;
         cout << r << endl;
         return 0;
     }

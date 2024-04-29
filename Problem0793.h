@@ -14,7 +14,7 @@ class Problem0793
 {
     // 类比LeetCode 43（字符串相乘：延迟进位）
 private:
-    string mul_big_int(string a, int b)
+    string MulBigInt(string a, int b)
     {
         reverse(a.begin(), a.end());
         string result;
@@ -41,7 +41,7 @@ private:
         string a;
         int b;
         cin >> a >> b;
-        cout << mul_big_int(a, b) << endl;
+        cout << MulBigInt(a, b) << endl;
         return 0;
     }
 };
