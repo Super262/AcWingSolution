@@ -13,14 +13,15 @@ using namespace std;
 class Problem0796
 {
 private:
-    vector<vector<int>> get_prefix_sum(const vector<vector<int>> &matrix)
+    vector<vector<int>> GetPrefixSum(const vector<vector<int>> &matrix)
     {
         vector<vector<int>> res(matrix.size() + 1, vector<int>(matrix[0].size() + 1, 0));
         for (int i = 1; i < res.size(); ++i)
         {
             for (int j = 1; j < res[0].size(); ++j)
             {
-                res[i][j] = res[i - 1][j] + res[i][j - 1] - res[i - 1][j - 1] + matrix[i - 1][j - 1];
+                res[i][j] = res[i - 1][j] + res[i][j - 1]
+                            - res[i - 1][j - 1] + matrix[i - 1][j - 1];
             }
         }
         return res;
@@ -38,11 +39,12 @@ private:
                 scanf("%d", &matrix[i][j]);
             }
         }
-        const auto &matrix_prefix = get_prefix_sum(matrix);
+        const auto &matrix_prefix = GetPrefixSum(matrix);
         for (int i = 0, x1, y1, x2, y2; i < q; ++i)
         {
             scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
-            printf("%d\n", matrix_prefix[x2][y2] - matrix_prefix[x1 - 1][y2] - matrix_prefix[x2][y1 - 1] + matrix_prefix[x1 - 1][y1 - 1]);
+            printf("%d\n", matrix_prefix[x2][y2] - matrix_prefix[x1 - 1][y2]
+                           - matrix_prefix[x2][y1 - 1] + matrix_prefix[x1 - 1][y1 - 1]);
         }
         return 0;
     }

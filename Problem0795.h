@@ -13,7 +13,7 @@ using namespace std;
 class Problem0795
 {
 private:
-    vector<int> get_prefix_sum(const vector<int> &arr)
+    vector<int> GetPrefixSum(const vector<int> &arr)
     {
         vector<int> result(arr.size() + 1, 0);
         for (int i = 1; i < result.size(); ++i)
@@ -32,7 +32,7 @@ private:
         {
             scanf("%d", &arr[i]);
         }
-        const auto &arr_prefix_sum = get_prefix_sum(arr);
+        const auto &arr_prefix_sum = GetPrefixSum(arr);
         for (int i = 0, l, r; i < m; ++i)
         {
             scanf("%d%d", &l, &r);
