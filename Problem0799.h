@@ -16,7 +16,7 @@ class Problem0799
 private:
     int LongestUniqueSeq(const vector<int> &nums)
     {
-        const auto n = (int)nums.size();
+        const auto &n = (int)nums.size();
         unordered_map<int, int> counter;
         int result = 0;
         for (int l = 0, r = 0; r < n; ++r)
