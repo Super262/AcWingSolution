@@ -12,17 +12,17 @@ using namespace std;
 class Problem0801
 {
 private:
-    int low_bit(const int &x)
+    int LowBit(const int &x)
     {
         return x & (-x);
     }
 
-    int count_ones(int x)
+    int CountOnes(int x)
     {
         int result = 0;
         while (x > 0)
         {
-            x -= low_bit(x);
+            x -= LowBit(x);
             ++result;
         }
         return result;
@@ -35,7 +35,7 @@ private:
         for (int i = 1, x; i <= n; ++i)
         {
             scanf("%d", &x);
-            printf("%d ", count_ones(x));
+            printf("%d ", CountOnes(x));
         }
         return 0;
     }

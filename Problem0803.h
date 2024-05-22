@@ -15,7 +15,7 @@ class Problem0803
 {
     // 贪心算法：左端点排序
 private:
-    vector<pair<int, int>> merge_segments(vector<pair<int, int>> &segs)
+    vector<pair<int, int>> MergeSegments(vector<pair<int, int>> &segs)
     {
         sort(segs.begin(), segs.end());
         const int invalid_value = -2e9;
@@ -54,7 +54,7 @@ private:
         {
             scanf("%d%d", &segs[i].first, &segs[i].second);
         }
-        printf("%d\n", (int)merge_segments(segs).size());
+        printf("%d\n", (int)MergeSegments(segs).size());
         return 0;
     }
 };

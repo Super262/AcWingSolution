@@ -13,10 +13,10 @@ using namespace std;
 class Problem2816
 {
 private:
-    bool is_sub_array(const vector<int> &nums1, const vector<int> &nums2)
+    bool isSubArray(const vector<int> &nums1, const vector<int> &nums2)
     {
-        const auto n = (int)nums1.size();
-        const auto m = (int)nums2.size();
+        const auto &n = (int)nums1.size();
+        const auto &m = (int)nums2.size();
         int i = 0;
         int j = 0;
         while (i < n && j < m)
@@ -45,7 +45,7 @@ private:
         {
             scanf("%d", &nums2[i]);
         }
-        if (is_sub_array(nums1, nums2))
+        if (isSubArray(nums1, nums2))
         {
             printf("Yes\n");
         }

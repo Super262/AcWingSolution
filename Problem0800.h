@@ -13,10 +13,10 @@ using namespace std;
 class Problem0800
 {
 private:
-    pair<int, int> target_sum(const vector<int> &nums1, const vector<int> &nums2, const int &t)
+    pair<int, int> TargetSum(const vector<int> &nums1, const vector<int> &nums2, const int &t)
     {
-        const auto n = (int)nums1.size();
-        const auto m = (int)nums2.size();
+        const auto &n = (int)nums1.size();
+        const auto &m = (int)nums2.size();
         int i = 0;
         auto j = m - 1;
         while (i < n && j >= 0)
@@ -53,7 +53,7 @@ private:
         {
             scanf("%d", &nums2[i]);
         }
-        auto res = target_sum(nums1, nums2, t);
+        auto res = TargetSum(nums1, nums2, t);
         printf("%d %d\n", res.first, res.second);
         return 0;
     }

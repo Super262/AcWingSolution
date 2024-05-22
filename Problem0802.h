@@ -14,7 +14,7 @@ using namespace std;
 class Problem0802
 {
 private:
-    int get_idx(const int &idx, const vector<int> &indices)
+    int GetIdx(const int &idx, const vector<int> &indices)
     {
         return (int)(lower_bound(indices.begin(), indices.end(), idx) - indices.begin() + 1); // 索引从1开始
     }
@@ -47,7 +47,7 @@ private:
         vector<int> data(indices.size() + 1, 0); // 离散化后的索引从1开始，别忘记加1
         for (const auto &p : add_reqs)
         {
-            data[get_idx(p.first, indices)] += p.second;
+            data[GetIdx(p.first, indices)] += p.second;
         }
         for (int i = 1; i < data.size(); ++i)
         {
@@ -55,7 +55,7 @@ private:
         }
         for (const auto &p : query_reqs)
         {
-            printf("%d\n", data[get_idx(p.second, indices)] - data[get_idx(p.first, indices) - 1]);
+            printf("%d\n", data[GetIdx(p.second, indices)] - data[GetIdx(p.first, indices) - 1]);
         }
         return 0;
     }
