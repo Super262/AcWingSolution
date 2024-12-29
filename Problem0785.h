@@ -12,7 +12,9 @@ using namespace std;
 class Problem0785
 {
 private:
-    void QuickSort(int *nums, const int &st, const int &ed)
+    // 类似题目：LeetCode 912
+    // 这里的实现比LeetCode所用的解法稍快，所以不会在AcWing超时
+    void myQuickSort(int *nums, const int &st, const int &ed)
     {
         if (st >= ed)
         {
@@ -32,12 +34,12 @@ private:
             }
         }
         // 对应偏左的中点
-        // QuickSort(nums, st, r);
-        // QuickSort(nums, r + 1, ed);
+        // myQuickSort(nums, st, r);
+        // myQuickSort(nums, r + 1, ed);
 
         // 对应偏右的中点
-        QuickSort(nums, st, l - 1);
-        QuickSort(nums, l, ed);
+        myQuickSort(nums, st, l - 1);
+        myQuickSort(nums, l, ed);
     }
 
     int main()
@@ -49,7 +51,7 @@ private:
         {
             scanf("%d", &nums[i]);
         }
-        QuickSort(nums, 0, n - 1);
+        myQuickSort(nums, 0, n - 1);
         for (int i = 0; i < n; ++i)
         {
             printf("%d ", nums[i]);
