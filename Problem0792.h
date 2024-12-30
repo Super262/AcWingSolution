@@ -27,25 +27,29 @@ private:
     }
 
     string SubtractBigInt(string a, string b)
-    { // 前提：a >= b
+    {
+        // 前提：a >= b
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
+
         string result;
-        for (int i = 0, num = 0; i < a.size(); ++i)
+        char carry = 0;
+        result.reserve(a.size());
+        for (size_t i = 0; i < a.size(); ++i)
         {
-            num = (a[i] - '0') - num;
+            carry = (a[i] - '0') - carry;
             if (i < b.size())
             {
-                num -= b[i] - '0';
+                carry -= b[i] - '0';
             }
-            result.push_back((char)('0' + (num + 10) % 10));
-            if (num < 0)
+            result.push_back((char)('0' + (carry + 10) % 10));
+            if (carry < 0)
             {
-                num = 1;
+                carry = 1;
             }
             else
             {
-                num = 0;
+                carry = 0;
             }
         }
         while (result.size() > 1 && result.back() == '0')
