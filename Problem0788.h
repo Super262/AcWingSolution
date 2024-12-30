@@ -6,23 +6,24 @@
 #define ACWINGSOLUTION_PROBLEM0788_H
 
 #include <iostream>
+#include <cstdlib>
 #include <cstring>
 
 using namespace std;
 
 class Problem0788
 {
-    // 注意为避免溢出，使用long long
-    // 为便于改造，拆分归并过程和统计逆序对的过程
+    // 注意为避免溢出，返回值的类型为size_t
+    // 为便于改造（参考LeetCode 493），拆分归并过程和统计逆序对的过程
 private:
-    long long MergeSort(int *nums, const int &st, const int &ed, int *temp)
+    size_t myMergeCount(int *nums, size_t st, size_t ed, int *temp)
     {
         if (st >= ed)
         {
             return 0;
         }
-        const auto &mid = st + (ed - st) / 2;
-        auto result = MergeSort(nums, st, mid, temp) + MergeSort(nums, mid + 1, ed, temp);
+        auto mid = st + (ed - st) / 2;
+        auto answer = myMergeCount(nums, st, mid, temp) + myMergeCount(nums, mid + 1, ed, temp);
         auto l = st;
         auto r = mid + 1;
         while (r <= ed)
@@ -31,7 +32,7 @@ private:
             {
                 ++l;
             }
-            result += mid - l + 1;
+            answer += mid - l + 1;
             ++r;
         }
         l = st;
@@ -64,20 +65,26 @@ private:
             ++t;
         }
         memcpy(nums + st, temp + st, (ed - st + 1) * sizeof(int));
-        return result;
+        return answer;
     }
 
     int main()
     {
-        int n;
-        scanf("%d", &n);
-        int nums[n];
-        int temp[n];
+        size_t n;
+        scanf("%llu", &n);
+        int *nums = (int *)malloc(n * sizeof(int));
+        int *temp = (int *)malloc(n * sizeof(int));
         for (int i = 0; i < n; ++i)
         {
             scanf("%d", &nums[i]);
         }
-        printf("%lld\n", MergeSort(nums, 0, n - 1, temp));
+        if (!n)
+        {
+            printf("0\n");
+        }
+        printf("%llu\n", myMergeCount(nums, 0, n - 1, temp));
+        free(nums);
+        free(temp);
         return 0;
     }
 };
