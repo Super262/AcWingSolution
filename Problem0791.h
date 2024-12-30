@@ -20,6 +20,7 @@ private:
 
         string result;
         unsigned char carry = 0;
+        result.reserve(max(a.size(), b.size()));
         for (size_t i = 0; i < a.size() || i < b.size(); ++i)
         {
             if (i < a.size())
