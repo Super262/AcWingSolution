@@ -14,32 +14,36 @@ class Problem0793
 {
     // 类比LeetCode 43（字符串相乘：延迟进位）
 private:
-    string MulBigInt(string a, int b)
+    string MulBigInt(string a, size_t b)
     {
         reverse(a.begin(), a.end());
+
         string result;
-        for (int i = 0, t = 0; i < a.size() || t != 0;)
+        result.reserve(a.size());
+        for (size_t i = 0, carry = 0; i < a.size() || carry;)
         {
             if (i < a.size())
             {
-                t += (a[i] - '0') * b;
+                carry += (a[i] - '0') * b;
                 ++i;
             }
-            result.push_back((char)('0' + t % 10));
-            t /= 10;
+            result.push_back((char)('0' + carry % 10));
+            carry /= 10;
         }
+
         while (result.size() > 1 && result.back() == '0')
         {
             result.pop_back();
         }
         reverse(result.begin(), result.end());
+
         return result;
     }
 
     int main()
     {
         string a;
-        int b;
+        size_t b;
         cin >> a >> b;
         cout << MulBigInt(a, b) << endl;
         return 0;
