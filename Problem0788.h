@@ -74,7 +74,7 @@ private:
         scanf("%llu", &n);
         int *nums = (int *)malloc(n * sizeof(int));
         int *temp = (int *)malloc(n * sizeof(int));
-        for (int i = 0; i < n; ++i)
+        for (size_t i = 0; i < n; ++i)
         {
             scanf("%d", &nums[i]);
         }
