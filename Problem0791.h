@@ -17,9 +17,10 @@ private:
     {
         reverse(a.begin(), a.end());
         reverse(b.begin(), b.end());
+
         string result;
-        int carry = 0;
-        for (int i = 0; i < a.size() || i < b.size(); ++i)
+        unsigned char carry = 0;
+        for (size_t i = 0; i < a.size() || i < b.size(); ++i)
         {
             if (i < a.size())
             {
@@ -39,6 +40,7 @@ private:
             result.push_back((char)('0' + carry));
         }
         reverse(result.begin(), result.end());
+
         return result;
     }
 
