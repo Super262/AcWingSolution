@@ -13,15 +13,15 @@ using namespace std;
 class Problem0787
 {
 private:
-    void MergeSort(int *nums, const int &st, const int &ed, int *temp)
+    void myMergeSort(int *nums, int st, int ed, int *temp)
     {
         if (st >= ed)
         {
             return;
         }
-        const auto &mid = st + (ed - st) / 2;
-        MergeSort(nums, st, mid, temp);
-        MergeSort(nums, mid + 1, ed, temp);
+        auto mid = st + (ed - st) / 2;
+        myMergeSort(nums, st, mid, temp);
+        myMergeSort(nums, mid + 1, ed, temp);
         auto l = st;
         auto r = mid + 1;
         auto t = st;
@@ -64,7 +64,7 @@ private:
         {
             scanf("%d", &nums[i]);
         }
-        MergeSort(nums, 0, n - 1, temp);
+        myMergeSort(nums, 0, n - 1, temp);
         for (int i = 0; i < n; ++i)
         {
             printf("%d ", nums[i]);
