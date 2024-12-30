@@ -5,21 +5,21 @@
 #ifndef ACWINGSOLUTION_PROBLEM0789_H
 #define ACWINGSOLUTION_PROBLEM0789_H
 
-#include <iostream>
-
-using namespace std;
+#include <cstdio>
+#include <cstdlib>
 
 class Problem0789
 {
 private:
-    void QueryRange(const int *nums, const int &n, const int &t)
+    void getRangeForElement(const int *nums, const size_t &n, const int &element)
     {
-        int l = 0;
+        size_t l = 0;
         auto r = n - 1;
+        size_t mid;
         while (l < r)
         {
-            auto mid = l + (r - l) / 2;
-            if (nums[mid] >= t)
+            mid = l + (r - l) / 2;
+            if (nums[mid] >= element)
             {
                 r = mid;
             }
@@ -28,18 +28,18 @@ private:
                 l = mid + 1;
             }
         }
-        if (nums[r] != t)
+        if (nums[r] != element)
         {
             printf("-1 -1\n");
             return;
         }
-        printf("%d ", r);
+        printf("%llu ", r);
         l = 0;
         r = n - 1;
         while (l < r)
         {
-            auto mid = l + (r - l + 1) / 2;
-            if (nums[mid] <= t)
+            mid = l + (r - l + 1) / 2;
+            if (nums[mid] <= element)
             {
                 l = mid;
             }
@@ -48,28 +48,31 @@ private:
                 r = mid - 1;
             }
         }
-        if (nums[l] != t)
+        if (nums[l] != element)
         {
             printf("-1 -1\n");
             return;
         }
-        printf("%d\n", l);
+        printf("%llu\n", l);
     }
 
     int main()
     {
-        int n;
-        int k;
-        scanf("%d%d", &n, &k);
-        int nums[n];
-        for (int i = 0; i < n; ++i)
+        size_t n;
+        size_t k;
+        scanf("%llu%llu", &n, &k);
+
+        int *nums = (int *)malloc(n * sizeof(int));
+        for (size_t i = 0; i < n; ++i)
         {
             scanf("%d", &nums[i]);
         }
-        for (int i = 0, t; i < k; ++i)
+
+        int temp;
+        for (size_t i = 0; i < k; ++i)
         {
-            scanf("%d", &t);
-            QueryRange(nums, n, t);
+            scanf("%d", &temp);
+            getRangeForElement(nums, n, temp);
         }
         return 0;
     }
