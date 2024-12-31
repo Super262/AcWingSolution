@@ -5,39 +5,44 @@
 #ifndef ACWINGSOLUTION_PROBLEM0795_H
 #define ACWINGSOLUTION_PROBLEM0795_H
 
-#include <vector>
-#include <iostream>
-
-using namespace std;
+#include <cstdio>
+#include <cstdlib>
 
 class Problem0795
 {
 private:
-    vector<int> GetPrefixSum(const vector<int> &arr)
+    void getPrefixSum(const int *arr, size_t n, int *prefix_sum)
     {
-        vector<int> result(arr.size() + 1, 0);
-        for (int i = 1; i < result.size(); ++i)
+        prefix_sum[0] = 0;
+        for (size_t i = 1; i <= n; ++i)
         {
-            result[i] = result[i - 1] + arr[i - 1];
+            prefix_sum[i] = prefix_sum[i - 1] + arr[i - 1];
         }
-        return result;
     }
 
     int main()
     {
-        int n, m;
-        scanf("%d%d", &n, &m);
-        vector<int> arr(n);
-        for (int i = 0; i < n; ++i)
+        size_t n, m;
+        scanf("%llu%llu", &n, &m);
+
+        int *arr = (int *)malloc(n * sizeof(int));
+        int *prefix_sum = (int *)malloc((n + 1) * sizeof(int));
+
+        for (size_t i = 0; i < n; ++i)
         {
             scanf("%d", &arr[i]);
         }
-        const auto &arr_prefix_sum = GetPrefixSum(arr);
-        for (int i = 0, l, r; i < m; ++i)
+
+        getPrefixSum(arr, n, prefix_sum);
+        for (size_t i = 0, l, r; i < m; ++i)
         {
-            scanf("%d%d", &l, &r);
-            printf("%d\n", arr_prefix_sum[r] - arr_prefix_sum[l - 1]);
+            scanf("%llu%llu", &l, &r);
+            printf("%d\n", prefix_sum[r] - prefix_sum[l - 1]);
         }
+
+        free(arr);
+        free(prefix_sum);
+
         return 0;
     }
 };
