@@ -52,17 +52,15 @@ private:
             }
             ++t;
         }
-        while (l <= mid)
+        if (l <= mid)
         {
-            temp[t] = nums[l];
-            ++l;
-            ++t;
+            memcpy(temp + t, nums + l, (mid - l + 1) * sizeof(int));
+            t += (mid - l + 1);
         }
-        while (r <= ed)
+        if (r <= ed)
         {
-            temp[t] = nums[r];
-            ++r;
-            ++t;
+            memcpy(temp + t, nums + r, (ed - r + 1) * sizeof(int));
+            t += (ed - r + 1);
         }
         memcpy(nums + st, temp + st, (ed - st + 1) * sizeof(int));
         return answer;
