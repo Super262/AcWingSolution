@@ -14,112 +14,110 @@ using namespace std;
 class Problem3302
 {
 private:
-    int do_operation(const int &a, const int &b, const char &op)
+    int my_eval(char op, int x, int y)
     {
         if (op == '+')
-        {
-            return a + b;
-        }
-        else if (op == '-')
-        {
-            return a - b;
-        }
-        else if (op == '*')
-        {
-            return a * b;
-        }
-        else if (op == '/')
-        {
-            return a / b;
-        }
-        return 0;
-    }
-
-    void handle_operators(const char &op,
-                          unordered_map<char, char> &preference_in,
-                          unordered_map<char, char> &preference_out,
-                          stack<int> &nums,
-                          stack<char> &operators)
-    {
-        if (operators.empty() || preference_out[operators.top()] < preference_in[op])
-        {
-            operators.emplace(op);
-            return;
-        }
-        while (!operators.empty() && preference_out[operators.top()] > preference_in[op])
-        {
-            auto temp = operators.top();
-            operators.pop();
-            auto b = nums.top();
-            nums.pop();
-            auto a = nums.top();
-            nums.pop();
-            nums.emplace(do_operation(a, b, temp));
-        }
-        if (!operators.empty() && operators.top() == '(' && op == ')')
-        {
-            operators.pop();
-        }
-        else
-        {
-            operators.emplace(op);
-        }
-    }
-
-    int calculate(const string &s)
-    {
-        unordered_map<char, char> preference_in;
-        unordered_map<char, char> preference_out;
-        stack<int> nums;
-        stack<char> operators;
-        preference_in['+'] = 2;
-        preference_in['-'] = 2;
-        preference_in['*'] = 4;
-        preference_in['/'] = 4;
-        preference_in['('] = 6;
-        preference_in[')'] = 1;
-        preference_out['+'] = 3;
-        preference_out['-'] = 3;
-        preference_out['*'] = 5;
-        preference_out['/'] = 5;
-        preference_out['('] = 1;
-        preference_out[')'] = 6;
-        bool waiting_next_num = true;
-        for (const char &ch : s)
-        {
-            if (ch >= '0' && ch <= '9')
-            {
-                if (waiting_next_num)
-                {
-                    nums.emplace(ch - '0');
-                    waiting_next_num = false;
-                }
-                else
-                {
-                    auto t = nums.top();
-                    nums.pop();
-                    t = t * 10 + (ch - '0');
-                    nums.emplace(t);
-                }
-            }
-            else
-            {
-                waiting_next_num = true;
-                handle_operators(ch, preference_in, preference_out, nums, operators);
-            }
-        }
-        if (!nums.empty())
-        {
-            return nums.top();
-        }
+            return x + y;
+        if (op == '-')
+            return x - y;
+        if (op == '*')
+            return x * y;
+        if (op == '/')
+            return x / y;
         return 0;
     }
 
     int main()
     {
+        stack<int> nums;
+        stack<char> ops;
+        int pri[256] = {0};
         string s;
+        int t = -1, x, y, z;
+    
+        pri['+'] = 1;
+        pri['-'] = 1;
+        pri['*'] = 2;
+        pri['/'] = 2;
+        
         cin >> s;
-        cout << calculate("(" + s + ")") << endl;
+        
+        for (const char &ch : s)
+        {
+            if (ch == '(')
+            {
+                if (t != -1)
+                {
+                    nums.emplace(t);
+                    t = -1;
+                }
+                ops.emplace(ch);
+            }
+            else if (ch == ')')
+            {
+                if (t != -1)
+                {
+                    nums.emplace(t);
+                    t = -1;
+                }
+                while (ops.size() && ops.top() != '(')
+                {
+                    y = nums.top();
+                    nums.pop();
+                    x = nums.top();
+                    nums.pop();
+                    z = my_eval(ops.top(), x, y);
+                    ops.pop();
+                    nums.emplace(z);
+                }
+                ops.pop();
+            }
+            else if (ch >= '0' && ch <= '9')
+            {
+                if (t == -1)
+                    t = ch - '0';
+                else
+                    t = t * 10 + (ch - '0');
+            }
+            else
+            {
+                if (t != -1)
+                {
+                    nums.emplace(t);
+                    t = -1;
+                }
+                while (ops.size() && pri[ops.top()] >= pri[ch])
+                {
+                    y = nums.top();
+                    nums.pop();
+                    x = nums.top();
+                    nums.pop();
+                    z = my_eval(ops.top(), x, y);
+                    ops.pop();
+                    nums.emplace(z);
+                }
+                ops.emplace(ch);
+            }
+        }
+        
+        // 处理残余数字
+        if (t != -1)
+            nums.emplace(t);
+        
+        // 处理残余的运算符
+        while (ops.size())
+        {
+            y = nums.top();
+            nums.pop();
+            x = nums.top();
+            nums.pop();
+            z = my_eval(ops.top(), x, y);
+            ops.pop();
+            nums.emplace(z);
+        }
+    
+        printf("%d\n", nums.top());
+        
         return 0;
     }
 };
