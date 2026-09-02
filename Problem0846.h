@@ -14,42 +14,51 @@ using namespace std;
 class Problem0846
 {
 private:
-    int dfs(const int &root, const int &n, const vector<vector<int>> &graph, bool *visited, int &answer)
+    int dfs(int root, int n, const vector<vector<int>> &graph, vector<bool> &visited, int &answer)
     {
+        /*
+        ** 第1步：标记当前节点
+        ** 树是无向图（双向边），如果忘记这步，会造成无限搜索。
+        */
         visited[root] = true;
+        
+        int max_comp = 0;
+        int comp_size;
         int nodes_count = 1;
-        int max_component = 0;
-        for (const auto &v : graph[root])
+        
+        for (const int &v : graph[root])
         {
             if (visited[v])
-            {
                 continue;
-            }
-            auto child_size = dfs(v, n, graph, visited, answer);
-            max_component = max(max_component, child_size);
-            nodes_count += child_size;
+            comp_size = dfs(v, n, graph, visited, answer);
+            max_comp = max(max_comp, comp_size);
+            nodes_count += comp_size;
         }
-        max_component = max(max_component, n - nodes_count);
-        answer = min(answer, max_component);
+        
+        max_comp = max(n - nodes_count, max_comp);
+        answer = min(answer, max_comp);
+        
         return nodes_count;
     }
-
+    
     int main()
     {
         int n;
         scanf("%d", &n);
         vector<vector<int>> graph(n + 1);
-        for (int i = 0, a, b; i < n - 1; ++i)
+        vector<bool> visited(n + 1, false);
+        int answer = n;
+    
+        for (int i = 1, x, y; i < n; ++i)
         {
-            scanf("%d%d", &a, &b);
-            graph[a].emplace_back(b);
-            graph[b].emplace_back(a);
+            scanf("%d%d", &x, &y);
+            graph[x].emplace_back(y);
+            graph[y].emplace_back(x);
         }
-        bool visited[n + 1];
-        auto answer = n;
-        memset(visited, 0, sizeof visited);
-        dfs(1, n, graph, visited, answer);
+    
+        dfs(n, n, graph, visited, answer);
         printf("%d\n", answer);
+    
         return 0;
     }
 };
