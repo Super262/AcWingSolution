@@ -6,7 +6,6 @@
 #define ACWINGSOLUTION_PROBLEM0847_H
 
 #include <iostream>
-#include <cstring>
 #include <vector>
 #include <queue>
 
@@ -15,49 +14,50 @@ using namespace std;
 class Problem0847
 {
 private:
-    int bfs(const int &root, const int &target, const vector<vector<int>> &graph)
+    int bfs(const vector<vector<int>> &graph, int n)
     {
         queue<int> q;
-        int dist[graph.size()];
-        memset(dist, -1, sizeof dist);
-        dist[root] = 0;
-        q.emplace(root);
+        int current = 0;
+        vector<bool> visited(n + 1, false); 
+        
+        q.emplace(1);
+        visited[1] = true;
+        
         while (!q.empty())
         {
-            auto current_level_size = (int)q.size();
-            while (current_level_size--)
+            int q_size = (int)q.size();
+            for (int i = 0; i < q_size; ++i)
             {
-                auto node = q.front();
-                if (node == target)
-                {
-                    return dist[node];
-                }
+                int h = q.front();
                 q.pop();
-                for (const auto &next_v : graph[node])
+                if (h == n)
+                    return current;
+                for (const int &v : graph[h])
                 {
-                    if (dist[next_v] != -1)
-                    {
+                    if (visited[v])
                         continue;
-                    }
-                    q.emplace(next_v);
-                    dist[next_v] = dist[node] + 1;
+                    q.emplace(v);
+                    visited[v] = true;
                 }
+                
             }
+            ++current;
         }
-        return dist[target];
+        
+        return -1;
     }
-
+    
     int main()
     {
         int n, m;
         scanf("%d%d", &n, &m);
         vector<vector<int>> graph(n + 1);
-        for (int i = 0, a, b; i < m; ++i)
+        for (int i = 0, x, y; i < m; ++i)
         {
-            scanf("%d%d", &a, &b);
-            graph[a].emplace_back(b);
+            scanf("%d%d", &x, &y);
+            graph[x].emplace_back(y);
         }
-        printf("%d\n", bfs(1, n, graph));
+        printf("%d", bfs(graph, n));
         return 0;
     }
 };
