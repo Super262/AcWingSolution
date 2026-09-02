@@ -15,60 +15,59 @@ using namespace std;
 class Problem0848
 {
 private:
-    vector<int> bfs(const int &n, const vector<vector<int>> &graph, int *in_degree)
+    void bfs(int n, const vector<vector<int>> &graph, vector<int> &in_degree, vector<int> &answer)
     {
         queue<int> q;
-        vector<int> ans;
         for (int i = 1; i <= n; ++i)
         {
-            if (in_degree[i])
-            {
-                continue;
-            }
-            q.emplace(i);
+            if (!in_degree[i])
+                q.emplace(i);
         }
+        
         while (!q.empty())
         {
-            auto t = q.front();
-            q.pop();
-            ans.emplace_back(t);
-            for (const auto &v : graph[t])
+            for (int q_size = (int) q.size(), h; q_size; --q_size)
             {
-                --in_degree[v];
-                if (in_degree[v])
+                h = q.front();
+                q.pop();
+                answer.emplace_back(h);
+                for (const int &v: graph[h])
                 {
-                    continue;
+                    --in_degree[v];
+                    if (!in_degree[v])
+                        q.emplace(v);
                 }
-                q.emplace(v);
             }
         }
-        return ans;
     }
-
+    
     int main()
     {
         int n, m;
         scanf("%d%d", &n, &m);
         vector<vector<int>> graph(n + 1);
-        int in_degree[n + 1];
-        memset(in_degree, 0, sizeof in_degree);
-        for (int i = 0, u, v; i < m; ++i)
+        vector<int> in_degree(n + 1, 0);
+        vector<int> answer;
+    
+        for (int i = 0, x, y; i < m; ++i)
         {
-            scanf("%d%d", &u, &v);
-            graph[u].emplace_back(v);
-            ++in_degree[v];
+            scanf("%d%d", &x, &y);
+            graph[x].emplace_back(y);
+            ++in_degree[y];
         }
-        auto ans = bfs(n, graph, in_degree);
-        if (ans.size() != n)
+    
+        answer.reserve(n);
+        bfs(n, graph, in_degree, answer);
+    
+        if ((int)answer.size() == n)
         {
+            for (const int &v : answer)
+                printf("%d ", v);
+            printf("\n");
+        }
+        else
             printf("-1\n");
-            return 0;
-        }
-        for (const auto &x : ans)
-        {
-            printf("%d ", x);
-        }
-        printf("\n");
+    
         return 0;
     }
 };
