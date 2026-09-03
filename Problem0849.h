@@ -15,51 +15,60 @@ using namespace std;
 class Problem0849
 {
 private:
-    int dijkstra(const int &st, const int &ed, const int &n, const vector<vector<int>> &graph)
+    int dijkstra(int st, int ed, const vector<vector<pair<int, int>>> &graph, int n)
     {
-        int dist[n + 1];
-        bool selected[n + 1];
-        memset(dist, 0x3f, sizeof dist);
-        memset(selected, 0, sizeof selected);
-        dist[st] = 0;
-        for (int k = 1; k <= n; ++k)
+        int *dist = (int *)malloc(sizeof(int) * (n + 1));
+        bool *selected = (bool *)calloc(n + 1, sizeof(bool));
+        
+        for (int i = 1; i <= n; ++i)
+        {
+            if (i == st)
+                dist[st] = 0;
+            else
+                dist[i] = -1;
+        }
+        
+        for (int k = 0; k < n; ++k)
         {
             int closest_v = -1;
-            for (int v = 1; v <= n; ++v)
+            for (int i = 1; i <= n; ++i)
             {
-                if (selected[v])
-                {
+                if (dist[i] == -1 || selected[i])
                     continue;
-                }
-                if (closest_v == -1 || dist[closest_v] > dist[v])
-                {
-                    closest_v = v;
-                }
+                if (closest_v == -1 || dist[i] < dist[closest_v])
+                    closest_v = i;
             }
+            
+            if (closest_v == -1)
+                continue;
+            
             selected[closest_v] = true;
-            for (int v = 1; v <= n; ++v)
+            for (const pair<int, int> &p : graph[closest_v])
             {
-                dist[v] = min(dist[v], dist[closest_v] + graph[closest_v][v]);
+                if (dist[p.second] == -1)
+                    dist[p.second] = dist[closest_v] + p.first;
+                else
+                    dist[p.second] = min(dist[p.second], dist[closest_v] + p.first);
             }
         }
-        if (dist[ed] >= 0x3f3f3f3f)
-        {
-            return -1;
-        }
-        return dist[ed];
+        
+        int result = dist[ed];
+        free(selected);
+        free(dist);
+        return result;
     }
-
+    
     int main()
     {
         int n, m;
         scanf("%d%d", &n, &m);
-        vector<vector<int>> graph(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
-        for (int i = 0, u, v, w; i < m; ++i)
+        vector<vector<pair<int, int>>> graph(n + 1);
+        for (int i = 0, x, y, z; i < m; ++i)
         {
-            scanf("%d%d%d", &u, &v, &w);
-            graph[u][v] = min(graph[u][v], w);
+            scanf("%d%d%d", &x, &y, &z);
+            graph[x].emplace_back(z, y);
         }
-        printf("%d\n", dijkstra(1, n, n, graph));
+        printf("%d\n", dijkstra(1, n, graph, n));
         return 0;
     }
 };
