@@ -15,55 +15,60 @@ using namespace std;
 class Problem0850
 {
 private:
-    int dijkstra(const int &st, const int &ed, const int &n, const vector<vector<pair<int, int>>> &graph)
-    {
-        int dist[n + 1];
-        bool selected[n + 1];
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        memset(dist, 0x3f, sizeof dist);
-        memset(selected, 0, sizeof selected);
-        dist[st] = 0;
-        heap.push({dist[st], st});
-        while (!heap.empty())
-        {
-            auto t = heap.top();
-            heap.pop();
-            auto rv = t.second;
-            if (selected[rv])
-            {
-                continue;
-            }
-            selected[rv] = true;
-            for (const auto &nt : graph[rv])
-            {
-                auto nv = nt.second;
-                auto nd = nt.first;
-                if (dist[nv] <= dist[rv] + nd)
-                {
-                    continue;
-                }
-                dist[nv] = dist[rv] + nd;
-                heap.push({dist[nv], nv});
-            }
-        }
-        if (dist[ed] >= 0x3f3f3f3f)
-        {
-            return -1;
-        }
-        return dist[ed];
-    }
+    int dijkstra(int st, int ed, const vector<vector<pair<int, int>>> &graph, int n)
+    {        
+        /* 小根堆：{v, dist[v]}表示1到v的距离是dist[v] */
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> min_heap;
+        bool *selected = (bool *)calloc(n + 1, sizeof(bool));
+        int *dist = (int *)malloc((n + 1) * sizeof(int));
+        int result;
 
+        min_heap.emplace(0, st);
+        dist[st] = 0;
+        for (int i = 2 ; i <= n; ++i)
+        {
+            if (i != st)
+                dist[i] = -1;  /* -1表示“断路” */
+        }
+        
+        while (!min_heap.empty())
+        {
+            pair<int, int> p = min_heap.top();
+            min_heap.pop();
+    
+            if (selected[p.second])
+                continue;
+            selected[p.second] = true;
+    
+            for (const pair<int, int> &np : graph[p.second])
+            {
+                if (dist[np.second] == -1)
+                    dist[np.second] = dist[p.second] + np.first;
+                else
+                    dist[np.second] = min(dist[np.second], dist[p.second] + np.first);
+                min_heap.emplace(dist[np.second], np.second);
+            }
+        }
+        
+        result = dist[ed];
+        free(dist);
+        free(selected);
+        return result;
+    }
+    
     int main()
     {
         int n, m;
         scanf("%d%d", &n, &m);
+        
+        /* graph[x]中的{z, y}表示从x到y的长度为z的有向边 */
         vector<vector<pair<int, int>>> graph(n + 1);
-        for (int i = 0, u, v, w; i < m; ++i)
+        for (int i = 0, x, y, z; i < m; ++i)
         {
-            scanf("%d%d%d", &u, &v, &w);
-            graph[u].push_back({w, v});
+            scanf("%d%d%d", &x, &y, &z);
+            graph[x].emplace_back(z, y);
         }
-        printf("%d\n", dijkstra(1, n, n, graph));
+        printf("%d\n", dijkstra(1, n, graph, n));
         return 0;
     }
 };
