@@ -15,60 +15,86 @@ using namespace std;
 class Problem0851
 {
 private:
-    int spfa(const int &st, const int &ed, const int &n, const vector<vector<pair<int, int>>> &graph)
+    bool spfa(int st, int ed, int n, const vector<vector<pair<int, int>>> &graph, int &answer)
     {
-        int dist[n + 1];
-        bool is_in_queue[n + 1];
         queue<int> q;
-        memset(dist, 0x3f, sizeof dist);
-        memset(is_in_queue, 0, sizeof is_in_queue);
+        int *dist = (int *)malloc(sizeof(int) * (n + 1));
+        bool *in_queue = (bool *)calloc(n + 1, sizeof(bool));
+        bool *found = (bool *)calloc(n + 1, sizeof(bool));
+        
         dist[st] = 0;
+        found[st] = true;
         q.emplace(st);
-        is_in_queue[st] = true;
+        in_queue[st] = true;
+        
         while (!q.empty())
         {
-            auto root = q.front();
+            int root = q.front();
             q.pop();
-            is_in_queue[root] = false;
-            for (const auto &e : graph[root])
+            in_queue[root] = false;
+    
+            for (const pair<int, int> &p : graph[root])
             {
-                auto nv = e.second;
-                auto nd = e.first;
-                if (dist[nv] <= dist[root] + nd)
+                if (found[p.second])
                 {
-                    continue;
+                    if (dist[p.second] > dist[root] + p.first)
+                    {
+                        dist[p.second] = dist[root] + p.first;
+        
+                        if (!in_queue[p.second])
+                        {
+                            q.emplace(p.second);
+                            in_queue[p.second] = true;
+                        }
+                    }
                 }
-                dist[nv] = dist[root] + nd;
-                if (is_in_queue[nv])
+                else
                 {
-                    continue;
+                    found[p.second] = true;
+                    dist[p.second] = dist[root] + p.first;
+                    
+                    if (!in_queue[p.second])
+                    {
+                        q.emplace(p.second);
+                        in_queue[p.second] = true;
+                    }
                 }
-                q.emplace(nv);
-                is_in_queue[nv] = true;
             }
         }
-        return dist[ed];
+        
+        free(in_queue);
+        
+        if (found[ed])
+        {
+            answer = dist[ed];
+            free(dist);
+            free(found);
+            return true;
+        }
+    
+        free(dist);
+        free(found);
+        return false;
     }
-
+    
     int main()
     {
         int n, m;
         scanf("%d%d", &n, &m);
         vector<vector<pair<int, int>>> graph(n + 1);
+        
         for (int i = 0, x, y, z; i < m; ++i)
         {
             scanf("%d%d%d", &x, &y, &z);
-            graph[x].push_back({z, y});
+            graph[x].emplace_back(z, y);
         }
-        auto ans = spfa(1, n, n, graph);
-        if (ans == 0x3f3f3f3f)
-        {
-            printf("impossible\n");
-        }
+        
+        int answer;
+        if (spfa(1, n, n, graph, answer))
+            printf("%d\n", answer);
         else
-        {
-            printf("%d\n", ans);
-        }
+            printf("impossible\n");
+    
         return 0;
     }
 };
