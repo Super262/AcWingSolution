@@ -16,52 +16,48 @@ class Problem0854
 private:
     static const int INF = 0x3f3f3f3f;
 
-    vector<vector<int>> floyd(const int &n, const vector<vector<int>> &graph)
+    void floyd(int n, vector<vector<int>> &dist)
     {
-        vector<vector<int>> dist(graph);
+        /* 起点和终点相同时，最短距离为0 */
         for (int i = 1; i <= n; ++i)
-        { // 注意：起点和终点相同，距离为0
             dist[i][i] = 0;
-        }
+
         for (int mid = 1; mid <= n; ++mid)
         {
             for (int st = 1; st <= n; ++st)
             {
                 for (int ed = 1; ed <= n; ++ed)
                 {
+                    /* 无效值（INF）恒为0x3f3f3f3f */
                     if (dist[st][mid] == INF || dist[mid][ed] == INF)
-                    { // 排除负边的影响，INF恒为0x3f3f3f3f
                         continue;
-                    }
+
                     dist[st][ed] = min(dist[st][ed], dist[st][mid] + dist[mid][ed]);
                 }
             }
         }
-        return dist;
     }
 
     int main()
     {
         int n, m, k;
         scanf("%d%d%d", &n, &m, &k);
-        vector<vector<int>> graph(n + 1, vector<int>(n + 1, INF));
+
+        vector<vector<int>> dist(n + 1, vector<int>(n + 1, INF));
         for (int i = 0, x, y, z; i < m; ++i)
         {
             scanf("%d%d%d", &x, &y, &z);
-            graph[x][y] = min(graph[x][y], z);
+            dist[x][y] = min(dist[x][y], z);
         }
-        auto dist = floyd(n, graph);
+        
+        floyd(n, dist);
         for (int i = 0, a, b; i < k; ++i)
         {
             scanf("%d%d", &a, &b);
             if (dist[a][b] == INF)
-            {
                 printf("impossible\n");
-            }
             else
-            {
                 printf("%d\n", dist[a][b]);
-            }
         }
         return 0;
     }
