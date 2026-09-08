@@ -6,6 +6,7 @@
 #define ACWINGSOLUTION_PROBLEM0860_H
 
 #include <vector>
+#include <queue>
 #include <cstring>
 #include <iostream>
 
@@ -14,22 +15,32 @@ using namespace std;
 class Problem0860
 {
 private:
-    bool dfs(int u,
-             int val,
+    bool bfs(int u,
              int *color,
              const vector<vector<int>> &graph)
     {
-        color[u] = val;
-
-        for (const auto &v : graph[u])
+        queue<int> q;
+        
+        color[u] = 1;
+        q.emplace(u);
+        
+        while (!q.empty())
         {
-            if (color[v] &&
-                color[v] == val)
-                return false;
-
-            if (!color[v] &&
-                !dfs(v, 3 - val, color, graph))
-                return false;
+            u = q.front();
+            q.pop();
+            
+            for (const auto &v : graph[u])
+            {
+                if (color[v] &&
+                    color[v] == color[u])
+                    return false;
+    
+                if (!color[v])
+                {
+                    color[v] = 3 - color[u];
+                    q.emplace(v);
+                }
+            }
         }
 
         return true;
@@ -54,7 +65,7 @@ private:
             if (color[i])
                 continue;
 
-            if (!dfs(i, 1, color, graph))
+            if (!bfs(i, color, graph))
             {
                 printf("No\n");
                 free(color);
