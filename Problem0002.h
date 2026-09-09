@@ -25,32 +25,35 @@ private:
         }
     };
 
-    int knapsack_max_value(const int &n, const int &v, const Item *items)
+    int knapsack_max_value(int n, int v, const struct Item *items)
     {
-        int dp[v + 1];
-        memset(dp, 0, sizeof dp);
+        int *dp = (int *)calloc(v + 1, sizeof(int));
+
         for (int i = 0; i < n; ++i)
         {
             for (auto j = v; j >= items[i].size; --j)
-            {
                 dp[j] = max(dp[j], dp[j - items[i].size] + items[i].value);
-            }
         }
-        return dp[v];
+        
+        int result = dp[v];
+        
+        free(dp);
+        return result;
     }
 
     int main()
     {
         int n, v;
         scanf("%d%d", &n, &v);
-        Item items[n];
+        struct Item *items = (Item *)malloc(sizeof(struct Item) * n);
+
         for (int i = 0; i < n; ++i)
-        {
             scanf("%d%d", &items[i].size, &items[i].value);
-        }
+
         printf("%d\n", knapsack_max_value(n, v, items));
+        
+        free(items);
         return 0;
     }
 };
-
 #endif // ACWINGSOLUTION_PROBLEM0002_H
