@@ -15,42 +15,29 @@ class Problem0004
 private:
     struct Item
     {
-        int size;
-        int value;
-        int num;
-
-        Item()
-        {
-            value = 0;
-            size = 0;
-            num = 0;
-        }
+        int size, value, num;
     };
 
-    int knapsack_max_value(const int &n, const int &v, const Item *items)
+    int knapsack_max_value(int n, int v, const struct Item *items)
     {
-        int **dp = new int *[n + 1];
-        for (int i = 0; i <= n; ++i)
+        int *dp = (int *)calloc(v + 1, sizeof(int));
+        int i, j, k, t;
+
+        for (i = 1; i <= n; ++i)
         {
-            dp[i] = new int[v + 1];
-            memset(dp[i], 0, sizeof(int) * (v + 1));
-        }
-        for (int i = 1; i <= n; ++i)
-        {
-            for (int j = 1; j <= v; ++j)
+            for (j = v; j; --j)
             {
-                for (int k = 0; k <= items[i].num && k * items[i].size <= j; ++k)
+                for (k = 0; k <= items[i].num && k * items[i].size <= j; ++k)
                 {
-                    dp[i][j] = max(dp[i][j], dp[i - 1][j - k * items[i].size] + k * items[i].value);
+                    t = dp[j - k * items[i].size] + k * items[i].value;
+                    if (t > dp[j])
+                        dp[j] = t;
                 }
             }
         }
-        auto answer = dp[n][v];
-        for (int i = 0; i <= n; ++i)
-        {
-            delete[] dp[i];
-        }
-        delete[] dp;
+        
+        auto answer = dp[v];
+        free(dp);
         return answer;
     }
 
@@ -58,12 +45,14 @@ private:
     {
         int n, m;
         scanf("%d%d", &n, &m);
-        Item items[n];
+
+        struct Item *items = (struct Item *)calloc(n + 1, sizeof(struct Item));
+
         for (int i = 1; i <= n; ++i)
-        {
             scanf("%d%d%d", &items[i].size, &items[i].value, &items[i].num);
-        }
+
         printf("%d\n", knapsack_max_value(n, m, items));
+
         return 0;
     }
 };
