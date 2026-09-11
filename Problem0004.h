@@ -27,7 +27,7 @@ private:
         {
             for (j = v; j; --j)
             {
-                for (k = 0; k <= items[i].num && k * items[i].size <= j; ++k)
+                for (k = 1; k <= items[i].num && k * items[i].size <= j; ++k)
                 {
                     t = dp[j - k * items[i].size] + k * items[i].value;
                     if (t > dp[j])
