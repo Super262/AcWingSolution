@@ -15,57 +15,62 @@ class Problem0005
 private:
     struct Item
     {
-        int v;
-        int w;
-        int s;
-
-        Item()
-        {
-            v = 0;
-            w = 0;
-            s = 0;
-        }
+        int v, w, s;
     };
 
-    int knapsack_max_value(const int &n, const int &m, const Item *items)
+    int knapsack_max_value(int n, int m, const struct Item *items)
     {
-        int dp[m + 1];
-        memset(dp, 0, sizeof dp);
-        for (int i = 0, v, w, s; i < n; ++i)
+        int *dp = (int *)calloc(m + 1, sizeof(int));
+        int i, v, w, s, factor, j, t, answer;
+        
+        for (i = 0; i < n; ++i)
         {
             s = items[i].s;
-            for (int factor = 1; factor <= s; factor *= 2)
+
+            for (factor = 1; factor <= s; factor *= 2)
             {
                 v = items[i].v * factor;
                 w = items[i].w * factor;
-                for (auto j = m; j >= v; --j)
+
+                for (j = m; j >= v; --j)
                 {
-                    dp[j] = max(dp[j], dp[j - v] + w);
+                    t = dp[j - v] + w;
+                    if (t > dp[j])
+                        dp[j] = t;
+                    
                 }
+
                 s -= factor;
             }
-            if (s > 0)
+
+            if (s)
             {
                 v = items[i].v * s;
                 w = items[i].w * s;
-                for (auto j = m; j >= v; --j)
+
+                for (j = m; j >= v; --j)
                 {
-                    dp[j] = max(dp[j], dp[j - v] + w);
+                    t = dp[j - v] + w;
+                    if (t > dp[j])
+                        dp[j] = t;
                 }
             }
         }
-        return dp[m];
+        
+        answer = dp[m];
+        free(dp);
+        return answer;
     }
 
     int main()
     {
         int n, v;
         scanf("%d%d", &n, &v);
-        Item items[n];
+
+        struct Item *items = (struct Item *)calloc(n, sizeof(struct Item));
         for (int i = 0; i < n; ++i)
-        {
             scanf("%d%d%d", &items[i].v, &items[i].w, &items[i].s);
-        }
+
         printf("%d\n", knapsack_max_value(n, v, items));
         return 0;
     }
