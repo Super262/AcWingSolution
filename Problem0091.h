@@ -80,44 +80,28 @@ private:
          * 只访问一个非起点城市 v。
          */
         for (int v = 1; v < n; ++v)
-        {
-            int bit = 1 << (v - 1);
-            f(bit, v) = g(0, v);
-        }
+            f(1 << (v - 1), v) = g(0, v);
     
         for (int mask = 1; mask < maxMask; ++mask)
         {
-            /*
-             * 只枚举 mask 中存在的终点 v。
-             */
-            int vMask = mask;
-    
-            while (vMask)
+            /* 只枚举 mask 中存在的终点 v */
+            for (int vMask = mask; vMask; vMask &= vMask - 1)
             {
                 int vBit = vMask & -vMask;
-                int v = __builtin_ctz((unsigned)vBit) + 1;
-    
-                vMask &= vMask - 1;
-    
                 int prevMask = mask ^ vBit;
     
-                /*
-                 * 只有一个城市时已经初始化。
-                 */
+                /* 只有一个城市时已经初始化 */
                 if (!prevMask)
                     continue;
-    
+
+                int v = __builtin_ctz((unsigned)vBit) + 1;
                 int uMask = prevMask;
     
-                /*
-                 * 枚举倒数第二个城市 u。
-                 */
-                while (uMask)
+                /* 枚举倒数第二个城市 u */
+                for (int uMask = prevMask; uMask; uMask &= uMask - 1)
                 {
                     int uBit = uMask & -uMask;
                     int u = __builtin_ctz((unsigned)uBit) + 1;
-    
-                    uMask &= uMask - 1;
                     f(mask, v) = min(f(mask, v), f(prevMask, u) + g(u, v));
                 }
             }
