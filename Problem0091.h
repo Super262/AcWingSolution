@@ -5,59 +5,132 @@
 #ifndef ACWINGSOLUTION_PROBLEM0091_H
 #define ACWINGSOLUTION_PROBLEM0091_H
 
-#include <iostream>
-#include <cstring>
+/*
+状态压缩 Hamilton Path DP：
+
+f(mask, v)：
+    访问 mask 中所有点，
+    最后停在 v 的最优值。
+
+删除最后一个点：
+    prevMask = mask ^ (1 << v)
+
+枚举倒数第二个点 u：
+    f(mask, v) = best(f(prevMask, u) + cost[u][v])
+
+优化：
+    1. lowbit 只枚举 mask 中存在的 v / u
+    2. DP 使用连续一维数组
+    3. 若起点固定为 0，可将 0 从 mask 中省略，
+       状态数从 2^n 降为 2^(n-1)
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <algorithm>
 
 using namespace std;
 
 class Problem0091
 {
 private:
-    static const int N = 20;
-    int graph[N][N];
-    int f[1 << N][N];
-    // f[i][j]所有从0走到j，走过的点是i的所有路径中最短的路径的长度
-    // 状态计算时利用倒数第二个点来分类
-
-    int shortest_hamilton(const int &n)
-    {
-        memset(f, 0x3f, sizeof f);
-        const int LAST_STATE = (1 << n) - 1;
-        f[1][0] = 0;
-        for (int p = 1; p <= LAST_STATE; ++p)
-        {
-            for (int s1 = 0; s1 < n; ++s1)
-            {
-                if (!((p >> s1) & 1))
-                {
-                    continue;
-                }
-                for (int s0 = 0; s0 < n; ++s0)
-                {
-                    if (s0 == s1)
-                    {
-                        continue;
-                    }
-                    f[p][s1] = min(f[p][s1], f[p - (1 << s1)][s0] + graph[s0][s1]);
-                }
-            }
-        }
-        return f[LAST_STATE][n - 1];
-    }
-
     int main()
     {
         int n;
         scanf("%d", &n);
-        memset(graph, 0x3f, sizeof graph);
+    
+        int *_graph_ = (int *)malloc(sizeof(int) * n * n);
+    
+#define g(i, j) _graph_[(i) * n + (j)]
+    
         for (int i = 0; i < n; ++i)
-        {
             for (int j = 0; j < n; ++j)
+                scanf("%d", &g(i, j));
+    
+        if (n == 1)
+        {
+            printf("0\n");
+            free(_graph_);
+            return 0;
+        }
+    
+        /*
+         * 城市 0 固定为起点，因此 mask 只记录城市 1...n-1。
+         *
+         * city v 对应 bit (v - 1)。
+         */
+        const int endpointCount = n - 1;
+        const int maxMask = 1 << endpointCount;
+        const int INF = 0x3f3f3f3f;
+    
+        /*
+         * f(mask, v):
+         * 从城市 0 出发，
+         * 已访问 mask 中的所有城市，
+         * 最后停在城市 v (v >= 1) 的最短距离。
+         */
+        int *_f_ = (int *)malloc(sizeof(int) * (size_t)maxMask * endpointCount);
+        memset(_f_, 0x3f, sizeof(int) * (size_t)maxMask * endpointCount);
+    
+#define f(mask, v) _f_[(size_t)(mask) * endpointCount + ((v) - 1)]
+    
+        /*
+         * Base case：
+         * 只访问一个非起点城市 v。
+         */
+        for (int v = 1; v < n; ++v)
+        {
+            int bit = 1 << (v - 1);
+            f(bit, v) = g(0, v);
+        }
+    
+        for (int mask = 1; mask < maxMask; ++mask)
+        {
+            /*
+             * 只枚举 mask 中存在的终点 v。
+             */
+            int vMask = mask;
+    
+            while (vMask)
             {
-                scanf("%d", &graph[i][j]);
+                int vBit = vMask & -vMask;
+                int v = __builtin_ctz((unsigned)vBit) + 1;
+    
+                vMask &= vMask - 1;
+    
+                int prevMask = mask ^ vBit;
+    
+                /*
+                 * 只有一个城市时已经初始化。
+                 */
+                if (!prevMask)
+                    continue;
+    
+                int uMask = prevMask;
+    
+                /*
+                 * 枚举倒数第二个城市 u。
+                 */
+                while (uMask)
+                {
+                    int uBit = uMask & -uMask;
+                    int u = __builtin_ctz((unsigned)uBit) + 1;
+    
+                    uMask &= uMask - 1;
+                    f(mask, v) = min(f(mask, v), f(prevMask, u) + g(u, v));
+                }
             }
         }
-        printf("%d\n", shortest_hamilton(n));
+    
+        int answer = f(maxMask - 1, n - 1);
+        printf("%d\n", answer);
+    
+#undef f
+#undef g
+    
+        free(_f_);
+        free(_graph_);
         return 0;
     }
 };
