@@ -12,6 +12,34 @@
 
 using namespace std;
 
+/*
+AcWing 901 - 滑雪
+
+严格下降关系构成 DAG：
+
+    高 -> 低
+
+如果需要每个节点的最长下降路径：
+    需要 DP：
+        f[v] = max(f[v], f[u] + 1)
+
+如果只需要整张图的最长下降路径长度：
+    f[] 可以完全省略。
+
+做分层 Kahn 拓扑排序：
+
+    每处理完一层：
+        answer++
+
+最终拓扑层数就是 DAG 最长路径长度。
+
+时间：
+    O(n * m)
+
+空间：
+    O(n * m)
+*/
+
 class Problem0901
 {
     // 如果题意是寻找不增序列（相邻两项可以相等），动态规划思想失效（状态转移存在环），需使用图论中的最长路算法
@@ -30,41 +58,25 @@ private:
         int *indegree =
             (int *)calloc(total, sizeof(int));
     
-        int *f =
-            (int *)malloc(sizeof(int) * total);
-    
         int *q =
             (int *)malloc(sizeof(int) * total);
-    
+
 #define ID(x, y) ((x) * m + (y))
-#define H(x, y)  height[ID(x, y)]
+#define H(x, y) height[ID(x, y)]
 #define DEG(x, y) indegree[ID(x, y)]
-#define DP(x, y) f[ID(x, y)]
-    
+
         for (int i = 0; i < n; ++i)
-        {
             for (int j = 0; j < m; ++j)
-            {
                 scanf("%d", &H(i, j));
-                DP(i, j) = 1;
-            }
-        }
     
         const int dx[4] = {1, -1, 0, 0};
         const int dy[4] = {0, 0, 1, -1};
     
         /*
-         * 建图方向：
+         * 建边：
+         *     高 -> 低
          *
-         * 高 -> 低
-         *
-         * 如果：
-         *     H(x,y) > H(nx,ny)
-         *
-         * 则存在有向边：
-         *     (x,y) -> (nx,ny)
-         *
-         * 所以低点 indegree + 1。
+         * 因此低点的 indegree + 1。
          */
         for (int x = 0; x < n; ++x)
         {
@@ -87,16 +99,13 @@ private:
             }
         }
     
-        /*
-         * indegree == 0：
-         *
-         * 没有任何更高的相邻格子能滑到这里。
-         *
-         * 这些点就是 DAG 的拓扑起点。
-         */
         int head = 0;
         int tail = 0;
     
+        /*
+         * DAG source：
+         * 没有更高的邻居能够滑到这里。
+         */
         for (int x = 0; x < n; ++x)
         {
             for (int y = 0; y < m; ++y)
@@ -106,61 +115,57 @@ private:
             }
         }
     
-        int answer = 1;
+        int answer = 0;
     
+        /*
+         * 分层 Kahn 拓扑排序。
+         *
+         * 每一层对应最长下降路径中的一个位置，
+         * 因此最终层数就是 DAG 最长路径长度。
+         */
         while (head < tail)
         {
-            int id = q[head++];
+            int levelEnd = tail;
     
-            int x = id / m;
-            int y = id % m;
+            ++answer;
     
-            answer = max(answer, DP(x, y));
-    
-            /*
-             * 枚举从当前高点可以滑到的低点。
-             */
-            for (int d = 0; d < 4; ++d)
+            while (head < levelEnd)
             {
-                int nx = x + dx[d];
-                int ny = y + dy[d];
+                int id = q[head++];
     
-                if (nx < 0 || nx >= n ||
-                    ny < 0 || ny >= m)
+                int x = id / m;
+                int y = id % m;
+    
+                for (int d = 0; d < 4; ++d)
                 {
-                    continue;
+                    int nx = x + dx[d];
+                    int ny = y + dy[d];
+    
+                    if (nx < 0 || nx >= n ||
+                        ny < 0 || ny >= m)
+                    {
+                        continue;
+                    }
+    
+                    /*
+                     * 只沿着下降边走。
+                     */
+                    if (H(nx, ny) >= H(x, y))
+                        continue;
+    
+                    if (--DEG(nx, ny) == 0)
+                        q[tail++] = ID(nx, ny);
                 }
-    
-                if (H(nx, ny) >= H(x, y))
-                    continue;
-    
-                /*
-                 * DAG 最长路 DP。
-                 */
-                DP(nx, ny) =
-                    max(
-                        DP(nx, ny),
-                        DP(x, y) + 1
-                    );
-    
-                /*
-                 * 删除：
-                 *     (x,y) -> (nx,ny)
-                 */
-                if (--DEG(nx, ny) == 0)
-                    q[tail++] = ID(nx, ny);
             }
         }
     
         printf("%d\n", answer);
-    
-#undef DP
+
 #undef DEG
 #undef H
 #undef ID
-    
+
         free(q);
-        free(f);
         free(indegree);
         free(height);
     
